@@ -58,6 +58,12 @@
       "title": "Email Me",
       "url": "mailto:hello@example.com",
       "icon": "fas fa-envelope"
+    },
+    {
+      "id": "mqyzt0rhe5sfs7y812k",
+      "title": "Youtube",
+      "url": "https://www.youtube.com/@Bakayaro_0/videos",
+      "icon": ""
     }
   ]
 }
