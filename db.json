@@ -7,14 +7,15 @@
   },
   "projects": [
     {
-      "id": "proj2",
-      "title": "AI Dashboard",
-      "description": "Real-time analytics platform.",
-      "image": "https://images.unsplash.com/photo-1551288049-bebda4e38f71?w=600&q=80",
-      "url": "https://example.com",
+      "id": "mqyzjvp1gs13smvxz6b",
+      "title": "Game Mapper Mind",
+      "description": "Android gamepad-to-touchscreen mapper with overlay, anti-ban, and macro support. Supports Xbox, Switch, Playstation controllers.",
+      "image": "https://raw.githubusercontent.com/NanoMindExplorer/GameMapperMind/refs/heads/main/public/icon.svg",
+      "url": "https://github.com/NanoMindExplorer/GameMapperMind/releases/tag/v2.1.0",
       "tags": [
-        "SaaS",
-        "Next.js"
+        "Tools",
+        "Android",
+        "App"
       ],
       "size": "bento-item"
     }
