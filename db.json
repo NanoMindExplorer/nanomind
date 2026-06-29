@@ -1,0 +1,45 @@
+{
+  "profile": {
+    "name": "Your Name",
+    "bio": "Creative Developer & Designer. Passionate about building beautiful digital experiences.",
+    "avatar": "https://avatars.githubusercontent.com/u/0?v=4",
+    "logoText": "Y"
+  },
+  "projects": [
+    {
+      "id": "proj1",
+      "title": "Project One",
+      "description": "A brief description of your first awesome project.",
+      "image": "https://via.placeholder.com/400x225/6366f1/ffffff?text=Project+1",
+      "url": "https://example.com",
+      "tags": ["Web", "React", "UI/UX"]
+    },
+    {
+      "id": "proj2",
+      "website": "Project Two",
+      "description": "Another cool project showcasing your skills.",
+      "image": "https://via.placeholder.com/400x225/ec4899/ffffff?text=Project+2",
+      "url": "https://example.com",
+      "tags": ["Mobile", "Flutter"]
+    }
+  ],
+  "links": [
+    {
+      "id": "link1",
+      "title": "GitHub",
+      "url": "https://github.com",
+      "icon": "fab fa-github"
+    },
+    {
+      "id": "link2",
+      "title": "LinkedIn",
+      "url": "https://linkedin.com",
+      "icon": "fab fa-linkedin"
+    },
+    "id": "link3",
+      "title": "Instagram",
+      "url": "https://instagram.com",
+      "icon": "fab fa-instagram"
+    }
+  ]
+}

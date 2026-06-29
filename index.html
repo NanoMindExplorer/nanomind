@@ -1,495 +1,598 @@
 <!DOCTYPE html>
 <html lang="id">
 <head>
-  <meta charset="UTF-8"/>
-  <meta name="viewport" content="width=device-width,initial-scale=1.0"/>
-  <title>Portfolio</title>
-  <link rel="preconnect" href="https://fonts.googleapis.com"/>
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin/>
-  <link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=Inter:wght@300;400;500;600&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet"/>
-  <style>
-*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
-:root{--bg:#07070e;--s1:rgba(255,255,255,.04);--s2:rgba(255,255,255,.07);--b:rgba(255,255,255,.08);--bh:rgba(255,255,255,.14);--txt:#e2e8f0;--mu:#64748b;--mu2:#475569;--p:#7c3aed;--pl:#a78bfa;--c:#06b6d4;--g:#10b981;--pk:#ec4899;--r:#ef4444}
-body{font-family:'Inter',sans-serif;background:var(--bg);color:var(--txt);min-height:100vh;-webkit-font-smoothing:antialiased;overflow-x:hidden}
-::-webkit-scrollbar{width:4px}::-webkit-scrollbar-thumb{background:var(--p);border-radius:4px}
-.sy{font-family:'Syne',sans-serif}.mn{font-family:'JetBrains Mono',monospace}
-.orb{position:fixed;border-radius:50%;filter:blur(100px);pointer-events:none}
-.orb1{width:700px;height:700px;top:-150px;left:-200px;background:#7c3aed;opacity:.1;animation:drift 14s ease-in-out infinite alternate}
-.orb2{width:500px;height:500px;top:42%;right:-180px;background:#06b6d4;opacity:.07;animation:drift 10s ease-in-out 4s infinite alternate}
-.orb3{width:400px;height:400px;bottom:60px;left:22%;background:#ec4899;opacity:.05;animation:drift 17s ease-in-out 8s infinite alternate}
-@keyframes drift{0%{transform:translateY(0) scale(1)}100%{transform:translateY(-55px) scale(1.1)}}
-@keyframes pulse{0%,100%{opacity:1}50%{opacity:.35}}
-@keyframes spin{to{transform:rotate(360deg)}}
-@keyframes fadeIn{from{opacity:0}to{opacity:1}}
-@keyframes slideUp{from{opacity:0;transform:translateY(18px)}to{opacity:1;transform:translateY(0)}}
-@keyframes shimmer{0%{background-position:200% 0}100%{background-position:-200% 0}}
-@keyframes toastIn{from{opacity:0;transform:translateY(14px) scale(.94)}to{opacity:1;transform:none}}
-.glass{background:var(--s1);backdrop-filter:blur(20px);-webkit-backdrop-filter:blur(20px);border:1px solid var(--b);border-radius:16px;transition:border-color .25s,box-shadow .25s,transform .25s}
-.gh:hover{transform:translateY(-5px);box-shadow:0 24px 48px rgba(124,58,237,.14);border-color:rgba(124,58,237,.32)}
-.grad{background:linear-gradient(135deg,var(--pl) 0%,var(--c) 55%,var(--pk) 100%);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text}
-.btn-p{display:inline-flex;align-items:center;gap:8px;padding:10px 20px;border-radius:10px;background:linear-gradient(135deg,var(--p),var(--c));border:none;color:#fff;font-family:'Inter',sans-serif;font-size:14px;font-weight:600;cursor:pointer;transition:opacity .2s,transform .2s,box-shadow .2s;white-space:nowrap}
-.btn-p:hover{opacity:.88;transform:translateY(-2px);box-shadow:0 8px 28px rgba(124,58,237,.4)}
-.btn-g{display:inline-flex;align-items:center;gap:6px;padding:8px 16px;border-radius:8px;background:transparent;border:1px solid var(--b);color:var(--mu);font-family:'Inter',sans-serif;font-size:13px;font-weight:500;cursor:pointer;transition:all .2s;white-space:nowrap;text-decoration:none}
-.btn-g:hover{border-color:var(--p);color:var(--txt)}
-.btn-d{display:inline-flex;align-items:center;gap:5px;padding:6px 10px;border-radius:6px;background:rgba(239,68,68,.1);border:1px solid rgba(239,68,68,.22);color:var(--r);font-family:'Inter',sans-serif;font-size:12px;cursor:pointer;transition:all .2s}
-.btn-d:hover{background:rgba(239,68,68,.2)}
-.inp{width:100%;padding:10px 14px;border-radius:8px;background:rgba(255,255,255,.05);border:1px solid var(--b);color:var(--txt);font-size:14px;font-family:'Inter',sans-serif;outline:none;transition:border-color .2s}
-.inp:focus{border-color:var(--p);box-shadow:0 0 0 3px rgba(124,58,237,.12)}
-.inp::placeholder{color:var(--mu2)}
-.tag{display:inline-flex;padding:3px 10px;border-radius:100px;font-size:11px;font-weight:600;font-family:'JetBrains Mono',monospace;background:rgba(124,58,237,.14);color:var(--pl);border:1px solid rgba(124,58,237,.24)}
-.pill{padding:6px 16px;border-radius:100px;font-size:13px;font-weight:500;cursor:pointer;border:1px solid var(--b);background:transparent;color:var(--mu);font-family:'Inter',sans-serif;transition:all .2s}
-.pill:hover:not(.on){border-color:var(--p);color:var(--txt)}
-.pill.on{background:linear-gradient(135deg,var(--p),var(--c));border-color:transparent;color:#fff}
-.backdrop{position:fixed;inset:0;background:rgba(0,0,0,.82);backdrop-filter:blur(10px);z-index:100;display:flex;align-items:center;justify-content:center;padding:20px;animation:fadeIn .15s}
-.modal{background:#0c0c18;border:1px solid var(--b);border-radius:20px;width:100%;max-width:540px;max-height:88vh;overflow-y:auto;animation:slideUp .2s}
-.soc{display:inline-flex;align-items:center;justify-content:center;width:40px;height:40px;border-radius:10px;border:1px solid var(--b);background:var(--s1);color:var(--mu);text-decoration:none;transition:all .2s;flex-shrink:0}
-.soc:hover{border-color:var(--p);color:var(--pl);background:rgba(124,58,237,.12);transform:translateY(-2px)}
-.abar{position:fixed;top:0;left:0;right:0;z-index:200;height:3px;background:linear-gradient(90deg,var(--p),var(--c),var(--pk),var(--p));background-size:200% 100%;animation:shimmer 2s linear infinite}
-.toast{position:fixed;bottom:24px;right:24px;z-index:300;padding:12px 20px;border-radius:12px;font-size:14px;font-weight:500;display:flex;align-items:center;gap:8px;animation:toastIn .3s cubic-bezier(.34,1.56,.64,1);pointer-events:none}
-.ts{background:rgba(16,185,129,.15);border:1px solid rgba(16,185,129,.3);color:var(--g)}
-.te{background:rgba(239,68,68,.15);border:1px solid rgba(239,68,68,.3);color:var(--r)}
-.ti{background:rgba(124,58,237,.15);border:1px solid rgba(124,58,237,.3);color:var(--pl)}
-.grid-p{display:grid;grid-template-columns:repeat(auto-fill,minmax(290px,1fr));gap:20px}
-.grid-l{display:grid;grid-template-columns:repeat(auto-fill,minmax(260px,1fr));gap:16px}
-.sec{animation:slideUp .35s}
-nav{position:sticky;top:0;z-index:50;backdrop-filter:blur(20px);-webkit-backdrop-filter:blur(20px);border-bottom:1px solid var(--b);background:rgba(7,7,14,.88)}
-.nav-in{max-width:1100px;margin:0 auto;padding:0 24px;height:58px;display:flex;align-items:center;justify-content:space-between}
-main{max-width:1100px;margin:0 auto;padding:0 24px 80px}
-footer{border-top:1px solid rgba(255,255,255,.05);padding:24px;text-align:center}
-.tog{width:44px;height:24px;border-radius:12px;background:var(--bh);position:relative;transition:background .2s;border:none;cursor:pointer;flex-shrink:0}
-.tog.on{background:var(--p)}
-.tog::after{content:'';position:absolute;top:3px;left:3px;width:18px;height:18px;border-radius:50%;background:#fff;transition:transform .2s}
-.tog.on::after{transform:translateX(20px)}
-.gl{height:1px;background:linear-gradient(90deg,transparent,var(--p),var(--c),transparent);opacity:.22;margin:20px 0}
-.cat-tag{padding:3px 10px;border-radius:100px;font-size:11px;font-weight:600;background:rgba(6,182,212,.12);color:#06b6d4;border:1px solid rgba(6,182,212,.2);font-family:'JetBrains Mono',monospace}
-.feat-badge{position:absolute;top:14px;right:14px;background:linear-gradient(135deg,#f59e0b,#f97316);color:#fff;font-size:10px;font-weight:700;text-transform:uppercase;padding:4px 10px;border-radius:100px;font-family:'JetBrains Mono',monospace}
-.field{margin-bottom:14px}
-.field label{display:block;font-size:12px;font-weight:600;color:#94a3b8;margin-bottom:6px;letter-spacing:.04em;text-transform:uppercase}
-.cfm{padding:14px;border-radius:10px;background:rgba(239,68,68,.1);border:1px solid rgba(239,68,68,.25);margin-top:8px;display:flex;align-items:center;justify-content:space-between;gap:12px;flex-wrap:wrap}
-@media(max-width:640px){.grid-p,.grid-l{grid-template-columns:1fr}.hn{font-size:clamp(32px,10vw,72px)!important}}
-  </style>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Portfolio & Link Hub</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&family=Syne:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --bg: #0a0a0f;
+            --bg-2: #12121a;
+            --card: rgba(255, 255, 255, 0.03);
+            --card-hover: rgba(255, 255, 255, 0.06);
+            --border: rgba(255, 255, 255, 0.08);
+            --border-active: rgba(255, 255, 255, 0.2);
+            --text: #ffffff;
+            --text-muted: #8a8a9a;
+            --accent: #6366f1;
+            --accent-2: #ec4899;
+        }
+        
+        * { -webkit-tap-highlight-color: transparent; }
+        
+        html { scroll-behavior: smooth; }
+        
+        body {
+            font-family: 'Space Grotesk', sans-serif;
+            background: var(--bg);
+            color: var(--text);
+            overflow-x: hidden;
+        }
+        
+        .font-display { font-family: 'Syne', sans-serif; }
+        
+        /* Animated background blobs */
+        .bg-blob {
+            position: fixed;
+            border-radius: 50%;
+            filter: blur(80px);
+            opacity: 0.4;
+            pointer-events: none;
+            z-index: 0;
+        }
+        
+        .bg-blob-1 {
+            width: 500px;
+            height: 500px;
+            background: #6366f1;
+            top: -100px;
+            right: -100px;
+            animation: float 20s infinite ease-in-out;
+        }
+        
+        .bg-blob-2 {
+            width: 400px;
+            height: 400px;
+            background: #ec4899;
+            bottom: -100px;
+            left: -100px;
+            animation: float 25s infinite ease-in-out reverse;
+        }
+        
+        @keyframes float {
+            0%, 100% { transform: translate(0, 0) scale(1); }
+            33% { transform: translate(50px, -50px) scale(1.1); }
+            66% { transform: translate(-30px, 30px) scale(0.9); }
+        }
+        
+        /* Grid background pattern */
+        .grid-bg {
+            background-image: 
+                linear-gradient(rgba(255,255,255,0.02) 1px, transparent 1px),
+                linear-gradient(90deg, rgba(255,255,255,0.02) 1px, transparent 1px);
+            background-size: 50px 50px;
+            position: fixed;
+            inset: 0;
+            pointer-events: none;
+            z-index: 0;
+            mask-image: radial-gradient(ellipse at center, black 40%, transparent 80%);
+        }
+        
+        /* Glass cards */
+        .glass {
+            background: var(--card);
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+            border: 1px solid var(--border);
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+        
+        .glass:hover {
+            background: var(--card-hover);
+            border-color: var(--border-active);
+        }
+        
+        /* Glow effects */
+        .glow-accent {
+            box-shadow: 0 0 30px -5px rgba(99, 102, 241, 0.5);
+        }
+        
+        /* Navigation */
+        .nav-link {
+            position: relative;
+            padding: 8px 16px;
+            color: var(--text-muted);
+            transition: color 0.2s;
+            font-weight: 500;
+        }
+        
+        .nav-link::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 50%;
+            width: 0;
+            height: 2px;
+            background: linear-gradient(90deg, var(--accent), var(--accent-2));
+            transition: all 0.3s;
+            transform: translateX(-50%);
+        }
+        
+        .nav-link:hover, .nav-link.active {
+            color: var(--text);
+        }
+        
+        .nav-link:hover::after, .nav-link.active::after {
+            width: 60%;
+        }
+        
+        /* Buttons */
+        .btn-primary {
+            background: linear-gradient(135deg, var(--accent), var(--accent-2));
+            color: white;
+            font-weight: 600;
+            padding: 12px 24px;
+            border-radius: 12px;
+            transition: all 0.3s;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .btn-primary::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255,255,255,0.2), transparent);
+            transition: left 0.5s;
+        }
+        .btn-primary:hover::before { left: 100%; }
+        .btn-primary:hover { transform: translateY(-2px); box-shadow: 0 10px 30px -10px rgba(99, 102, 241, 0.6); }
+        
+        .btn-ghost {
+            background: var(--card);
+            border: 1px solid var(--border);
+            color: var(--text);
+            font-weight: 500;
+            padding: 12px 24px;
+            border-radius: 12px;
+            transition: all 0.3s;
+        }
+        .btn-ghost:hover {
+            background: var(--card-hover);
+            border-color: var(--border-active);
+        }
+        
+        /* Cards */
+        .project-card {
+            position: relative;
+            overflow: hidden;
+            border-radius: 16px;
+            transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+        
+        .project-card:hover {
+            transform: translateY(-4px);
+        }
+        
+        .project-card .card-bg {
+            position: absolute;
+            inset: 0;
+            background: linear-gradient(135deg, var(--accent), var(--accent-2));
+            opacity: 0;
+            transition: opacity 0.3s;
+        }
+        
+        .project-card:hover .card-bg {
+            opacity: 0.1;
+        }
+        
+        /* Link cards */
+        .link-card {
+            display: flex;
+            align-items: center;
+            gap: 16px;
+            padding: 16px;
+            border-radius: 16px;
+            background: var(--card);
+            border: 1px solid var(--border);
+            transition: all 0.3s;
+            cursor: pointer;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .link-card::before {
+            content: '';
+            position: absolute;
+            left: 0;
+            top: 0;
+            bottom: 0;
+            width: 4px;
+            background: linear-gradient(180deg, var(--accent), var(--accent-2));
+            transform: scaleY(0);
+            transition: transform 0.3s;
+            transform-origin: top;
+        }
+        
+        .link-card:hover {
+            transform: translateX(4px);
+            border-color: var(--border-active);
+            background: var(--card-hover);
+        }
+        
+        .link-card:hover::before {
+            transform: scaleY(1);
+        }
+        
+        .link-card .icon-box {
+            width: 48px;
+            height: 48px;
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: rgba(99, 102, 244, 0.1);
+            color: var(--accent);
+            font-size: 20px;
+            flex-shrink: 0;
+        }
+        
+        /* Form inputs */
+        .input-field {
+            background: rgba(255,255,255,0.03);
+            border: 1px solid var(--border);
+            border-radius: 12px;
+            padding: 12px 16px;
+            color: var(--text);
+            width: 100%;
+            transition: all 0.2s;
+            font-family: inherit;
+        }
+        
+        .input-field:focus {
+            outline: none;
+            border-color: var(--accent);
+            box-shadow: 0 0 0 3px rgba(99, 102, 241, 0.1);
+        }
+        
+        .input-field::placeholder { color: var(--text-muted); }
+        
+        /* Modal */
+        .modal-overlay {
+            position: fixed;
+            inset: 0;
+            background: rgba(0,0,0,0.7);
+            backdrop-filter: blur(8px);
+            z-index: 100;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            opacity: 0;
+            pointer-events: none;
+            transition: opacity 0.3s;
+            padding: 20px;
+        }
+        
+        .modal-overlay.active {
+            opacity: 1;
+            pointer-events: auto;
+        }
+        
+        .modal-content {
+            background: var(--bg-2);
+            border: 1px solid var(--border);
+            border-radius: 24px;
+            padding: 32px;
+            max-width: 500px;
+            width: 100%;
+            max-height: 90vh;
+            overflow-y: auto;
+            transform: scale(0.95);
+            transition: transform 0.3s;
+        }
+        
+        .modal-overlay.active .modal-content {
+            transform: scale(1);
+        }
+        
+        /* Toast notifications */
+        .toast {
+            position: fixed;
+            bottom: 24px;
+            right: 24px;
+            padding: 16px 24px;
+            background: var(--bg-2);
+            border: 1px solid var(--border);
+            border-left: 4px solid var(--accent);
+            border-radius: 12px;
+            box-shadow: 0 10px 40px rgba(0,0,0,0.5);
+            z-index: 200;
+            transform: translateX(120%);
+            transition: transform 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+        
+        .toast.show { transform: translateX(0); }
+        .toast.error { border-left-color: #ef4444; }
+        .toast.success { border-left-color: #10b981; }
+        
+        /* Scrollbar */
+        ::-webkit-scrollbar { width: 8px; height: 8px; }
+        ::-webkit-scrollbar-track { background: var(--bg); }
+        ::-webkit-scrollbar-thumb { background: var(--border); border-radius: 4px; }
+        ::-webkit-scrollbar-thumb:hover { background: var(--border-active); }
+        
+        /* Reveal animations */
+        .reveal {
+            opacity: 0;
+            transform: translateY(20px);
+            transition: all 0.6s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+        
+        .reveal.visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
+        
+        /* Responsive */
+        @media (max-width: 768px) {
+            .nav-link { padding: 8px 12px; font-size: 14px; }
+            .hero-title { font-size: 2.5rem !important; }
+        }
+        
+        /* Avatar gradient ring */
+        .avatar-ring {
+            background: linear-gradient(135deg, var(--accent), var(--accent-2));
+            padding: 4px;
+            border-radius: 50%;
+            display: inline-block;
+        }
+        
+        .avatar-ring img {
+            border-radius: 50%;
+            display: block;
+        }
+        
+        /* Admin floating button */
+        .admin-fab {
+            position: fixed;
+            bottom: 24px;
+            left: 24px;
+            width: 56px;
+            height: 56px;
+            border-radius: 16px;
+            background: linear-gradient(135deg, var(--accent), var(--accent-2));
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-size: 24px;
+            cursor: pointer;
+            z-index: 50;
+            box-shadow: 0 10px 30px -5px rgba(99, 102, 241, 0.5);
+            transition: all 0.3s;
+        }
+        
+        .admin-fab:hover {
+            transform: scale(1.05) rotate(15deg);
+        }
+        
+        /* Delete button on cards */
+        .delete-btn {
+            position: absolute;
+            top: 12px;
+            right: 12px;
+            width: 32px;
+            height: 32px;
+            border-radius: 8px;
+            background: rgba(239, 68, 68, 0.1);
+            color: #ef4444;
+            border: 1px solid rgba(239, 68, 68, 0.2);
+            display: none;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            transition: all 0.2s;
+            z-index: 10;
+        }
+        
+        .admin-mode .delete-btn { display: flex; }
+        .delete-btn:hover { background: rgba(239, 68, 68, 0.2); }
+        
+        .edit-btn {
+            position: absolute;
+            top: 12px;
+            right: 52px;
+            width: 32px;
+            height: 32px;
+            border-radius: 8px;
+            action: edit-icon; /* pseudo, will be replaced */
+            background: rgba(99, 102, 241, 0.1);
+            color: var(--accent);
+            border: 1px solid rgba(99, 102, 241, 0.2);
+            display: none;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            transition: all 0.2s;
+            z-index: 10;
+        }
+        
+        .admin-mode .edit-btn { display: flex; }
+        .edit-btn:hover { background: rgba(99, 102, 241, 0.2); }
+    </style>
 </head>
-<body>
-<div id="app"></div>
-<script type="module">
-import{h,render,Fragment}from'https://cdn.jsdelivr.net/npm/preact@10.19.3/dist/preact.module.js';
-import{useState,useEffect,useRef,useCallback}from'https://cdn.jsdelivr.net/npm/preact@10.19.3/hooks/dist/hooks.module.js';
-import htm from'https://cdn.jsdelivr.net/npm/htm@3.1.1/dist/htm.module.js';
-const H=htm.bind(h);
-
-const DK='folio_v1',GK='folio_gh',FILE='portfolio-data.json';
-const DEF={
-  profile:{name:'Nama Anda',title:'Creative Developer & Designer',bio:'Membangun pengalaman digital yang indah dan bermakna. Klik ⚙ lalu aktifkan Admin Mode untuk mulai mengedit.',avatar:'',social:{github:'',twitter:'',linkedin:'',email:''}},
-  categories:['Web App','Design','Mobile','Open Source'],
-  projects:[
-    {id:'s1',title:'E-Commerce Platform',description:'Toko online dengan fitur lengkap: inventory real-time, payment gateway, dan dashboard admin yang powerful.',image:'',category:'Web App',tags:['React','Node.js','MongoDB'],liveUrl:'',githubUrl:'',featured:true,year:'2024'},
-    {id:'s2',title:'Design System',description:'Sistem desain komprehensif dengan 50+ komponen, dark mode, dan dokumentasi lengkap.',image:'',category:'Design',tags:['Figma','React','Storybook'],liveUrl:'',githubUrl:'',featured:false,year:'2024'},
-    {id:'s3',title:'Mobile Fitness App',description:'Aplikasi fitness lintas platform dengan rekomendasi workout AI dan analitik progres.',image:'',category:'Mobile',tags:['React Native','Python','AWS'],liveUrl:'',githubUrl:'',featured:false,year:'2023'}
-  ],
-  links:[
-    {id:'l1',title:'MDN Web Docs',description:'Referensi terbaik untuk HTML, CSS, JavaScript',url:'https://developer.mozilla.org',category:'Learning',tags:['docs','reference']},
-    {id:'l2',title:'Dribbble',description:'Inspirasi desain UI/UX terbaik dunia',url:'https://dribbble.com',category:'Inspirasi',tags:['design','ui']},
-    {id:'l3',title:'GitHub',description:'Platform pengembangan software terkemuka',url:'https://github.com',category:'Tools',tags:['dev','git']}
-  ]
-};
-
-// Storage
-const sLoad=async()=>{try{const v=localStorage.getItem(DK);return v?JSON.parse(v):null}catch{return null}};
-const sSave=async d=>{try{localStorage.setItem(DK,JSON.stringify(d));return true}catch{return false}};
-const cLoad=()=>{try{const v=localStorage.getItem(GK);return v?JSON.parse(v):null}catch{return null}};
-const cSave=c=>{try{localStorage.setItem(GK,JSON.stringify(c))}catch{}};
-const cClear=()=>{try{localStorage.removeItem(GK)}catch{}};
-
-// GitHub
-const ghL=async cfg=>{
-  const r=await fetch(`https://api.github.com/repos/${cfg.owner}/${cfg.repo}/contents/${FILE}`,{headers:{Authorization:`Bearer ${cfg.token}`,Accept:'application/vnd.github.v3+json'}});
-  if(r.status===404)return{data:null,sha:null};
-  if(!r.ok)throw new Error(`GitHub ${r.status}`);
-  const f=await r.json();
-  return{data:JSON.parse(decodeURIComponent(escape(atob(f.content.replace(/\n/g,''))))),sha:f.sha};
-};
-const ghS=async(cfg,sha,data)=>{
-  const r=await fetch(`https://api.github.com/repos/${cfg.owner}/${cfg.repo}/contents/${FILE}`,{
-    method:'PUT',headers:{Authorization:`Bearer ${cfg.token}`,Accept:'application/vnd.github.v3+json','Content-Type':'application/json'},
-    body:JSON.stringify({message:sha?'✏️ Update':'🎉 Init',content:btoa(unescape(encodeURIComponent(JSON.stringify(data,null,2)))),...(sha&&{sha})})
-  });
-  if(!r.ok){const e=await r.json().catch(()=>({}));throw new Error(e.message||`GitHub ${r.status}`)}
-  return(await r.json()).content.sha;
-};
-
-const uid=()=>Date.now().toString(36)+Math.random().toString(36).slice(2,7);
-const fav=url=>{try{return`https://www.google.com/s2/favicons?domain=${new URL(url).hostname}&sz=64`}catch{return null}};
-const toArr=v=>Array.isArray(v)?v:(v||'').split(',').map(t=>t.trim()).filter(Boolean);
-const toStr=v=>Array.isArray(v)?v.join(', '):(v||'');
-
-// SVG Icons
-const svg=(d,s=17)=>H`<svg viewBox="0 0 24 24" fill="currentColor" style=${{width:s,height:s}}><path d=${d}/></svg>`;
-const svgS=(d,s=17)=>H`<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style=${{width:s,height:s}}>${d}</svg>`;
-const IGH=({s=17})=>svg('M12 0C5.374 0 0 5.373 0 12c0 5.302 3.438 9.8 8.207 11.387.599.111.793-.261.793-.577v-2.234c-3.338.726-4.033-1.416-4.033-1.416-.546-1.387-1.333-1.756-1.333-1.756-1.089-.745.083-.729.083-.729 1.205.084 1.839 1.237 1.839 1.237 1.07 1.834 2.807 1.304 3.492.997.107-.775.418-1.305.762-1.604-2.665-.305-5.467-1.334-5.467-5.931 0-1.311.469-2.381 1.236-3.221-.124-.303-.535-1.524.117-3.176 0 0 1.008-.322 3.301 1.23A11.509 11.509 0 0112 5.803c1.02.005 2.047.138 3.006.404 2.291-1.552 3.297-1.23 3.297-1.23.653 1.653.242 2.874.118 3.176.77.84 1.235 1.911 1.235 3.221 0 4.609-2.807 5.624-5.479 5.921.43.372.823 1.102.823 2.222v3.293c0 .319.192.694.801.576C20.566 21.797 24 17.3 24 12c0-6.627-5.373-12-12-12z',s);
-const ITW=({s=17})=>svg('M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z',s);
-const ILI=({s=17})=>svg('M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286zM5.337 7.433a2.063 2.063 0 110-4.127 2.063 2.063 0 010 4.127zm1.782 13.019H3.555V9h3.564v11.452zM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 24 1.771 24h20.451C23.2 24 24 23.227 24 22.271V1.729C24 .774 23.2 0 22.222 0h.003z',s);
-const IML=({s=17})=>H`<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style=${{width:s,height:s}}><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/></svg>`;
-const IExt=({s=12})=>H`<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style=${{width:s,height:s}}><path d="M18 13v6a2 2 0 01-2 2H5a2 2 0 01-2-2V8a2 2 0 012-2h6"/><polyline points="15,3 21,3 21,9"/><line x1="10" y1="14" x2="21" y2="3"/></svg>`;
-const IPlus=({s=15})=>H`<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style=${{width:s,height:s}}><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>`;
-const IEdit=({s=12})=>H`<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style=${{width:s,height:s}}><path d="M11 4H4a2 2 0 00-2 2v14a2 2 0 002 2h14a2 2 0 002-2v-7"/><path d="M18.5 2.5a2.121 2.121 0 013 3L12 15l-4 1 1-4 9.5-9.5z"/></svg>`;
-const IDel=({s=12})=>H`<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style=${{width:s,height:s}}><polyline points="3 6 5 6 21 6"/><path d="M19 6v14a2 2 0 01-2 2H7a2 2 0 01-2-2V6m3 0V4a1 1 0 011-1h4a1 1 0 011 1v2"/></svg>`;
-const ICog=()=>H`<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style=${{width:16,height:16}}><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 00.33 1.82l.06.06a2 2 0 010 2.83 2 2 0 01-2.83 0l-.06-.06a1.65 1.65 0 00-1.82-.33 1.65 1.65 0 00-1 1.51V21a2 2 0 01-4 0v-.09A1.65 1.65 0 009 19.4a1.65 1.65 0 00-1.82.33l-.06.06a2 2 0 01-2.83-2.83l.06-.06A1.65 1.65 0 004.68 15a1.65 1.65 0 00-1.51-1H3a2 2 0 010-4h.09A1.65 1.65 0 004.6 9a1.65 1.65 0 00-.33-1.82l-.06-.06a2 2 0 012.83-2.83l.06.06A1.65 1.65 0 009 4.68a1.65 1.65 0 001-1.51V3a2 2 0 014 0v.09a1.65 1.65 0 001 1.51 1.65 1.65 0 001.82-.33l.06-.06a2 2 0 012.83 2.83l-.06.06A1.65 1.65 0 0019.4 9a1.65 1.65 0 001.51 1H21a2 2 0 010 4h-.09a1.65 1.65 0 00-1.51 1z"/></svg>`;
-const IX=()=>H`<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style=${{width:15,height:15}}><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>`;
-const IStar=({c})=>H`<svg viewBox="0 0 24 24" fill=${c||'currentColor'} style=${{width:12,height:12}}><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>`;
-const IChk=()=>H`<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" style=${{width:14,height:14}}><polyline points="20 6 9 17 4 12"/></svg>`;
-const ILnk=()=>H`<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style=${{width:16,height:16}}><path d="M10 13a5 5 0 007.54.54l3-3a5 5 0 00-7.07-7.07l-1.72 1.71"/><path d="M14 11a5 5 0 00-7.54-.54l-3 3a5 5 0 007.07 7.07l1.71-1.71"/></svg>`;
-
-// UI atoms
-const Toast=({msg,type='success'})=>H`<div class=${`toast ${type==='success'?'ts':type==='error'?'te':'ti'}`}>${type==='success'?'✓':type==='error'?'✕':'ℹ'} ${msg}</div>`;
-const Tog=({on,onClick})=>H`<button class=${`tog ${on?'on':''}`} onClick=${onClick}></button>`;
-const Fld=({label,hint,children})=>H`<div class="field"><label>${label}${hint&&H` <span style="font-weight:400;color:var(--mu2);text-transform:none">(${hint})</span>`}</label>${children}</div>`;
-const Empty=({icon,title,sub,cta})=>H`<div style="text-align:center;padding:72px 20px"><div style="font-size:50px;margin-bottom:14px">${icon}</div><div class="sy" style="font-size:18px;font-weight:700;color:#e2e8f0;margin-bottom:8px">${title}</div><div style="font-size:14px;color:var(--mu);margin-bottom:24px">${sub}</div>${cta}</div>`;
-const Mbox=({title,children,onClose,w=540})=>H`
-  <div class="backdrop" onClick=${e=>e.target===e.currentTarget&&onClose()}>
-    <div class="modal" style=${{maxWidth:w+'px'}}>
-      <div style="padding:22px 24px 0;display:flex;justify-content:space-between;align-items:center">
-        <h3 class="sy" style="font-size:18px;font-weight:700;color:#f1f5f9">${title}</h3>
-        <button class="btn-g" onClick=${onClose} style="padding:7px"><${IX}/></button>
-      </div>
-      <div style="padding:18px 24px 26px">${children}</div>
-    </div>
-  </div>`;
-
-function ProfileModal({profile,onSave,onClose}){
-  const[f,sf]=useState({...profile,social:{...profile.social}});
-  const s=(k,v)=>sf(x=>({...x,[k]:v}));
-  const ss=(k,v)=>sf(x=>({...x,social:{...x.social,[k]:v}}));
-  return H`<${Mbox} title="Edit Profil" onClose=${onClose}>
-    <${Fld} label="Nama Lengkap"><input class="inp" value=${f.name} onInput=${e=>s('name',e.target.value)} placeholder="Nama Anda"/></${Fld}>
-    <${Fld} label="Tagline"><input class="inp" value=${f.title} onInput=${e=>s('title',e.target.value)} placeholder="Creative Developer"/></${Fld}>
-    <${Fld} label="Bio"><textarea class="inp" rows="3" onInput=${e=>s('bio',e.target.value)} style="resize:vertical">${f.bio}</textarea></${Fld}>
-    <${Fld} label="Foto" hint="URL"><input class="inp" value=${f.avatar||''} onInput=${e=>s('avatar',e.target.value)} placeholder="https://..."/></${Fld}>
-    <div class="field"><label>Social Links</label>
-      ${[['github','GitHub URL'],['twitter','Twitter/X'],['linkedin','LinkedIn'],['email','Email']].map(([k,ph])=>H`<input key=${k} class="inp" style="margin-bottom:8px" value=${f.social[k]||''} onInput=${e=>ss(k,e.target.value)} placeholder=${ph}/>`)}
-    </div>
-    <div style="display:flex;gap:10px;justify-content:flex-end">
-      <button class="btn-g" onClick=${onClose}>Batal</button>
-      <button class="btn-p" onClick=${()=>onSave(f)}><${IChk}/>Simpan</button>
-    </div>
-  </${Mbox}>`;
-}
-
-function ProjectModal({item,categories,onSave,onClose}){
-  const[f,sf]=useState({title:'',description:'',image:'',category:categories[0]||'Web App',tags:'',liveUrl:'',githubUrl:'',featured:false,year:String(new Date().getFullYear()),...(item?{...item,tags:toStr(item.tags)}:{})});
-  const s=(k,v)=>sf(x=>({...x,[k]:v}));
-  return H`<${Mbox} title=${item?'Edit Project':'Tambah Project'} onClose=${onClose}>
-    <${Fld} label="Judul"><input class="inp" value=${f.title} onInput=${e=>s('title',e.target.value)} placeholder="Project Name"/></${Fld}>
-    <${Fld} label="Deskripsi"><textarea class="inp" rows="3" onInput=${e=>s('description',e.target.value)} style="resize:vertical">${f.description}</textarea></${Fld}>
-    <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px">
-      <${Fld} label="Kategori"><select class="inp" value=${f.category} onChange=${e=>s('category',e.target.value)}>${categories.map(c=>H`<option key=${c}>${c}</option>`)}</select></${Fld}>
-      <${Fld} label="Tahun"><input class="inp" value=${f.year} onInput=${e=>s('year',e.target.value)}/></${Fld}>
-    </div>
-    <${Fld} label="Tags" hint="koma"><input class="inp" value=${f.tags} onInput=${e=>s('tags',e.target.value)} placeholder="React, Node.js"/></${Fld}>
-    <${Fld} label="Gambar" hint="URL"><input class="inp" value=${f.image||''} onInput=${e=>s('image',e.target.value)} placeholder="https://..."/></${Fld}>
-    <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px">
-      <${Fld} label="Link Live"><input class="inp" value=${f.liveUrl||''} onInput=${e=>s('liveUrl',e.target.value)} placeholder="https://..."/></${Fld}>
-      <${Fld} label="Link GitHub"><input class="inp" value=${f.githubUrl||''} onInput=${e=>s('githubUrl',e.target.value)} placeholder="https://..."/></${Fld}>
-    </div>
-    <div style="display:flex;align-items:center;gap:10px;margin-bottom:20px;cursor:pointer" onClick=${()=>s('featured',!f.featured)}>
-      <${Tog} on=${f.featured} onClick=${()=>{}}/>
-      <span style="font-size:14px;color:${f.featured?'var(--pl)':'var(--mu)'}">${f.featured?'⭐ Featured':'Tandai Featured'}</span>
-    </div>
-    <div style="display:flex;gap:10px;justify-content:flex-end">
-      <button class="btn-g" onClick=${onClose}>Batal</button>
-      <button class="btn-p" onClick=${()=>onSave({...f,tags:toArr(f.tags)})}><${IChk}/>${item?'Simpan':'Tambah'}</button>
-    </div>
-  </${Mbox}>`;
-}
-
-function LinkModal({item,onSave,onClose}){
-  const[f,sf]=useState({title:'',url:'',description:'',category:'',tags:'',...(item?{...item,tags:toStr(item.tags)}:{})});
-  const s=(k,v)=>sf(x=>({...x,[k]:v}));
-  return H`<${Mbox} title=${item?'Edit Link':'Tambah Link'} onClose=${onClose}>
-    <${Fld} label="Judul"><input class="inp" value=${f.title} onInput=${e=>s('title',e.target.value)} placeholder="Nama resource"/></${Fld}>
-    <${Fld} label="URL"><input class="inp" value=${f.url} onInput=${e=>s('url',e.target.value)} placeholder="https://"/></${Fld}>
-    <${Fld} label="Deskripsi" hint="opsional"><textarea class="inp" rows="2" onInput=${e=>s('description',e.target.value)} style="resize:vertical">${f.description}</textarea></${Fld}>
-    <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px">
-      <${Fld} label="Kategori"><input class="inp" value=${f.category} onInput=${e=>s('category',e.target.value)} placeholder="Tools..."/></${Fld}>
-      <${Fld} label="Tags" hint="koma"><input class="inp" value=${f.tags} onInput=${e=>s('tags',e.target.value)} placeholder="dev, ref"/></${Fld}>
-    </div>
-    <div style="display:flex;gap:10px;justify-content:flex-end;margin-top:20px">
-      <button class="btn-g" onClick=${onClose}>Batal</button>
-      <button class="btn-p" onClick=${()=>onSave({...f,tags:toArr(f.tags)})}><${IChk}/>${item?'Simpan':'Tambah'}</button>
-    </div>
-  </${Mbox}>`;
-}
-
-function SettingsModal({ghCfg,onConnect,onDisconnect,onClose,adminMode,onToggleAdmin,onReset,onClear}){
-  const[gh,sgh]=useState({owner:'',repo:'',token:'',...ghCfg});
-  const[test,st]=useState(null);
-  const[busy,sb]=useState(false);
-  const[cfm,sc]=useState(null);
-  const runTest=async()=>{
-    sb(true);st(null);
-    try{const r=await fetch(`https://api.github.com/repos/${gh.owner}/${gh.repo}`,{headers:{Authorization:`Bearer ${gh.token}`}});
-    st(r.ok?{ok:true,msg:'✓ Berhasil! Repo ditemukan.'}:{ok:false,msg:`✕ Error ${r.status}`});}
-    catch{st({ok:false,msg:'✕ Network error.'});}
-    sb(false);
-  };
-  return H`<${Mbox} title="⚙ Pengaturan" onClose=${onClose} w=${500}>
-    <div style="margin-bottom:20px">
-      <div class="sy" style="font-size:14px;font-weight:700;color:#e2e8f0;margin-bottom:10px">🔒 Mode Admin</div>
-      <div style="display:flex;align-items:center;justify-content:space-between;padding:12px 14px;background:var(--s1);border-radius:10px;border:1px solid var(--b)">
-        <div><div style="font-size:14px;color:#e2e8f0;font-weight:500">Aktifkan mode edit</div>
-        <div style="font-size:12px;color:var(--mu)">Tambah, edit, hapus konten</div></div>
-        <${Tog} on=${adminMode} onClick=${()=>{onToggleAdmin();onClose();}}/>
-      </div>
-      <div style="margin-top:8px;font-size:12px;color:var(--mu2);padding:8px 12px;background:rgba(124,58,237,.07);border-radius:8px">💡 Atau klik footer <strong style="color:var(--pl)">5×</strong> untuk unlock admin.</div>
-    </div>
-    <div class="gl"></div>
-    <div style="margin-bottom:20px">
-      <div style="display:flex;align-items:center;gap:8px;margin-bottom:12px">
-        <${IGH} s=${16}/><span class="sy" style="font-size:14px;font-weight:700;color:#e2e8f0">GitHub Storage</span>
-        ${ghCfg&&H`<span style="margin-left:auto;font-size:11px;padding:2px 10px;border-radius:100px;background:rgba(16,185,129,.12);color:var(--g);border:1px solid rgba(16,185,129,.28);font-family:'JetBrains Mono',monospace">● Terhubung</span>`}
-      </div>
-      <div style="padding:12px;background:rgba(124,58,237,.08);border-radius:10px;border:1px solid rgba(124,58,237,.18);margin-bottom:14px;font-size:13px;color:#94a3b8;line-height:1.65">
-        <strong style="color:var(--pl);display:block;margin-bottom:4px">📌 Cara setup</strong>
-        Isi form → buat token di GitHub (Settings → Developer → Fine-grained tokens → Contents: write) → Test → Hubungkan
-      </div>
-      <${Fld} label="GitHub Username"><input class="inp" value=${gh.owner} onInput=${e=>sgh(x=>({...x,owner:e.target.value}))} placeholder="NanoMindExplorer"/></${Fld}>
-      <${Fld} label="Nama Repo"><input class="inp" value=${gh.repo} onInput=${e=>sgh(x=>({...x,repo:e.target.value}))} placeholder="nanomind"/></${Fld}>
-      <${Fld} label="Token"><input class="inp" type="password" value=${gh.token} onInput=${e=>sgh(x=>({...x,token:e.target.value}))} placeholder="ghp_xxx..."/></${Fld}>
-      ${test&&H`<div style="padding:10px;border-radius:8px;margin-bottom:10px;font-size:13px;color:${test.ok?'var(--g)':'var(--r)'};background:${test.ok?'rgba(16,185,129,.1)':'rgba(239,68,68,.1)'};border:1px solid ${test.ok?'rgba(16,185,129,.28)':'rgba(239,68,68,.28)'}">${test.msg}</div>`}
-      <div style="display:flex;gap:8px;margin-bottom:${ghCfg?8:0}px">
-        <button class="btn-g" onClick=${runTest} style="flex:1;justify-content:center">${busy?'Mengetes...':'Test Koneksi'}</button>
-        <button class="btn-p" onClick=${()=>{onConnect(gh);onClose();}} style="flex:1;justify-content:center"><${IChk}/>Hubungkan</button>
-      </div>
-      ${ghCfg&&H`<button class="btn-d" onClick=${()=>{onDisconnect();onClose();}} style="width:100%;justify-content:center">Putuskan GitHub</button>`}
-    </div>
-    <div class="gl"></div>
-    <div>
-      <div class="sy" style="font-size:14px;font-weight:700;color:var(--r);margin-bottom:10px">⚠ Danger Zone</div>
-      <div style="display:flex;gap:8px">
-        <button class="btn-d" onClick=${()=>sc('reset')} style="flex:1;justify-content:center">Reset Demo</button>
-        <button class="btn-d" onClick=${()=>sc('clear')} style="flex:1;justify-content:center">Hapus Semua</button>
-      </div>
-      ${cfm&&H`<div class="cfm"><span style="font-size:13px;color:#fca5a5">${cfm==='reset'?'Reset ke demo?':'Hapus semua?'}</span>
-        <div style="display:flex;gap:6px">
-          <button class="btn-g" style="font-size:12px;padding:5px 10px" onClick=${()=>sc(null)}>Batal</button>
-          <button class="btn-d" onClick=${()=>{cfm==='reset'?onReset():onClear();sc(null);onClose();}}>Ya</button>
-        </div></div>`}
-    </div>
-  </${Mbox}>`;
-}
-
-function ProjectCard({p,admin,onEdit,onDel,onFeat}){
-  const tags=toArr(p.tags);
-  const em={Design:'🎨',Mobile:'📱','Open Source':'🛠️'};
-  return H`<div class="glass gh" style="padding:20px;position:relative">
-    ${p.featured&&H`<div class="feat-badge">⭐ Featured</div>`}
-    <div style="width:100%;height:168px;border-radius:10px;overflow:hidden;margin-bottom:16px;display:flex;align-items:center;justify-content:center;background:linear-gradient(135deg,rgba(124,58,237,.18),rgba(6,182,212,.09));border:1px solid rgba(255,255,255,.05)">
-      ${p.image?H`<img src=${p.image} alt="" style="width:100%;height:100%;object-fit:cover" onError=${e=>e.target.style.display='none'}/>`:null}
-      <span style="font-size:44px">${em[p.category]||'💻'}</span>
-    </div>
-    <div style="display:flex;justify-content:space-between;gap:8px;margin-bottom:7px">
-      <h3 class="sy" style="font-size:16px;font-weight:700;color:#f1f5f9;line-height:1.3">${p.title}</h3>
-      <span class="mn" style="font-size:11px;color:#334155;flex-shrink:0">${p.year}</span>
-    </div>
-    <p style="font-size:13px;color:var(--mu);line-height:1.65;margin-bottom:14px">${p.description}</p>
-    <div style="display:flex;flex-wrap:wrap;gap:5px;margin-bottom:14px">
-      <span class="cat-tag">${p.category}</span>
-      ${tags.slice(0,3).map(t=>H`<span class="tag">${t}</span>`)}
-      ${tags.length>3&&H`<span class="tag" style="background:rgba(255,255,255,.04);color:#475569">+${tags.length-3}</span>`}
-    </div>
-    <div style="display:flex;gap:7px;flex-wrap:wrap;align-items:center">
-      ${p.liveUrl&&H`<a href=${p.liveUrl} target="_blank" class="btn-g" style="font-size:12px;padding:6px 12px"><${IExt}/>Live</a>`}
-      ${p.githubUrl&&H`<a href=${p.githubUrl} target="_blank" class="btn-g" style="font-size:12px;padding:6px 12px"><${IGH} s=${12}/>Code</a>`}
-      ${admin&&H`<div style="margin-left:auto;display:flex;gap:5px">
-        <button class="btn-g" onClick=${()=>onFeat(p.id)} style="padding:6px 8px"><${IStar} c=${p.featured?'#f59e0b':undefined}/></button>
-        <button class="btn-g" onClick=${()=>onEdit(p)} style="padding:6px 8px"><${IEdit}/></button>
-        <button class="btn-d" onClick=${()=>onDel(p.id)} style="padding:6px 8px"><${IDel}/></button>
-      </div>`}
-    </div>
-  </div>`;
-}
-
-function LinkCard({lk,admin,onEdit,onDel}){
-  const tags=toArr(lk.tags),fv=fav(lk.url);
-  return H`<div class="glass gh" style="padding:15px;border-radius:14px">
-    <div style="display:flex;gap:11px;align-items:flex-start;margin-bottom:9px">
-      <div style="width:38px;height:38px;border-radius:9px;background:var(--s2);border:1px solid var(--b);display:flex;align-items:center;justify-content:center;overflow:hidden;flex-shrink:0">
-        ${fv?H`<img src=${fv} alt="" style="width:22px;height:22px;object-fit:contain" onError=${e=>e.target.style.display='none'}/>`:H`<${ILnk}/>`}
-      </div>
-      <div style="flex:1;min-width:0">
-        <div style="display:flex;align-items:center;gap:5px;margin-bottom:2px">
-          <a href=${lk.url} target="_blank" style="font-size:14px;font-weight:700;color:#e2e8f0;text-decoration:none;font-family:'Syne',sans-serif;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;display:block">${lk.title}</a>
-          <${IExt} s=${11}/>
-        </div>
-        ${lk.category&&H`<span style="font-size:11px;color:#06b6d4;font-family:'JetBrains Mono',monospace;font-weight:600">${lk.category}</span>`}
-      </div>
-    </div>
-    ${lk.description&&H`<p style="font-size:12px;color:var(--mu);line-height:1.55;margin-bottom:9px">${lk.description}</p>`}
-    <div style="display:flex;gap:5px;flex-wrap:wrap;align-items:center">
-      ${tags.map(t=>H`<span class="tag" style="font-size:10px">${t}</span>`)}
-      ${admin&&H`<div style="margin-left:auto;display:flex;gap:5px">
-        <button class="btn-g" onClick=${()=>onEdit(lk)} style="padding:4px 8px"><${IEdit}/></button>
-        <button class="btn-d" onClick=${()=>onDel(lk.id)} style="padding:4px 8px"><${IDel}/></button>
-      </div>`}
-    </div>
-  </div>`;
-}
-
-function App(){
-  const[data,sd]=useState(null);
-  const[load,sl]=useState(true);
-  const[sav,ss]=useState(false);
-  const[ghCfg,sgc]=useState(null);
-  const[ghSha,sgs]=useState(null);
-  const[admin,sa]=useState(false);
-  const[modal,sm]=useState(null);
-  const[eit,se]=useState(null);
-  const[sec,sk]=useState('projects');
-  const[filt,sf]=useState('All');
-  const[toast,st]=useState(null);
-  const[fc,sfc]=useState(0);
-  const ft=useRef(null);
-
-  const notify=useCallback((msg,type='success')=>{st({msg,type});setTimeout(()=>st(null),3200);},[]);
-
-  useEffect(()=>{(async()=>{
-    const cfg=cLoad();if(cfg)sgc(cfg);
-    if(cfg){try{const{data:d,sha}=await ghL(cfg);if(d){sd(d);sgs(sha);sl(false);return;}}catch(e){console.warn(e.message);}}
-    sd(await sLoad()||DEF);sl(false);
-  })();},[]);
-
-  useEffect(()=>{if(data?.profile?.name)document.title=`${data.profile.name} — Portfolio`;},[data?.profile?.name]);
-
-  const save=useCallback(async nd=>{
-    ss(true);sd(nd);await sSave(nd);
-    if(ghCfg){try{const ns=await ghS(ghCfg,ghSha,nd);sgs(ns);notify('✓ Tersimpan di GitHub!');}catch(e){notify(`GitHub: ${e.message}`,'error');}}
-    else notify('✓ Tersimpan!');
-    ss(false);
-  },[ghCfg,ghSha,notify]);
-
-  const footerClick=()=>{
-    clearTimeout(ft.current);const n=fc+1;
-    if(n>=5){sa(true);sfc(0);notify('🔓 Admin mode aktif!','info');}
-    else{sfc(n);ft.current=setTimeout(()=>sfc(0),2000);}
-  };
-
-  if(load)return H`<div style="min-height:100vh;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:14px">
-    <div style="width:36px;height:36px;border:3px solid rgba(124,58,237,.3);border-top-color:#7c3aed;border-radius:50%;animation:spin .8s linear infinite"></div>
-    <span style="color:var(--mu);font-size:13px">Memuat portfolio…</span>
-  </div>`;
-
-  const{profile,projects=[],links=[],categories=[]}=data;
-  const cats=['All',...categories];
-  const shown=filt==='All'?projects:projects.filter(p=>p.category===filt);
-  const openM=(t,item=null)=>{se(item);sm(t);};
-  const spj=async proj=>{const fp={...proj,id:proj.id||uid()};await save({...data,projects:eit?projects.map(p=>p.id===fp.id?fp:p):[...projects,fp]});sm(null);};
-  const slk=async lk=>{const fl={...lk,id:lk.id||uid()};await save({...data,links:eit?links.map(l=>l.id===fl.id?fl:l):[...links,fl]});sm(null);};
-
-  return H`<${Fragment}>
-    <div class="orb1"></div><div class="orb2"></div><div class="orb3"></div>
-    ${admin&&H`<div class="abar"></div>`}
-    ${toast&&H`<${Toast} ...${toast}/>`}
-
-    <nav style=${{marginTop:admin?3:0}}>
-      <div class="nav-in">
-        <div style="display:flex;align-items:center;gap:9px">
-          <div style="width:8px;height:8px;border-radius:50%;background:linear-gradient(135deg,#7c3aed,#06b6d4);animation:pulse 2s ease infinite"></div>
-          <span class="sy" style="font-size:15px;font-weight:700;color:#f1f5f9">${profile.name||'Portfolio'}</span>
-          ${admin&&H`<span style="font-size:10px;padding:2px 8px;border-radius:100px;background:rgba(239,68,68,.14);color:var(--r);border:1px solid rgba(239,68,68,.28);font-family:'JetBrains Mono',monospace;font-weight:700">ADMIN</span>`}
-          ${ghCfg&&H`<span style="font-size:10px;padding:2px 8px;border-radius:100px;background:rgba(16,185,129,.1);color:var(--g);border:1px solid rgba(16,185,129,.22);font-family:'JetBrains Mono',monospace">GH ✓</span>`}
-        </div>
-        <div style="display:flex;gap:7px;align-items:center">
-          ${sav&&H`<span style="font-size:11px;color:#334155;font-family:'JetBrains Mono',monospace">saving…</span>`}
-          ${admin&&H`<button class="btn-g" style="font-size:12px" onClick=${()=>sa(false)}>🔒 Keluar</button>`}
-          <button class="btn-g" onClick=${()=>sm('settings')} style="padding:8px"><${ICog}/></button>
-        </div>
-      </div>
-    </nav>
-
-    <main>
-      <section style="padding:80px 0 60px;border-bottom:1px solid rgba(255,255,255,.055)">
-        <div style="display:flex;align-items:center;gap:14px;margin-bottom:26px">
-          <div style="width:66px;height:66px;border-radius:50%;overflow:hidden;border:2px solid rgba(124,58,237,.4);display:flex;align-items:center;justify-content:center;background:linear-gradient(135deg,#7c3aed,#06b6d4);flex-shrink:0">
-            ${profile.avatar?H`<img src=${profile.avatar} alt="" style="width:100%;height:100%;object-fit:cover" onError=${e=>e.target.style.display='none'}/>`:H`<span class="sy" style="font-size:24px;font-weight:800;color:#fff">${(profile.name||'?')[0].toUpperCase()}</span>`}
-          </div>
-          <div style="display:flex;flex-direction:column;gap:4px">
-            <div style="display:flex;align-items:center;gap:7px">
-              <div style="width:7px;height:7px;border-radius:50%;background:#10b981;box-shadow:0 0 8px #10b981;animation:pulse 2.2s ease infinite"></div>
-              <span style="font-size:13px;color:#10b981;font-weight:500">Available for work</span>
+<body class="min-h-screen relative">
+    <!-- Background elements -->
+    <div class="bg-blob bg-blob-1"></div>
+    <div class="bg-blob bg-blob-2"></div>
+    <div class="grid-bg"></div>
+    
+    <!-- Navigation -->
+    <nav class="relative z-10 px-6 py-5">
+        <div class="max-w-6xl mx-auto flex items-center justify-between">
+            <div class="flex items-center gap-3">
+                <div class="w-10 h-10 rounded-xl bg-gradient-to-br from-indigo-500 to-pink-500 flex items-center justify-center font-bold text-white text-lg" id="navLogo">N</div>
+                <span class="font-display font-bold text-xl" id="navName">My Portfolio</span>
             </div>
-            <span style="font-size:12px;color:var(--mu2);font-family:'JetBrains Mono',monospace">${projects.length} projects · ${links.length} links</span>
-          </div>
-          ${admin&&H`<button class="btn-g" onClick=${()=>openM('profile')} style="margin-left:auto;font-size:12px"><${IEdit}/>Edit Profil</button>`}
+            <div class="hidden md:flex items-center gap-2">
+                <a href="#home" class="nav-link active">Home</a>
+                <a href="#portfolio" class="nav-link">Portfolio</a>
+                <a href="#links" class="nav-link">Links</a>
+            </div>
+            <div class="flex items-center gap-3">
+                <button id="contactBtn" class="btn-ghost hidden md:flex items-center gap-2 text-sm">
+                    <i class="fas fa-paper-plane"></i> Contact
+                </button>
+            </div>
         </div>
-        <h1 class="sy hn" style="font-size:clamp(40px,7vw,76px);font-weight:800;line-height:1.05;color:#f1f5f9;margin-bottom:12px;letter-spacing:-1.5px">${profile.name||'Nama Anda'}</h1>
-        <div class="grad sy" style="font-size:clamp(18px,3vw,27px);font-weight:700;margin-bottom:20px">${profile.title||'Creative Developer'}</div>
-        <p style="font-size:16px;color:var(--mu);line-height:1.75;max-width:560px;margin-bottom:34px">${profile.bio}</p>
-        <div style="display:flex;gap:9px;flex-wrap:wrap">
-          ${profile.social?.github&&H`<a href=${profile.social.github} target="_blank" class="soc"><${IGH}/></a>`}
-          ${profile.social?.twitter&&H`<a href=${profile.social.twitter} target="_blank" class="soc"><${ITW}/></a>`}
-          ${profile.social?.linkedin&&H`<a href=${profile.social.linkedin} target="_blank" class="soc"><${ILI}/></a>`}
-          ${profile.social?.email&&H`<a href=${'mailto:'+profile.social.email} class="soc"><${IML}/></a>`}
-          ${admin&&!Object.values(profile.social||{}).some(Boolean)&&H`<button class="btn-g" onClick=${()=>openM('profile')} style="font-size:12px">+ Social Links</button>`}
+    </nav>
+    
+    <!-- Main Content -->
+    <main class="relative z-10 px-6 pb-24">
+        <div class="max-w-6xl mx-auto">
+            <!-- Hero Section -->
+            <section id="home" class="min-h-[70vh] flex flex-col items-center justify-center text-center py-12">
+                <div class="avatar-ring mb-6 reveal">
+                    <img id="heroAvatar" src="https://via.placeholder.com/120" alt="Avatar" class="w-32 h-32 md:w-40 md:h-40 object-cover">
+                </div>
+                <p class="text-indigo-400 font-medium mb-3 reveal" style="transition-delay: 0.1s">Hello, I'm</p>
+                <h1 class="hero-title font-display font-bold text-5xl md:text-7xl mb-4 reveal" style="transition-delay: 0.2s" id="heroName">Your Name</h1>
+                <p class="text-gray-400 text-lg md:text-xl max-w-2xl mb-8 reveal" style="transition-delay: 0.3s" id="heroBio">This is where you showcase your bio. You can edit this easily.</p>
+                <div class="flex flex-wrap gap-3 justify-center reveal" style="transition-delay: 0.4s">
+                    <a href="#portfolio" class="btn-primary">View My Work</a>
+                    <a href="#links" class="btn-ghost">Connect With Me</a>
+                </div>
+            </section>
+            
+            <!-- Portfolio Section -->
+            <section id="portfolio" class="py-16">
+                <div class="flex items-center justify-between mb-8 reveal">
+                    <div>
+                        <p class="text-indigo-400 font-medium mb-1">My Works</p>
+                        <h2 class="font-display font-bold text-3xl md:text-4xl">Portfolio</h2>
+                    </div>
+                    <button class="btn-primary admin-only hidden" id="addProjectBtn">
+                        <i class="fas fa-plus mr-2"></i> Add Project
+                    </button>
+                </div>
+                <div id="projectsGrid" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                    <!-- Projects will be loaded here -->
+                </div>
+            </section>
+            
+            <!-- Links Section -->
+            <section id="links" class="py-16">
+                <div class="flex items-center justify-between mb-8 reveal">
+                    <div>
+                        <p class="text-indigo-400 font-medium mb-1">Find Me On</p>
+                        <h2 class="font-display font-bold text-3xl md:text-4xl">Links & Socials</h2>
+                    </div>
+                    <button class="btn-primary admin-only hidden" id="addLinkBtn">
+                        <i class="fas fa-plus mr-2"></i> Add Link
+                    </button>
+                </div>
+                <div id="linksList" class="grid grid-cols-1 md:grid-cols-2 gap-4 max-w-3xl">
+                    <!-- Links will be loaded here -->
+                </div>
+            </section>
         </div>
-      </section>
-
-      <div style="display:flex;gap:2px;padding:14px 0;border-bottom:1px solid rgba(255,255,255,.055)">
-        ${[{id:'projects',label:'Projects',count:projects.length,icon:'💻'},{id:'links',label:'Saved Links',count:links.length,icon:'🔗'}].map(t=>H`
-          <button onClick=${()=>sk(t.id)} style=${{padding:'8px 18px',borderRadius:'8px',border:'none',cursor:'pointer',fontFamily:"'Syne',sans-serif",fontSize:'14px',fontWeight:600,transition:'all .2s',background:sec===t.id?'rgba(124,58,237,.12)':'transparent',color:sec===t.id?'var(--pl)':'var(--mu)',borderBottom:`2px solid ${sec===t.id?'var(--p)':'transparent'}`}}>
-            ${t.icon} ${t.label}
-            <span style=${{marginLeft:'7px',fontSize:'11px',padding:'2px 7px',borderRadius:'100px',background:sec===t.id?'rgba(124,58,237,.2)':'rgba(255,255,255,.04)',color:sec===t.id?'var(--pl)':'#334155'}}>${t.count}</span>
-          </button>`)}
-      </div>
-
-      ${sec==='projects'&&H`<div class="sec" style="padding-top:30px">
-        <div style="display:flex;gap:7px;margin-bottom:26px;flex-wrap:wrap;align-items:center">
-          ${cats.map(c=>H`<button class=${`pill ${filt===c?'on':''}`} onClick=${()=>sf(c)}>${c}</button>`)}
-          ${admin&&H`<button class="btn-p" style="margin-left:auto;font-size:13px;padding:8px 15px" onClick=${()=>openM('project')}><${IPlus}/>Tambah Project</button>`}
-        </div>
-        ${shown.length===0
-          ?H`<${Empty} icon="💻" title="Belum ada project" sub=${admin?'Tambah project pertamamu.':'Project akan muncul di sini.'} cta=${admin&&H`<button class="btn-p" onClick=${()=>openM('project')}><${IPlus}/>Tambah</button>`}/>`
-          :H`<div class="grid-p">${shown.map(p=>H`<${ProjectCard} key=${p.id} p=${p} admin=${admin}
-            onEdit=${i=>openM('project',i)}
-            onDel=${async id=>save({...data,projects:projects.filter(x=>x.id!==id)})}
-            onFeat=${async id=>save({...data,projects:projects.map(x=>x.id===id?{...x,featured:!x.featured}:x)})}/>`)}
-          </div>`}
-      </div>`}
-
-      ${sec==='links'&&H`<div class="sec" style="padding-top:30px">
-        <div style="display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:22px">
-          <div><h2 class="sy" style="font-size:22px;font-weight:700;color:#e2e8f0">Saved Links</h2>
-          <p style="font-size:14px;color:var(--mu);margin-top:4px">Resource & bookmark yang dikurasi</p></div>
-          ${admin&&H`<button class="btn-p" style="font-size:13px;padding:8px 15px" onClick=${()=>openM('link')}><${IPlus}/>Tambah Link</button>`}
-        </div>
-        ${links.length===0
-          ?H`<${Empty} icon="🔗" title="Belum ada link" sub=${admin?'Mulai simpan resource.':'Link akan muncul di sini.'} cta=${admin&&H`<button class="btn-p" onClick=${()=>openM('link')}><${IPlus}/>Tambah</button>`}/>`
-          :H`<div class="grid-l">${links.map(l=>H`<${LinkCard} key=${l.id} lk=${l} admin=${admin}
-            onEdit=${i=>openM('link',i)}
-            onDel=${async id=>save({...data,links:links.filter(x=>x.id!==id)})}/>`)}
-          </div>`}
-      </div>`}
     </main>
-
-    <footer>
-      <span onClick=${footerClick} style=${{fontSize:'13px',cursor:'default',userSelect:'none',transition:'color .3s',color:fc>0?'var(--p)':'#1e293b'}}>
-        © ${new Date().getFullYear()} ${profile.name||'Portfolio'} · Made with ❤️ · GitHub Pages
-      </span>
-      ${fc>0&&fc<5&&H`<div style="font-size:11px;color:var(--pl);margin-top:5px;font-family:'JetBrains Mono',monospace">${5-fc} klik lagi untuk admin…</div>`}
+    
+    <!-- Footer -->
+    <footer class="relative z-10 border-t border-white/5 mt-12">
+        <div class="max-w-6xl mx-auto px-6 py-8 flex flex-col md:flex-row items-center justify-between gap-4">
+            <p class="text-gray-500 text-sm">© <span id="footerYear"></span> <span id="footerName"></span>. All rights reserved.</p>
+            <p class="text-gray-500 text-sm flex items-center gap-2">Built with <i class="fas fa-heart text-pink-500"></i> using GitHub Pages</p>
+        </div>
     </footer>
-
-    ${modal==='profile'&&H`<${ProfileModal} profile=${profile} onSave=${async p=>{await save({...data,profile:p});sm(null);}} onClose=${()=>sm(null)}/>`}
-    ${modal==='project'&&H`<${ProjectModal} item=${eit} categories=${categories} onSave=${spj} onClose=${()=>sm(null)}/>`}
-    ${modal==='link'&&H`<${LinkModal} item=${eit} onSave=${slk} onClose=${()=>sm(null)}/>`}
-    ${modal==='settings'&&H`<${SettingsModal} ghCfg=${ghCfg} adminMode=${admin}
-      onToggleAdmin=${()=>sa(a=>!a)}
-      onConnect=${cfg=>{sgc(cfg);sgs(null);cSave(cfg);notify('✓ GitHub terhubung!');}}
-      onDisconnect=${()=>{sgc(null);sgs(null);cClear();notify('GitHub terputus','info');}}
-      onReset=${async()=>{await save(DEF);notify('Reset ke demo','info');}}
-      onClear=${async()=>{await save({...DEF,projects:[],links:[]});notify('Data dihapus','info');}}
-      onClose=${()=>sm(null)}/>`}
-  </${Fragment}>`;
-}
-
-render(H`<${App}/>`,document.getElementById('app'));
-</script>
-</body>
-</html>
+    
+    <!-- Admin Button (Floating) -->
+    <button class="admin-fab" id="adminFab" title="Admin Panel">
+        <i class="fas fa-cog"></i>
+    </button>
+    
+    <!-- Modal: Login -->
+    <div class="modal-overlay" id="loginModal">
+        <div class="modal-content">
+            <div class="text-center mb-6">
+                <div class="w-16 h-16 rounded-2xl bg-gradient-to-br from-indigo-500 to-pink-500 flex items-center justify-center text-2xl text-white mx-auto mb-4">
+                    <i class="fas fa-lock"></i>
+                </div>
+                <h3 class="font-display font-bold text-2xl">Admin Access</h3>
+                <p class="text-gray-400 mt-2">Enter your secret token to edit</p>
+            </div>
+            <input type="password" class="input-field mb-4" id="tokenInput" placeholder="Secret Token">
+            <div class="flex gap-3">
+                <button class="btn-ghost flex-1" id="cancelLoginBtn">Cancel</button>
+                <button class="btn-primary flex-1" id="loginBtn">Login</button>
+            </div>
+            <p class="text-xs text-gray-500 mt-4 text-center">Hint: Default token is <code class="bg-white/5 px-2 py-1 rounded">admin123</code></p>
+        </div>
+    </div>
+    
+    <!-- Modal: Project Form -->
+    <div class="modal-overlay" id="projectModal">
+        <div class="modal-content">
+            <h3 class="font-display font-bold text-2xl mb-6" id="projectModalTitle">Add Project</h3>
+            <div class="space-y-4">
+                <div>
+                    <label class="block text-sm text-gray-400 mb-2">Project Title</label>
+                    <input type="text" class="input-field" id="projectTitle" placeholder="My Awesome Project">
+                </div>
+                <div>
+                    <label class="block text-sm text-gray-400 mb-2">Description</label>
+                    <textarea class="input-field" id="projectDesc" rows="3" placeholder="Brief description of your project"></textarea>
+                </div>
+                <div>
+                    <label class="block text-sm text-gray-400 mb-2">Image URL</label>
+                    <input type="text" class="input-field" id="projectImage" placeholder="https://...">
+                </div>
+                <div>
+                    <label class="block text-sm text-gray-400 mb-2">Project URL</label>
+                    <input type="text" class="input-field" id="projectUrl" placeholder="https://...">
+                </div>
+                <div>
+                    <label class="block text-sm text-gray-400 mb-2">Tags (comma separated)</label>
+                    <input type="text" class="input-field" id="projectTags" placeholder="web, design, react">
+                </div>
+            </div>
+            <div class="flex gap-3 mt-6">
+                <button class="btn-ghost flex-1" id="cancelProjectBtn">Cancel</button>
+                <button class="btn-primary flex-1" id="saveProjectBtn">Save</button>
+            </div>
+        </div>
+    </div>
+    <!-- Modal: Link Form -->
+    <div class="modal-overlay" id="linkModal">
+        <div class="modal-content">
+            <h3 class="font-display font-bold text-2xl mb-6" id="linkModalTitle">Add Link</h3>
+            <div class="space-y-4">
+                <div>
+                    <label class="block text-sm text-gray-402 mb-2">Title</label>
+                    <input type="text" class="input-field" id="linkTitle" placeholder="GitHub">
+                </div>
+                <div>
+                    <label class="block text-sm text-gray-400 mb-2">URL</label>
+                    <input type="text" class="input-field" id="linkUrl" placeholder="https://github.com/...">
+                </div>
+                <div>
+                    <label class="block text-sm text-gray-400 mb-2">Icon (Font Awesome)</label>
+                    <input type="text" class="input-field" id="linkIcon" placeholder="fab fa-github">
+                    <p class="text-xs text-gray-500 mt-1">Cari icon di: <a href="https://fontawesome.com/icons" target="_blank" class="text-indigo-400">fontawesome.com</a></p>
+                </div>
+            </div>
+            <div class="flex gap-3 mt-6">
+                <button class="btn-ghost flex-1" id="cancelLinkBtn">Cancel</button>
+                <button class="btn-primary flex-1" id="saveLinkBtn">Save</button>
+    `)}
