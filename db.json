@@ -1,54 +1,41 @@
 {
   "profile": {
     "name": "Nanomind Explorer",
-    "bio": "Creative Developer & Explorer. Passionate about building beautiful digital experiences and sharing knowledge.",
+    "bio": "Creative Developer crafting digital experiences with code and design.",
     "avatar": "https://avatars.githubusercontent.com/u/0?v=4",
     "logoText": "N"
   },
   "projects": [
     {
       "id": "proj1",
-      "title": "Project Alpha",
-      "description": "A brief description of your first awesome project. Built with modern web technologies.",
-      "image": "https://via.placeholder.com/400x225/6366f1/ffffff?text=Project+1",
+      "title": "Neon Interface",
+      "description": "A futuristic UI kit built with React and Tailwind.",
+      "image": "https://images.unsplash.com/photo-1550745165-9bc0b252726f?w=600&q=80",
       "url": "https://example.com",
-      "tags": [
-        "Web",
-        "UI/UX",
-        "JavaScript"
-      ]
+      "tags": ["UI/UX", "React"],
+      "size": "bento-item large"
     },
     {
       "id": "proj2",
-      "title": "Project Beta",
-      "description": "Another cool project showcasing your skills in backend and API integration.",
-      "image": "https://via.placeholder.com/400x225/ec4899/ffffff?text=Project+2",
+      "title": "AI Dashboard",
+      "description": "Real-time analytics platform.",
+      "image": "https://images.unsplash.com/photo-1551288049-bebda4e38f71?w=600&q=80",
       "url": "https://example.com",
-      "tags": [
-        "API",
-        "Node.js",
-        "Database"
-      ]
+      "tags": ["SaaS", "Next.js"],
+      "size": "bento-item"
+    },
+    {
+      "id": "proj3",
+      "title": "Cyber Wallet",
+      "description": "Blockchain integrated finance app.",
+      "image": "https://images.unsplash.com/photo-1639762681485-074b7f938ba0?w=600&q=80",
+      "url": "https://example.com",
+      "tags": ["Web3", "Solidity"],
+      "size": "bento-item"
     }
   ],
   "links": [
-    {
-      "id": "link1",
-      "title": "GitHub",
-      "url": "https://github.com/nanomindexplorer",
-      "icon": "fab fa-github"
-    },
-    {
-      "id": "link2",
-      "title": "Email Me",
-      "url": "mailto:hello@example.com",
-      "icon": "fas fa-envelope"
-    },
-    {
-      "id": "link3",
-      "title": "Instagram",
-      "url": "https://instagram.com/",
-      "icon": "fab fa-instagram"
-    }
+    { "id": "link1", "title": "GitHub", "url": "https://github.com/nanomindexplorer", "icon": "fab fa-github" },
+    { "id": "link2", "title": "Email Me", "url": "mailto:hello@example.com", "icon": "fas fa-envelope" }
   ]
 }
