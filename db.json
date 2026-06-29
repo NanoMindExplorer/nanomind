@@ -1,44 +1,53 @@
 {
   "profile": {
-    "name": "Your Name",
-    "bio": "Creative Developer & Designer. Passionate about building beautiful digital experiences.",
+    "name": "Nanomind Explorer",
+    "bio": "Creative Developer & Explorer. Passionate about building beautiful digital experiences and sharing knowledge.",
     "avatar": "https://avatars.githubusercontent.com/u/0?v=4",
-    "logoText": "Y"
+    "logoText": "N"
   },
   "projects": [
     {
       "id": "proj1",
-      "title": "Project One",
-      "description": "A brief description of your first awesome project.",
+      "title": "Project Alpha",
+      "description": "A brief description of your first awesome project. Built with modern web technologies.",
       "image": "https://via.placeholder.com/400x225/6366f1/ffffff?text=Project+1",
       "url": "https://example.com",
-      "tags": ["Web", "React", "UI/UX"]
+      "tags": [
+        "Web",
+        "UI/UX",
+        "JavaScript"
+      ]
     },
     {
       "id": "proj2",
-      "website": "Project Two",
-      "description": "Another cool project showcasing your skills.",
+      "title": "Project Beta",
+      "description": "Another cool project showcasing your skills in backend and API integration.",
       "image": "https://via.placeholder.com/400x225/ec4899/ffffff?text=Project+2",
       "url": "https://example.com",
-      "tags": ["Mobile", "Flutter"]
+      "tags": [
+        "API",
+        "Node.js",
+        "Database"
+      ]
     }
   ],
   "links": [
     {
       "id": "link1",
       "title": "GitHub",
-      "url": "https://github.com",
+      "url": "https://github.com/nanomindexplorer",
       "icon": "fab fa-github"
     },
     {
       "id": "link2",
-      "title": "LinkedIn",
-      "url": "https://linkedin.com",
-      "icon": "fab fa-linkedin"
+      "title": "Email Me",
+      "url": "mailto:hello@example.com",
+      "icon": "fas fa-envelope"
     },
-    "id": "link3",
+    {
+      "id": "link3",
       "title": "Instagram",
-      "url": "https://instagram.com",
+      "url": "https://instagram.com/",
       "icon": "fab fa-instagram"
     }
   ]
