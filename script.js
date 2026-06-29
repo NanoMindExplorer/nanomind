@@ -2,14 +2,14 @@
 // KONFIGURASI UTAMA
 // ==========================================
 const CONFIG = {
-    GITHUB_USERNAME: 'nanomindexplorer',
-    REPO_NAME: 'nanomindexplorer.github.io',
+    GITHUB_USERNAME: 'nanomindexplorer', // Ganti username GitHub Anda
+    REPO_NAME: 'nanomindexplorer.github.io', // Ganti nama repo Anda
     BRANCH: 'main',
     DB_FILE: 'db.json'
 };
 // ==========================================
 
-let state = { data: null, isAdmin: false, editingProjectId: null, editingLinkId: null };
+let state = { data: null, isAdmin: false, editingProjectId: null, editingLinkId: null, editingMediaId: null };
 const $ = (id) => document.getElementById(id);
 
 document.addEventListener('DOMContentLoaded', () => {
@@ -21,26 +21,22 @@ document.addEventListener('DOMContentLoaded', () => {
     loadData();
 });
 
-// Custom Cursor Logic
+// Custom Cursor
 function setupCustomCursor() {
     const dot = $('cursorDot');
     const outline = $('cursorOutline');
     if (!dot || !outline) return;
-    
     window.addEventListener('mousemove', (e) => {
-        dot.style.top = e.clientY + 'px';
-        dot.style.left = e.clientX + 'px';
-        outline.style.top = e.clientY + 'px';
-        outline.style.left = e.clientX + 'px';
+        dot.style.top = e.clientY + 'px'; dot.style.left = e.clientX + 'px';
+        outline.style.top = e.clientY + 'px'; outline.style.left = e.clientX + 'px';
     });
-    
-    document.querySelectorAll('a, button, .link-card, .glow-card, input, textarea, select').forEach(el => {
+    document.querySelectorAll('a, button, .link-card, .glow-card, input, textarea, select, option').forEach(el => {
         el.addEventListener('mouseenter', () => outline.classList.add('hover'));
         el.addEventListener('mouseleave', () => outline.classList.remove('hover'));
     });
 }
 
-// Scroll Progress Logic
+// Scroll Progress
 function setupScrollProgress() {
     window.addEventListener('scroll', () => {
         const scrollProgress = (window.scrollY / (document.documentElement.scrollHeight - window.innerHeight)) * 100;
@@ -70,6 +66,10 @@ function setupEventListeners() {
     $('saveProjectBtn').addEventListener('click', saveProject);
     $('cancelProjectBtn').addEventListener('click', () => closeModal('projectModal'));
     
+    $('addMediaBtn').addEventListener('click', () => openMediaModal());
+    $('saveMediaBtn').addEventListener('click', saveMedia);
+    $('cancelMediaBtn').addEventListener('click', () => closeModal('mediaModal'));
+    
     $('addLinkBtn').addEventListener('click', () => openLinkModal());
     $('saveLinkBtn').addEventListener('click', saveLink);
     $('cancelLinkBtn').addEventListener('click', () => closeModal('linkModal'));
@@ -88,9 +88,18 @@ async function loadData() {
         const response = await fetch(rawUrl);
         if (!response.ok) throw new Error('Failed');
         state.data = await response.json();
+        // Pastikan struktur data lengkap
+        if(!state.data.profile) state.data.profile = {};
+        if(!state.data.projects) state.data.projects = [];
+        if(!state.data.gallery) state.data.gallery = [];
+        if(!state.data.links) state.data.links = [];
         renderData();
     } catch (error) {
-        state.data = { profile: { name: 'Your Name', bio: 'Your Bio', avatar: 'https://via.placeholder.com/120', logoText: 'N' }, projects: [], links: [] };
+        console.error("Load failed, using fallback", error);
+        state.data = { 
+            profile: { name: 'Failed to Load', bio: 'Cek konfigurasi script.js', avatar: 'https://via.placeholder.com/120', logoText: '!' }, 
+            projects: [], gallery: [], links: [] 
+        };
         renderData();
     }
 }
@@ -98,19 +107,17 @@ async function loadData() {
 // Render Data
 function renderData() {
     if (!state.data) return;
-    const { profile, projects, links } = state.data;
+    const { profile, projects, gallery, links } = state.data;
     
     $('navName').textContent = profile.name || 'Portfolio';
-    $('navLogo').textContent = profile.logoText || profile.name?.[0] || 'N';
     $('heroName').textContent = profile.name || 'Your Name';
     $('heroAvatar').src = profile.avatar || 'https://via.placeholder.com/120';
     $('footerName').textContent = profile.name || 'Your Name';
     
-    // Typewriter Effect
     const bioText = profile.bio || 'Welcome to my digital space.';
     typeWriter($('heroBioTypewriter'), bioText);
     
-    // Projects
+    // Render Projects
     const projectsGrid = $('projectsGrid');
     projectsGrid.innerHTML = '';
     if (projects.length === 0) {
@@ -134,13 +141,42 @@ function renderData() {
                         <div class="flex flex-wrap gap-2">${tags}</div>
                         ${project.url ? `<a href="${project.url}" target="_blank" class="text-cyan-400 text-sm hover:gap-3 transition-all flex items-center gap-2">Visit <i class="fas fa-arrow-right text-xs"></i></a>` : ''}
                     </div>
-                </div>
-            `;
+                </div>`;
             projectsGrid.appendChild(card);
         });
     }
     
-    // Links
+    // Render Gallery Media
+    const mediaGrid = $('mediaGrid');
+    mediaGrid.innerHTML = '';
+    if (gallery.length === 0) {
+        mediaGrid.innerHTML = '<p class="text-gray-500 text-center py-8">No media yet. Add images or videos!</p>';
+    } else {
+        gallery.forEach(media => {
+            let mediaHTML = '';
+            if (media.type === 'image') {
+                mediaHTML = `<img src="${media.url}" alt="Media" class="w-full h-auto rounded-t-2xl object-cover" onerror="this.src='https://via.placeholder.com/400x300/111/888?text=Image+Error'">`;
+            } else if (media.type === 'youtube') {
+                const ytId = extractYouTubeId(media.url);
+                if (ytId) mediaHTML = `<div class="aspect-video bg-black rounded-t-2xl overflow-hidden"><iframe class="w-full h-full" src="https://www.youtube.com/embed/${ytId}" frameborder="0" allowfullscreen></iframe></div>`;
+            } else if (media.type === 'video') {
+                mediaHTML = `<video controls class="w-full h-auto rounded-t-2xl bg-black"><source src="${media.url}" type="video/mp4">Your browser does not support the video tag.</video>`;
+            }
+
+            const item = document.createElement('div');
+            item.className = 'masonry-item glow-card glass rounded-2xl reveal relative';
+            item.innerHTML = `
+                <div class="edit-btn" onclick="openMediaModal('${media.id}')"><i class="fas fa-pen text-xs"></i></div>
+                <div class="delete-btn" onclick="deleteMedia('${media.id}')"><i class="fas fa-trash text-xs"></i></div>
+                ${mediaHTML}
+                <div class="p-4">
+                    <p class="text-gray-300 text-sm">${media.caption || ''}</p>
+                </div>`;
+            mediaGrid.appendChild(item);
+        });
+    }
+
+    // Render Links
     const linksList = $('linksList');
     linksList.innerHTML = '';
     if (links.length === 0) {
@@ -157,8 +193,7 @@ function renderData() {
                     <h4 class="font-semibold truncate">${link.title}</h4>
                     <p class="text-gray-500 text-xs truncate font-mono">${link.url}</p>
                 </div>
-                <i class="fas fa-arrow-right text-gray-600"></i>
-            `;
+                <i class="fas fa-arrow-right text-gray-600"></i>`;
             card.addEventListener('click', (e) => {
                 if (e.target.closest('.edit-btn') || e.target.closest('.delete-btn')) return;
                 window.open(link.url, '_blank');
@@ -176,8 +211,16 @@ function renderData() {
     setupScrollObserver();
 }
 
+// Extract YouTube ID
+function extractYouTubeId(url) {
+    const regex = /(?:youtube\.com\/(?:[^\/\n\s]+\/\S+\/|(?:v|e(?:mbed)?)\/|\S*?[?&]v=)|youtu\.be\/)([a-zA-Z0-9_-]{11})/;
+    const match = url.match(regex);
+    return match ? match[1] : null;
+}
+
 // Typewriter
 function typeWriter(el, text, i = 0) {
+    if (!el) return;
     if (i < text.length) {
         el.innerHTML = text.substring(0, i + 1) + '<span class="text-cyan-400 animate-pulse">|</span>';
         setTimeout(() => typeWriter(el, text, i + 1), 40);
@@ -186,7 +229,7 @@ function typeWriter(el, text, i = 0) {
     }
 }
 
-// Mouse Glow Tracker
+// Mouse Glow
 function setupMouseGlow() {
     document.querySelectorAll('.glow-card').forEach(card => {
         card.addEventListener('mousemove', (e) => {
@@ -235,15 +278,21 @@ function handleLogin() {
     }
 }
 
-// CRUD Profile
+// CRUD Profile (Diperbaiki)
 function openProfileModal() {
-    $('profileName').value = state.data.profile.name || '';
-    $('profileBio').value = state.data.profile.bio || '';
-    $('profileAvatar').value = state.data.profile.avatar || '';
-    $('profileLogoText').value = state.data.profile.logoText || '';
+    if (!state.data || !state.data.profile) {
+        showToast('Data belum ter-load!', 'error');
+        return;
+    }
+    const p = state.data.profile;
+    $('profileName').value = p.name || '';
+    $('profileBio').value = p.bio || '';
+    $('profileAvatar').value = p.avatar || '';
+    $('profileLogoText').value = p.logoText || '';
     openModal('profileModal');
 }
 async function saveProfile() {
+    if (!state.data.profile) state.data.profile = {};
     state.data.profile = {
         name: $('profileName').value.trim(),
         bio: $('profileBio').value.trim(),
@@ -260,8 +309,9 @@ function openProjectModal(id = null) {
     state.editingProjectId = id;
     if (id) {
         const p = state.data.projects.find(x => x.id === id);
+        if(!p) return;
         $('projectModalTitle').textContent = 'Edit Project';
-        $('projectTitle').value = p.title; $('projectDesc').value = p.description;
+        $('projectTitle').value = p.title || ''; $('projectDesc').value = p.description || '';
         $('projectImage').value = p.image || ''; $('projectUrl').value = p.url || '';
         $('projectTags').value = (p.tags || []).join(', '); $('projectSize').value = p.size || 'bento-item';
     } else {
@@ -298,11 +348,53 @@ async function deleteProject(id) {
     renderData();
 }
 
+// CRUD Media (FITUR BARU)
+function openMediaModal(id = null) {
+    state.editingMediaId = id;
+    if (id) {
+        const m = state.data.gallery.find(x => x.id === id);
+        if(!m) return;
+        $('mediaModalTitle').textContent = 'Edit Media';
+        $('mediaType').value = m.type || 'image';
+        $('mediaUrl').value = m.url || '';
+        $('mediaCaption').value = m.caption || '';
+    } else {
+        $('mediaModalTitle').textContent = 'Add Media';
+        $('mediaType').value = 'image';
+        $('mediaUrl').value = ''; $('mediaCaption').value = '';
+    }
+    openModal('mediaModal');
+}
+async function saveMedia() {
+    const data = {
+        id: state.editingMediaId || generateId(),
+        type: $('mediaType').value,
+        url: $('mediaUrl').value.trim(),
+        caption: $('mediaCaption').value.trim()
+    };
+    if (state.editingMediaId) {
+        const i = state.data.gallery.findIndex(x => x.id === state.editingMediaId);
+        state.data.gallery[i] = data;
+    } else {
+        state.data.gallery.push(data);
+    }
+    await saveToGitHub();
+    closeModal('mediaModal');
+    renderData();
+}
+async function deleteMedia(id) {
+    if (!confirm('Delete this media?')) return;
+    state.data.gallery = state.data.gallery.filter(x => x.id !== id);
+    await saveToGitHub();
+    renderData();
+}
+
 // CRUD Link
 function openLinkModal(id = null) {
     state.editingLinkId = id;
     if (id) {
         const l = state.data.links.find(x => x.id === id);
+        if(!l) return;
         $('linkModalTitle').textContent = 'Edit Link';
         $('linkTitle').value = l.title; $('linkUrl').value = l.url; $('linkIcon').value = l.icon;
     } else {
@@ -330,7 +422,7 @@ async function deleteLink(id) {
     renderData();
 }
 
-// API Logic
+// API Save to GitHub
 async function saveToGitHub() {
     const token = localStorage.getItem('portfolio_github_token');
     if (!token) return showToast('Not logged in.', 'error');
@@ -352,9 +444,12 @@ async function saveToGitHub() {
             body: JSON.stringify(payload)
         });
         if (res.ok) showToast('Saved successfully!', 'success');
-        else throw new Error('Failed');
+        else {
+            const err = await res.json();
+            throw new Error(err.message);
+        }
     } catch (e) {
-        showToast('Error saving to GitHub.', 'error');
+        showToast('Error saving: ' + e.message, 'error');
     }
 }
 
@@ -383,5 +478,7 @@ function setupScrollObserver() {
 
 window.openProjectModal = openProjectModal;
 window.deleteProject = deleteProject;
+window.openMediaModal = openMediaModal;
+window.deleteMedia = deleteMedia;
 window.openLinkModal = openLinkModal;
 window.deleteLink = deleteLink;
