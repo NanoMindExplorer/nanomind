@@ -1,133 +1,25 @@
 <!DOCTYPE html>
 <html lang="id">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <meta name="description" content="Portfolio — Creative Developer" />
-  <meta property="og:type" content="website" />
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width,initial-scale=1.0"/>
   <title>Portfolio</title>
-  <link rel="preconnect" href="https://fonts.googleapis.com" />
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link rel="preconnect" href="https://fonts.googleapis.com"/>
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin/>
+  <link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=Inter:wght@300;400;500;600&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet"/>
   <style>
-    body { margin: 0; background: #07070e; }
-    #root-loading {
-      min-height: 100vh; display: flex; flex-direction: column;
-      align-items: center; justify-content: center; gap: 14px;
-    }
-    .spin {
-      width: 36px; height: 36px; border-radius: 50%;
-      border: 3px solid rgba(124,58,237,.3); border-top-color: #7c3aed;
-      animation: sp .8s linear infinite;
-    }
-    @keyframes sp { to { transform: rotate(360deg); } }
-    #root-loading span { color: #64748b; font-family: sans-serif; font-size: 13px; }
-  </style>
-</head>
-<body>
-  <div id="root">
-    <div id="root-loading">
-      <div class="spin"></div>
-      <span>Memuat portfolio…</span>
-    </div>
-  </div>
-
-  <script src="https://unpkg.com/react@18/umd/react.production.min.js" crossorigin></script>
-  <script src="https://unpkg.com/react-dom@18/umd/react-dom.production.min.js" crossorigin></script>
-  <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
-
-  <script type="text/babel" data-presets="react">
-  /* ================================================================
-     PORTFOLIO — GitHub Pages Edition
-     Data disimpan di: portfolio-data.json (via GitHub API)
-     Fallback: localStorage
-     
-     CARA DEPLOY:
-     1. Upload file ini sebagai index.html di repo GitHub kamu
-     2. Aktifkan GitHub Pages di Settings → Pages → main branch
-     3. Buka portfolio, klik ⚙ → hubungkan GitHub → masuk Admin Mode
-     4. Edit profil, tambah project & link!
-  ================================================================ */
-
-  const { useState, useEffect, useRef, useCallback } = React;
-
-  // ── CONSTANTS ──────────────────────────────────────────────
-  const DATA_KEY = "folio_v1";
-  const GH_KEY   = "folio_gh";
-  const FILE     = "portfolio-data.json";
-
-  const DEFAULTS = {
-    profile: {
-      name: "Nama Anda",
-      title: "Creative Developer & Designer",
-      bio: "Membangun pengalaman digital yang indah dan bermakna. Klik ⚙ lalu aktifkan Admin Mode untuk mulai mengedit.",
-      avatar: "",
-      social: { github: "", twitter: "", linkedin: "", email: "" }
-    },
-    categories: ["Web App", "Design", "Mobile", "Open Source"],
-    projects: [
-      { id: "s1", title: "E-Commerce Platform",  description: "Toko online dengan fitur lengkap: inventory real-time, payment gateway, dan dashboard admin yang powerful.", image: "", category: "Web App",  tags: ["React","Node.js","MongoDB"],   liveUrl: "", githubUrl: "", featured: true,  year: "2024" },
-      { id: "s2", title: "Design System",         description: "Sistem desain komprehensif dengan 50+ komponen, dark mode, dan dokumentasi lengkap untuk tim.",            image: "", category: "Design",   tags: ["Figma","React","Storybook"],   liveUrl: "", githubUrl: "", featured: false, year: "2024" },
-      { id: "s3", title: "Mobile Fitness App",    description: "Aplikasi fitness lintas platform dengan rekomendasi workout bertenaga AI dan analitik progres harian.",     image: "", category: "Mobile",   tags: ["React Native","Python","AWS"], liveUrl: "", githubUrl: "", featured: false, year: "2023" }
-    ],
-    links: [
-      { id: "l1", title: "MDN Web Docs", description: "Referensi terbaik untuk HTML, CSS, dan JavaScript",  url: "https://developer.mozilla.org", category: "Learning",  tags: ["docs","reference"] },
-      { id: "l2", title: "Dribbble",     description: "Platform inspirasi desain UI/UX terbaik dunia",      url: "https://dribbble.com",          category: "Inspirasi", tags: ["design","ui"]      },
-      { id: "l3", title: "GitHub",       description: "Platform pengembangan software terkemuka",            url: "https://github.com",            category: "Tools",     tags: ["dev","git"]        }
-    ]
-  };
-
-  // ── STORAGE (localStorage) ─────────────────────────────────
-  async function storeLoad() {
-    try { const v = localStorage.getItem(DATA_KEY); return v ? JSON.parse(v) : null; } catch { return null; }
-  }
-  async function storeSave(data) {
-    try { localStorage.setItem(DATA_KEY, JSON.stringify(data)); return true; } catch { return false; }
-  }
-  function cfgLoad()    { try { const v = localStorage.getItem(GH_KEY); return v ? JSON.parse(v) : null; } catch { return null; } }
-  function cfgSave(cfg) { try { localStorage.setItem(GH_KEY, JSON.stringify(cfg)); } catch {} }
-  function cfgClear()   { try { localStorage.removeItem(GH_KEY); } catch {} }
-
-  // ── GITHUB API ─────────────────────────────────────────────
-  async function ghLoad(cfg) {
-    const r = await fetch(`https://api.github.com/repos/${cfg.owner}/${cfg.repo}/contents/${FILE}`, {
-      headers: { Authorization: `Bearer ${cfg.token}`, Accept: "application/vnd.github.v3+json" }
-    });
-    if (r.status === 404) return { data: null, sha: null };
-    if (!r.ok) throw new Error(`GitHub ${r.status}`);
-    const f = await r.json();
-    const decoded = decodeURIComponent(escape(atob(f.content.replace(/\n/g, ""))));
-    return { data: JSON.parse(decoded), sha: f.sha };
-  }
-  async function ghSave(cfg, sha, data) {
-    const content = btoa(unescape(encodeURIComponent(JSON.stringify(data, null, 2))));
-    const r = await fetch(`https://api.github.com/repos/${cfg.owner}/${cfg.repo}/contents/${FILE}`, {
-      method: "PUT",
-      headers: { Authorization: `Bearer ${cfg.token}`, Accept: "application/vnd.github.v3+json", "Content-Type": "application/json" },
-      body: JSON.stringify({ message: sha ? "✏️ Update portfolio" : "🎉 Init portfolio", content, ...(sha && { sha }) })
-    });
-    if (!r.ok) { const e = await r.json().catch(() => ({})); throw new Error(e.message || `GitHub ${r.status}`); }
-    return (await r.json()).content.sha;
-  }
-
-  // ── UTILS ──────────────────────────────────────────────────
-  const uid  = () => Date.now().toString(36) + Math.random().toString(36).slice(2, 7);
-  const fav  = (url) => { try { return `https://www.google.com/s2/favicons?domain=${new URL(url).hostname}&sz=64`; } catch { return null; } };
-  const arr  = (v) => Array.isArray(v) ? v : (v || "").split(",").map(t => t.trim()).filter(Boolean);
-  const str2 = (v) => Array.isArray(v) ? v.join(", ") : (v || "");
-
-  // ── GLOBAL CSS ─────────────────────────────────────────────
-  const CSS = `
-@import url('https://fonts.googleapis.com/css2?family=Syne:wght@400;500;600;700;800&family=Inter:wght@300;400;500;600&family=JetBrains+Mono:wght@400;500&display=swap');
 *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
-:root{--bg:#07070e;--s1:rgba(255,255,255,0.04);--s2:rgba(255,255,255,0.07);--b:rgba(255,255,255,0.08);--bh:rgba(255,255,255,0.14);--txt:#e2e8f0;--mu:#64748b;--mu2:#475569;--p:#7c3aed;--pl:#a78bfa;--c:#06b6d4;--g:#10b981;--pk:#ec4899;--am:#f59e0b;--r:#ef4444}
-html{scroll-behavior:smooth}
-body{font-family:'Inter',system-ui,sans-serif;background:var(--bg);color:var(--txt);min-height:100vh;-webkit-font-smoothing:antialiased;overflow-x:hidden}
-::-webkit-scrollbar{width:4px}::-webkit-scrollbar-track{background:transparent}::-webkit-scrollbar-thumb{background:var(--p);border-radius:4px}
+:root{--bg:#07070e;--s1:rgba(255,255,255,.04);--s2:rgba(255,255,255,.07);--b:rgba(255,255,255,.08);--bh:rgba(255,255,255,.14);--txt:#e2e8f0;--mu:#64748b;--mu2:#475569;--p:#7c3aed;--pl:#a78bfa;--c:#06b6d4;--g:#10b981;--pk:#ec4899;--r:#ef4444}
+body{font-family:'Inter',sans-serif;background:var(--bg);color:var(--txt);min-height:100vh;-webkit-font-smoothing:antialiased;overflow-x:hidden}
+::-webkit-scrollbar{width:4px}::-webkit-scrollbar-thumb{background:var(--p);border-radius:4px}
 .sy{font-family:'Syne',sans-serif}.mn{font-family:'JetBrains Mono',monospace}
-.orb{position:fixed;border-radius:50%;filter:blur(100px);pointer-events:none;animation:drift var(--d,12s) ease-in-out infinite alternate}
+.orb{position:fixed;border-radius:50%;filter:blur(100px);pointer-events:none}
+.orb1{width:700px;height:700px;top:-150px;left:-200px;background:#7c3aed;opacity:.1;animation:drift 14s ease-in-out infinite alternate}
+.orb2{width:500px;height:500px;top:42%;right:-180px;background:#06b6d4;opacity:.07;animation:drift 10s ease-in-out 4s infinite alternate}
+.orb3{width:400px;height:400px;bottom:60px;left:22%;background:#ec4899;opacity:.05;animation:drift 17s ease-in-out 8s infinite alternate}
 @keyframes drift{0%{transform:translateY(0) scale(1)}100%{transform:translateY(-55px) scale(1.1)}}
 @keyframes pulse{0%,100%{opacity:1}50%{opacity:.35}}
-@keyframes spin2{to{transform:rotate(360deg)}}
+@keyframes spin{to{transform:rotate(360deg)}}
 @keyframes fadeIn{from{opacity:0}to{opacity:1}}
 @keyframes slideUp{from{opacity:0;transform:translateY(18px)}to{opacity:1;transform:translateY(0)}}
 @keyframes shimmer{0%{background-position:200% 0}100%{background-position:-200% 0}}
@@ -137,20 +29,19 @@ body{font-family:'Inter',system-ui,sans-serif;background:var(--bg);color:var(--t
 .grad{background:linear-gradient(135deg,var(--pl) 0%,var(--c) 55%,var(--pk) 100%);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text}
 .btn-p{display:inline-flex;align-items:center;gap:8px;padding:10px 20px;border-radius:10px;background:linear-gradient(135deg,var(--p),var(--c));border:none;color:#fff;font-family:'Inter',sans-serif;font-size:14px;font-weight:600;cursor:pointer;transition:opacity .2s,transform .2s,box-shadow .2s;white-space:nowrap}
 .btn-p:hover{opacity:.88;transform:translateY(-2px);box-shadow:0 8px 28px rgba(124,58,237,.4)}
-.btn-p:active{transform:translateY(0)}
-.btn-g{display:inline-flex;align-items:center;gap:6px;padding:8px 16px;border-radius:8px;background:transparent;border:1px solid var(--b);color:var(--mu);font-family:'Inter',sans-serif;font-size:13px;font-weight:500;cursor:pointer;transition:all .2s;white-space:nowrap}
+.btn-g{display:inline-flex;align-items:center;gap:6px;padding:8px 16px;border-radius:8px;background:transparent;border:1px solid var(--b);color:var(--mu);font-family:'Inter',sans-serif;font-size:13px;font-weight:500;cursor:pointer;transition:all .2s;white-space:nowrap;text-decoration:none}
 .btn-g:hover{border-color:var(--p);color:var(--txt)}
-.btn-d{display:inline-flex;align-items:center;gap:6px;padding:6px 12px;border-radius:6px;background:rgba(239,68,68,.1);border:1px solid rgba(239,68,68,.22);color:var(--r);font-family:'Inter',sans-serif;font-size:12px;font-weight:500;cursor:pointer;transition:all .2s;white-space:nowrap}
-.btn-d:hover{background:rgba(239,68,68,.2);border-color:rgba(239,68,68,.4)}
-.inp{width:100%;padding:10px 14px;border-radius:8px;background:rgba(255,255,255,.05);border:1px solid var(--b);color:var(--txt);font-size:14px;font-family:'Inter',sans-serif;transition:border-color .2s,box-shadow .2s;outline:none}
+.btn-d{display:inline-flex;align-items:center;gap:5px;padding:6px 10px;border-radius:6px;background:rgba(239,68,68,.1);border:1px solid rgba(239,68,68,.22);color:var(--r);font-family:'Inter',sans-serif;font-size:12px;cursor:pointer;transition:all .2s}
+.btn-d:hover{background:rgba(239,68,68,.2)}
+.inp{width:100%;padding:10px 14px;border-radius:8px;background:rgba(255,255,255,.05);border:1px solid var(--b);color:var(--txt);font-size:14px;font-family:'Inter',sans-serif;outline:none;transition:border-color .2s}
 .inp:focus{border-color:var(--p);box-shadow:0 0 0 3px rgba(124,58,237,.12)}
 .inp::placeholder{color:var(--mu2)}
-.tag{display:inline-flex;align-items:center;padding:3px 10px;border-radius:100px;font-size:11px;font-weight:600;letter-spacing:.04em;font-family:'JetBrains Mono',monospace;background:rgba(124,58,237,.14);color:var(--pl);border:1px solid rgba(124,58,237,.24)}
-.pill{padding:6px 16px;border-radius:100px;font-size:13px;font-weight:500;cursor:pointer;border:1px solid var(--b);background:transparent;color:var(--mu);font-family:'Inter',sans-serif;transition:all .2s;white-space:nowrap}
+.tag{display:inline-flex;padding:3px 10px;border-radius:100px;font-size:11px;font-weight:600;font-family:'JetBrains Mono',monospace;background:rgba(124,58,237,.14);color:var(--pl);border:1px solid rgba(124,58,237,.24)}
+.pill{padding:6px 16px;border-radius:100px;font-size:13px;font-weight:500;cursor:pointer;border:1px solid var(--b);background:transparent;color:var(--mu);font-family:'Inter',sans-serif;transition:all .2s}
 .pill:hover:not(.on){border-color:var(--p);color:var(--txt)}
 .pill.on{background:linear-gradient(135deg,var(--p),var(--c));border-color:transparent;color:#fff}
-.backdrop{position:fixed;inset:0;background:rgba(0,0,0,.82);backdrop-filter:blur(10px);z-index:100;display:flex;align-items:center;justify-content:center;padding:20px;animation:fadeIn .15s ease}
-.modal{background:#0c0c18;border:1px solid var(--b);border-radius:20px;width:100%;max-width:540px;max-height:88vh;overflow-y:auto;animation:slideUp .2s ease}
+.backdrop{position:fixed;inset:0;background:rgba(0,0,0,.82);backdrop-filter:blur(10px);z-index:100;display:flex;align-items:center;justify-content:center;padding:20px;animation:fadeIn .15s}
+.modal{background:#0c0c18;border:1px solid var(--b);border-radius:20px;width:100%;max-width:540px;max-height:88vh;overflow-y:auto;animation:slideUp .2s}
 .soc{display:inline-flex;align-items:center;justify-content:center;width:40px;height:40px;border-radius:10px;border:1px solid var(--b);background:var(--s1);color:var(--mu);text-decoration:none;transition:all .2s;flex-shrink:0}
 .soc:hover{border-color:var(--p);color:var(--pl);background:rgba(124,58,237,.12);transform:translateY(-2px)}
 .abar{position:fixed;top:0;left:0;right:0;z-index:200;height:3px;background:linear-gradient(90deg,var(--p),var(--c),var(--pk),var(--p));background-size:200% 100%;animation:shimmer 2s linear infinite}
@@ -158,460 +49,447 @@ body{font-family:'Inter',system-ui,sans-serif;background:var(--bg);color:var(--t
 .ts{background:rgba(16,185,129,.15);border:1px solid rgba(16,185,129,.3);color:var(--g)}
 .te{background:rgba(239,68,68,.15);border:1px solid rgba(239,68,68,.3);color:var(--r)}
 .ti{background:rgba(124,58,237,.15);border:1px solid rgba(124,58,237,.3);color:var(--pl)}
-.grid-p{display:grid;grid-template-columns:repeat(auto-fill,minmax(300px,1fr));gap:20px}
+.grid-p{display:grid;grid-template-columns:repeat(auto-fill,minmax(290px,1fr));gap:20px}
 .grid-l{display:grid;grid-template-columns:repeat(auto-fill,minmax(260px,1fr));gap:16px}
-.sec{animation:slideUp .35s ease}
+.sec{animation:slideUp .35s}
 nav{position:sticky;top:0;z-index:50;backdrop-filter:blur(20px);-webkit-backdrop-filter:blur(20px);border-bottom:1px solid var(--b);background:rgba(7,7,14,.88)}
+.nav-in{max-width:1100px;margin:0 auto;padding:0 24px;height:58px;display:flex;align-items:center;justify-content:space-between}
+main{max-width:1100px;margin:0 auto;padding:0 24px 80px}
+footer{border-top:1px solid rgba(255,255,255,.05);padding:24px;text-align:center}
 .tog{width:44px;height:24px;border-radius:12px;background:var(--bh);position:relative;transition:background .2s;border:none;cursor:pointer;flex-shrink:0}
 .tog.on{background:var(--p)}
-.tog::after{content:'';position:absolute;top:3px;left:3px;width:18px;height:18px;border-radius:50%;background:#fff;transition:transform .2s;box-shadow:0 1px 3px rgba(0,0,0,.3)}
+.tog::after{content:'';position:absolute;top:3px;left:3px;width:18px;height:18px;border-radius:50%;background:#fff;transition:transform .2s}
 .tog.on::after{transform:translateX(20px)}
 .gl{height:1px;background:linear-gradient(90deg,transparent,var(--p),var(--c),transparent);opacity:.22;margin:20px 0}
-.cfm{padding:14px 16px;border-radius:10px;background:rgba(239,68,68,.1);border:1px solid rgba(239,68,68,.25);margin-top:8px;display:flex;align-items:center;justify-content:space-between;gap:12px}
-@media(max-width:640px){.grid-p,.grid-l{grid-template-columns:1fr}.hn{font-size:clamp(32px,10vw,76px) !important}}
-`;
+.cat-tag{padding:3px 10px;border-radius:100px;font-size:11px;font-weight:600;background:rgba(6,182,212,.12);color:#06b6d4;border:1px solid rgba(6,182,212,.2);font-family:'JetBrains Mono',monospace}
+.feat-badge{position:absolute;top:14px;right:14px;background:linear-gradient(135deg,#f59e0b,#f97316);color:#fff;font-size:10px;font-weight:700;text-transform:uppercase;padding:4px 10px;border-radius:100px;font-family:'JetBrains Mono',monospace}
+.field{margin-bottom:14px}
+.field label{display:block;font-size:12px;font-weight:600;color:#94a3b8;margin-bottom:6px;letter-spacing:.04em;text-transform:uppercase}
+.cfm{padding:14px;border-radius:10px;background:rgba(239,68,68,.1);border:1px solid rgba(239,68,68,.25);margin-top:8px;display:flex;align-items:center;justify-content:space-between;gap:12px;flex-wrap:wrap}
+@media(max-width:640px){.grid-p,.grid-l{grid-template-columns:1fr}.hn{font-size:clamp(32px,10vw,72px)!important}}
+  </style>
+</head>
+<body>
+<div id="app"></div>
+<script type="module">
+import{h,render,Fragment}from'https://cdn.jsdelivr.net/npm/preact@10.19.3/dist/preact.module.js';
+import{useState,useEffect,useRef,useCallback}from'https://cdn.jsdelivr.net/npm/preact@10.19.3/hooks/dist/hooks.module.js';
+import htm from'https://cdn.jsdelivr.net/npm/htm@3.1.1/dist/htm.module.js';
+const H=htm.bind(h);
 
-  // ── ICONS ──────────────────────────────────────────────────
-  const Ic = {
-    GH:   p => <svg viewBox="0 0 24 24" fill="currentColor" {...p}><path d="M12 0C5.374 0 0 5.373 0 12c0 5.302 3.438 9.8 8.207 11.387.599.111.793-.261.793-.577v-2.234c-3.338.726-4.033-1.416-4.033-1.416-.546-1.387-1.333-1.756-1.333-1.756-1.089-.745.083-.729.083-.729 1.205.084 1.839 1.237 1.839 1.237 1.07 1.834 2.807 1.304 3.492.997.107-.775.418-1.305.762-1.604-2.665-.305-5.467-1.334-5.467-5.931 0-1.311.469-2.381 1.236-3.221-.124-.303-.535-1.524.117-3.176 0 0 1.008-.322 3.301 1.23A11.509 11.509 0 0112 5.803c1.02.005 2.047.138 3.006.404 2.291-1.552 3.297-1.23 3.297-1.23.653 1.653.242 2.874.118 3.176.77.84 1.235 1.911 1.235 3.221 0 4.609-2.807 5.624-5.479 5.921.43.372.823 1.102.823 2.222v3.293c0 .319.192.694.801.576C20.566 21.797 24 17.3 24 12c0-6.627-5.373-12-12-12z"/></svg>,
-    TW:   p => <svg viewBox="0 0 24 24" fill="currentColor" {...p}><path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z"/></svg>,
-    LI:   p => <svg viewBox="0 0 24 24" fill="currentColor" {...p}><path d="M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286zM5.337 7.433a2.062 2.062 0 01-2.063-2.065 2.064 2.064 0 112.063 2.065zm1.782 13.019H3.555V9h3.564v11.452zM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 24 1.771 24h20.451C23.2 24 24 23.227 24 22.271V1.729C24 .774 23.2 0 22.222 0h.003z"/></svg>,
-    ML:   p => <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" {...p}><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/></svg>,
-    Ext:  p => <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" {...p}><path d="M18 13v6a2 2 0 01-2 2H5a2 2 0 01-2-2V8a2 2 0 012-2h6"/><polyline points="15,3 21,3 21,9"/><line x1="10" y1="14" x2="21" y2="3"/></svg>,
-    Plus: p => <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" {...p}><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>,
-    Edit: p => <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" {...p}><path d="M11 4H4a2 2 0 00-2 2v14a2 2 0 002 2h14a2 2 0 002-2v-7"/><path d="M18.5 2.5a2.121 2.121 0 013 3L12 15l-4 1 1-4 9.5-9.5z"/></svg>,
-    Del:  p => <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" {...p}><polyline points="3 6 5 6 21 6"/><path d="M19 6v14a2 2 0 01-2 2H7a2 2 0 01-2-2V6m3 0V4a1 1 0 011-1h4a1 1 0 011 1v2"/></svg>,
-    Cog:  p => <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" {...p}><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 00.33 1.82l.06.06a2 2 0 010 2.83 2 2 0 01-2.83 0l-.06-.06a1.65 1.65 0 00-1.82-.33 1.65 1.65 0 00-1 1.51V21a2 2 0 01-2 2 2 2 0 01-2-2v-.09A1.65 1.65 0 009 19.4a1.65 1.65 0 00-1.82.33l-.06.06a2 2 0 01-2.83 0 2 2 0 010-2.83l.06-.06A1.65 1.65 0 004.68 15a1.65 1.65 0 00-1.51-1H3a2 2 0 01-2-2 2 2 0 012-2h.09A1.65 1.65 0 004.6 9a1.65 1.65 0 00-.33-1.82l-.06-.06a2 2 0 010-2.83 2 2 0 012.83 0l.06.06A1.65 1.65 0 009 4.68a1.65 1.65 0 001-1.51V3a2 2 0 012-2 2 2 0 012 2v.09a1.65 1.65 0 001 1.51 1.65 1.65 0 001.82-.33l.06-.06a2 2 0 012.83 0 2 2 0 010 2.83l-.06.06A1.65 1.65 0 0019.4 9a1.65 1.65 0 001.51 1H21a2 2 0 012 2 2 2 0 01-2 2h-.09a1.65 1.65 0 00-1.51 1z"/></svg>,
-    X:    p => <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" {...p}><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>,
-    Star: p => <svg viewBox="0 0 24 24" fill="currentColor" {...p}><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>,
-    Chk:  p => <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" {...p}><polyline points="20 6 9 17 4 12"/></svg>,
-    Lnk:  p => <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" {...p}><path d="M10 13a5 5 0 007.54.54l3-3a5 5 0 00-7.07-7.07l-1.72 1.71"/><path d="M14 11a5 5 0 00-7.54-.54l-3 3a5 5 0 007.07 7.07l1.71-1.71"/></svg>,
+const DK='folio_v1',GK='folio_gh',FILE='portfolio-data.json';
+const DEF={
+  profile:{name:'Nama Anda',title:'Creative Developer & Designer',bio:'Membangun pengalaman digital yang indah dan bermakna. Klik ⚙ lalu aktifkan Admin Mode untuk mulai mengedit.',avatar:'',social:{github:'',twitter:'',linkedin:'',email:''}},
+  categories:['Web App','Design','Mobile','Open Source'],
+  projects:[
+    {id:'s1',title:'E-Commerce Platform',description:'Toko online dengan fitur lengkap: inventory real-time, payment gateway, dan dashboard admin yang powerful.',image:'',category:'Web App',tags:['React','Node.js','MongoDB'],liveUrl:'',githubUrl:'',featured:true,year:'2024'},
+    {id:'s2',title:'Design System',description:'Sistem desain komprehensif dengan 50+ komponen, dark mode, dan dokumentasi lengkap.',image:'',category:'Design',tags:['Figma','React','Storybook'],liveUrl:'',githubUrl:'',featured:false,year:'2024'},
+    {id:'s3',title:'Mobile Fitness App',description:'Aplikasi fitness lintas platform dengan rekomendasi workout AI dan analitik progres.',image:'',category:'Mobile',tags:['React Native','Python','AWS'],liveUrl:'',githubUrl:'',featured:false,year:'2023'}
+  ],
+  links:[
+    {id:'l1',title:'MDN Web Docs',description:'Referensi terbaik untuk HTML, CSS, JavaScript',url:'https://developer.mozilla.org',category:'Learning',tags:['docs','reference']},
+    {id:'l2',title:'Dribbble',description:'Inspirasi desain UI/UX terbaik dunia',url:'https://dribbble.com',category:'Inspirasi',tags:['design','ui']},
+    {id:'l3',title:'GitHub',description:'Platform pengembangan software terkemuka',url:'https://github.com',category:'Tools',tags:['dev','git']}
+  ]
+};
+
+// Storage
+const sLoad=async()=>{try{const v=localStorage.getItem(DK);return v?JSON.parse(v):null}catch{return null}};
+const sSave=async d=>{try{localStorage.setItem(DK,JSON.stringify(d));return true}catch{return false}};
+const cLoad=()=>{try{const v=localStorage.getItem(GK);return v?JSON.parse(v):null}catch{return null}};
+const cSave=c=>{try{localStorage.setItem(GK,JSON.stringify(c))}catch{}};
+const cClear=()=>{try{localStorage.removeItem(GK)}catch{}};
+
+// GitHub
+const ghL=async cfg=>{
+  const r=await fetch(`https://api.github.com/repos/${cfg.owner}/${cfg.repo}/contents/${FILE}`,{headers:{Authorization:`Bearer ${cfg.token}`,Accept:'application/vnd.github.v3+json'}});
+  if(r.status===404)return{data:null,sha:null};
+  if(!r.ok)throw new Error(`GitHub ${r.status}`);
+  const f=await r.json();
+  return{data:JSON.parse(decodeURIComponent(escape(atob(f.content.replace(/\n/g,''))))),sha:f.sha};
+};
+const ghS=async(cfg,sha,data)=>{
+  const r=await fetch(`https://api.github.com/repos/${cfg.owner}/${cfg.repo}/contents/${FILE}`,{
+    method:'PUT',headers:{Authorization:`Bearer ${cfg.token}`,Accept:'application/vnd.github.v3+json','Content-Type':'application/json'},
+    body:JSON.stringify({message:sha?'✏️ Update':'🎉 Init',content:btoa(unescape(encodeURIComponent(JSON.stringify(data,null,2)))),...(sha&&{sha})})
+  });
+  if(!r.ok){const e=await r.json().catch(()=>({}));throw new Error(e.message||`GitHub ${r.status}`)}
+  return(await r.json()).content.sha;
+};
+
+const uid=()=>Date.now().toString(36)+Math.random().toString(36).slice(2,7);
+const fav=url=>{try{return`https://www.google.com/s2/favicons?domain=${new URL(url).hostname}&sz=64`}catch{return null}};
+const toArr=v=>Array.isArray(v)?v:(v||'').split(',').map(t=>t.trim()).filter(Boolean);
+const toStr=v=>Array.isArray(v)?v.join(', '):(v||'');
+
+// SVG Icons
+const svg=(d,s=17)=>H`<svg viewBox="0 0 24 24" fill="currentColor" style=${{width:s,height:s}}><path d=${d}/></svg>`;
+const svgS=(d,s=17)=>H`<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style=${{width:s,height:s}}>${d}</svg>`;
+const IGH=({s=17})=>svg('M12 0C5.374 0 0 5.373 0 12c0 5.302 3.438 9.8 8.207 11.387.599.111.793-.261.793-.577v-2.234c-3.338.726-4.033-1.416-4.033-1.416-.546-1.387-1.333-1.756-1.333-1.756-1.089-.745.083-.729.083-.729 1.205.084 1.839 1.237 1.839 1.237 1.07 1.834 2.807 1.304 3.492.997.107-.775.418-1.305.762-1.604-2.665-.305-5.467-1.334-5.467-5.931 0-1.311.469-2.381 1.236-3.221-.124-.303-.535-1.524.117-3.176 0 0 1.008-.322 3.301 1.23A11.509 11.509 0 0112 5.803c1.02.005 2.047.138 3.006.404 2.291-1.552 3.297-1.23 3.297-1.23.653 1.653.242 2.874.118 3.176.77.84 1.235 1.911 1.235 3.221 0 4.609-2.807 5.624-5.479 5.921.43.372.823 1.102.823 2.222v3.293c0 .319.192.694.801.576C20.566 21.797 24 17.3 24 12c0-6.627-5.373-12-12-12z',s);
+const ITW=({s=17})=>svg('M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z',s);
+const ILI=({s=17})=>svg('M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286zM5.337 7.433a2.063 2.063 0 110-4.127 2.063 2.063 0 010 4.127zm1.782 13.019H3.555V9h3.564v11.452zM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 24 1.771 24h20.451C23.2 24 24 23.227 24 22.271V1.729C24 .774 23.2 0 22.222 0h.003z',s);
+const IML=({s=17})=>H`<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style=${{width:s,height:s}}><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/></svg>`;
+const IExt=({s=12})=>H`<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style=${{width:s,height:s}}><path d="M18 13v6a2 2 0 01-2 2H5a2 2 0 01-2-2V8a2 2 0 012-2h6"/><polyline points="15,3 21,3 21,9"/><line x1="10" y1="14" x2="21" y2="3"/></svg>`;
+const IPlus=({s=15})=>H`<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style=${{width:s,height:s}}><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>`;
+const IEdit=({s=12})=>H`<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style=${{width:s,height:s}}><path d="M11 4H4a2 2 0 00-2 2v14a2 2 0 002 2h14a2 2 0 002-2v-7"/><path d="M18.5 2.5a2.121 2.121 0 013 3L12 15l-4 1 1-4 9.5-9.5z"/></svg>`;
+const IDel=({s=12})=>H`<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style=${{width:s,height:s}}><polyline points="3 6 5 6 21 6"/><path d="M19 6v14a2 2 0 01-2 2H7a2 2 0 01-2-2V6m3 0V4a1 1 0 011-1h4a1 1 0 011 1v2"/></svg>`;
+const ICog=()=>H`<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style=${{width:16,height:16}}><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 00.33 1.82l.06.06a2 2 0 010 2.83 2 2 0 01-2.83 0l-.06-.06a1.65 1.65 0 00-1.82-.33 1.65 1.65 0 00-1 1.51V21a2 2 0 01-4 0v-.09A1.65 1.65 0 009 19.4a1.65 1.65 0 00-1.82.33l-.06.06a2 2 0 01-2.83-2.83l.06-.06A1.65 1.65 0 004.68 15a1.65 1.65 0 00-1.51-1H3a2 2 0 010-4h.09A1.65 1.65 0 004.6 9a1.65 1.65 0 00-.33-1.82l-.06-.06a2 2 0 012.83-2.83l.06.06A1.65 1.65 0 009 4.68a1.65 1.65 0 001-1.51V3a2 2 0 014 0v.09a1.65 1.65 0 001 1.51 1.65 1.65 0 001.82-.33l.06-.06a2 2 0 012.83 2.83l-.06.06A1.65 1.65 0 0019.4 9a1.65 1.65 0 001.51 1H21a2 2 0 010 4h-.09a1.65 1.65 0 00-1.51 1z"/></svg>`;
+const IX=()=>H`<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style=${{width:15,height:15}}><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>`;
+const IStar=({c})=>H`<svg viewBox="0 0 24 24" fill=${c||'currentColor'} style=${{width:12,height:12}}><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>`;
+const IChk=()=>H`<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" style=${{width:14,height:14}}><polyline points="20 6 9 17 4 12"/></svg>`;
+const ILnk=()=>H`<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style=${{width:16,height:16}}><path d="M10 13a5 5 0 007.54.54l3-3a5 5 0 00-7.07-7.07l-1.72 1.71"/><path d="M14 11a5 5 0 00-7.54-.54l-3 3a5 5 0 007.07 7.07l1.71-1.71"/></svg>`;
+
+// UI atoms
+const Toast=({msg,type='success'})=>H`<div class=${`toast ${type==='success'?'ts':type==='error'?'te':'ti'}`}>${type==='success'?'✓':type==='error'?'✕':'ℹ'} ${msg}</div>`;
+const Tog=({on,onClick})=>H`<button class=${`tog ${on?'on':''}`} onClick=${onClick}></button>`;
+const Fld=({label,hint,children})=>H`<div class="field"><label>${label}${hint&&H` <span style="font-weight:400;color:var(--mu2);text-transform:none">(${hint})</span>`}</label>${children}</div>`;
+const Empty=({icon,title,sub,cta})=>H`<div style="text-align:center;padding:72px 20px"><div style="font-size:50px;margin-bottom:14px">${icon}</div><div class="sy" style="font-size:18px;font-weight:700;color:#e2e8f0;margin-bottom:8px">${title}</div><div style="font-size:14px;color:var(--mu);margin-bottom:24px">${sub}</div>${cta}</div>`;
+const Mbox=({title,children,onClose,w=540})=>H`
+  <div class="backdrop" onClick=${e=>e.target===e.currentTarget&&onClose()}>
+    <div class="modal" style=${{maxWidth:w+'px'}}>
+      <div style="padding:22px 24px 0;display:flex;justify-content:space-between;align-items:center">
+        <h3 class="sy" style="font-size:18px;font-weight:700;color:#f1f5f9">${title}</h3>
+        <button class="btn-g" onClick=${onClose} style="padding:7px"><${IX}/></button>
+      </div>
+      <div style="padding:18px 24px 26px">${children}</div>
+    </div>
+  </div>`;
+
+function ProfileModal({profile,onSave,onClose}){
+  const[f,sf]=useState({...profile,social:{...profile.social}});
+  const s=(k,v)=>sf(x=>({...x,[k]:v}));
+  const ss=(k,v)=>sf(x=>({...x,social:{...x.social,[k]:v}}));
+  return H`<${Mbox} title="Edit Profil" onClose=${onClose}>
+    <${Fld} label="Nama Lengkap"><input class="inp" value=${f.name} onInput=${e=>s('name',e.target.value)} placeholder="Nama Anda"/></${Fld}>
+    <${Fld} label="Tagline"><input class="inp" value=${f.title} onInput=${e=>s('title',e.target.value)} placeholder="Creative Developer"/></${Fld}>
+    <${Fld} label="Bio"><textarea class="inp" rows="3" onInput=${e=>s('bio',e.target.value)} style="resize:vertical">${f.bio}</textarea></${Fld}>
+    <${Fld} label="Foto" hint="URL"><input class="inp" value=${f.avatar||''} onInput=${e=>s('avatar',e.target.value)} placeholder="https://..."/></${Fld}>
+    <div class="field"><label>Social Links</label>
+      ${[['github','GitHub URL'],['twitter','Twitter/X'],['linkedin','LinkedIn'],['email','Email']].map(([k,ph])=>H`<input key=${k} class="inp" style="margin-bottom:8px" value=${f.social[k]||''} onInput=${e=>ss(k,e.target.value)} placeholder=${ph}/>`)}
+    </div>
+    <div style="display:flex;gap:10px;justify-content:flex-end">
+      <button class="btn-g" onClick=${onClose}>Batal</button>
+      <button class="btn-p" onClick=${()=>onSave(f)}><${IChk}/>Simpan</button>
+    </div>
+  </${Mbox}>`;
+}
+
+function ProjectModal({item,categories,onSave,onClose}){
+  const[f,sf]=useState({title:'',description:'',image:'',category:categories[0]||'Web App',tags:'',liveUrl:'',githubUrl:'',featured:false,year:String(new Date().getFullYear()),...(item?{...item,tags:toStr(item.tags)}:{})});
+  const s=(k,v)=>sf(x=>({...x,[k]:v}));
+  return H`<${Mbox} title=${item?'Edit Project':'Tambah Project'} onClose=${onClose}>
+    <${Fld} label="Judul"><input class="inp" value=${f.title} onInput=${e=>s('title',e.target.value)} placeholder="Project Name"/></${Fld}>
+    <${Fld} label="Deskripsi"><textarea class="inp" rows="3" onInput=${e=>s('description',e.target.value)} style="resize:vertical">${f.description}</textarea></${Fld}>
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px">
+      <${Fld} label="Kategori"><select class="inp" value=${f.category} onChange=${e=>s('category',e.target.value)}>${categories.map(c=>H`<option key=${c}>${c}</option>`)}</select></${Fld}>
+      <${Fld} label="Tahun"><input class="inp" value=${f.year} onInput=${e=>s('year',e.target.value)}/></${Fld}>
+    </div>
+    <${Fld} label="Tags" hint="koma"><input class="inp" value=${f.tags} onInput=${e=>s('tags',e.target.value)} placeholder="React, Node.js"/></${Fld}>
+    <${Fld} label="Gambar" hint="URL"><input class="inp" value=${f.image||''} onInput=${e=>s('image',e.target.value)} placeholder="https://..."/></${Fld}>
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px">
+      <${Fld} label="Link Live"><input class="inp" value=${f.liveUrl||''} onInput=${e=>s('liveUrl',e.target.value)} placeholder="https://..."/></${Fld}>
+      <${Fld} label="Link GitHub"><input class="inp" value=${f.githubUrl||''} onInput=${e=>s('githubUrl',e.target.value)} placeholder="https://..."/></${Fld}>
+    </div>
+    <div style="display:flex;align-items:center;gap:10px;margin-bottom:20px;cursor:pointer" onClick=${()=>s('featured',!f.featured)}>
+      <${Tog} on=${f.featured} onClick=${()=>{}}/>
+      <span style="font-size:14px;color:${f.featured?'var(--pl)':'var(--mu)'}">${f.featured?'⭐ Featured':'Tandai Featured'}</span>
+    </div>
+    <div style="display:flex;gap:10px;justify-content:flex-end">
+      <button class="btn-g" onClick=${onClose}>Batal</button>
+      <button class="btn-p" onClick=${()=>onSave({...f,tags:toArr(f.tags)})}><${IChk}/>${item?'Simpan':'Tambah'}</button>
+    </div>
+  </${Mbox}>`;
+}
+
+function LinkModal({item,onSave,onClose}){
+  const[f,sf]=useState({title:'',url:'',description:'',category:'',tags:'',...(item?{...item,tags:toStr(item.tags)}:{})});
+  const s=(k,v)=>sf(x=>({...x,[k]:v}));
+  return H`<${Mbox} title=${item?'Edit Link':'Tambah Link'} onClose=${onClose}>
+    <${Fld} label="Judul"><input class="inp" value=${f.title} onInput=${e=>s('title',e.target.value)} placeholder="Nama resource"/></${Fld}>
+    <${Fld} label="URL"><input class="inp" value=${f.url} onInput=${e=>s('url',e.target.value)} placeholder="https://"/></${Fld}>
+    <${Fld} label="Deskripsi" hint="opsional"><textarea class="inp" rows="2" onInput=${e=>s('description',e.target.value)} style="resize:vertical">${f.description}</textarea></${Fld}>
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px">
+      <${Fld} label="Kategori"><input class="inp" value=${f.category} onInput=${e=>s('category',e.target.value)} placeholder="Tools..."/></${Fld}>
+      <${Fld} label="Tags" hint="koma"><input class="inp" value=${f.tags} onInput=${e=>s('tags',e.target.value)} placeholder="dev, ref"/></${Fld}>
+    </div>
+    <div style="display:flex;gap:10px;justify-content:flex-end;margin-top:20px">
+      <button class="btn-g" onClick=${onClose}>Batal</button>
+      <button class="btn-p" onClick=${()=>onSave({...f,tags:toArr(f.tags)})}><${IChk}/>${item?'Simpan':'Tambah'}</button>
+    </div>
+  </${Mbox}>`;
+}
+
+function SettingsModal({ghCfg,onConnect,onDisconnect,onClose,adminMode,onToggleAdmin,onReset,onClear}){
+  const[gh,sgh]=useState({owner:'',repo:'',token:'',...ghCfg});
+  const[test,st]=useState(null);
+  const[busy,sb]=useState(false);
+  const[cfm,sc]=useState(null);
+  const runTest=async()=>{
+    sb(true);st(null);
+    try{const r=await fetch(`https://api.github.com/repos/${gh.owner}/${gh.repo}`,{headers:{Authorization:`Bearer ${gh.token}`}});
+    st(r.ok?{ok:true,msg:'✓ Berhasil! Repo ditemukan.'}:{ok:false,msg:`✕ Error ${r.status}`});}
+    catch{st({ok:false,msg:'✕ Network error.'});}
+    sb(false);
+  };
+  return H`<${Mbox} title="⚙ Pengaturan" onClose=${onClose} w=${500}>
+    <div style="margin-bottom:20px">
+      <div class="sy" style="font-size:14px;font-weight:700;color:#e2e8f0;margin-bottom:10px">🔒 Mode Admin</div>
+      <div style="display:flex;align-items:center;justify-content:space-between;padding:12px 14px;background:var(--s1);border-radius:10px;border:1px solid var(--b)">
+        <div><div style="font-size:14px;color:#e2e8f0;font-weight:500">Aktifkan mode edit</div>
+        <div style="font-size:12px;color:var(--mu)">Tambah, edit, hapus konten</div></div>
+        <${Tog} on=${adminMode} onClick=${()=>{onToggleAdmin();onClose();}}/>
+      </div>
+      <div style="margin-top:8px;font-size:12px;color:var(--mu2);padding:8px 12px;background:rgba(124,58,237,.07);border-radius:8px">💡 Atau klik footer <strong style="color:var(--pl)">5×</strong> untuk unlock admin.</div>
+    </div>
+    <div class="gl"></div>
+    <div style="margin-bottom:20px">
+      <div style="display:flex;align-items:center;gap:8px;margin-bottom:12px">
+        <${IGH} s=${16}/><span class="sy" style="font-size:14px;font-weight:700;color:#e2e8f0">GitHub Storage</span>
+        ${ghCfg&&H`<span style="margin-left:auto;font-size:11px;padding:2px 10px;border-radius:100px;background:rgba(16,185,129,.12);color:var(--g);border:1px solid rgba(16,185,129,.28);font-family:'JetBrains Mono',monospace">● Terhubung</span>`}
+      </div>
+      <div style="padding:12px;background:rgba(124,58,237,.08);border-radius:10px;border:1px solid rgba(124,58,237,.18);margin-bottom:14px;font-size:13px;color:#94a3b8;line-height:1.65">
+        <strong style="color:var(--pl);display:block;margin-bottom:4px">📌 Cara setup</strong>
+        Isi form → buat token di GitHub (Settings → Developer → Fine-grained tokens → Contents: write) → Test → Hubungkan
+      </div>
+      <${Fld} label="GitHub Username"><input class="inp" value=${gh.owner} onInput=${e=>sgh(x=>({...x,owner:e.target.value}))} placeholder="NanoMindExplorer"/></${Fld}>
+      <${Fld} label="Nama Repo"><input class="inp" value=${gh.repo} onInput=${e=>sgh(x=>({...x,repo:e.target.value}))} placeholder="nanomind"/></${Fld}>
+      <${Fld} label="Token"><input class="inp" type="password" value=${gh.token} onInput=${e=>sgh(x=>({...x,token:e.target.value}))} placeholder="ghp_xxx..."/></${Fld}>
+      ${test&&H`<div style="padding:10px;border-radius:8px;margin-bottom:10px;font-size:13px;color:${test.ok?'var(--g)':'var(--r)'};background:${test.ok?'rgba(16,185,129,.1)':'rgba(239,68,68,.1)'};border:1px solid ${test.ok?'rgba(16,185,129,.28)':'rgba(239,68,68,.28)'}">${test.msg}</div>`}
+      <div style="display:flex;gap:8px;margin-bottom:${ghCfg?8:0}px">
+        <button class="btn-g" onClick=${runTest} style="flex:1;justify-content:center">${busy?'Mengetes...':'Test Koneksi'}</button>
+        <button class="btn-p" onClick=${()=>{onConnect(gh);onClose();}} style="flex:1;justify-content:center"><${IChk}/>Hubungkan</button>
+      </div>
+      ${ghCfg&&H`<button class="btn-d" onClick=${()=>{onDisconnect();onClose();}} style="width:100%;justify-content:center">Putuskan GitHub</button>`}
+    </div>
+    <div class="gl"></div>
+    <div>
+      <div class="sy" style="font-size:14px;font-weight:700;color:var(--r);margin-bottom:10px">⚠ Danger Zone</div>
+      <div style="display:flex;gap:8px">
+        <button class="btn-d" onClick=${()=>sc('reset')} style="flex:1;justify-content:center">Reset Demo</button>
+        <button class="btn-d" onClick=${()=>sc('clear')} style="flex:1;justify-content:center">Hapus Semua</button>
+      </div>
+      ${cfm&&H`<div class="cfm"><span style="font-size:13px;color:#fca5a5">${cfm==='reset'?'Reset ke demo?':'Hapus semua?'}</span>
+        <div style="display:flex;gap:6px">
+          <button class="btn-g" style="font-size:12px;padding:5px 10px" onClick=${()=>sc(null)}>Batal</button>
+          <button class="btn-d" onClick=${()=>{cfm==='reset'?onReset():onClear();sc(null);onClose();}}>Ya</button>
+        </div></div>`}
+    </div>
+  </${Mbox}>`;
+}
+
+function ProjectCard({p,admin,onEdit,onDel,onFeat}){
+  const tags=toArr(p.tags);
+  const em={Design:'🎨',Mobile:'📱','Open Source':'🛠️'};
+  return H`<div class="glass gh" style="padding:20px;position:relative">
+    ${p.featured&&H`<div class="feat-badge">⭐ Featured</div>`}
+    <div style="width:100%;height:168px;border-radius:10px;overflow:hidden;margin-bottom:16px;display:flex;align-items:center;justify-content:center;background:linear-gradient(135deg,rgba(124,58,237,.18),rgba(6,182,212,.09));border:1px solid rgba(255,255,255,.05)">
+      ${p.image?H`<img src=${p.image} alt="" style="width:100%;height:100%;object-fit:cover" onError=${e=>e.target.style.display='none'}/>`:null}
+      <span style="font-size:44px">${em[p.category]||'💻'}</span>
+    </div>
+    <div style="display:flex;justify-content:space-between;gap:8px;margin-bottom:7px">
+      <h3 class="sy" style="font-size:16px;font-weight:700;color:#f1f5f9;line-height:1.3">${p.title}</h3>
+      <span class="mn" style="font-size:11px;color:#334155;flex-shrink:0">${p.year}</span>
+    </div>
+    <p style="font-size:13px;color:var(--mu);line-height:1.65;margin-bottom:14px">${p.description}</p>
+    <div style="display:flex;flex-wrap:wrap;gap:5px;margin-bottom:14px">
+      <span class="cat-tag">${p.category}</span>
+      ${tags.slice(0,3).map(t=>H`<span class="tag">${t}</span>`)}
+      ${tags.length>3&&H`<span class="tag" style="background:rgba(255,255,255,.04);color:#475569">+${tags.length-3}</span>`}
+    </div>
+    <div style="display:flex;gap:7px;flex-wrap:wrap;align-items:center">
+      ${p.liveUrl&&H`<a href=${p.liveUrl} target="_blank" class="btn-g" style="font-size:12px;padding:6px 12px"><${IExt}/>Live</a>`}
+      ${p.githubUrl&&H`<a href=${p.githubUrl} target="_blank" class="btn-g" style="font-size:12px;padding:6px 12px"><${IGH} s=${12}/>Code</a>`}
+      ${admin&&H`<div style="margin-left:auto;display:flex;gap:5px">
+        <button class="btn-g" onClick=${()=>onFeat(p.id)} style="padding:6px 8px"><${IStar} c=${p.featured?'#f59e0b':undefined}/></button>
+        <button class="btn-g" onClick=${()=>onEdit(p)} style="padding:6px 8px"><${IEdit}/></button>
+        <button class="btn-d" onClick=${()=>onDel(p.id)} style="padding:6px 8px"><${IDel}/></button>
+      </div>`}
+    </div>
+  </div>`;
+}
+
+function LinkCard({lk,admin,onEdit,onDel}){
+  const tags=toArr(lk.tags),fv=fav(lk.url);
+  return H`<div class="glass gh" style="padding:15px;border-radius:14px">
+    <div style="display:flex;gap:11px;align-items:flex-start;margin-bottom:9px">
+      <div style="width:38px;height:38px;border-radius:9px;background:var(--s2);border:1px solid var(--b);display:flex;align-items:center;justify-content:center;overflow:hidden;flex-shrink:0">
+        ${fv?H`<img src=${fv} alt="" style="width:22px;height:22px;object-fit:contain" onError=${e=>e.target.style.display='none'}/>`:H`<${ILnk}/>`}
+      </div>
+      <div style="flex:1;min-width:0">
+        <div style="display:flex;align-items:center;gap:5px;margin-bottom:2px">
+          <a href=${lk.url} target="_blank" style="font-size:14px;font-weight:700;color:#e2e8f0;text-decoration:none;font-family:'Syne',sans-serif;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;display:block">${lk.title}</a>
+          <${IExt} s=${11}/>
+        </div>
+        ${lk.category&&H`<span style="font-size:11px;color:#06b6d4;font-family:'JetBrains Mono',monospace;font-weight:600">${lk.category}</span>`}
+      </div>
+    </div>
+    ${lk.description&&H`<p style="font-size:12px;color:var(--mu);line-height:1.55;margin-bottom:9px">${lk.description}</p>`}
+    <div style="display:flex;gap:5px;flex-wrap:wrap;align-items:center">
+      ${tags.map(t=>H`<span class="tag" style="font-size:10px">${t}</span>`)}
+      ${admin&&H`<div style="margin-left:auto;display:flex;gap:5px">
+        <button class="btn-g" onClick=${()=>onEdit(lk)} style="padding:4px 8px"><${IEdit}/></button>
+        <button class="btn-d" onClick=${()=>onDel(lk.id)} style="padding:4px 8px"><${IDel}/></button>
+      </div>`}
+    </div>
+  </div>`;
+}
+
+function App(){
+  const[data,sd]=useState(null);
+  const[load,sl]=useState(true);
+  const[sav,ss]=useState(false);
+  const[ghCfg,sgc]=useState(null);
+  const[ghSha,sgs]=useState(null);
+  const[admin,sa]=useState(false);
+  const[modal,sm]=useState(null);
+  const[eit,se]=useState(null);
+  const[sec,sk]=useState('projects');
+  const[filt,sf]=useState('All');
+  const[toast,st]=useState(null);
+  const[fc,sfc]=useState(0);
+  const ft=useRef(null);
+
+  const notify=useCallback((msg,type='success')=>{st({msg,type});setTimeout(()=>st(null),3200);},[]);
+
+  useEffect(()=>{(async()=>{
+    const cfg=cLoad();if(cfg)sgc(cfg);
+    if(cfg){try{const{data:d,sha}=await ghL(cfg);if(d){sd(d);sgs(sha);sl(false);return;}}catch(e){console.warn(e.message);}}
+    sd(await sLoad()||DEF);sl(false);
+  })();},[]);
+
+  useEffect(()=>{if(data?.profile?.name)document.title=`${data.profile.name} — Portfolio`;},[data?.profile?.name]);
+
+  const save=useCallback(async nd=>{
+    ss(true);sd(nd);await sSave(nd);
+    if(ghCfg){try{const ns=await ghS(ghCfg,ghSha,nd);sgs(ns);notify('✓ Tersimpan di GitHub!');}catch(e){notify(`GitHub: ${e.message}`,'error');}}
+    else notify('✓ Tersimpan!');
+    ss(false);
+  },[ghCfg,ghSha,notify]);
+
+  const footerClick=()=>{
+    clearTimeout(ft.current);const n=fc+1;
+    if(n>=5){sa(true);sfc(0);notify('🔓 Admin mode aktif!','info');}
+    else{sfc(n);ft.current=setTimeout(()=>sfc(0),2000);}
   };
 
-  // ── SMALL COMPONENTS ───────────────────────────────────────
-  const Toast = ({ msg, type = "success" }) => (
-    <div className={`toast ${type === "success" ? "ts" : type === "error" ? "te" : "ti"}`}>
-      {type === "success" ? "✓" : type === "error" ? "✕" : "ℹ"} {msg}
-    </div>
-  );
-  const Tog = ({ on, onClick }) => <button className={`tog ${on ? "on" : ""}`} onClick={onClick} />;
-  const F   = ({ label, hint, children }) => (
-    <div style={{ marginBottom: 14 }}>
-      <label style={{ display: "block", fontSize: 12, fontWeight: 600, color: "#94a3b8", marginBottom: 6, letterSpacing: ".04em", textTransform: "uppercase" }}>
-        {label}{hint && <span style={{ fontWeight: 400, color: "var(--mu2)", marginLeft: 6, textTransform: "none" }}>({hint})</span>}
-      </label>
-      {children}
-    </div>
-  );
-  const Mbox = ({ title, children, onClose, w = 540 }) => (
-    <div className="backdrop" onClick={e => e.target === e.currentTarget && onClose()}>
-      <div className="modal" style={{ maxWidth: w }}>
-        <div style={{ padding: "22px 24px 0", display: "flex", justifyContent: "space-between", alignItems: "center" }}>
-          <h3 className="sy" style={{ fontSize: 18, fontWeight: 700, color: "#f1f5f9" }}>{title}</h3>
-          <button className="btn-g" onClick={onClose} style={{ padding: 7 }}><Ic.X style={{ width: 15, height: 15 }} /></button>
-        </div>
-        <div style={{ padding: "18px 24px 26px" }}>{children}</div>
-      </div>
-    </div>
-  );
-  const Empty = ({ icon, title, sub, cta }) => (
-    <div style={{ textAlign: "center", padding: "72px 20px" }}>
-      <div style={{ fontSize: 50, marginBottom: 14 }}>{icon}</div>
-      <div className="sy" style={{ fontSize: 18, fontWeight: 700, color: "#e2e8f0", marginBottom: 8 }}>{title}</div>
-      <div style={{ fontSize: 14, color: "var(--mu)", marginBottom: 24 }}>{sub}</div>
-      {cta}
-    </div>
-  );
+  if(load)return H`<div style="min-height:100vh;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:14px">
+    <div style="width:36px;height:36px;border:3px solid rgba(124,58,237,.3);border-top-color:#7c3aed;border-radius:50%;animation:spin .8s linear infinite"></div>
+    <span style="color:var(--mu);font-size:13px">Memuat portfolio…</span>
+  </div>`;
 
-  // ── MODALS ─────────────────────────────────────────────────
-  function ProfileModal({ profile, onSave, onClose }) {
-    const [f, setF] = useState({ ...profile, social: { ...profile.social } });
-    const s  = (k, v) => setF(x => ({ ...x, [k]: v }));
-    const ss = (k, v) => setF(x => ({ ...x, social: { ...x.social, [k]: v } }));
-    return (
-      <Mbox title="Edit Profil" onClose={onClose}>
-        <F label="Nama Lengkap"><input className="inp" value={f.name} onChange={e => s("name", e.target.value)} placeholder="Nama Anda" /></F>
-        <F label="Tagline"><input className="inp" value={f.title} onChange={e => s("title", e.target.value)} placeholder="Creative Developer" /></F>
-        <F label="Bio"><textarea className="inp" rows={3} value={f.bio} onChange={e => s("bio", e.target.value)} style={{ resize: "vertical" }} /></F>
-        <F label="Foto Profil" hint="URL"><input className="inp" value={f.avatar || ""} onChange={e => s("avatar", e.target.value)} placeholder="https://..." /></F>
-        <div style={{ marginBottom: 14 }}>
-          <label style={{ display: "block", fontSize: 12, fontWeight: 600, color: "#94a3b8", marginBottom: 8, letterSpacing: ".04em", textTransform: "uppercase" }}>Social Links</label>
-          {[["github","GitHub URL"],["twitter","Twitter/X URL"],["linkedin","LinkedIn URL"],["email","Email"]].map(([k, ph]) => (
-            <input key={k} className="inp" style={{ marginBottom: 8 }} value={f.social[k] || ""} onChange={e => ss(k, e.target.value)} placeholder={ph} />
-          ))}
-        </div>
-        <div style={{ display: "flex", gap: 10, justifyContent: "flex-end" }}>
-          <button className="btn-g" onClick={onClose}>Batal</button>
-          <button className="btn-p" onClick={() => onSave(f)}><Ic.Chk style={{ width: 14, height: 14 }} />Simpan Profil</button>
-        </div>
-      </Mbox>
-    );
-  }
+  const{profile,projects=[],links=[],categories=[]}=data;
+  const cats=['All',...categories];
+  const shown=filt==='All'?projects:projects.filter(p=>p.category===filt);
+  const openM=(t,item=null)=>{se(item);sm(t);};
+  const spj=async proj=>{const fp={...proj,id:proj.id||uid()};await save({...data,projects:eit?projects.map(p=>p.id===fp.id?fp:p):[...projects,fp]});sm(null);};
+  const slk=async lk=>{const fl={...lk,id:lk.id||uid()};await save({...data,links:eit?links.map(l=>l.id===fl.id?fl:l):[...links,fl]});sm(null);};
 
-  function ProjectModal({ item, categories, onSave, onClose }) {
-    const [f, setF] = useState({ title: "", description: "", image: "", category: categories[0] || "Web App", tags: "", liveUrl: "", githubUrl: "", featured: false, year: String(new Date().getFullYear()), ...(item ? { ...item, tags: str2(item.tags) } : {}) });
-    const s = (k, v) => setF(x => ({ ...x, [k]: v }));
-    return (
-      <Mbox title={item ? "Edit Project" : "Tambah Project"} onClose={onClose}>
-        <F label="Judul"><input className="inp" value={f.title} onChange={e => s("title", e.target.value)} placeholder="My Awesome Project" /></F>
-        <F label="Deskripsi"><textarea className="inp" rows={3} value={f.description} onChange={e => s("description", e.target.value)} style={{ resize: "vertical" }} /></F>
-        <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 12 }}>
-          <F label="Kategori"><select className="inp" value={f.category} onChange={e => s("category", e.target.value)} style={{ cursor: "pointer" }}>{categories.map(c => <option key={c} value={c}>{c}</option>)}</select></F>
-          <F label="Tahun"><input className="inp" value={f.year} onChange={e => s("year", e.target.value)} /></F>
-        </div>
-        <F label="Tags" hint="pisah koma"><input className="inp" value={f.tags} onChange={e => s("tags", e.target.value)} placeholder="React, TypeScript" /></F>
-        <F label="Gambar Preview" hint="URL"><input className="inp" value={f.image || ""} onChange={e => s("image", e.target.value)} placeholder="https://..." /></F>
-        <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 12 }}>
-          <F label="Link Live"><input className="inp" value={f.liveUrl || ""} onChange={e => s("liveUrl", e.target.value)} placeholder="https://..." /></F>
-          <F label="Link GitHub"><input className="inp" value={f.githubUrl || ""} onChange={e => s("githubUrl", e.target.value)} placeholder="https://github.com/..." /></F>
-        </div>
-        <div style={{ display: "flex", alignItems: "center", gap: 10, marginBottom: 22, cursor: "pointer" }} onClick={() => s("featured", !f.featured)}>
-          <Tog on={f.featured} onClick={() => {}} />
-          <span style={{ fontSize: 14, color: f.featured ? "var(--pl)" : "var(--mu)" }}>{f.featured ? "⭐ Featured project" : "Tandai sebagai Featured"}</span>
-        </div>
-        <div style={{ display: "flex", gap: 10, justifyContent: "flex-end" }}>
-          <button className="btn-g" onClick={onClose}>Batal</button>
-          <button className="btn-p" onClick={() => onSave({ ...f, tags: arr(f.tags) })}><Ic.Chk style={{ width: 14, height: 14 }} />{item ? "Simpan" : "Tambahkan"}</button>
-        </div>
-      </Mbox>
-    );
-  }
+  return H`<${Fragment}>
+    <div class="orb1"></div><div class="orb2"></div><div class="orb3"></div>
+    ${admin&&H`<div class="abar"></div>`}
+    ${toast&&H`<${Toast} ...${toast}/>`}
 
-  function LinkModal({ item, onSave, onClose }) {
-    const [f, setF] = useState({ title: "", url: "", description: "", category: "", tags: "", ...(item ? { ...item, tags: str2(item.tags) } : {}) });
-    const s = (k, v) => setF(x => ({ ...x, [k]: v }));
-    return (
-      <Mbox title={item ? "Edit Link" : "Tambah Link"} onClose={onClose}>
-        <F label="Judul"><input className="inp" value={f.title} onChange={e => s("title", e.target.value)} placeholder="Nama resource" /></F>
-        <F label="URL"><input className="inp" value={f.url} onChange={e => s("url", e.target.value)} placeholder="https://..." type="url" /></F>
-        <F label="Deskripsi" hint="opsional"><textarea className="inp" rows={2} value={f.description} onChange={e => s("description", e.target.value)} style={{ resize: "vertical" }} /></F>
-        <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 12 }}>
-          <F label="Kategori"><input className="inp" value={f.category} onChange={e => s("category", e.target.value)} placeholder="Tools, Learning..." /></F>
-          <F label="Tags" hint="koma"><input className="inp" value={f.tags} onChange={e => s("tags", e.target.value)} placeholder="dev, resource" /></F>
+    <nav style=${{marginTop:admin?3:0}}>
+      <div class="nav-in">
+        <div style="display:flex;align-items:center;gap:9px">
+          <div style="width:8px;height:8px;border-radius:50%;background:linear-gradient(135deg,#7c3aed,#06b6d4);animation:pulse 2s ease infinite"></div>
+          <span class="sy" style="font-size:15px;font-weight:700;color:#f1f5f9">${profile.name||'Portfolio'}</span>
+          ${admin&&H`<span style="font-size:10px;padding:2px 8px;border-radius:100px;background:rgba(239,68,68,.14);color:var(--r);border:1px solid rgba(239,68,68,.28);font-family:'JetBrains Mono',monospace;font-weight:700">ADMIN</span>`}
+          ${ghCfg&&H`<span style="font-size:10px;padding:2px 8px;border-radius:100px;background:rgba(16,185,129,.1);color:var(--g);border:1px solid rgba(16,185,129,.22);font-family:'JetBrains Mono',monospace">GH ✓</span>`}
         </div>
-        <div style={{ display: "flex", gap: 10, justifyContent: "flex-end", marginTop: 20 }}>
-          <button className="btn-g" onClick={onClose}>Batal</button>
-          <button className="btn-p" onClick={() => onSave({ ...f, tags: arr(f.tags) })}><Ic.Chk style={{ width: 14, height: 14 }} />{item ? "Simpan" : "Tambahkan"}</button>
-        </div>
-      </Mbox>
-    );
-  }
-
-  function SettingsModal({ ghCfg, onConnect, onDisconnect, onClose, adminMode, onToggleAdmin, onReset, onClear }) {
-    const [gh, setGh] = useState({ owner: "", repo: "", token: "", ...ghCfg });
-    const [test, setT] = useState(null);
-    const [busy, setBz] = useState(false);
-    const [cfm, setCfm] = useState(null);
-    const runTest = async () => {
-      setBz(true); setT(null);
-      try {
-        const r = await fetch(`https://api.github.com/repos/${gh.owner}/${gh.repo}`, { headers: { Authorization: `Bearer ${gh.token}` } });
-        setT(r.ok ? { ok: true, msg: "✓ Berhasil! Repository ditemukan." } : { ok: false, msg: `✕ Error ${r.status}. Cek username, repo, dan token.` });
-      } catch { setT({ ok: false, msg: "✕ Network error." }); }
-      setBz(false);
-    };
-    return (
-      <Mbox title="⚙ Pengaturan" onClose={onClose} w={520}>
-        <div style={{ marginBottom: 20 }}>
-          <div className="sy" style={{ fontSize: 14, fontWeight: 700, color: "#e2e8f0", marginBottom: 10 }}>🔒 Mode Admin</div>
-          <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", padding: "12px 14px", background: "var(--s1)", borderRadius: 10, border: "1px solid var(--b)" }}>
-            <div>
-              <div style={{ fontSize: 14, color: "#e2e8f0", fontWeight: 500 }}>Aktifkan mode edit</div>
-              <div style={{ fontSize: 12, color: "var(--mu)", marginTop: 2 }}>Tambah, edit, dan hapus konten portfolio</div>
-            </div>
-            <Tog on={adminMode} onClick={() => { onToggleAdmin(); onClose(); }} />
-          </div>
-          <div style={{ marginTop: 8, fontSize: 12, color: "var(--mu2)", padding: "8px 12px", background: "rgba(124,58,237,.07)", borderRadius: 8 }}>
-            💡 Klik teks footer <strong style={{ color: "var(--pl)" }}>5×</strong> untuk masuk admin mode tanpa buka settings.
-          </div>
-        </div>
-        <div className="gl" />
-        <div style={{ marginBottom: 20 }}>
-          <div style={{ display: "flex", alignItems: "center", gap: 8, marginBottom: 12 }}>
-            <Ic.GH style={{ width: 17, height: 17, color: "var(--pl)" }} />
-            <span className="sy" style={{ fontSize: 14, fontWeight: 700, color: "#e2e8f0" }}>GitHub Storage</span>
-            {ghCfg && <span style={{ marginLeft: "auto", fontSize: 11, padding: "2px 10px", borderRadius: "100px", background: "rgba(16,185,129,.12)", color: "var(--g)", border: "1px solid rgba(16,185,129,.28)", fontFamily: "JetBrains Mono" }}>● Terhubung</span>}
-          </div>
-          <div style={{ padding: "12px 14px", background: "rgba(124,58,237,.08)", borderRadius: 10, border: "1px solid rgba(124,58,237,.18)", marginBottom: 14, fontSize: 13, color: "#94a3b8", lineHeight: 1.65 }}>
-            <strong style={{ color: "var(--pl)", display: "block", marginBottom: 5 }}>📌 Setup GitHub Pages</strong>
-            1. Buat repo GitHub (misal: <code style={{ fontFamily: "JetBrains Mono", fontSize: 12, color: "#c4b5fd", background: "rgba(255,255,255,.08)", padding: "1px 5px", borderRadius: 3 }}>my-portfolio</code>)<br/>
-            2. Upload file <code style={{ fontFamily: "JetBrains Mono", fontSize: 12, color: "#c4b5fd", background: "rgba(255,255,255,.08)", padding: "1px 5px", borderRadius: 3 }}>index.html</code> ini ke repo<br/>
-            3. Settings → Pages → Deploy from main branch<br/>
-            4. Buat token di Settings → Developer settings → Fine-grained tokens (scope: <code style={{ fontFamily: "JetBrains Mono", fontSize: 12, color: "#c4b5fd", background: "rgba(255,255,255,.08)", padding: "1px 5px", borderRadius: 3 }}>contents: write</code>)<br/>
-            5. Isi form di bawah dan klik Hubungkan!
-          </div>
-          <F label="GitHub Username"><input className="inp" value={gh.owner} onChange={e => setGh(x => ({ ...x, owner: e.target.value }))} placeholder="usernamekamu" /></F>
-          <F label="Nama Repository"><input className="inp" value={gh.repo} onChange={e => setGh(x => ({ ...x, repo: e.target.value }))} placeholder="my-portfolio" /></F>
-          <F label="Personal Access Token"><input className="inp" value={gh.token} onChange={e => setGh(x => ({ ...x, token: e.target.value }))} placeholder="ghp_xxxxxxxxxxxxxxxx" type="password" /></F>
-          {test && <div style={{ padding: "10px 14px", borderRadius: 8, marginBottom: 10, fontSize: 13, color: test.ok ? "var(--g)" : "var(--r)", background: test.ok ? "rgba(16,185,129,.1)" : "rgba(239,68,68,.1)", border: `1px solid ${test.ok ? "rgba(16,185,129,.28)" : "rgba(239,68,68,.28)"}` }}>{test.msg}</div>}
-          <div style={{ display: "flex", gap: 8, marginBottom: ghCfg ? 8 : 0 }}>
-            <button className="btn-g" onClick={runTest} disabled={busy} style={{ flex: 1, justifyContent: "center" }}>{busy ? "Mengetes..." : "Test Koneksi"}</button>
-            <button className="btn-p" onClick={() => { onConnect(gh); onClose(); }} style={{ flex: 1, justifyContent: "center" }}><Ic.Chk style={{ width: 13, height: 13 }} />Simpan & Hubungkan</button>
-          </div>
-          {ghCfg && <button className="btn-d" onClick={() => { onDisconnect(); onClose(); }} style={{ width: "100%", justifyContent: "center" }}>Putuskan Koneksi GitHub</button>}
-        </div>
-        <div className="gl" />
-        <div>
-          <div className="sy" style={{ fontSize: 14, fontWeight: 700, color: "var(--r)", marginBottom: 10 }}>⚠ Zona Berbahaya</div>
-          <div style={{ display: "flex", gap: 8 }}>
-            <button className="btn-d" onClick={() => setCfm("reset")} style={{ flex: 1, justifyContent: "center" }}>Reset ke Demo</button>
-            <button className="btn-d" onClick={() => setCfm("clear")} style={{ flex: 1, justifyContent: "center" }}>Hapus Semua</button>
-          </div>
-          {cfm && <div className="cfm">
-            <span style={{ fontSize: 13, color: "#fca5a5" }}>{cfm === "reset" ? "Reset ke demo data?" : "Hapus semua data?"}</span>
-            <div style={{ display: "flex", gap: 6 }}>
-              <button className="btn-g" style={{ fontSize: 12, padding: "5px 12px" }} onClick={() => setCfm(null)}>Batal</button>
-              <button className="btn-d" onClick={() => { cfm === "reset" ? onReset() : onClear(); setCfm(null); onClose(); }}>Ya</button>
-            </div>
-          </div>}
-        </div>
-      </Mbox>
-    );
-  }
-
-  // ── CARDS ──────────────────────────────────────────────────
-  function ProjectCard({ p, admin, onEdit, onDel, onFeat }) {
-    const tags = arr(p.tags);
-    const em = { Design: "🎨", Mobile: "📱", "Open Source": "🛠️" };
-    return (
-      <div className="glass gh" style={{ padding: 20, position: "relative" }}>
-        {p.featured && <div style={{ position: "absolute", top: 14, right: 14, background: "linear-gradient(135deg,#f59e0b,#f97316)", color: "#fff", fontSize: 10, fontWeight: 700, letterSpacing: ".08em", textTransform: "uppercase", padding: "4px 10px", borderRadius: "100px", fontFamily: "JetBrains Mono" }}>⭐ Featured</div>}
-        <div style={{ width: "100%", height: 168, borderRadius: 10, overflow: "hidden", marginBottom: 16 }}>
-          {p.image && <img src={p.image} alt={p.title} style={{ width: "100%", height: "100%", objectFit: "cover" }} onError={e => e.target.style.display = "none"} />}
-          {!p.image && <div style={{ width: "100%", height: "100%", display: "flex", alignItems: "center", justifyContent: "center", background: "linear-gradient(135deg,rgba(124,58,237,.18),rgba(6,182,212,.09))", border: "1px solid rgba(255,255,255,.05)", borderRadius: 10, fontSize: 44 }}>{em[p.category] || "💻"}</div>}
-        </div>
-        <div style={{ display: "flex", justifyContent: "space-between", gap: 8, marginBottom: 7 }}>
-          <h3 className="sy" style={{ fontSize: 16, fontWeight: 700, color: "#f1f5f9", lineHeight: 1.3 }}>{p.title}</h3>
-          <span className="mn" style={{ fontSize: 11, color: "#334155", flexShrink: 0, marginTop: 3 }}>{p.year}</span>
-        </div>
-        <p style={{ fontSize: 13, color: "var(--mu)", lineHeight: 1.65, marginBottom: 14 }}>{p.description}</p>
-        <div style={{ display: "flex", flexWrap: "wrap", gap: 5, marginBottom: 14 }}>
-          <span style={{ padding: "3px 10px", borderRadius: "100px", fontSize: 11, fontWeight: 600, background: "rgba(6,182,212,.12)", color: "#06b6d4", border: "1px solid rgba(6,182,212,.2)", fontFamily: "JetBrains Mono" }}>{p.category}</span>
-          {tags.slice(0, 3).map(t => <span key={t} className="tag">{t}</span>)}
-          {tags.length > 3 && <span className="tag" style={{ background: "rgba(255,255,255,.04)", color: "#475569", border: "1px solid rgba(255,255,255,.07)" }}>+{tags.length - 3}</span>}
-        </div>
-        <div style={{ display: "flex", gap: 7, flexWrap: "wrap", alignItems: "center" }}>
-          {p.liveUrl   && <a href={p.liveUrl}   target="_blank" rel="noopener noreferrer" className="btn-g" style={{ textDecoration: "none", fontSize: 12, padding: "6px 12px" }}><Ic.Ext style={{ width: 12, height: 12 }} />Live</a>}
-          {p.githubUrl && <a href={p.githubUrl} target="_blank" rel="noopener noreferrer" className="btn-g" style={{ textDecoration: "none", fontSize: 12, padding: "6px 12px" }}><Ic.GH  style={{ width: 12, height: 12 }} />Code</a>}
-          {admin && <div style={{ marginLeft: "auto", display: "flex", gap: 5 }}>
-            <button className="btn-g" onClick={() => onFeat(p.id)} style={{ padding: "6px 8px" }}><Ic.Star style={{ width: 12, height: 12, color: p.featured ? "#f59e0b" : undefined }} /></button>
-            <button className="btn-g" onClick={() => onEdit(p)} style={{ padding: "6px 8px" }}><Ic.Edit style={{ width: 12, height: 12 }} /></button>
-            <button className="btn-d" onClick={() => onDel(p.id)} style={{ padding: "6px 8px" }}><Ic.Del style={{ width: 12, height: 12 }} /></button>
-          </div>}
+        <div style="display:flex;gap:7px;align-items:center">
+          ${sav&&H`<span style="font-size:11px;color:#334155;font-family:'JetBrains Mono',monospace">saving…</span>`}
+          ${admin&&H`<button class="btn-g" style="font-size:12px" onClick=${()=>sa(false)}>🔒 Keluar</button>`}
+          <button class="btn-g" onClick=${()=>sm('settings')} style="padding:8px"><${ICog}/></button>
         </div>
       </div>
-    );
-  }
+    </nav>
 
-  function LinkCard({ lk, admin, onEdit, onDel }) {
-    const tags = arr(lk.tags);
-    const fv   = fav(lk.url);
-    return (
-      <div className="glass gh" style={{ padding: 15, borderRadius: 14 }}>
-        <div style={{ display: "flex", gap: 11, alignItems: "flex-start", marginBottom: 9 }}>
-          <div style={{ width: 38, height: 38, borderRadius: 9, background: "var(--s2)", border: "1px solid var(--b)", display: "flex", alignItems: "center", justifyContent: "center", overflow: "hidden", flexShrink: 0 }}>
-            {fv ? <img src={fv} alt="" style={{ width: 22, height: 22, objectFit: "contain" }} onError={e => e.target.style.display = "none"} /> : <Ic.Lnk style={{ width: 16, height: 16, color: "var(--pl)" }} />}
+    <main>
+      <section style="padding:80px 0 60px;border-bottom:1px solid rgba(255,255,255,.055)">
+        <div style="display:flex;align-items:center;gap:14px;margin-bottom:26px">
+          <div style="width:66px;height:66px;border-radius:50%;overflow:hidden;border:2px solid rgba(124,58,237,.4);display:flex;align-items:center;justify-content:center;background:linear-gradient(135deg,#7c3aed,#06b6d4);flex-shrink:0">
+            ${profile.avatar?H`<img src=${profile.avatar} alt="" style="width:100%;height:100%;object-fit:cover" onError=${e=>e.target.style.display='none'}/>`:H`<span class="sy" style="font-size:24px;font-weight:800;color:#fff">${(profile.name||'?')[0].toUpperCase()}</span>`}
           </div>
-          <div style={{ flex: 1, minWidth: 0 }}>
-            <div style={{ display: "flex", alignItems: "center", gap: 5, marginBottom: 2 }}>
-              <a href={lk.url} target="_blank" rel="noopener noreferrer" style={{ fontSize: 14, fontWeight: 700, color: "#e2e8f0", textDecoration: "none", fontFamily: "Syne, sans-serif", overflow: "hidden", textOverflow: "ellipsis", whiteSpace: "nowrap", display: "block" }}>{lk.title}</a>
-              <Ic.Ext style={{ width: 11, height: 11, color: "#334155", flexShrink: 0 }} />
+          <div style="display:flex;flex-direction:column;gap:4px">
+            <div style="display:flex;align-items:center;gap:7px">
+              <div style="width:7px;height:7px;border-radius:50%;background:#10b981;box-shadow:0 0 8px #10b981;animation:pulse 2.2s ease infinite"></div>
+              <span style="font-size:13px;color:#10b981;font-weight:500">Available for work</span>
             </div>
-            {lk.category && <span style={{ fontSize: 11, color: "#06b6d4", fontFamily: "JetBrains Mono", fontWeight: 600 }}>{lk.category}</span>}
+            <span style="font-size:12px;color:var(--mu2);font-family:'JetBrains Mono',monospace">${projects.length} projects · ${links.length} links</span>
           </div>
+          ${admin&&H`<button class="btn-g" onClick=${()=>openM('profile')} style="margin-left:auto;font-size:12px"><${IEdit}/>Edit Profil</button>`}
         </div>
-        {lk.description && <p style={{ fontSize: 12, color: "var(--mu)", lineHeight: 1.55, marginBottom: 9 }}>{lk.description}</p>}
-        <div style={{ display: "flex", gap: 5, flexWrap: "wrap", alignItems: "center" }}>
-          {tags.map(t => <span key={t} className="tag" style={{ fontSize: 10 }}>{t}</span>)}
-          {admin && <div style={{ marginLeft: "auto", display: "flex", gap: 5 }}>
-            <button className="btn-g" onClick={() => onEdit(lk)} style={{ padding: "4px 8px" }}><Ic.Edit style={{ width: 11, height: 11 }} /></button>
-            <button className="btn-d" onClick={() => onDel(lk.id)} style={{ padding: "4px 8px" }}><Ic.Del style={{ width: 11, height: 11 }} /></button>
-          </div>}
+        <h1 class="sy hn" style="font-size:clamp(40px,7vw,76px);font-weight:800;line-height:1.05;color:#f1f5f9;margin-bottom:12px;letter-spacing:-1.5px">${profile.name||'Nama Anda'}</h1>
+        <div class="grad sy" style="font-size:clamp(18px,3vw,27px);font-weight:700;margin-bottom:20px">${profile.title||'Creative Developer'}</div>
+        <p style="font-size:16px;color:var(--mu);line-height:1.75;max-width:560px;margin-bottom:34px">${profile.bio}</p>
+        <div style="display:flex;gap:9px;flex-wrap:wrap">
+          ${profile.social?.github&&H`<a href=${profile.social.github} target="_blank" class="soc"><${IGH}/></a>`}
+          ${profile.social?.twitter&&H`<a href=${profile.social.twitter} target="_blank" class="soc"><${ITW}/></a>`}
+          ${profile.social?.linkedin&&H`<a href=${profile.social.linkedin} target="_blank" class="soc"><${ILI}/></a>`}
+          ${profile.social?.email&&H`<a href=${'mailto:'+profile.social.email} class="soc"><${IML}/></a>`}
+          ${admin&&!Object.values(profile.social||{}).some(Boolean)&&H`<button class="btn-g" onClick=${()=>openM('profile')} style="font-size:12px">+ Social Links</button>`}
         </div>
+      </section>
+
+      <div style="display:flex;gap:2px;padding:14px 0;border-bottom:1px solid rgba(255,255,255,.055)">
+        ${[{id:'projects',label:'Projects',count:projects.length,icon:'💻'},{id:'links',label:'Saved Links',count:links.length,icon:'🔗'}].map(t=>H`
+          <button onClick=${()=>sk(t.id)} style=${{padding:'8px 18px',borderRadius:'8px',border:'none',cursor:'pointer',fontFamily:"'Syne',sans-serif",fontSize:'14px',fontWeight:600,transition:'all .2s',background:sec===t.id?'rgba(124,58,237,.12)':'transparent',color:sec===t.id?'var(--pl)':'var(--mu)',borderBottom:`2px solid ${sec===t.id?'var(--p)':'transparent'}`}}>
+            ${t.icon} ${t.label}
+            <span style=${{marginLeft:'7px',fontSize:'11px',padding:'2px 7px',borderRadius:'100px',background:sec===t.id?'rgba(124,58,237,.2)':'rgba(255,255,255,.04)',color:sec===t.id?'var(--pl)':'#334155'}}>${t.count}</span>
+          </button>`)}
       </div>
-    );
-  }
 
-  // ── MAIN APP ───────────────────────────────────────────────
-  function App() {
-    const [data,    setData]  = useState(null);
-    const [loading, setLoad]  = useState(true);
-    const [saving,  setSave]  = useState(false);
-    const [ghCfg,   setGhCfg] = useState(null);
-    const [ghSha,   setGhSha] = useState(null);
-    const [admin,   setAdmin] = useState(false);
-    const [modal,   setModal] = useState(null);
-    const [editItm, setEit]   = useState(null);
-    const [sec,     setSec]   = useState("projects");
-    const [filt,    setFilt]  = useState("All");
-    const [toast,   setToast] = useState(null);
-    const [fclk,    setFclk]  = useState(0);
-    const ftm = useRef(null);
-
-    const notify = useCallback((msg, type = "success") => {
-      setToast({ msg, type });
-      setTimeout(() => setToast(null), 3200);
-    }, []);
-
-    useEffect(() => {
-      (async () => {
-        const cfg = cfgLoad();
-        if (cfg) setGhCfg(cfg);
-        if (cfg) {
-          try {
-            const { data: d, sha } = await ghLoad(cfg);
-            if (d) { setData(d); setGhSha(sha); setLoad(false); return; }
-          } catch (e) { console.warn("GH load:", e.message); }
-        }
-        setData(await storeLoad() || DEFAULTS);
-        setLoad(false);
-      })();
-    }, []);
-
-    useEffect(() => {
-      if (data?.profile?.name) document.title = `${data.profile.name} — Portfolio`;
-    }, [data?.profile?.name]);
-
-    const save = useCallback(async (nd) => {
-      setSave(true); setData(nd);
-      await storeSave(nd);
-      if (ghCfg) {
-        try { const ns = await ghSave(ghCfg, ghSha, nd); setGhSha(ns); notify("✓ Tersimpan di GitHub!"); }
-        catch (e) { notify(`GitHub: ${e.message}`, "error"); }
-      } else { notify("✓ Tersimpan!"); }
-      setSave(false);
-    }, [ghCfg, ghSha, notify]);
-
-    const footerClick = () => {
-      clearTimeout(ftm.current);
-      const n = fclk + 1;
-      if (n >= 5) { setAdmin(true); setFclk(0); notify("🔓 Admin mode aktif!", "info"); }
-      else { setFclk(n); ftm.current = setTimeout(() => setFclk(0), 2000); }
-    };
-
-    if (loading) return (
-      <>
-        <style>{CSS}</style>
-        <div style={{ minHeight: "100vh", display: "flex", flexDirection: "column", alignItems: "center", justifyContent: "center", gap: 14 }}>
-          <div style={{ width: 36, height: 36, border: "3px solid rgba(124,58,237,.3)", borderTopColor: "#7c3aed", borderRadius: "50%", animation: "spin2 .8s linear infinite" }} />
-          <span style={{ color: "var(--mu)", fontSize: 13 }}>Memuat portfolio…</span>
+      ${sec==='projects'&&H`<div class="sec" style="padding-top:30px">
+        <div style="display:flex;gap:7px;margin-bottom:26px;flex-wrap:wrap;align-items:center">
+          ${cats.map(c=>H`<button class=${`pill ${filt===c?'on':''}`} onClick=${()=>sf(c)}>${c}</button>`)}
+          ${admin&&H`<button class="btn-p" style="margin-left:auto;font-size:13px;padding:8px 15px" onClick=${()=>openM('project')}><${IPlus}/>Tambah Project</button>`}
         </div>
-      </>
-    );
+        ${shown.length===0
+          ?H`<${Empty} icon="💻" title="Belum ada project" sub=${admin?'Tambah project pertamamu.':'Project akan muncul di sini.'} cta=${admin&&H`<button class="btn-p" onClick=${()=>openM('project')}><${IPlus}/>Tambah</button>`}/>`
+          :H`<div class="grid-p">${shown.map(p=>H`<${ProjectCard} key=${p.id} p=${p} admin=${admin}
+            onEdit=${i=>openM('project',i)}
+            onDel=${async id=>save({...data,projects:projects.filter(x=>x.id!==id)})}
+            onFeat=${async id=>save({...data,projects:projects.map(x=>x.id===id?{...x,featured:!x.featured}:x)})}/>`)}
+          </div>`}
+      </div>`}
 
-    const { profile, projects = [], links = [], categories = [] } = data;
-    const allCats = ["All", ...categories];
-    const shown   = filt === "All" ? projects : projects.filter(p => p.category === filt);
-    const openM   = (type, item = null) => { setEit(item); setModal(type); };
-    const handleSaveProj = async (proj) => { const fp = { ...proj, id: proj.id || uid() }; const np = editItm ? projects.map(p => p.id === fp.id ? fp : p) : [...projects, fp]; await save({ ...data, projects: np }); setModal(null); };
-    const handleSaveLink = async (lk) => { const fl = { ...lk, id: lk.id || uid() }; const nl = editItm ? links.map(l => l.id === fl.id ? fl : l) : [...links, fl]; await save({ ...data, links: nl }); setModal(null); };
+      ${sec==='links'&&H`<div class="sec" style="padding-top:30px">
+        <div style="display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:22px">
+          <div><h2 class="sy" style="font-size:22px;font-weight:700;color:#e2e8f0">Saved Links</h2>
+          <p style="font-size:14px;color:var(--mu);margin-top:4px">Resource & bookmark yang dikurasi</p></div>
+          ${admin&&H`<button class="btn-p" style="font-size:13px;padding:8px 15px" onClick=${()=>openM('link')}><${IPlus}/>Tambah Link</button>`}
+        </div>
+        ${links.length===0
+          ?H`<${Empty} icon="🔗" title="Belum ada link" sub=${admin?'Mulai simpan resource.':'Link akan muncul di sini.'} cta=${admin&&H`<button class="btn-p" onClick=${()=>openM('link')}><${IPlus}/>Tambah</button>`}/>`
+          :H`<div class="grid-l">${links.map(l=>H`<${LinkCard} key=${l.id} lk=${l} admin=${admin}
+            onEdit=${i=>openM('link',i)}
+            onDel=${async id=>save({...data,links:links.filter(x=>x.id!==id)})}/>`)}
+          </div>`}
+      </div>`}
+    </main>
 
-    return (
-      <>
-        <style>{CSS}</style>
-        <div className="orb" style={{ width: 700, height: 700, top: -150, left: -200, background: "#7c3aed", opacity: .1, "--d": "14s" }} />
-        <div className="orb" style={{ width: 500, height: 500, top: "42%", right: -180, background: "#06b6d4", opacity: .07, "--d": "10s", animationDelay: "4s" }} />
-        <div className="orb" style={{ width: 400, height: 400, bottom: 60, left: "22%", background: "#ec4899", opacity: .05, "--d": "17s", animationDelay: "8s" }} />
-        {admin && <div className="abar" />}
-        {toast && <Toast {...toast} />}
+    <footer>
+      <span onClick=${footerClick} style=${{fontSize:'13px',cursor:'default',userSelect:'none',transition:'color .3s',color:fc>0?'var(--p)':'#1e293b'}}>
+        © ${new Date().getFullYear()} ${profile.name||'Portfolio'} · Made with ❤️ · GitHub Pages
+      </span>
+      ${fc>0&&fc<5&&H`<div style="font-size:11px;color:var(--pl);margin-top:5px;font-family:'JetBrains Mono',monospace">${5-fc} klik lagi untuk admin…</div>`}
+    </footer>
 
-        <nav style={{ marginTop: admin ? 3 : 0 }}>
-          <div style={{ maxWidth: 1100, margin: "0 auto", padding: "0 24px", height: 58, display: "flex", alignItems: "center", justifyContent: "space-between" }}>
-            <div style={{ display: "flex", alignItems: "center", gap: 9 }}>
-              <div style={{ width: 8, height: 8, borderRadius: "50%", background: "linear-gradient(135deg,#7c3aed,#06b6d4)", animation: "pulse 2s ease infinite" }} />
-              <span className="sy" style={{ fontSize: 15, fontWeight: 700, color: "#f1f5f9" }}>{profile.name || "Portfolio"}</span>
-              {admin  && <span style={{ fontSize: 10, padding: "2px 8px", borderRadius: "100px", background: "rgba(239,68,68,.14)", color: "var(--r)", border: "1px solid rgba(239,68,68,.28)", fontFamily: "JetBrains Mono", fontWeight: 700 }}>ADMIN</span>}
-              {ghCfg && <span style={{ fontSize: 10, padding: "2px 8px", borderRadius: "100px", background: "rgba(16,185,129,.1)", color: "var(--g)", border: "1px solid rgba(16,185,129,.22)", fontFamily: "JetBrains Mono" }}>GH ✓</span>}
-            </div>
-            <div style={{ display: "flex", gap: 7, alignItems: "center" }}>
-              {saving && <span style={{ fontSize: 11, color: "#334155", fontFamily: "JetBrains Mono" }}>saving…</span>}
-              {admin  && <button className="btn-g" style={{ fontSize: 12 }} onClick={() => setAdmin(false)}>🔒 Keluar Admin</button>}
-              <button className="btn-g" onClick={() => setModal("settings")} style={{ padding: 8 }}><Ic.Cog style={{ width: 16, height: 16 }} /></button>
-            </div>
-          </div>
-        </nav>
+    ${modal==='profile'&&H`<${ProfileModal} profile=${profile} onSave=${async p=>{await save({...data,profile:p});sm(null);}} onClose=${()=>sm(null)}/>`}
+    ${modal==='project'&&H`<${ProjectModal} item=${eit} categories=${categories} onSave=${spj} onClose=${()=>sm(null)}/>`}
+    ${modal==='link'&&H`<${LinkModal} item=${eit} onSave=${slk} onClose=${()=>sm(null)}/>`}
+    ${modal==='settings'&&H`<${SettingsModal} ghCfg=${ghCfg} adminMode=${admin}
+      onToggleAdmin=${()=>sa(a=>!a)}
+      onConnect=${cfg=>{sgc(cfg);sgs(null);cSave(cfg);notify('✓ GitHub terhubung!');}}
+      onDisconnect=${()=>{sgc(null);sgs(null);cClear();notify('GitHub terputus','info');}}
+      onReset=${async()=>{await save(DEF);notify('Reset ke demo','info');}}
+      onClear=${async()=>{await save({...DEF,projects:[],links:[]});notify('Data dihapus','info');}}
+      onClose=${()=>sm(null)}/>`}
+  </${Fragment}>`;
+}
 
-        <main style={{ maxWidth: 1100, margin: "0 auto", padding: "0 24px 80px" }}>
-          <section style={{ padding: "80px 0 60px", borderBottom: "1px solid rgba(255,255,255,.055)" }}>
-            <div style={{ display: "flex", alignItems: "center", gap: 14, marginBottom: 26 }}>
-              <div style={{ width: 66, height: 66, borderRadius: "50%", overflow: "hidden", border: "2px solid rgba(124,58,237,.4)", display: "flex", alignItems: "center", justifyContent: "center", background: "linear-gradient(135deg,#7c3aed,#06b6d4)", flexShrink: 0 }}>
-                {profile.avatar ? <img src={profile.avatar} alt="" style={{ width: "100%", height: "100%", objectFit: "cover" }} onError={e => e.target.style.display = "none"} /> : <span className="sy" style={{ fontSize: 24, fontWeight: 800, color: "#fff" }}>{(profile.name || "?")[0].toUpperCase()}</span>}
-              </div>
-              <div style={{ display: "flex", flexDirection: "column", gap: 4 }}>
-                <div style={{ display: "flex", alignItems: "center", gap: 7 }}>
-                  <div style={{ width: 7, height: 7, borderRadius: "50%", background: "#10b981", boxShadow: "0 0 8px #10b981", animation: "pulse 2.2s ease infinite" }} />
-                  <span style={{ fontSize: 13, color: "#10b981", fontWeight: 500 }}>Available for work</span>
-                </div>
-                <span style={{ fontSize: 12, color: "var(--mu2)", fontFamily: "JetBrains Mono" }}>{projects.length} projects · {links.length} links</span>
-              </div>
-              {admin && <button className="btn-g" onClick={() => openM("profile")} style={{ marginLeft: "auto", fontSize: 12 }}><Ic.Edit style={{ width: 12, height: 12 }} />Edit Profil</button>}
-            </div>
-            <h1 className="sy hn" style={{ fontSize: "clamp(40px, 7vw, 76px)", fontWeight: 800, lineHeight: 1.05, color: "#f1f5f9", marginBottom: 12, letterSpacing: "-1.5px" }}>{profile.name || "Nama Anda"}</h1>
-            <div className="grad sy" style={{ fontSize: "clamp(18px, 3vw, 27px)", fontWeight: 700, marginBottom: 20 }}>{profile.title || "Creative Developer"}</div>
-            <p style={{ fontSize: 16, color: "var(--mu)", lineHeight: 1.75, maxWidth: 560, marginBottom: 34 }}>{profile.bio}</p>
-            <div style={{ display: "flex", gap: 9, flexWrap: "wrap" }}>
-              {profile.social?.github   && <a href={profile.social.github}            target="_blank" rel="noopener noreferrer" className="soc"><Ic.GH style={{ width: 17, height: 17 }} /></a>}
-              {profile.social?.twitter  && <a href={profile.social.twitter}           target="_blank" rel="noopener noreferrer" className="soc"><Ic.TW style={{ width: 17, height: 17 }} /></a>}
-              {profile.social?.linkedin && <a href={profile.social.linkedin}          target="_blank" rel="noopener noreferrer" className="soc"><Ic.LI style={{ width: 17, height: 17 }} /></a>}
-              {profile.social?.email    && <a href={`mailto:${profile.social.email}`} className="soc"><Ic.ML style={{ width: 17, height: 17 }} /></a>}
-              {admin && !Object.values(profile.social || {}).some(Boolean) && <button className="btn-g" onClick={() => openM("profile")} style={{ fontSize: 12 }}>+ Tambah Social Links</button>}
-            </div>
-          </section>
-
-          <div style={{ display: "flex", gap: 2, padding: "14px 0", borderBottom: "1px solid rgba(255,255,255,.055)" }}>
-            {[{ id: "projects", label: "Projects", count: projects.length, icon: "💻" }, { id: "links", label: "Saved Links", count: links.length, icon: "🔗" }].map(t => (
-              <button key={t.id} onClick={() => setSec(t.id)} style={{ padding: "8px 18px", borderRadius: 8, border: "none", cursor: "pointer", fontFamily: "Syne, sans-serif", fontSize: 14, fontWeight: 600, transition: "all .2s", background: sec === t.id ? "rgba(124,58,237,.12)" : "transparent", color: sec === t.id ? "var(--pl)" : "var(--mu)", borderBottom: `2px solid ${sec === t.id ? "var(--p)" : "transparent"}` }}>
-                {t.icon} {t.label} <span style={{ marginLeft: 7, fontSize: 11, padding: "2px 7px", borderRadius: "100px", background: sec === t.id ? "rgba(124,58,237,.2)" : "rgba(255,255,255,.04)", color: sec === t.id ? "var(--pl)" : "#334155" }}>{t.count}</span>
-              </button>
-            ))}
-          </div>
-
-          {sec === "projects" && (
-            <div className="sec" style={{ paddingTop: 30 }}>
-              <div style={{ display: "flex", gap: 7, marginBottom: 26, flexWrap: "wrap", alignItems: "center" }}>
-                {allCats.map(c => <button key={c} className={`pill ${filt === c ? "on" : ""}`} onClick={() => setFilt(c)}>{c}</button>)}
-                {admin && <button className="btn-p" style={{ marginLeft: "auto", fontSize: 13, padding: "8px 15px" }} onClick={() => openM("project")}><Ic.Plus style={{ width: 15, height: 15 }} />Tambah Project</button>}
-              </div>
-              {shown.length === 0
-                ? <Empty icon="💻" title="Belum ada project" sub={admin ? "Tambahkan project pertamamu." : "Project akan muncul di sini."} cta={admin && <button className="btn-p" onClick={() => openM("project")}><Ic.Plus style={{ width: 15, height: 15 }} />Tambah Sekarang</button>} />
-                : <div className="grid-p">{shown.map(p => <ProjectCard key={p.id} p={p} admin={admin} onEdit={i => openM("project", i)} onDel={async id => await save({ ...data, projects: projects.filter(x => x.id !== id) })} onFeat={async id => await save({ ...data, projects: projects.map(x => x.id === id ? { ...x, featured: !x.featured } : x) })} />)}</div>
-              }
-            </div>
-          )}
-          {sec === "links" && (
-            <div className="sec" style={{ paddingTop: 30 }}>
-              <div style={{ display: "flex", justifyContent: "space-between", alignItems: "flex-start", marginBottom: 22 }}>
-                <div>
-                  <h2 className="sy" style={{ fontSize: 22, fontWeight: 700, color: "#e2e8f0" }}>Saved Links</h2>
-                  <p style={{ fontSize: 14, color: "var(--mu)", marginTop: 4 }}>Resource & bookmark yang dikurasi</p>
-                </div>
-                {admin && <button className="btn-p" style={{ fontSize: 13, padding: "8px 15px" }} onClick={() => openM("link")}><Ic.Plus style={{ width: 15, height: 15 }} />Tambah Link</button>}
-              </div>
-              {links.length === 0
-                ? <Empty icon="🔗" title="Belum ada link" sub={admin ? "Mulai simpan resource." : "Link akan muncul di sini."} cta={admin && <button className="btn-p" onClick={() => openM("link")}><Ic.Plus style={{ width: 15, height: 15 }} />Tambah Sekarang</button>} />
-                : <div className="grid-l">{links.map(l => <LinkCard key={l.id} lk={l} admin={admin} onEdit={i => openM("link", i)} onDel={async id => await save({ ...data, links: links.filter(x => x.id !== id) })} />)}</div>
-              }
-            </div>
-          )}
-        </main>
-
-        <footer style={{ borderTop: "1px solid rgba(255,255,255,.05)", padding: "24px", textAlign: "center" }}>
-          <span onClick={footerClick} style={{ fontSize: 13, cursor: "default", userSelect: "none", transition: "color .3s", color: fclk > 0 ? "var(--p)" : "#1e293b" }}>
-            © {new Date().getFullYear()} {profile.name || "Portfolio"} · Made with ❤️ · Hosted on GitHub Pages
-          </span>
-          {fclk > 0 && fclk < 5 && <div style={{ fontSize: 11, color: "var(--pl)", marginTop: 5, fontFamily: "JetBrains Mono" }}>{5 - fclk} klik lagi untuk admin mode…</div>}
-        </footer>
-
-        {modal === "profile"  && <ProfileModal  profile={profile} onSave={async p => { await save({ ...data, profile: p }); setModal(null); }} onClose={() => setModal(null)} />}
-        {modal === "project"  && <ProjectModal  item={editItm} categories={categories} onSave={handleSaveProj} onClose={() => setModal(null)} />}
-        {modal === "link"     && <LinkModal     item={editItm} onSave={handleSaveLink} onClose={() => setModal(null)} />}
-        {modal === "settings" && <SettingsModal ghCfg={ghCfg} adminMode={admin} onToggleAdmin={() => setAdmin(a => !a)} onConnect={cfg => { setGhCfg(cfg); setGhSha(null); cfgSave(cfg); notify("✓ GitHub terhubung!"); }} onDisconnect={() => { setGhCfg(null); setGhSha(null); cfgClear(); notify("GitHub terputus", "info"); }} onReset={async () => { await save(DEFAULTS); notify("Reset ke demo", "info"); }} onClear={async () => { await save({ ...DEFAULTS, projects: [], links: [] }); notify("Data dihapus", "info"); }} onClose={() => setModal(null)} />}
-      </>
-    );
-  }
-
-  // ── RENDER ─────────────────────────────────────────────────
-  ReactDOM.createRoot(document.getElementById('root')).render(<App />);
-  </script>
+render(H`<${App}/>`,document.getElementById('app'));
+</script>
 </body>
 </html>
