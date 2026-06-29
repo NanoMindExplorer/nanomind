@@ -2,8 +2,8 @@
 // KONFIGURASI UTAMA
 // ==========================================
 const CONFIG = {
-    GITHUB_USERNAME: 'nanomindexplorer', // Ganti username GitHub Anda
-    REPO_NAME: 'nanomindexplorer.github.io', // Ganti nama repo Anda
+    GITHUB_USERNAME: 'NanoMindExplorer', // Ganti username GitHub Anda
+    REPO_NAME: 'nanomind', // Ganti nama repo Anda
     BRANCH: 'main',
     DB_FILE: 'db.json'
 };
