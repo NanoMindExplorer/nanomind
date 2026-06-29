@@ -82,6 +82,12 @@
       "title": "Telegram Chatroom",
       "url": "https://t.me/oxnlyfams",
       "icon": "fab fa-telegram"
+    },
+    {
+      "id": "mqz17gq17w7i5tvbzyi",
+      "title": "Medium",
+      "url": "https://medium.com/@0wlsky",
+      "icon": "fab fa-medium"
     }
   ]
 }
