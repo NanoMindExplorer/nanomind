@@ -1,1 +1,1 @@
-# naomind.github.com
+https://nanomindexplorer.github.io/nanomind
