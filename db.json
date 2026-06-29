@@ -1,6 +1,6 @@
 {
   "profile": {
-    "name": "Nanomind Explorer",
+    "name": "Iman Firmansyah",
     "bio": "Creative Developer crafting digital experiences with code and design.",
     "avatar": "https://avatars.githubusercontent.com/u/0?v=4",
     "logoText": "N"
@@ -12,7 +12,10 @@
       "description": "A futuristic UI kit built with React and Tailwind.",
       "image": "https://images.unsplash.com/photo-1550745165-9bc0b252726f?w=600&q=80",
       "url": "https://example.com",
-      "tags": ["UI/UX", "React"],
+      "tags": [
+        "UI/UX",
+        "React"
+      ],
       "size": "bento-item large"
     },
     {
@@ -21,7 +24,10 @@
       "description": "Real-time analytics platform.",
       "image": "https://images.unsplash.com/photo-1551288049-bebda4e38f71?w=600&q=80",
       "url": "https://example.com",
-      "tags": ["SaaS", "Next.js"],
+      "tags": [
+        "SaaS",
+        "Next.js"
+      ],
       "size": "bento-item"
     }
   ],
@@ -46,7 +52,17 @@
     }
   ],
   "links": [
-    { "id": "link1", "title": "GitHub", "url": "https://github.com/nanomindexplorer", "icon": "fab fa-github" },
-    { "id": "link2", "title": "Email Me", "url": "mailto:hello@example.com", "icon": "fas fa-envelope" }
+    {
+      "id": "link1",
+      "title": "GitHub",
+      "url": "https://github.com/nanomindexplorer",
+      "icon": "fab fa-github"
+    },
+    {
+      "id": "link2",
+      "title": "Email Me",
+      "url": "mailto:hello@example.com",
+      "icon": "fas fa-envelope"
+    }
   ]
 }
