@@ -7,18 +7,6 @@
   },
   "projects": [
     {
-      "id": "proj1",
-      "title": "Neon Interface",
-      "description": "A futuristic UI kit built with React and Tailwind.",
-      "image": "https://images.unsplash.com/photo-1550745165-9bc0b252726f?w=600&q=80",
-      "url": "https://example.com",
-      "tags": [
-        "UI/UX",
-        "React"
-      ],
-      "size": "bento-item large"
-    },
-    {
       "id": "proj2",
       "title": "AI Dashboard",
       "description": "Real-time analytics platform.",
