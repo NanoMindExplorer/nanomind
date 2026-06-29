@@ -70,6 +70,12 @@
       "title": "X",
       "url": "https://x.com/Deadmouse_jpeg",
       "icon": "fab fa-x"
+    },
+    {
+      "id": "mqyzythiqmyh8s1yu2r",
+      "title": "Instagram",
+      "url": "https://www.instagram.com/low_and.high?igsh=dXUyMjN1anp5Ymc5",
+      "icon": "fab fa-instagram"
     }
   ]
 }
