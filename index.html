@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Nanomind Explorer | Portfolio</title>
+    <title>Nanomind Explorer | Portfolio & Gallery</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -11,302 +11,134 @@
     <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800;900&family=Space+Grotesk:wght@300;400;500;600;700&display=swap" rel="stylesheet">
     <style>
         :root {
-            --bg: #050508;
-            --bg-2: #0a0a12;
-            --card: rgba(255, 255, 255, 0.02);
-            --card-hover: rgba(255, 255, 255, 0.04);
-            --border: rgba(255, 255, 255, 0.06);
-            --border-active: rgba(255, 255, 255, 0.15);
-            --text: #ffffff;
-            --text-muted: #8888aa;
-            --accent: #00f0ff; /* Cyan Neon */
-            --accent-2: #ff00e5; /* Magenta Neon */
+            --bg: #050508; --bg-2: #0a0a12;
+            --card: rgba(255, 255, 255, 0.02); --card-hover: rgba(255, 255, 255, 0.04);
+            --border: rgba(255, 255, 255, 0.06); --border-active: rgba(255, 255, 255, 0.15);
+            --text: #ffffff; --text-muted: #8888aa;
+            --accent: #00f0ff; --accent-2: #ff00e5;
         }
-        
         * { -webkit-tap-highlight-color: transparent; cursor: none; }
         html { scroll-behavior: smooth; }
-        
-        body {
-            font-family: 'Space Grotesk', sans-serif;
-            background: var(--bg);
-            color: var(--text);
-            overflow-x: hidden;
-        }
-        
+        body { font-family: 'Space Grotesk', sans-serif; background: var(--bg); color: var(--text); overflow-x: hidden; }
         .font-display { font-family: 'Outfit', sans-serif; }
         
         /* Custom Cursor */
-        .cursor-dot, .cursor-outline {
-            position: fixed;
-            top: 0; left: 0;
-            transform: translate(-50%, -50%);
-            pointer-events: none;
-            z-index: 9999;
-            border-radius: 50%;
-            transition: opacity 0.3s;
-        }
-        .cursor-dot {
-            width: 6px; height: 6px;
-            background: var(--accent);
-            box-shadow: 0 0 10px var(--accent);
-        }
-        .cursor-outline {
-            width: 40px; height: 40px;
-            border: 1px solid rgba(255, 255, 255, 0.3);
-            transition: transform 0.15s ease-out, width 0.3s, height 0.3s, border-color 0.3s;
-        }
-        .cursor-outline.hover {
-            width: 60px; height: 60px;
-            border-color: var(--accent-2);
-            background: rgba(255, 0, 229, 0.05);
-        }
+        .cursor-dot, .cursor-outline { position: fixed; top: 0; left: 0; transform: translate(-50%, -50%); pointer-events: none; z-index: 9999; border-radius: 50%; transition: opacity 0.3s; }
+        .cursor-dot { width: 6px; height: 6px; background: var(--accent); box-shadow: 0 0 10px var(--accent); }
+        .cursor-outline { width: 40px; height: 40px; border: 1px solid rgba(255, 255, 255, 0.3); transition: transform 0.15s ease-out, width 0.3s, height 0.3s, border-color 0.3s; }
+        .cursor-outline.hover { width: 60px; height: 60px; border-color: var(--accent-2); background: rgba(255, 0, 229, 0.05); }
         @media (max-width: 768px) { .cursor-dot, .cursor-outline { display: none; } * { cursor: auto; } }
         
         /* Scroll Progress */
-        .scroll-progress {
-            position: fixed; top: 0; left: 0;
-            width: 0%; height: 3px;
-            background: linear-gradient(90deg, var(--accent), var(--accent-2));
-            z-index: 100;
-            box-shadow: 0 0 10px var(--accent);
-        }
+        .scroll-progress { position: fixed; top: 0; left: 0; width: 0%; height: 3px; background: linear-gradient(90deg, var(--accent), var(--accent-2)); z-index: 100; box-shadow: 0 0 10px var(--accent); }
         
-        /* Aurora Background */
-        .aurora {
-            position: fixed; inset: 0; z-index: 0;
-            pointer-events: none; overflow: hidden;
-        }
-        .aurora-blob {
-            position: absolute; border-radius: 50%;
-            filter: blur(100px); opacity: 0.3;
-            animation: float 15s infinite ease-in-out;
-        }
+        /* Backgrounds */
+        .aurora { position: fixed; inset: 0; z-index: 0; pointer-events: none; overflow: hidden; }
+        .aurora-blob { position: absolute; border-radius: 50%; filter: blur(100px); opacity: 0.3; animation: float 15s infinite ease-in-out; }
         .blob-1 { width: 600px; height: 600px; background: var(--accent); top: -10%; left: -10%; }
         .blob-2 { width: 500px; height: 500px; background: var(--accent-2); bottom: -10%; right: -10%; animation-delay: -5s; }
         .blob-3 { width: 400px; height: 400px; background: #7700ff; top: 40%; left: 50%; animation-delay: -10s; }
+        @keyframes float { 0%, 100% { transform: translate(0, 0) scale(1); } 33% { transform: translate(80px, -80px) scale(1.2); } 66% { transform: translate(-50px, 50px) scale(0.8); } }
+        .grid-bg { position: fixed; inset: 0; z-index: 0; pointer-events: none; background-image: linear-gradient(rgba(255,255,255,0.015) 1px, transparent 1px), linear-gradient(90deg, rgba(255,255,255,0.015) 1px, transparent 1px); background-size: 40px 40px; mask-image: radial-gradient(ellipse at center, black 30%, transparent 90%); -webkit-mask-image: radial-gradient(ellipse at center, black 30%, transparent 90%); }
         
-        @keyframes float {
-            0%, 100% { transform: translate(0, 0) scale(1); }
-            33% { transform: translate(80px, -80px) scale(1.2); }
-            66% { transform: translate(-50px, 50px) scale(0.8); }
-        }
+        /* Animated Logo SVG */
+        .logo-svg { width: 36px; height: 36px; }
+        .logo-ring-outer { animation: spin 8s linear infinite; transform-origin: center; }
+        .logo-ring-inner { animation: spin 5s linear infinite reverse; transform-origin: center; }
+        @keyframes spin { from { transform: rotate(0deg); } to { transform: rotate(360deg); } }
         
-        /* Grid Overlay */
-        .grid-bg {
-            position: fixed; inset: 0; z-index: 0; pointer-events: none;
-            background-image: linear-gradient(rgba(255,255,255,0.015) 1px, transparent 1px), linear-gradient(90deg, rgba(255,255,255,0.015) 1px, transparent 1px);
-            background-size: 40px 40px;
-            mask-image: radial-gradient(ellipse at center, black 30%, transparent 90%);
-            -webkit-mask-image: radial-gradient(ellipse at center, black 30%, transparent 90%);
-        }
-        
-        /* Glass Cards */
-        .glass {
-            background: var(--card);
-            backdrop-filter: blur(20px);
-            border: 1px solid var(--border);
-            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-        }
-        
-        /* Interactive Glow Card */
-        .glow-card {
-            position: relative; overflow: hidden;
-        }
-        .glow-card::before {
-            content: '';
-            position: absolute; top: 0; left: 0; right: 0; bottom: 0;
-            background: radial-gradient(circle at var(--mouse-x) var(--mouse-y), rgba(255,255,255,0.06), transparent 40%);
-            opacity: 0; transition: opacity 0.3s;
-            pointer-events: none; z-index: 1;
-        }
+        /* Glass & Glow */
+        .glass { background: var(--card); backdrop-filter: blur(20px); border: 1px solid var(--border); transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1); }
+        .glow-card { position: relative; overflow: hidden; }
+        .glow-card::before { content: ''; position: absolute; top: 0; left: 0; right: 0; bottom: 0; background: radial-gradient(circle at var(--mouse-x) var(--mouse-y), rgba(255,255,255,0.06), transparent 40%); opacity: 0; transition: opacity 0.3s; pointer-events: none; z-index: 1; }
         .glow-card:hover::before { opacity: 1; }
         .glow-card:hover { border-color: rgba(255,255,255,0.1); transform: translateY(-2px); }
         
         /* Buttons */
-        .btn-primary {
-            background: linear-gradient(135deg, var(--accent), var(--accent-2));
-            color: #050508; font-weight: 700;
-            padding: 12px 24px; border-radius: 100px;
-            transition: all 0.3s; position: relative;
-            display: inline-flex; align-items: center; justify-content: center;
-            box-shadow: 0 0 0 0 rgba(0, 240, 255, 0.7);
-        }
+        .btn-primary { background: linear-gradient(135deg, var(--accent), var(--accent-2)); color: #050508; font-weight: 700; padding: 12px 24px; border-radius: 100px; transition: all 0.3s; display: inline-flex; align-items: center; justify-content: center; box-shadow: 0 0 0 0 rgba(0, 240, 255, 0.7); }
         .btn-primary:hover { box-shadow: 0 0 30px -5px var(--accent); transform: translateY(-2px); }
-        
-        .btn-ghost {
-            background: rgba(255,255,255,0.03);
-            border: 1px solid var(--border);
-            color: var(--text); font-weight: 500;
-            padding: 12px 24px; border-radius: 100px;
-            transition: all 0.3s;
-            display: inline-flex; align-items: center; justify-content: center;
-        }
+        .btn-ghost { background: rgba(255,255,255,0.03); border: 1px solid var(--border); color: var(--text); font-weight: 500; padding: 12px 24px; border-radius: 100px; transition: all 0.3s; display: inline-flex; align-items: center; justify-content: center; }
         .btn-ghost:hover { background: rgba(255,255,255,0.08); border-color: var(--accent); color: var(--accent); }
         
         /* Navigation */
-        .nav-link {
-            position: relative; padding: 8px 16px;
-            color: var(--text-muted); transition: color 0.2s;
-            font-weight: 500; font-size: 14px;
-        }
-        .nav-link::after {
-            content: ''; position: absolute; bottom: -2px; left: 20%;
-            width: 0; height: 1px; background: var(--accent);
-            transition: all 0.3s; box-shadow: 0 0 10px var(--accent);
-        }
+        .nav-link { position: relative; padding: 8px 16px; color: var(--text-muted); transition: color 0.2s; font-weight: 500; font-size: 14px; }
+        .nav-link::after { content: ''; position: absolute; bottom: -2px; left: 20%; width: 0; height: 1px; background: var(--accent); transition: all 0.3s; box-shadow: 0 0 10px var(--accent); }
         .nav-link:hover, .nav-link.active { color: var(--text); }
         .nav-link:hover::after, .nav-link.active::after { width: 60%; }
         
-        /* Gradient Text */
-        .gradient-text {
-            background: linear-gradient(135deg, #fff 20%, var(--accent) 50%, var(--accent-2) 80%);
-            -webkit-background-clip: text; background-clip: text;
-            -webkit-text-fill-color: transparent;
-            background-size: 200% auto; animation: shine 5s linear infinite;
-        }
+        /* Text Gradient */
+        .gradient-text { background: linear-gradient(135deg, #fff 20%, var(--accent) 50%, var(--accent-2) 80%); -webkit-background-clip: text; background-clip: text; -webkit-text-fill-color: transparent; background-size: 200% auto; animation: shine 5s linear infinite; }
         @keyframes shine { to { background-position: 200% center; } }
         
-        /* Bento Grid Layout */
-        .bento-grid {
-            display: grid;
-            grid-template-columns: repeat(6, 1fr);
-            gap: 1.5rem;
-        }
-        .bento-item { grid-column: span 2; }
-        .bento-item.large { grid-column: span 3; }
-        .bento-item.full { grid-column: span 6; }
-        @media (max-width: 768px) {
-            .bento-grid { grid-template-columns: repeat(2, 1fr); }
-            .bento-item, .bento-item.large, .bento-item.full { grid-column: span 2; }
-        }
+        /* Bento & Masonry Grids */
+        .bento-grid { display: grid; grid-template-columns: repeat(6, 1fr); gap: 1.5rem; }
+        .bento-item { grid-column: span 2; } .bento-item.large { grid-column: span 3; } .bento-item.full { grid-column: span 6; }
+        @media (max-width: 768px) { .bento-grid { grid-template-columns: repeat(2, 1fr); } .bento-item, .bento-item.large, .bento-item.full { grid-column: span 2; } }
+        
+        .masonry-grid { column-count: 3; column-gap: 1.5rem; }
+        @media (max-width: 768px) { .masonry-grid { column-count: 1; } }
+        @media (min-width: 769px) and (max-width: 1024px) { .masonry-grid { column-count: 2; } }
+        .masonry-item { break-inside: avoid; margin-bottom: 1.5rem; }
         
         /* Link Card */
-        .link-card {
-            display: flex; align-items: center; gap: 16px;
-            padding: 20px; border-radius: 20px;
-            position: relative; overflow: hidden;
-            border: 1px solid var(--border);
-            background: rgba(255,255,255,0.02);
-            transition: all 0.3s;
-        }
-        .link-card .icon-box {
-            width: 48px; height: 48px; border-radius: 12px;
-            display: flex; align-items: center; justify-content: center;
-            background: rgba(0, 240, 255, 0.1); color: var(--accent);
-            font-size: 20px; flex-shrink: 0;
-            transition: all 0.3s;
-        }
+        .link-card { display: flex; align-items: center; gap: 16px; padding: 20px; border-radius: 20px; position: relative; overflow: hidden; border: 1px solid var(--border); background: rgba(255,255,255,0.02); transition: all 0.3s; }
+        .link-card .icon-box { width: 48px; height: 48px; border-radius: 12px; display: flex; align-items: center; justify-content: center; background: rgba(0, 240, 255, 0.1); color: var(--accent); font-size: 20px; flex-shrink: 0; transition: all 0.3s; }
         .link-card:hover .icon-box { background: var(--accent); color: #050508; box-shadow: 0 0 20px var(--accent); }
         
         /* Form & Modal */
-        .input-field {
-            background: rgba(255,255,255,0.02);
-            border: 1px solid var(--border);
-            border-radius: 12px; padding: 14px 16px;
-            color: var(--text); width: 100%; transition: all 0.2s;
-            font-family: inherit; font-size: 15px;
-        }
-        .input-field:focus {
-            outline: none; border-color: var(--accent);
-            box-shadow: 0 0 0 4px rgba(0, 240, 255, 0.1);
-        }
-        
-        .modal-overlay {
-            position: fixed; inset: 0; background: rgba(0,0,0,0.8);
-            backdrop-filter: blur(12px); z-index: 100;
-            display: flex; align-items: center; justify-content: center;
-            opacity: 0; pointer-events: none; transition: opacity 0.3s; padding: 20px;
-        }
+        .input-field { background: rgba(255,255,255,0.02); border: 1px solid var(--border); border-radius: 12px; padding: 14px 16px; color: var(--text); width: 100%; transition: all 0.2s; font-family: inherit; font-size: 15px; }
+        .input-field:focus { outline: none; border-color: var(--accent); box-shadow: 0 0 0 4px rgba(0, 240, 255, 0.1); }
+        .modal-overlay { position: fixed; inset: 0; background: rgba(0,0,0,0.8); backdrop-filter: blur(12px); z-index: 100; display: flex; align-items: center; justify-content: center; opacity: 0; pointer-events: none; transition: opacity 0.3s; padding: 20px; }
         .modal-overlay.active { opacity: 1; pointer-events: auto; }
-        .modal-content {
-            background: var(--bg-2); border: 1px solid var(--border);
-            border-radius: 24px; padding: 32px; max-width: 500px; width: 100%;
-            max-height: 90vh; overflow-y: auto;
-            transform: scale(0.95) translateY(20px); transition: transform 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
-            box-shadow: 0 0 50px rgba(0, 240, 255, 0.1);
-        }
+        .modal-content { background: var(--bg-2); border: 1px solid var(--border); border-radius: 24px; padding: 32px; max-width: 500px; width: 100%; max-height: 90vh; overflow-y: auto; transform: scale(0.95) translateY(20px); transition: transform 0.4s cubic-bezier(0.34, 1.56, 0.64, 1); box-shadow: 0 0 50px rgba(0, 240, 255, 0.1); }
         .modal-overlay.active .modal-content { transform: scale(1) translateY(0); }
         
         /* Toast */
-        .toast {
-            position: fixed; bottom: 24px; right: 24px; padding: 16px 24px;
-            background: var(--bg-2); border: 1px solid var(--border);
-            border-left: 4px solid var(--accent); border-radius: 12px;
-            box-shadow: 0 10px 40px rgba(0,0,0,0.5); z-index: 200;
-            transform: translateX(120%); transition: transform 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
-            display: flex; align-items: center; gap: 12px; font-size: 14px;
-        }
-        .toast.show { transform: translateX(0); }
-        .toast.error { border-left-color: #ef4444; }
-        .toast.success { border-left-color: var(--accent); }
+        .toast { position: fixed; bottom: 24px; right: 24px; padding: 16px 24px; background: var(--bg-2); border: 1px solid var(--border); border-left: 4px solid var(--accent); border-radius: 12px; box-shadow: 0 10px 40px rgba(0,0,0,0.5); z-index: 200; transform: translateX(120%); transition: transform 0.4s cubic-bezier(0.34, 1.56, 0.64, 1); display: flex; align-items: center; gap: 12px; font-size: 14px; }
+        .toast.show { transform: translateX(0); } .toast.error { border-left-color: #ef4444; } .toast.success { border-left-color: var(--accent); }
         
-        /* Scrollbar */
-        ::-webkit-scrollbar { width: 6px; }
-        ::-webkit-scrollbar-track { background: var(--bg); }
-        ::-webkit-scrollbar-thumb { background: rgba(255,255,255,0.1); border-radius: 10px; }
-        
-        /* Reveal Animation */
-        .reveal { opacity: 0; transform: translateY(30px); transition: all 0.8s cubic-bezier(0.4, 0, 0.2, 1); }
-        .reveal.visible { opacity: 1; transform: translateY(0); }
-        
-        /* Admin Tools */
-        .admin-fab {
-            position: fixed; bottom: 24px; left: 24px;
-            width: 56px; height: 56px; border-radius: 16px;
-            background: linear-gradient(135deg, var(--accent), var(--accent-2));
-            display: flex; align-items: center; justify-content: center;
-            color: #050508; font-size: 24px; cursor: none; z-index: 50;
-            box-shadow: 0 10px 30px -5px var(--accent); transition: all 0.3s; border: none;
-        }
+        /* Scrollbar & Utils */
+        ::-webkit-scrollbar { width: 6px; } ::-webkit-scrollbar-track { background: var(--bg); } ::-webkit-scrollbar-thumb { background: rgba(255,255,255,0.1); border-radius: 10px; }
+        .reveal { opacity: 0; transform: translateY(30px); transition: all 0.8s cubic-bezier(0.4, 0, 0.2, 1); } .reveal.visible { opacity: 1; transform: translateY(0); }
+        .admin-fab { position: fixed; bottom: 24px; left: 24px; width: 56px; height: 56px; border-radius: 16px; background: linear-gradient(135deg, var(--accent), var(--accent-2)); display: flex; align-items: center; justify-content: center; color: #050508; font-size: 24px; cursor: none; z-index: 50; box-shadow: 0 10px 30px -5px var(--accent); transition: all 0.3s; border: none; }
         .admin-fab:hover { transform: scale(1.1) rotate(15deg); }
-        
-        .delete-btn, .edit-btn {
-            position: absolute; top: 12px; width: 32px; height: 32px;
-            border-radius: 8px; display: none;
-            align-items: center; justify-content: center;
-            cursor: none; transition: all 0.2s; z-index: 10; border: 1px solid transparent;
-        }
+        .delete-btn, .edit-btn { position: absolute; top: 12px; width: 32px; height: 32px; border-radius: 8px; display: none; align-items: center; justify-content: center; cursor: none; transition: all 0.2s; z-index: 10; border: 1px solid transparent; }
         .delete-btn { right: 12px; background: rgba(239, 68, 68, 0.1); color: #ef4444; border-color: rgba(239, 68, 68, 0.2); }
         .edit-btn { right: 52px; background: rgba(0, 240, 255, 0.1); color: var(--accent); border-color: rgba(0, 240, 255, 0.2); }
         .admin-mode .delete-btn, .admin-mode .edit-btn { display: flex; }
-        .delete-btn:hover { background: #ef4444; color: white; }
-        .edit-btn:hover { background: var(--accent); color: #050508; }
-        
-        /* Avatar Ring */
-        .avatar-ring {
-            position: relative; padding: 4px; border-radius: 50%;
-            background: linear-gradient(135deg, var(--accent), var(--accent-2));
-            box-shadow: 0 0 40px rgba(0, 240, 255, 0.3);
-        }
+        .delete-btn:hover { background: #ef4444; color: white; } .edit-btn:hover { background: var(--accent); color: #050508; }
+        .avatar-ring { position: relative; padding: 4px; border-radius: 50%; background: linear-gradient(135deg, var(--accent), var(--accent-2)); box-shadow: 0 0 40px rgba(0, 240, 255, 0.3); }
         .avatar-ring img { border-radius: 50%; display: block; }
     </style>
 </head>
 <body class="min-h-screen relative">
-    <!-- Custom Cursor -->
     <div class="cursor-dot" id="cursorDot"></div>
     <div class="cursor-outline" id="cursorOutline"></div>
-    
-    <!-- Scroll Progress -->
     <div class="scroll-progress" id="scrollProgress"></div>
-    
-    <!-- Backgrounds -->
-    <div class="aurora">
-        <div class="aurora-blob blob-1"></div>
-        <div class="aurora-blob blob-2"></div>
-        <div class="aurora-blob blob-3"></div>
-    </div>
+    <div class="aurora"><div class="aurora-blob blob-1"></div><div class="aurora-blob blob-2"></div><div class="aurora-blob blob-3"></div></div>
     <div class="grid-bg"></div>
     
-    <!-- Navigation -->
     <nav class="sticky top-0 z-40 backdrop-blur-xl bg-black/30 border-b border-white/5">
         <div class="max-w-7xl mx-auto px-6 py-4 flex items-center justify-between">
             <div class="flex items-center gap-3">
-                <div class="w-9 h-9 rounded-lg bg-gradient-to-br from-cyan-400 to-pink-500 flex items-center justify-center font-bold text-black text-sm" id="navLogo">N</div>
+                <!-- Animated Logo SVG -->
+                <svg class="logo-svg" viewBox="0 0 100 100">
+                    <defs>
+                        <linearGradient id="grad1" x1="0%" y1="0%" x2="100%" y2="100%">
+                            <stop offset="0%" style="stop-color:var(--accent);stop-opacity:1" />
+                            <stop offset="100%" style="stop-color:var(--accent-2);stop-opacity:1" />
+                        </linearGradient>
+                    </defs>
+                    <polygon class="logo-ring-outer" points="50,5 90,25 90,75 50,95 10,75 10,25" fill="none" stroke="url(#grad1)" stroke-width="5" stroke-linejoin="round" style="filter: drop-shadow(0 0 5px var(--accent));"/>
+                    <polygon class="logo-ring-inner" points="50,25 75,37 75,63 50,75 25,63 25,37" fill="none" stroke="url(#grad1)" stroke-width="4" stroke-linejoin="round" style="filter: drop-shadow(0 0 5px var(--accent-2));"/>
+                    <circle cx="50" cy="50" r="5" fill="url(#grad1)" style="filter: drop-shadow(0 0 10px var(--accent));" />
+                </svg>
                 <span class="font-display font-bold text-lg tracking-tight" id="navName">Nanomind</span>
             </div>
             <div class="hidden md:flex items-center gap-1">
                 <a href="#home" class="nav-link active">Home</a>
                 <a href="#portfolio" class="nav-link">Work</a>
+                <a href="#gallery" class="nav-link">Gallery</a>
                 <a href="#links" class="nav-link">Connect</a>
             </div>
             <button id="contactBtn" class="btn-ghost hidden md:flex items-center gap-2 text-sm py-2 px-4">
@@ -315,10 +147,8 @@
         </div>
     </nav>
     
-    <!-- Main Content -->
     <main class="relative z-10 px-6 pb-24">
         <div class="max-w-7xl mx-auto">
-            <!-- Hero Section -->
             <section id="home" class="min-h-[80vh] flex flex-col items-center justify-center text-center py-20">
                 <div class="avatar-ring mb-8 reveal">
                     <img id="heroAvatar" src="https://via.placeholder.com/120" alt="Avatar" class="w-36 h-36 md:w-44 md:h-44 object-cover">
@@ -331,44 +161,49 @@
                 <p class="text-gray-400 text-lg md:text-2xl max-w-2xl mb-10 reveal font-light h-8" id="heroBioTypewriter"></p>
                 <div class="flex flex-wrap gap-4 justify-center reveal">
                     <a href="#portfolio" class="btn-primary">View My Work</a>
-                    <a href="#links" class="btn-ghost">Connect With Me</a>
+                    <a href="#gallery" class="btn-ghost">View Gallery</a>
                     <button class="btn-ghost admin-only hidden" id="editProfileBtn">
                         <i class="fas fa-user-edit mr-2"></i> Edit Profile
                     </button>
                 </div>
             </section>
             
-            <!-- Portfolio Section -->
             <section id="portfolio" class="py-20">
                 <div class="flex items-center justify-between mb-12 reveal">
                     <div>
                         <p class="text-cyan-400 text-sm font-medium mb-2 tracking-widest uppercase">Portfolio</p>
-                        <h2 class="font-display font-bold text-3xl md:text-5xl tracking-tight">Selected Works</h2>
+                        <h2 class="font-display font-bold text-3xl md:text-5xl tracking-tight">My Work Gallery</h2>
                     </div>
-                    <button class="btn-primary admin-only hidden" id="addProjectBtn">
-                        <i class="fas fa-plus mr-2"></i> Add Project
-                    </button>
+                    <button class="btn-primary admin-only hidden" id="addProjectBtn"><i class="fas fa-plus mr-2"></i> Add Work</button>
                 </div>
                 <div id="projectsGrid" class="bento-grid"></div>
             </section>
             
-            <!-- Links Section -->
+            <!-- MEDIA GALLERY SECTION -->
+            <section id="gallery" class="py-20">
+                <div class="flex items-center justify-between mb-12 reveal">
+                    <div>
+                        <p class="text-pink-500 text-sm font-medium mb-2 tracking-widest uppercase">Visuals</p>
+                        <h2 class="font-display font-bold text-3xl md:text-5xl tracking-tight">Media & Moments</h2>
+                    </div>
+                    <button class="btn-primary admin-only hidden" id="addMediaBtn"><i class="fas fa-plus mr-2"></i> Add Media</button>
+                </div>
+                <div id="mediaGrid" class="masonry-grid"></div>
+            </section>
+            
             <section id="links" class="py-20">
                 <div class="flex items-center justify-between mb-12 reveal">
                     <div>
-                        <p class="text-pink-500 text-sm font-medium mb-2 tracking-widest uppercase">Connect</p>
+                        <p class="text-cyan-400 text-sm font-medium mb-2 tracking-widest uppercase">Connect</p>
                         <h2 class="font-display font-bold text-3xl md:text-5xl tracking-tight">Links & Socials</h2>
                     </div>
-                    <button class="btn-primary admin-only hidden" id="addLinkBtn">
-                        <i class="fas fa-plus mr-2"></i> Add Link
-                    </button>
+                    <button class="btn-primary admin-only hidden" id="addLinkBtn"><i class="fas fa-plus mr-2"></i> Add Link</button>
                 </div>
                 <div id="linksList" class="grid grid-cols-1 md:grid-cols-2 gap-4 max-w-3xl"></div>
             </section>
         </div>
     </main>
     
-    <!-- Footer -->
     <footer class="relative z-10 border-t border-white/5 mt-12">
         <div class="max-w-7xl mx-auto px-6 py-8 flex flex-col md:flex-row items-center justify-between gap-4">
             <p class="text-gray-600 text-sm">© <span id="footerYear"></span> <span id="footerName"></span>. All rights reserved.</p>
@@ -382,17 +217,12 @@
     <div class="modal-overlay" id="loginModal">
         <div class="modal-content">
             <div class="text-center mb-8">
-                <div class="w-16 h-16 rounded-2xl bg-gradient-to-br from-cyan-400 to-pink-500 flex items-center justify-center text-2xl text-black mx-auto mb-4">
-                    <i class="fas fa-lock"></i>
-                </div>
+                <div class="w-16 h-16 rounded-2xl bg-gradient-to-br from-cyan-400 to-pink-500 flex items-center justify-center text-2xl text-black mx-auto mb-4"><i class="fas fa-lock"></i></div>
                 <h3 class="font-display font-bold text-2xl">Admin Access</h3>
                 <p class="text-gray-400 mt-2 text-sm">Masukkan GitHub Token untuk mengedit</p>
             </div>
             <input type="password" class="input-field mb-4" id="tokenInput" placeholder="ghp_xxxxxxxxxxxxxxxxx">
-            <div class="flex gap-3">
-                <button class="btn-ghost flex-1" id="cancelLoginBtn">Cancel</button>
-                <button class="btn-primary flex-1" id="loginBtn">Login</button>
-            </div>
+            <div class="flex gap-3"><button class="btn-ghost flex-1" id="cancelLoginBtn">Cancel</button><button class="btn-primary flex-1" id="loginBtn">Login</button></div>
         </div>
     </div>
     
@@ -402,7 +232,7 @@
             <div class="space-y-4">
                 <div><label class="block text-sm text-gray-400 mb-2">Name</label><input type="text" class="input-field" id="profileName" placeholder="Your Name"></div>
                 <div><label class="block text-sm text-gray-400 mb-2">Bio</label><textarea class="input-field" id="profileBio" rows="2" placeholder="Your short bio"></textarea></div>
-                <div><label class="block text-sm text-gray-400 mb-2">Avatar URL</label><input type="text" class="input-field" id="profileAvatar" placeholder="https://..."></div>
+                <div><label class="block text-sm text-gray-400 mb-2">Avatar URL (Direct Link Image)</label><input type="text" class="input-field" id="profileAvatar" placeholder="https://..."></div>
                 <div><label class="block text-sm text-gray-400 mb-2">Logo Text (1-2 chars)</label><input type="text" maxlength="2" class="input-field" id="profileLogoText" placeholder="N"></div>
             </div>
             <div class="flex gap-3 mt-6"><button class="btn-ghost flex-1" id="cancelProfileBtn">Cancel</button><button class="btn-primary flex-1" id="saveProfileBtn">Save</button></div>
@@ -418,16 +248,29 @@
                 <div><label class="block text-sm text-gray-400 mb-2">Image URL</label><input type="text" class="input-field" id="projectImage" placeholder="https://..."></div>
                 <div><label class="block text-sm text-gray-400 mb-2">Project URL</label><input type="text" class="input-field" id="projectUrl" placeholder="https://..."></div>
                 <div><label class="block text-sm text-gray-400 mb-2">Tags (comma separated)</label><input type="text" class="input-field" id="projectTags" placeholder="web, react"></div>
-                <div>
-                    <label class="block text-sm text-gray-400 mb-2">Card Size</label>
-                    <select class="input-field" id="projectSize">
-                        <option value="bento-item">Normal</option>
-                        <option value="bento-item large">Large</option>
-                        <option value="bento-item full">Full Width</option>
-                    </select>
-                </div>
+                <div><label class="block text-sm text-gray-400 mb-2">Card Size</label><select class="input-field" id="projectSize"><option value="bento-item">Normal</option><option value="bento-item large">Large</option><option value="bento-item full">Full Width</option></select></div>
             </div>
             <div class="flex gap-3 mt-6"><button class="btn-ghost flex-1" id="cancelProjectBtn">Cancel</button><button class="btn-primary flex-1" id="saveProjectBtn">Save</button></div>
+        </div>
+    </div>
+
+    <!-- MEDIA MODAL -->
+    <div class="modal-overlay" id="mediaModal">
+        <div class="modal-content">
+            <h3 class="font-display font-bold text-2xl mb-6" id="mediaModalTitle">Add Media</h3>
+            <div class="space-y-4">
+                <div>
+                    <label class="block text-sm text-gray-400 mb-2">Media Type</label>
+                    <select class="input-field" id="mediaType">
+                        <option value="image">Image (Direct URL)</option>
+                        <option value="youtube">YouTube Video (URL)</option>
+                        <option value="video">Direct Video URL (.mp4)</option>
+                    </select>
+                </div>
+                <div><label class="block text-sm text-gray-400 mb-2">Media URL</label><input type="text" class="input-field" id="mediaUrl" placeholder="https://..."></div>
+                <div><label class="block text-sm text-gray-400 mb-2">Caption</label><textarea class="input-field" id="mediaCaption" rows="3" placeholder="Tulisan atau caption untuk media ini..."></textarea></div>
+            </div>
+            <div class="flex gap-3 mt-6"><button class="btn-ghost flex-1" id="cancelMediaBtn">Cancel</button><button class="btn-primary flex-1" id="saveMediaBtn">Save</button></div>
         </div>
     </div>
 
