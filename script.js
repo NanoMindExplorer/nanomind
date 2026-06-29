@@ -2,29 +2,11 @@
 // KONFIGURASI UTAMA - SILAHKAN EDIT BAGIAN INI
 // ==========================================
 const CONFIG = {
-    // Ganti dengan username dan repository name Anda di GitHub
-    // Contoh: jika repo Anda adalah github.com/JohnDoe/portofolio, maka:
-    GITHUB_USERNAME: 'your-username',
-    REPO_NAME: 'your-repo-name',
-    
-    // Branch yang digunakan (biasanya 'main' atau 'master')
+    GITHUB_USERNAME: 'nanomindexplorer', // Ganti dengan username GitHub Anda
+    REPO_NAME: 'nanomindexplorer.github.io', // Ganti dengan nama repository Anda
     BRANCH: 'main',
-    
-    // Nama file database JSON Anda
-    DB_FILE: 'db.json',
-    
-    // Token rahasia untuk login sebagai admin (UBAH INI!)
-    // Token ini bukan token GitHub API, melainkan password sederhana untuk masuk ke mode admin
-    ADMIN_SECRET_TOKEN: 'admin123',
-    
-    // GitHub Personal Access Token (PAT)
-    // CARA MENDAPATKAN:
-    // 1. Buka GitHub Settings > Developer settings > Personal access tokens > Fine-grained tokens
-    // 2. Klik "Generate new token"
-    // 3. Beri nama, set expiration, pilih repository Anda
-    // 4. Pada "Repository permissions", set "Contents" ke "Read and write"
-    // 5. Generate token, copy, dan paste di bawah ini
-    GITHUB_TOKEN: 'your_github_personal_access_token'
+    DB_FILE: 'db.json'
+    // Token tidak lagi ditaruh di sini demi keamanan
 };
 // ==========================================
 
@@ -70,20 +52,19 @@ function setupEventListeners() {
     // Project Form
     $('addProjectBtn').addEventListener('click', () => openProjectModal());
     $('saveProjectBtn').addEventListener('click', saveProject);
-    $('cancelProjectBtn').addEventListener('click', (e) => { closeModal('projectModal'); });
+    $('cancelProjectBtn').addEventListener('click', () => closeModal('projectModal'));
     
-    // Link Form
+    // Link Form (Typo 'website' diperbaiki menjadi 'click')
     $('addLinkBtn').addEventListener('click', () => openLinkModal());
-    $('saveLinkBtn').addEventListener('website', saveLink); // typo fixed below
+    $('saveLinkBtn').addEventListener('click', saveLink);
     $('cancelLinkBtn').addEventListener('click', () => closeModal('linkModal'));
     
-    // Contact button
+    // Contact button (Typo 'tombol:' diperbaiki menjadi 'else {')
     $('contactBtn').addEventListener('click', () => {
-        // Cari link dengan kategori email atau contact
         const contactLink = state.data?.links?.find(l => l.icon.includes('envelope') || l.icon.includes('phone'));
         if (contactLink) {
             window.open(contactLink.url, '_blank');
-        } tombol:
+        } else {
             showToast('No contact link found. Please add one in admin mode.', 'error');
         }
     });
@@ -91,8 +72,6 @@ function setupEventListeners() {
 
 // Load Data from GitHub
 async function loadData() {
-    // NOTE: Ganti URL ini dengan raw URL JSON file Anda di GitHub
-    // Contoh: https://raw.githubusercontent.com/username/repo/main/db.json
     const rawUrl = `https://raw.githubusercontent.com/${CONFIG.GITHUB_USERNAME}/${CONFIG.REPO_NAME}/${CONFIG.BRANCH}/${CONFIG.DB_FILE}`;
     
     try {
@@ -101,7 +80,6 @@ async function loadData() {
         
         state.data = await response.json();
         renderData();
-        showToast('Data loaded successfully', 'success');
     } catch (error) {
         console.error('Error loading data:', error);
         showToast('Gagal memuat data. Pastikan konfigurasi GitHub benar.', 'error');
@@ -166,7 +144,8 @@ function renderData() {
     const linksList = $('linksList');
     linksList.innerHTML = '';
     
-    if (links.length === 0) tombol:
+    // Typo 'tombol:' diperbaiki menjadi 'else {'
+    if (links.length === 0) {
         linksList.innerHTML = '<p class="text-gray-500 col-span-full text-center py-8">No links yet. Login as admin to add.</p>';
     } else {
         links.forEach(link => {
@@ -203,23 +182,25 @@ function renderData() {
     setupScrollObserver();
 }
 
-// Admin Functions
+// Admin Functions (Sistem Keamanan Baru)
 function checkAdminSession() {
-    const adminStatus = localStorage.getItem('portfolio_admin_session');
-    if (adminStatus === 'active') {
+    const adminToken = localStorage.getItem('portfolio_github_token');
+    if (adminToken) {
         state.isAdmin = true;
         document.body.classList.add('admin-mode');
         document.querySelectorAll('.admin-only').forEach(btn => btn.classList.remove('hidden'));
+        $('adminFab').innerHTML = '<i class="fas fa-sign-out-alt"></i>';
     }
 }
 
 function toggleAdminMode() {
     if (state.isAdmin) {
         // Logout
-        localStorage.removeItem('portfolio_admin_session');
+        localStorage.removeItem('portfolio_github_token');
         state.isAdmin = false;
         document.body.classList.remove('admin-mode');
         document.querySelectorAll('.admin-only').forEach(btn => btn.classList.add('hidden'));
+        $('adminFab').innerHTML = '<i class="fas fa-cog"></i>';
         showToast('Logged out from admin mode', 'success');
     } else {
         // Show login modal
@@ -229,16 +210,17 @@ function toggleAdminMode() {
 
 function handleLogin() {
     const token = $('tokenInput').value.trim();
-    if (token === CONFIG.ADMIN_SECRET_TOKEN) {
+    if (token) {
         state.isAdmin = true;
-        localStorage.setItem('portfolio_admin_session', 'active');
+        // Simpan token di localStorage browser
+        localStorage.setItem('portfolio_github_token', token);
         document.body.classList.add('admin-mode');
-        document.querySelectorAll('.admin-only').btn('hidden');
-        closeModal('loginModal');
-        showToast('Welcome back, Admin!', 'success');
+        document.querySelectorAll('.admin-only').forEach(btn => btn.classList.remove('hidden'));
         $('adminFab').innerHTML = '<i class="fas fa-sign-out-alt"></i>';
+        closeModal('loginModal');
+        showToast('Login berhasil! Mode admin aktif.', 'success');
     } else {
-        showToast('Invalid token. Access denied.', 'error');
+        showToast('Token tidak boleh kosong.', 'error');
     }
 }
 
@@ -253,7 +235,7 @@ function openProjectModal(projectId = null) {
         $('projectModalTitle').textContent = 'Edit Project';
         $('projectTitle').value = project.title || '';
         $('projectDesc').value = project.description || '';
-        ('projectImage').value = project.image || '';
+        $('projectImage').value = project.image || ''; // Typo fixed
         $('projectUrl').value = project.url || '';
         $('projectTags').value = (project.tags || []).join(', ');
     } else {
@@ -284,11 +266,9 @@ async function saveProject() {
     };
     
     if (state.editingProjectId) {
-        // Edit existing
         const index = state.data.projects.findIndex(p => p.id === state.editingProjectId);
         if (index !== -1) state.data.projects[index] = projectData;
     } else {
-        // Add new
         state.data.projects.push(projectData);
     }
     
@@ -322,7 +302,7 @@ function openLinkModal(linkId = null) {
     } else {
         $('linkModalTitle').textContent = 'Add Link';
         $('linkTitle').value = '';
-        $('linkTab').value = ''; // typo fixed below
+        $('linkUrl').value = ''; // Typo 'linkTab' fixed
         $('linkIcon').value = '';
     }
     
@@ -345,7 +325,7 @@ async function saveLink() {
     
     if (state.editingLinkId) {
         const index = state.data.links.findIndex(l => l.id === state.editingLinkId);
-        if (index !== -1) state.data.links[index] = langkaData; // typo fixed below
+        if (index !== -1) state.data.links[index] = linkData; // Typo 'langkaData' fixed
     } else {
         state.data.links.push(linkData);
     }
@@ -358,15 +338,18 @@ async function saveLink() {
 async function deleteLink(id) {
     if (!state.isAdmin) return;
     
-    if (!confirm('Are you sure you want to delete link ini?')) return;
+    if (!confirm('Are you sure you want to delete this link?')) return;
     
     state.data.links = state.data.links.filter(l => l.id !== id);
-    saveToGitHub();
+    await saveToGitHub(); // Added missing 'await'
     renderData();
 }
 
-// Save to GitHub via API
+// Save to GitHub via API (Menggunakan token dari localStorage)
 async function saveToGitHub() {
+    const token = localStorage.getItem('portfolio_github_token');
+    if (!token) return showToast('Anda belum login sebagai admin.', 'error');
+
     const url = `https://api.github.com/repos/${CONFIG.GITHUB_USERNAME}/${CONFIG.REPO_NAME}/contents/${CONFIG.DB_FILE}`;
     
     // Get current file SHA (needed for update)
@@ -395,7 +378,7 @@ async function saveToGitHub() {
         const response = await fetch(url, {
             method: 'PUT',
             headers: {
-                'Authorization': `Bearer ${CONFIG.GITHUB_TOKEN}`,
+                'Authorization': `Bearer ${token}`, // Mengambil token dari localStorage
                 'Accept': 'application/vnd.github+json',
                 'Content-Type': 'application/json'
             },
@@ -410,7 +393,7 @@ async function saveToGitHub() {
         }
     } catch (error) {
         console.error('Error saving to GitHub:', error);
-        showToast('Gagal menyimpan ke GitHub. Cek konfigurasi token.', 'error');
+        showToast('Gagal menyimpan ke GitHub. Cek token atau koneksi internet.', 'error');
     }
 }
 
@@ -444,7 +427,7 @@ function showToast(message, type = 'info') {
 }
 
 function isElementInViewport(el) {
-    const rect = el el.getBoundingClientRect(); // typo fixed below
+    const rect = el.getBoundingClientRect(); // Typo 'el el' fixed
     return (
         rect.top >= 0 &&
         rect.left >= 0 &&
