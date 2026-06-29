@@ -23,15 +23,26 @@
       "url": "https://example.com",
       "tags": ["SaaS", "Next.js"],
       "size": "bento-item"
+    }
+  ],
+  "gallery": [
+    {
+      "id": "med1",
+      "type": "image",
+      "url": "https://images.unsplash.com/photo-1620712943543-bcc4688e7485?w=800&q=80",
+      "caption": "Exploring the depths of neural networks visualization."
     },
     {
-      "id": "proj3",
-      "title": "Cyber Wallet",
-      "description": "Blockchain integrated finance app.",
-      "image": "https://images.unsplash.com/photo-1639762681485-074b7f938ba0?w=600&q=80",
-      "url": "https://example.com",
-      "tags": ["Web3", "Solidity"],
-      "size": "bento-item"
+      "id": "med2",
+      "type": "youtube",
+      "url": "https://www.youtube.com/watch?v=dQw4w9WgXcQ",
+      "caption": "My latest tech vlog about building in public."
+    },
+    {
+      "id": "med3",
+      "type": "image",
+      "url": "https://images.unsplash.com/photo-1518770660439-4636190af475?w=800&q=80",
+      "caption": "Hardware tinkering session."
     }
   ],
   "links": [
