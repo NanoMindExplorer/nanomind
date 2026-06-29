@@ -55,7 +55,7 @@
     },
     {
       "id": "link2",
-      "title": "Email Me",
+      "title": "Email",
       "url": "swastac@gmail.com",
       "icon": "fas fa-envelope"
     },
@@ -64,6 +64,12 @@
       "title": "Youtube",
       "url": "https://www.youtube.com/@Bakayaro_0/videos",
       "icon": "fab fa-youtube"
+    },
+    {
+      "id": "mqyzxfv8f1mdi9vt11b",
+      "title": "X",
+      "url": "https://x.com/Deadmouse_jpeg",
+      "icon": "fab fa-x"
     }
   ]
 }
