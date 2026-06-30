@@ -46,6 +46,12 @@
   ],
   "gallery": [
     {
+      "id": "med1",
+      "type": "youtube",
+      "url": "https://youtube.com/shorts/JyDZjTcOsqk?si=WczrQPnkvM6ybqkx",
+      "caption": "try to fix"
+    },
+    {
       "id": "med2",
       "type": "youtube",
       "url": "https://www.youtube.com/watch?v=dQw4w9WgXcQ",
@@ -62,12 +68,6 @@
       "type": "youtube",
       "url": "https://youtu.be/5_zUlEm5xpo?feature=shared",
       "caption": "NanomindOS"
-    },
-    {
-      "id": "mr12dakhdc0yo90gjng",
-      "type": "youtube",
-      "url": "https://youtube.com/shorts/JyDZjTcOsqk?si=WczrQPnkvM6ybqkx",
-      "caption": "try to fix :("
     }
   ],
   "links": [
