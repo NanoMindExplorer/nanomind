@@ -18,6 +18,19 @@
         "App"
       ],
       "size": "bento-item"
+    },
+    {
+      "id": "mr0u4b08hluuuu0t3ah",
+      "title": "NanomindOS",
+      "description": "Web3 Suit & AI Automation Terminal",
+      "image": "https://raw.githubusercontent.com/NanoMindExplorer/nanomind/main/Screenshot_20260630_224816.jpg",
+      "url": "Private Only",
+      "tags": [
+        "Solidity",
+        "JavaScript",
+        "Python"
+      ],
+      "size": "bento-item"
     }
   ],
   "gallery": [
