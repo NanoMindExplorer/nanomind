@@ -18,6 +18,18 @@
         "App"
       ],
       "size": "bento-item"
+    },
+    {
+      "id": "mr0tk2otegnuh3dtats",
+      "title": "NanomindOS",
+      "description": "Web3 Optimization & AI Automation",
+      "image": "https://youtu.be/5_zUlEm5xpo?feature=shared",
+      "url": "",
+      "tags": [
+        "Web3",
+        "AI"
+      ],
+      "size": "bento-item"
     }
   ],
   "gallery": [
