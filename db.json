@@ -47,9 +47,9 @@
   "gallery": [
     {
       "id": "med1",
-      "type": "image",
-      "url": "https://images.unsplash.com/photo-1620712943543-bcc4688e7485?w=800&q=80",
-      "caption": "Exploring the depths of neural networks visualization."
+      "type": "youtube",
+      "url": "https://youtube.com/shorts/JyDZjTcOsqk?si=WczrQPnkvM6ybqkx",
+      "caption": "try to fix"
     },
     {
       "id": "med2",
