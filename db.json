@@ -31,17 +31,6 @@
         "Python"
       ],
       "size": "bento-item"
-    },
-    {
-      "id": "mr10unoew1ix3yazvts",
-      "title": "Code Forge",
-      "description": "Terminal AI Coding Companion",
-      "image": "https://raw.githubusercontent.com/NanoMindExplorer/nanomind/main/progress.jpg",
-      "url": "https://github.com/NanoMindExplorer/codeforge-tui",
-      "tags": [
-        "Go"
-      ],
-      "size": "bento-item"
     }
   ],
   "gallery": [
