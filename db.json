@@ -74,7 +74,7 @@
     {
       "id": "link2",
       "title": "Email",
-      "url": "swastac@gmail.com",
+      "url": "mailto:swastac@gmail.com",
       "icon": "fas fa-envelope"
     },
     {
