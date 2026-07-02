@@ -47,7 +47,7 @@
       "id": "mr28yzusmcwnss8qda",
       "title": "Tunnel Terminal",
       "description": "Terminal Android yang menggabungkan kekuatan mesin C/C++ NDK (Pseudo-Terminal) dengan AI Copilot Multi-Provider untuk pengembang modern.",
-      "image": "https://raw.githubusercontent.com/NanoMindExplorer/nanomind/main/progress2.png",
+      "image": "https://raw.githubusercontent.com/NanoMindExplorer/tunnel-terminal/refs/heads/main/app/src/main/res/mipmap-anydpi-v26/ic_launcher.xml",
       "url": "https://github.com/NanoMindExplorer/tunnel-terminal",
       "tags": [
         "app",
