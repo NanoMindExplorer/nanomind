@@ -219,9 +219,9 @@
             <div class="text-center mb-8">
                 <div class="w-16 h-16 rounded-2xl bg-gradient-to-br from-cyan-400 to-pink-500 flex items-center justify-center text-2xl text-black mx-auto mb-4"><i class="fas fa-lock"></i></div>
                 <h3 class="font-display font-bold text-2xl">Admin Access</h3>
-                <p class="text-gray-400 mt-2 text-sm">Masukkan GitHub Token untuk mengedit</p>
+                <p class="text-gray-400 mt-2 text-sm">Masukkan password untuk mengedit</p>
             </div>
-            <input type="password" class="input-field mb-4" id="tokenInput" placeholder="ghp_xxxxxxxxxxxxxxxxx">
+            <input type="password" class="input-field mb-4" id="tokenInput" placeholder="Password (default: admin)">
             <div class="flex gap-3"><button class="btn-ghost flex-1" id="cancelLoginBtn">Cancel</button><button class="btn-primary flex-1" id="loginBtn">Login</button></div>
         </div>
     </div>
@@ -254,7 +254,7 @@
         </div>
     </div>
 
-    <!-- MEDIA MODAL -->
+    <!-- MEDIA MODAL (DIPERBAIKI) -->
     <div class="modal-overlay" id="mediaModal">
         <div class="modal-content">
             <h3 class="font-display font-bold text-2xl mb-6" id="mediaModalTitle">Add Media</h3>
@@ -264,6 +264,8 @@
                     <select class="input-field" id="mediaType">
                         <option value="image">Image (Direct URL)</option>
                         <option value="youtube">YouTube Video (URL)</option>
+                        <option value="youtube-short">YouTube Shorts (URL)</option>
+                        <option value="instagram">Instagram Reels/Video (URL)</option>
                         <option value="video">Direct Video URL (.mp4)</option>
                     </select>
                 </div>
@@ -286,6 +288,550 @@
         </div>
     </div>
 
-    <script src="script.js"></script>
+    <script>
+        // ============================================================
+        //  NANOMIND EXPLORER – FULL SCRIPT (localStorage based)
+        // ============================================================
+
+        // ---------- DATA ----------
+        const DEFAULT_DATA = {
+            profile: {
+                name: 'Nanomind Explorer',
+                bio: 'Creative Developer & Designer',
+                avatar: 'https://via.placeholder.com/120',
+                logoText: 'N'
+            },
+            projects: [],
+            media: [],
+            links: []
+        };
+
+        let data = { ...DEFAULT_DATA };
+        let currentAdmin = false;
+        let editingId = null; // untuk edit mode
+
+        // ---------- LOAD / SAVE ----------
+        function loadData() {
+            const stored = localStorage.getItem('nanomindData');
+            if (stored) {
+                try {
+                    data = JSON.parse(stored);
+                } catch {
+                    data = { ...DEFAULT_DATA };
+                }
+            } else {
+                data = { ...DEFAULT_DATA };
+                // tambahkan contoh media agar langsung terlihat
+                data.media.push({
+                    id: 'demo1',
+                    type: 'image',
+                    url: 'https://picsum.photos/seed/1/600/400',
+                    caption: 'Contoh gambar'
+                });
+                data.media.push({
+                    id: 'demo2',
+                    type: 'youtube-short',
+                    url: 'https://youtube.com/shorts/0k0nKzn0igc',
+                    caption: 'Contoh YouTube Shorts'
+                });
+                data.media.push({
+                    id: 'demo3',
+                    type: 'instagram',
+                    url: 'https://www.instagram.com/reel/CxYzAbcDEF/',
+                    caption: 'Contoh Instagram Reel'
+                });
+                saveData();
+            }
+        }
+
+        function saveData() {
+            localStorage.setItem('nanomindData', JSON.stringify(data));
+        }
+
+        // ---------- UTILITY ----------
+        function generateId() {
+            return Date.now().toString(36) + Math.random().toString(36).substr(2, 5);
+        }
+
+        function extractYouTubeId(url) {
+            const regex = /(?:youtube\.com\/(?:shorts\/|watch\?v=|embed\/)|youtu\.be\/)([a-zA-Z0-9_-]{11})/;
+            const match = url.match(regex);
+            return match ? match[1] : null;
+        }
+
+        function extractInstagramId(url) {
+            const regex = /instagram\.com\/(?:p|reel)\/([a-zA-Z0-9_-]+)/;
+            const match = url.match(regex);
+            return match ? match[1] : null;
+        }
+
+        // ---------- RENDER ----------
+        function renderAll() {
+            renderProfile();
+            renderProjects();
+            renderMedia();
+            renderLinks();
+            applyAdminClass();
+        }
+
+        function renderProfile() {
+            const p = data.profile || DEFAULT_DATA.profile;
+            document.getElementById('navName').textContent = p.name || 'Nanomind';
+            document.getElementById('footerName').textContent = p.name || 'Nanomind';
+            document.getElementById('heroName').textContent = p.name || 'Your Name';
+            document.getElementById('heroBioTypewriter').textContent = p.bio || '';
+            document.getElementById('heroAvatar').src = p.avatar || 'https://via.placeholder.com/120';
+            // logo text
+            const logoText = p.logoText || 'N';
+            document.querySelector('.logo-svg + span').textContent = logoText;
+            // footer year
+            document.getElementById('footerYear').textContent = new Date().getFullYear();
+        }
+
+        function renderProjects() {
+            const grid = document.getElementById('projectsGrid');
+            const projects = data.projects || [];
+            if (projects.length === 0) {
+                grid.innerHTML = `<div class="col-span-full text-center text-gray-500 py-12">Belum ada project. Tambahkan melalui Admin Panel.</div>`;
+                return;
+            }
+            grid.innerHTML = projects.map(p => `
+                <div class="glow-card glass rounded-2xl p-5 ${p.size || 'bento-item'} relative" 
+                     style="--mouse-x:50%;--mouse-y:50%;">
+                    ${currentAdmin ? `
+                        <button class="edit-btn" data-id="${p.id}" data-type="project"><i class="fas fa-pen"></i></button>
+                        <button class="delete-btn" data-id="${p.id}" data-type="project"><i class="fas fa-trash"></i></button>
+                    ` : ''}
+                    ${p.image ? `<img src="${p.image}" alt="${p.title}" class="w-full h-48 object-cover rounded-xl mb-3">` : ''}
+                    <h3 class="font-bold text-lg">${p.title}</h3>
+                    <p class="text-gray-400 text-sm mt-1">${p.desc || ''}</p>
+                    ${p.tags ? `<div class="flex flex-wrap gap-2 mt-2">${p.tags.split(',').map(t => `<span class="text-xs px-2 py-1 bg-white/5 rounded-full">${t.trim()}</span>`).join('')}</div>` : ''}
+                    ${p.url ? `<a href="${p.url}" target="_blank" class="text-cyan-400 text-sm mt-2 inline-block">Lihat Project →</a>` : ''}
+                </div>
+            `).join('');
+        }
+
+        function renderMedia() {
+            const grid = document.getElementById('mediaGrid');
+            const media = data.media || [];
+            if (media.length === 0) {
+                grid.innerHTML = `<div class="col-span-full text-center text-gray-500 py-12">Belum ada media. Tambahkan melalui Admin Panel.</div>`;
+                return;
+            }
+            grid.innerHTML = media.map(m => {
+                let content = '';
+                if (m.type === 'image') {
+                    content = `<img src="${m.url}" alt="${m.caption || 'Media'}" class="w-full h-auto rounded-xl object-cover">`;
+                } else if (m.type === 'youtube' || m.type === 'youtube-short') {
+                    const ytId = extractYouTubeId(m.url);
+                    if (ytId) {
+                        content = `
+                            <div class="relative pb-[56.25%] h-0 overflow-hidden rounded-xl">
+                                <iframe src="https://www.youtube.com/embed/${ytId}" 
+                                    class="absolute top-0 left-0 w-full h-full" 
+                                    frameborder="0" allowfullscreen>
+                                </iframe>
+                            </div>
+                        `;
+                    } else {
+                        content = `<p class="text-red-400 text-sm">Invalid YouTube URL</p>`;
+                    }
+                } else if (m.type === 'instagram') {
+                    const igId = extractInstagramId(m.url);
+                    if (igId) {
+                        content = `
+                            <div class="relative pb-[100%] h-0 overflow-hidden rounded-xl">
+                                <iframe src="https://www.instagram.com/p/${igId}/embed/" 
+                                    class="absolute top-0 left-0 w-full h-full" 
+                                    frameborder="0" allowfullscreen>
+                                </iframe>
+                            </div>
+                        `;
+                    } else {
+                        content = `<p class="text-red-400 text-sm">Invalid Instagram URL</p>`;
+                    }
+                } else if (m.type === 'video') {
+                    content = `<video controls class="w-full rounded-xl"><source src="${m.url}" type="video/mp4">Your browser does not support the video tag.</video>`;
+                } else {
+                    content = `<p class="text-gray-400 text-sm">Unsupported media type</p>`;
+                }
+
+                return `
+                    <div class="masonry-item glass rounded-xl overflow-hidden relative glow-card" 
+                         style="--mouse-x:50%;--mouse-y:50%;">
+                        ${currentAdmin ? `
+                            <button class="edit-btn" data-id="${m.id}" data-type="media"><i class="fas fa-pen"></i></button>
+                            <button class="delete-btn" data-id="${m.id}" data-type="media"><i class="fas fa-trash"></i></button>
+                        ` : ''}
+                        <div class="p-3">${content}</div>
+                        ${m.caption ? `<div class="px-4 pb-4 text-sm text-gray-300">${m.caption}</div>` : ''}
+                    </div>
+                `;
+            }).join('');
+        }
+
+        function renderLinks() {
+            const list = document.getElementById('linksList');
+            const links = data.links || [];
+            if (links.length === 0) {
+                list.innerHTML = `<div class="col-span-full text-center text-gray-500 py-12">Belum ada link. Tambahkan melalui Admin Panel.</div>`;
+                return;
+            }
+            list.innerHTML = links.map(l => `
+                <a href="${l.url}" target="_blank" class="link-card relative group">
+                    ${currentAdmin ? `
+                        <button class="edit-btn" data-id="${l.id}" data-type="link"><i class="fas fa-pen"></i></button>
+                        <button class="delete-btn" data-id="${l.id}" data-type="link"><i class="fas fa-trash"></i></button>
+                    ` : ''}
+                    <div class="icon-box"><i class="${l.icon || 'fas fa-link'}"></i></div>
+                    <span class="font-medium">${l.title}</span>
+                    <i class="fas fa-arrow-right ml-auto text-gray-600 group-hover:text-cyan-400 transition-colors"></i>
+                </a>
+            `).join('');
+        }
+
+        function applyAdminClass() {
+            document.body.classList.toggle('admin-mode', currentAdmin);
+            document.querySelectorAll('.admin-only').forEach(el => {
+                el.classList.toggle('hidden', !currentAdmin);
+            });
+        }
+
+        // ---------- TOAST ----------
+        function showToast(message, type = 'success') {
+            const toast = document.getElementById('toast');
+            if (!toast) {
+                const div = document.createElement('div');
+                div.id = 'toast';
+                div.className = 'toast';
+                document.body.appendChild(div);
+            }
+            const el = document.getElementById('toast');
+            el.textContent = message;
+            el.className = `toast ${type}`;
+            setTimeout(() => el.classList.add('show'), 10);
+            setTimeout(() => el.classList.remove('show'), 3000);
+        }
+
+        // ---------- MODAL HELPERS ----------
+        function openModal(id) {
+            document.getElementById(id).classList.add('active');
+        }
+        function closeModal(id) {
+            document.getElementById(id).classList.remove('active');
+        }
+
+        // ---------- CRUD OPERATIONS ----------
+        function addProject(dataProject) {
+            data.projects.push({ id: generateId(), ...dataProject });
+            saveData();
+            renderAll();
+            showToast('Project berhasil ditambahkan');
+        }
+
+        function updateProject(id, updated) {
+            const idx = data.projects.findIndex(p => p.id === id);
+            if (idx !== -1) {
+                data.projects[idx] = { ...data.projects[idx], ...updated };
+                saveData();
+                renderAll();
+                showToast('Project diperbarui');
+            }
+        }
+
+        function deleteProject(id) {
+            data.projects = data.projects.filter(p => p.id !== id);
+            saveData();
+            renderAll();
+            showToast('Project dihapus', 'error');
+        }
+
+        function addMedia(mediaItem) {
+            data.media.push({ id: generateId(), ...mediaItem });
+            saveData();
+            renderAll();
+            showToast('Media berhasil ditambahkan');
+        }
+
+        function updateMedia(id, updated) {
+            const idx = data.media.findIndex(m => m.id === id);
+            if (idx !== -1) {
+                data.media[idx] = { ...data.media[idx], ...updated };
+                saveData();
+                renderAll();
+                showToast('Media diperbarui');
+            }
+        }
+
+        function deleteMedia(id) {
+            data.media = data.media.filter(m => m.id !== id);
+            saveData();
+            renderAll();
+            showToast('Media dihapus', 'error');
+        }
+
+        function addLink(linkItem) {
+            data.links.push({ id: generateId(), ...linkItem });
+            saveData();
+            renderAll();
+            showToast('Link berhasil ditambahkan');
+        }
+
+        function updateLink(id, updated) {
+            const idx = data.links.findIndex(l => l.id === id);
+            if (idx !== -1) {
+                data.links[idx] = { ...data.links[idx], ...updated };
+                saveData();
+                renderAll();
+                showToast('Link diperbarui');
+            }
+        }
+
+        function deleteLink(id) {
+            data.links = data.links.filter(l => l.id !== id);
+            saveData();
+            renderAll();
+            showToast('Link dihapus', 'error');
+        }
+
+        // ---------- EVENT BINDING ----------
+        function initEvents() {
+            // Admin FAB
+            document.getElementById('adminFab').addEventListener('click', () => {
+                openModal('loginModal');
+            });
+
+            // Login
+            document.getElementById('loginBtn').addEventListener('click', () => {
+                const pass = document.getElementById('tokenInput').value;
+                if (pass === 'admin') { // password default
+                    currentAdmin = true;
+                    closeModal('loginModal');
+                    applyAdminClass();
+                    renderAll();
+                    showToast('Admin mode aktif');
+                } else {
+                    showToast('Password salah', 'error');
+                }
+            });
+            document.getElementById('cancelLoginBtn').addEventListener('click', () => {
+                closeModal('loginModal');
+            });
+
+            // Profile
+            document.getElementById('editProfileBtn').addEventListener('click', () => {
+                document.getElementById('profileName').value = data.profile.name || '';
+                document.getElementById('profileBio').value = data.profile.bio || '';
+                document.getElementById('profileAvatar').value = data.profile.avatar || '';
+                document.getElementById('profileLogoText').value = data.profile.logoText || '';
+                openModal('profileModal');
+            });
+            document.getElementById('cancelProfileBtn').addEventListener('click', () => {
+                closeModal('profileModal');
+            });
+            document.getElementById('saveProfileBtn').addEventListener('click', () => {
+                data.profile.name = document.getElementById('profileName').value.trim() || 'Nanomind';
+                data.profile.bio = document.getElementById('profileBio').value.trim() || '';
+                data.profile.avatar = document.getElementById('profileAvatar').value.trim() || 'https://via.placeholder.com/120';
+                data.profile.logoText = document.getElementById('profileLogoText').value.trim() || 'N';
+                saveData();
+                renderAll();
+                closeModal('profileModal');
+                showToast('Profile diperbarui');
+            });
+
+            // Project
+            document.getElementById('addProjectBtn').addEventListener('click', () => {
+                document.getElementById('projectModalTitle').textContent = 'Add Project';
+                document.getElementById('projectTitle').value = '';
+                document.getElementById('projectDesc').value = '';
+                document.getElementById('projectImage').value = '';
+                document.getElementById('projectUrl').value = '';
+                document.getElementById('projectTags').value = '';
+                document.getElementById('projectSize').value = 'bento-item';
+                editingId = null;
+                openModal('projectModal');
+            });
+            document.getElementById('cancelProjectBtn').addEventListener('click', () => {
+                closeModal('projectModal');
+            });
+            document.getElementById('saveProjectBtn').addEventListener('click', () => {
+                const item = {
+                    title: document.getElementById('projectTitle').value.trim(),
+                    desc: document.getElementById('projectDesc').value.trim(),
+                    image: document.getElementById('projectImage').value.trim(),
+                    url: document.getElementById('projectUrl').value.trim(),
+                    tags: document.getElementById('projectTags').value.trim(),
+                    size: document.getElementById('projectSize').value
+                };
+                if (!item.title) { showToast('Judul wajib diisi', 'error'); return; }
+                if (editingId) {
+                    updateProject(editingId, item);
+                } else {
+                    addProject(item);
+                }
+                closeModal('projectModal');
+            });
+
+            // Media
+            document.getElementById('addMediaBtn').addEventListener('click', () => {
+                document.getElementById('mediaModalTitle').textContent = 'Add Media';
+                document.getElementById('mediaType').value = 'image';
+                document.getElementById('mediaUrl').value = '';
+                document.getElementById('mediaCaption').value = '';
+                editingId = null;
+                openModal('mediaModal');
+            });
+            document.getElementById('cancelMediaBtn').addEventListener('click', () => {
+                closeModal('mediaModal');
+            });
+            document.getElementById('saveMediaBtn').addEventListener('click', () => {
+                const type = document.getElementById('mediaType').value;
+                const url = document.getElementById('mediaUrl').value.trim();
+                const caption = document.getElementById('mediaCaption').value.trim();
+                if (!url) { showToast('URL wajib diisi', 'error'); return; }
+                const item = { type, url, caption };
+                if (editingId) {
+                    updateMedia(editingId, item);
+                } else {
+                    addMedia(item);
+                }
+                closeModal('mediaModal');
+            });
+
+            // Link
+            document.getElementById('addLinkBtn').addEventListener('click', () => {
+                document.getElementById('linkModalTitle').textContent = 'Add Link';
+                document.getElementById('linkTitle').value = '';
+                document.getElementById('linkUrl').value = '';
+                document.getElementById('linkIcon').value = '';
+                editingId = null;
+                openModal('linkModal');
+            });
+            document.getElementById('cancelLinkBtn').addEventListener('click', () => {
+                closeModal('linkModal');
+            });
+            document.getElementById('saveLinkBtn').addEventListener('click', () => {
+                const title = document.getElementById('linkTitle').value.trim();
+                const url = document.getElementById('linkUrl').value.trim();
+                const icon = document.getElementById('linkIcon').value.trim() || 'fas fa-link';
+                if (!title || !url) { showToast('Judul dan URL wajib diisi', 'error'); return; }
+                const item = { title, url, icon };
+                if (editingId) {
+                    updateLink(editingId, item);
+                } else {
+                    addLink(item);
+                }
+                closeModal('linkModal');
+            });
+
+            // ---------- DELEGATED EVENTS untuk edit & delete (semua tombol) ----------
+            document.addEventListener('click', (e) => {
+                const target = e.target.closest('button');
+                if (!target) return;
+
+                // Delete
+                if (target.classList.contains('delete-btn')) {
+                    const id = target.dataset.id;
+                    const type = target.dataset.type;
+                    if (!id) return;
+                    if (confirm(`Hapus ${type} ini?`)) {
+                        if (type === 'project') deleteProject(id);
+                        else if (type === 'media') deleteMedia(id);
+                        else if (type === 'link') deleteLink(id);
+                    }
+                    return;
+                }
+
+                // Edit
+                if (target.classList.contains('edit-btn')) {
+                    const id = target.dataset.id;
+                    const type = target.dataset.type;
+                    if (!id) return;
+                    editingId = id;
+
+                    if (type === 'project') {
+                        const p = data.projects.find(x => x.id === id);
+                        if (!p) return;
+                        document.getElementById('projectModalTitle').textContent = 'Edit Project';
+                        document.getElementById('projectTitle').value = p.title || '';
+                        document.getElementById('projectDesc').value = p.desc || '';
+                        document.getElementById('projectImage').value = p.image || '';
+                        document.getElementById('projectUrl').value = p.url || '';
+                        document.getElementById('projectTags').value = p.tags || '';
+                        document.getElementById('projectSize').value = p.size || 'bento-item';
+                        openModal('projectModal');
+                    } else if (type === 'media') {
+                        const m = data.media.find(x => x.id === id);
+                        if (!m) return;
+                        document.getElementById('mediaModalTitle').textContent = 'Edit Media';
+                        document.getElementById('mediaType').value = m.type || 'image';
+                        document.getElementById('mediaUrl').value = m.url || '';
+                        document.getElementById('mediaCaption').value = m.caption || '';
+                        openModal('mediaModal');
+                    } else if (type === 'link') {
+                        const l = data.links.find(x => x.id === id);
+                        if (!l) return;
+                        document.getElementById('linkModalTitle').textContent = 'Edit Link';
+                        document.getElementById('linkTitle').value = l.title || '';
+                        document.getElementById('linkUrl').value = l.url || '';
+                        document.getElementById('linkIcon').value = l.icon || '';
+                        openModal('linkModal');
+                    }
+                }
+            });
+
+            // ---------- CURSOR ----------
+            const dot = document.getElementById('cursorDot');
+            const outline = document.getElementById('cursorOutline');
+            document.addEventListener('mousemove', (e) => {
+                dot.style.left = e.clientX + 'px';
+                dot.style.top = e.clientY + 'px';
+                outline.style.left = e.clientX + 'px';
+                outline.style.top = e.clientY + 'px';
+            });
+            document.addEventListener('mouseover', (e) => {
+                if (e.target.closest('a, button, .btn-primary, .btn-ghost, .link-card, .glow-card')) {
+                    outline.classList.add('hover');
+                }
+            });
+            document.addEventListener('mouseout', (e) => {
+                if (e.target.closest('a, button, .btn-primary, .btn-ghost, .link-card, .glow-card')) {
+                    outline.classList.remove('hover');
+                }
+            });
+
+            // ---------- SCROLL PROGRESS ----------
+            window.addEventListener('scroll', () => {
+                const scrollTop = window.scrollY;
+                const docHeight = document.documentElement.scrollHeight - window.innerHeight;
+                const progress = docHeight > 0 ? (scrollTop / docHeight) * 100 : 0;
+                document.getElementById('scrollProgress').style.width = progress + '%';
+            });
+
+            // ---------- REVEAL ON SCROLL ----------
+            const observer = new IntersectionObserver((entries) => {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        entry.target.classList.add('visible');
+                    }
+                });
+            }, { threshold: 0.1 });
+            document.querySelectorAll('.reveal').forEach(el => observer.observe(el));
+        }
+
+        // ---------- INIT ----------
+        loadData();
+        renderAll();
+        initEvents();
+
+        // juga tambahkan toast container jika belum ada
+        if (!document.getElementById('toast')) {
+            const toastDiv = document.createElement('div');
+            toastDiv.id = 'toast';
+            toastDiv.className = 'toast';
+            document.body.appendChild(toastDiv);
+        }
+    </script>
 </body>
 </html>
