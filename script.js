@@ -146,7 +146,7 @@ function renderData() {
         });
     }
     
-    // Render Gallery Media
+    // Render Gallery Media (DIPERBAIKI: dukungan YouTube Shorts & Instagram)
     const mediaGrid = $('mediaGrid');
     mediaGrid.innerHTML = '';
     if (gallery.length === 0) {
@@ -156,11 +156,24 @@ function renderData() {
             let mediaHTML = '';
             if (media.type === 'image') {
                 mediaHTML = `<img src="${media.url}" alt="Media" class="w-full h-auto rounded-t-2xl object-cover" onerror="this.src='https://via.placeholder.com/400x300/111/888?text=Image+Error'">`;
-            } else if (media.type === 'youtube') {
+            } else if (media.type === 'youtube' || media.type === 'youtube-short') {
                 const ytId = extractYouTubeId(media.url);
-                if (ytId) mediaHTML = `<div class="aspect-video bg-black rounded-t-2xl overflow-hidden"><iframe class="w-full h-full" src="https://www.youtube.com/embed/${ytId}" frameborder="0" allowfullscreen></iframe></div>`;
+                if (ytId) {
+                    mediaHTML = `<div class="aspect-video bg-black rounded-t-2xl overflow-hidden"><iframe class="w-full h-full" src="https://www.youtube.com/embed/${ytId}" frameborder="0" allowfullscreen></iframe></div>`;
+                } else {
+                    mediaHTML = `<div class="bg-red-500/10 p-4 rounded-t-2xl text-red-400 text-sm">Invalid YouTube URL</div>`;
+                }
+            } else if (media.type === 'instagram') {
+                const igId = extractInstagramId(media.url);
+                if (igId) {
+                    mediaHTML = `<div class="aspect-square bg-black rounded-t-2xl overflow-hidden"><iframe class="w-full h-full" src="https://www.instagram.com/p/${igId}/embed/" frameborder="0" allowfullscreen></iframe></div>`;
+                } else {
+                    mediaHTML = `<div class="bg-red-500/10 p-4 rounded-t-2xl text-red-400 text-sm">Invalid Instagram URL</div>`;
+                }
             } else if (media.type === 'video') {
                 mediaHTML = `<video controls class="w-full h-auto rounded-t-2xl bg-black"><source src="${media.url}" type="video/mp4">Your browser does not support the video tag.</video>`;
+            } else {
+                mediaHTML = `<div class="bg-gray-800 p-4 rounded-t-2xl text-gray-400 text-sm">Unsupported media type</div>`;
             }
 
             const item = document.createElement('div');
@@ -211,9 +224,16 @@ function renderData() {
     setupScrollObserver();
 }
 
-// Extract YouTube ID
+// Extract YouTube ID (DIPERBAIKI: support shorts)
 function extractYouTubeId(url) {
-    const regex = /(?:youtube\.com\/(?:[^\/\n\s]+\/\S+\/|(?:v|e(?:mbed)?)\/|\S*?[?&]v=)|youtu\.be\/)([a-zA-Z0-9_-]{11})/;
+    const regex = /(?:youtube\.com\/(?:shorts\/|watch\?v=|embed\/)|youtu\.be\/)([a-zA-Z0-9_-]{11})/;
+    const match = url.match(regex);
+    return match ? match[1] : null;
+}
+
+// Extract Instagram ID (FUNGSI BARU)
+function extractInstagramId(url) {
+    const regex = /instagram\.com\/(?:p|reel)\/([a-zA-Z0-9_-]+)/;
     const match = url.match(regex);
     return match ? match[1] : null;
 }
@@ -278,7 +298,7 @@ function handleLogin() {
     }
 }
 
-// CRUD Profile (Diperbaiki)
+// CRUD Profile
 function openProfileModal() {
     if (!state.data || !state.data.profile) {
         showToast('Data belum ter-load!', 'error');
@@ -348,7 +368,7 @@ async function deleteProject(id) {
     renderData();
 }
 
-// CRUD Media (FITUR BARU)
+// CRUD Media (DIPERBAIKI: support youtube-short & instagram)
 function openMediaModal(id = null) {
     state.editingMediaId = id;
     if (id) {
