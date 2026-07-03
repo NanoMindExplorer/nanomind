@@ -1,3 +1,4 @@
+oke masukan semua perbaikan kedalama index html ini , lau berrikan full code yang sudah di perbaiki 
 <!DOCTYPE html>
 <html lang="id">
 <head>
@@ -10,7 +11,6 @@
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800;900&family=Space+Grotesk:wght@300;400;500;600;700&display=swap" rel="stylesheet">
     <style>
-        /* --- CSS SAMA PERTAHANKAN --- */
         :root {
             --bg: #050508; --bg-2: #0a0a12;
             --card: rgba(255, 255, 255, 0.02); --card-hover: rgba(255, 255, 255, 0.04);
@@ -22,12 +22,18 @@
         html { scroll-behavior: smooth; }
         body { font-family: 'Space Grotesk', sans-serif; background: var(--bg); color: var(--text); overflow-x: hidden; }
         .font-display { font-family: 'Outfit', sans-serif; }
+        
+        /* Custom Cursor */
         .cursor-dot, .cursor-outline { position: fixed; top: 0; left: 0; transform: translate(-50%, -50%); pointer-events: none; z-index: 9999; border-radius: 50%; transition: opacity 0.3s; }
         .cursor-dot { width: 6px; height: 6px; background: var(--accent); box-shadow: 0 0 10px var(--accent); }
         .cursor-outline { width: 40px; height: 40px; border: 1px solid rgba(255, 255, 255, 0.3); transition: transform 0.15s ease-out, width 0.3s, height 0.3s, border-color 0.3s; }
         .cursor-outline.hover { width: 60px; height: 60px; border-color: var(--accent-2); background: rgba(255, 0, 229, 0.05); }
         @media (max-width: 768px) { .cursor-dot, .cursor-outline { display: none; } * { cursor: auto; } }
+        
+        /* Scroll Progress */
         .scroll-progress { position: fixed; top: 0; left: 0; width: 0%; height: 3px; background: linear-gradient(90deg, var(--accent), var(--accent-2)); z-index: 100; box-shadow: 0 0 10px var(--accent); }
+        
+        /* Backgrounds */
         .aurora { position: fixed; inset: 0; z-index: 0; pointer-events: none; overflow: hidden; }
         .aurora-blob { position: absolute; border-radius: 50%; filter: blur(100px); opacity: 0.3; animation: float 15s infinite ease-in-out; }
         .blob-1 { width: 600px; height: 600px; background: var(--accent); top: -10%; left: -10%; }
@@ -35,43 +41,64 @@
         .blob-3 { width: 400px; height: 400px; background: #7700ff; top: 40%; left: 50%; animation-delay: -10s; }
         @keyframes float { 0%, 100% { transform: translate(0, 0) scale(1); } 33% { transform: translate(80px, -80px) scale(1.2); } 66% { transform: translate(-50px, 50px) scale(0.8); } }
         .grid-bg { position: fixed; inset: 0; z-index: 0; pointer-events: none; background-image: linear-gradient(rgba(255,255,255,0.015) 1px, transparent 1px), linear-gradient(90deg, rgba(255,255,255,0.015) 1px, transparent 1px); background-size: 40px 40px; mask-image: radial-gradient(ellipse at center, black 30%, transparent 90%); -webkit-mask-image: radial-gradient(ellipse at center, black 30%, transparent 90%); }
+        
+        /* Animated Logo SVG */
         .logo-svg { width: 36px; height: 36px; }
         .logo-ring-outer { animation: spin 8s linear infinite; transform-origin: center; }
         .logo-ring-inner { animation: spin 5s linear infinite reverse; transform-origin: center; }
         @keyframes spin { from { transform: rotate(0deg); } to { transform: rotate(360deg); } }
+        
+        /* Glass & Glow */
         .glass { background: var(--card); backdrop-filter: blur(20px); border: 1px solid var(--border); transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1); }
         .glow-card { position: relative; overflow: hidden; }
         .glow-card::before { content: ''; position: absolute; top: 0; left: 0; right: 0; bottom: 0; background: radial-gradient(circle at var(--mouse-x) var(--mouse-y), rgba(255,255,255,0.06), transparent 40%); opacity: 0; transition: opacity 0.3s; pointer-events: none; z-index: 1; }
         .glow-card:hover::before { opacity: 1; }
         .glow-card:hover { border-color: rgba(255,255,255,0.1); transform: translateY(-2px); }
+        
+        /* Buttons */
         .btn-primary { background: linear-gradient(135deg, var(--accent), var(--accent-2)); color: #050508; font-weight: 700; padding: 12px 24px; border-radius: 100px; transition: all 0.3s; display: inline-flex; align-items: center; justify-content: center; box-shadow: 0 0 0 0 rgba(0, 240, 255, 0.7); }
         .btn-primary:hover { box-shadow: 0 0 30px -5px var(--accent); transform: translateY(-2px); }
         .btn-ghost { background: rgba(255,255,255,0.03); border: 1px solid var(--border); color: var(--text); font-weight: 500; padding: 12px 24px; border-radius: 100px; transition: all 0.3s; display: inline-flex; align-items: center; justify-content: center; }
         .btn-ghost:hover { background: rgba(255,255,255,0.08); border-color: var(--accent); color: var(--accent); }
+        
+        /* Navigation */
         .nav-link { position: relative; padding: 8px 16px; color: var(--text-muted); transition: color 0.2s; font-weight: 500; font-size: 14px; }
         .nav-link::after { content: ''; position: absolute; bottom: -2px; left: 20%; width: 0; height: 1px; background: var(--accent); transition: all 0.3s; box-shadow: 0 0 10px var(--accent); }
         .nav-link:hover, .nav-link.active { color: var(--text); }
         .nav-link:hover::after, .nav-link.active::after { width: 60%; }
+        
+        /* Text Gradient */
         .gradient-text { background: linear-gradient(135deg, #fff 20%, var(--accent) 50%, var(--accent-2) 80%); -webkit-background-clip: text; background-clip: text; -webkit-text-fill-color: transparent; background-size: 200% auto; animation: shine 5s linear infinite; }
         @keyframes shine { to { background-position: 200% center; } }
+        
+        /* Bento & Masonry Grids */
         .bento-grid { display: grid; grid-template-columns: repeat(6, 1fr); gap: 1.5rem; }
         .bento-item { grid-column: span 2; } .bento-item.large { grid-column: span 3; } .bento-item.full { grid-column: span 6; }
         @media (max-width: 768px) { .bento-grid { grid-template-columns: repeat(2, 1fr); } .bento-item, .bento-item.large, .bento-item.full { grid-column: span 2; } }
+        
         .masonry-grid { column-count: 3; column-gap: 1.5rem; }
         @media (max-width: 768px) { .masonry-grid { column-count: 1; } }
         @media (min-width: 769px) and (max-width: 1024px) { .masonry-grid { column-count: 2; } }
         .masonry-item { break-inside: avoid; margin-bottom: 1.5rem; }
+        
+        /* Link Card */
         .link-card { display: flex; align-items: center; gap: 16px; padding: 20px; border-radius: 20px; position: relative; overflow: hidden; border: 1px solid var(--border); background: rgba(255,255,255,0.02); transition: all 0.3s; }
         .link-card .icon-box { width: 48px; height: 48px; border-radius: 12px; display: flex; align-items: center; justify-content: center; background: rgba(0, 240, 255, 0.1); color: var(--accent); font-size: 20px; flex-shrink: 0; transition: all 0.3s; }
         .link-card:hover .icon-box { background: var(--accent); color: #050508; box-shadow: 0 0 20px var(--accent); }
+        
+        /* Form & Modal */
         .input-field { background: rgba(255,255,255,0.02); border: 1px solid var(--border); border-radius: 12px; padding: 14px 16px; color: var(--text); width: 100%; transition: all 0.2s; font-family: inherit; font-size: 15px; }
         .input-field:focus { outline: none; border-color: var(--accent); box-shadow: 0 0 0 4px rgba(0, 240, 255, 0.1); }
         .modal-overlay { position: fixed; inset: 0; background: rgba(0,0,0,0.8); backdrop-filter: blur(12px); z-index: 100; display: flex; align-items: center; justify-content: center; opacity: 0; pointer-events: none; transition: opacity 0.3s; padding: 20px; }
         .modal-overlay.active { opacity: 1; pointer-events: auto; }
         .modal-content { background: var(--bg-2); border: 1px solid var(--border); border-radius: 24px; padding: 32px; max-width: 500px; width: 100%; max-height: 90vh; overflow-y: auto; transform: scale(0.95) translateY(20px); transition: transform 0.4s cubic-bezier(0.34, 1.56, 0.64, 1); box-shadow: 0 0 50px rgba(0, 240, 255, 0.1); }
         .modal-overlay.active .modal-content { transform: scale(1) translateY(0); }
+        
+        /* Toast */
         .toast { position: fixed; bottom: 24px; right: 24px; padding: 16px 24px; background: var(--bg-2); border: 1px solid var(--border); border-left: 4px solid var(--accent); border-radius: 12px; box-shadow: 0 10px 40px rgba(0,0,0,0.5); z-index: 200; transform: translateX(120%); transition: transform 0.4s cubic-bezier(0.34, 1.56, 0.64, 1); display: flex; align-items: center; gap: 12px; font-size: 14px; }
         .toast.show { transform: translateX(0); } .toast.error { border-left-color: #ef4444; } .toast.success { border-left-color: var(--accent); }
+        
+        /* Scrollbar & Utils */
         ::-webkit-scrollbar { width: 6px; } ::-webkit-scrollbar-track { background: var(--bg); } ::-webkit-scrollbar-thumb { background: rgba(255,255,255,0.1); border-radius: 10px; }
         .reveal { opacity: 0; transform: translateY(30px); transition: all 0.8s cubic-bezier(0.4, 0, 0.2, 1); } .reveal.visible { opacity: 1; transform: translateY(0); }
         .admin-fab { position: fixed; bottom: 24px; left: 24px; width: 56px; height: 56px; border-radius: 16px; background: linear-gradient(135deg, var(--accent), var(--accent-2)); display: flex; align-items: center; justify-content: center; color: #050508; font-size: 24px; cursor: none; z-index: 50; box-shadow: 0 10px 30px -5px var(--accent); transition: all 0.3s; border: none; }
@@ -95,6 +122,7 @@
     <nav class="sticky top-0 z-40 backdrop-blur-xl bg-black/30 border-b border-white/5">
         <div class="max-w-7xl mx-auto px-6 py-4 flex items-center justify-between">
             <div class="flex items-center gap-3">
+                <!-- Animated Logo SVG -->
                 <svg class="logo-svg" viewBox="0 0 100 100">
                     <defs>
                         <linearGradient id="grad1" x1="0%" y1="0%" x2="100%" y2="100%">
@@ -152,6 +180,7 @@
                 <div id="projectsGrid" class="bento-grid"></div>
             </section>
             
+            <!-- MEDIA GALLERY SECTION -->
             <section id="gallery" class="py-20">
                 <div class="flex items-center justify-between mb-12 reveal">
                     <div>
@@ -185,15 +214,15 @@
     
     <button class="admin-fab" id="adminFab" title="Admin Panel"><i class="fas fa-cog"></i></button>
     
-    <!-- MODALS -->
+    <!-- Modals -->
     <div class="modal-overlay" id="loginModal">
         <div class="modal-content">
             <div class="text-center mb-8">
                 <div class="w-16 h-16 rounded-2xl bg-gradient-to-br from-cyan-400 to-pink-500 flex items-center justify-center text-2xl text-black mx-auto mb-4"><i class="fas fa-lock"></i></div>
                 <h3 class="font-display font-bold text-2xl">Admin Access</h3>
-                <p class="text-gray-400 mt-2 text-sm">Masukkan password untuk mengedit</p>
+                <p class="text-gray-400 mt-2 text-sm">Masukkan GitHub Token untuk mengedit</p>
             </div>
-            <input type="password" class="input-field mb-4" id="tokenInput" placeholder="Password (default: admin)">
+            <input type="password" class="input-field mb-4" id="tokenInput" placeholder="ghp_xxxxxxxxxxxxxxxxx">
             <div class="flex gap-3"><button class="btn-ghost flex-1" id="cancelLoginBtn">Cancel</button><button class="btn-primary flex-1" id="loginBtn">Login</button></div>
         </div>
     </div>
@@ -204,7 +233,7 @@
             <div class="space-y-4">
                 <div><label class="block text-sm text-gray-400 mb-2">Name</label><input type="text" class="input-field" id="profileName" placeholder="Your Name"></div>
                 <div><label class="block text-sm text-gray-400 mb-2">Bio</label><textarea class="input-field" id="profileBio" rows="2" placeholder="Your short bio"></textarea></div>
-                <div><label class="block text-sm text-gray-400 mb-2">Avatar URL</label><input type="text" class="input-field" id="profileAvatar" placeholder="https://..."></div>
+                <div><label class="block text-sm text-gray-400 mb-2">Avatar URL (Direct Link Image)</label><input type="text" class="input-field" id="profileAvatar" placeholder="https://..."></div>
                 <div><label class="block text-sm text-gray-400 mb-2">Logo Text (1-2 chars)</label><input type="text" maxlength="2" class="input-field" id="profileLogoText" placeholder="N"></div>
             </div>
             <div class="flex gap-3 mt-6"><button class="btn-ghost flex-1" id="cancelProfileBtn">Cancel</button><button class="btn-primary flex-1" id="saveProfileBtn">Save</button></div>
@@ -219,13 +248,14 @@
                 <div><label class="block text-sm text-gray-400 mb-2">Description</label><textarea class="input-field" id="projectDesc" rows="3" placeholder="Brief description"></textarea></div>
                 <div><label class="block text-sm text-gray-400 mb-2">Image URL</label><input type="text" class="input-field" id="projectImage" placeholder="https://..."></div>
                 <div><label class="block text-sm text-gray-400 mb-2">Project URL</label><input type="text" class="input-field" id="projectUrl" placeholder="https://..."></div>
-                <div><label class="block text-sm text-gray-400 mb-2">Tags (pisahkan dengan koma)</label><input type="text" class="input-field" id="projectTags" placeholder="web, react"></div>
+                <div><label class="block text-sm text-gray-400 mb-2">Tags (comma separated)</label><input type="text" class="input-field" id="projectTags" placeholder="web, react"></div>
                 <div><label class="block text-sm text-gray-400 mb-2">Card Size</label><select class="input-field" id="projectSize"><option value="bento-item">Normal</option><option value="bento-item large">Large</option><option value="bento-item full">Full Width</option></select></div>
             </div>
             <div class="flex gap-3 mt-6"><button class="btn-ghost flex-1" id="cancelProjectBtn">Cancel</button><button class="btn-primary flex-1" id="saveProjectBtn">Save</button></div>
         </div>
     </div>
 
+    <!-- MEDIA MODAL -->
     <div class="modal-overlay" id="mediaModal">
         <div class="modal-content">
             <h3 class="font-display font-bold text-2xl mb-6" id="mediaModalTitle">Add Media</h3>
@@ -235,8 +265,6 @@
                     <select class="input-field" id="mediaType">
                         <option value="image">Image (Direct URL)</option>
                         <option value="youtube">YouTube Video (URL)</option>
-                        <option value="youtube-short">YouTube Shorts (URL)</option>
-                        <option value="instagram">Instagram Reels/Video (URL)</option>
                         <option value="video">Direct Video URL (.mp4)</option>
                     </select>
                 </div>
@@ -259,529 +287,6 @@
         </div>
     </div>
 
-    <script>
-        // ============================================================
-        //  NANOMIND – SCRIPT SESUAI DENGAN STRUCTURE db.json
-        //  (Menggunakan localStorage, kompatibel dengan script.js)
-        // ============================================================
-
-        const DEFAULT_DATA = {
-            profile: {
-                name: 'Nanomind Explorer',
-                bio: 'Creative Developer & Designer',
-                avatar: 'https://via.placeholder.com/120',
-                logoText: 'N'
-            },
-            projects: [],
-            gallery: [],   // ← menggunakan "gallery", bukan "media"
-            links: []
-        };
-
-        let data = { ...DEFAULT_DATA };
-        let currentAdmin = false;
-        let editingId = null;
-
-        // ---------- LOAD / SAVE ----------
-        function loadData() {
-            const stored = localStorage.getItem('nanomindData');
-            if (stored) {
-                try {
-                    const parsed = JSON.parse(stored);
-                    data = { ...DEFAULT_DATA, ...parsed };
-                    if (!data.gallery) data.gallery = [];
-                    if (!data.projects) data.projects = [];
-                    if (!data.links) data.links = [];
-                    if (!data.profile) data.profile = { ...DEFAULT_DATA.profile };
-                } catch {
-                    data = { ...DEFAULT_DATA };
-                }
-            } else {
-                data = { ...DEFAULT_DATA };
-                // Contoh data awal
-                data.gallery.push({
-                    id: 'demo1',
-                    type: 'image',
-                    url: 'https://picsum.photos/seed/1/600/400',
-                    caption: 'Contoh gambar'
-                });
-                data.gallery.push({
-                    id: 'demo2',
-                    type: 'youtube-short',
-                    url: 'https://youtube.com/shorts/0k0nKzn0igc',
-                    caption: 'Contoh YouTube Shorts'
-                });
-                data.gallery.push({
-                    id: 'demo3',
-                    type: 'instagram',
-                    url: 'https://www.instagram.com/reel/CxYzAbcDEF/',
-                    caption: 'Contoh Instagram Reel'
-                });
-                saveData();
-            }
-        }
-
-        function saveData() {
-            localStorage.setItem('nanomindData', JSON.stringify(data));
-        }
-
-        // ---------- UTILITY ----------
-        function generateId() {
-            return Date.now().toString(36) + Math.random().toString(36).substr(2, 5);
-        }
-
-        function extractYouTubeId(url) {
-            const regex = /(?:youtube\.com\/(?:shorts\/|watch\?v=|embed\/)|youtu\.be\/)([a-zA-Z0-9_-]{11})/;
-            const match = url.match(regex);
-            return match ? match[1] : null;
-        }
-
-        function extractInstagramId(url) {
-            const regex = /instagram\.com\/(?:p|reel)\/([a-zA-Z0-9_-]+)/;
-            const match = url.match(regex);
-            return match ? match[1] : null;
-        }
-
-        // ---------- RENDER ----------
-        function renderAll() {
-            renderProfile();
-            renderProjects();
-            renderGallery();
-            renderLinks();
-            applyAdminClass();
-        }
-
-        function renderProfile() {
-            const p = data.profile || DEFAULT_DATA.profile;
-            document.getElementById('navName').textContent = p.name || 'Nanomind';
-            document.getElementById('footerName').textContent = p.name || 'Nanomind';
-            document.getElementById('heroName').textContent = p.name || 'Your Name';
-            document.getElementById('heroBioTypewriter').textContent = p.bio || '';
-            document.getElementById('heroAvatar').src = p.avatar || 'https://via.placeholder.com/120';
-            const logoText = p.logoText || 'N';
-            document.querySelector('.logo-svg + span').textContent = logoText;
-            document.getElementById('footerYear').textContent = new Date().getFullYear();
-        }
-
-        function renderProjects() {
-            const grid = document.getElementById('projectsGrid');
-            const projects = data.projects || [];
-            if (projects.length === 0) {
-                grid.innerHTML = `<div class="col-span-full text-center text-gray-500 py-12">Belum ada project. Tambahkan melalui Admin Panel.</div>`;
-                return;
-            }
-            grid.innerHTML = projects.map(p => {
-                const tags = Array.isArray(p.tags) ? p.tags : (p.tags ? p.tags.split(',').map(t => t.trim()) : []);
-                return `
-                <div class="glow-card glass rounded-2xl p-5 ${p.size || 'bento-item'} relative" 
-                     style="--mouse-x:50%;--mouse-y:50%;">
-                    ${currentAdmin ? `
-                        <button class="edit-btn" data-id="${p.id}" data-type="project"><i class="fas fa-pen"></i></button>
-                        <button class="delete-btn" data-id="${p.id}" data-type="project"><i class="fas fa-trash"></i></button>
-                    ` : ''}
-                    ${p.image ? `<img src="${p.image}" alt="${p.title}" class="w-full h-48 object-cover rounded-xl mb-3">` : ''}
-                    <h3 class="font-bold text-lg">${p.title}</h3>
-                    <p class="text-gray-400 text-sm mt-1">${p.description || ''}</p>
-                    ${tags.length ? `<div class="flex flex-wrap gap-2 mt-2">${tags.map(t => `<span class="text-xs px-2 py-1 bg-white/5 rounded-full">${t}</span>`).join('')}</div>` : ''}
-                    ${p.url ? `<a href="${p.url}" target="_blank" class="text-cyan-400 text-sm mt-2 inline-block">Lihat Project →</a>` : ''}
-                </div>
-            `}).join('');
-        }
-
-        function renderGallery() {
-            const grid = document.getElementById('mediaGrid');
-            const gallery = data.gallery || [];
-            if (gallery.length === 0) {
-                grid.innerHTML = `<div class="col-span-full text-center text-gray-500 py-12">Belum ada media. Tambahkan melalui Admin Panel.</div>`;
-                return;
-            }
-            grid.innerHTML = gallery.map(m => {
-                let content = '';
-                if (m.type === 'image') {
-                    content = `<img src="${m.url}" alt="${m.caption || 'Media'}" class="w-full h-auto rounded-xl object-cover">`;
-                } else if (m.type === 'youtube' || m.type === 'youtube-short') {
-                    const ytId = extractYouTubeId(m.url);
-                    if (ytId) {
-                        content = `
-                            <div class="relative pb-[56.25%] h-0 overflow-hidden rounded-xl">
-                                <iframe src="https://www.youtube.com/embed/${ytId}" 
-                                    class="absolute top-0 left-0 w-full h-full" 
-                                    frameborder="0" allowfullscreen>
-                                </iframe>
-                            </div>
-                        `;
-                    } else {
-                        content = `<p class="text-red-400 text-sm">Invalid YouTube URL</p>`;
-                    }
-                } else if (m.type === 'instagram') {
-                    const igId = extractInstagramId(m.url);
-                    if (igId) {
-                        content = `
-                            <div class="relative pb-[100%] h-0 overflow-hidden rounded-xl">
-                                <iframe src="https://www.instagram.com/p/${igId}/embed/" 
-                                    class="absolute top-0 left-0 w-full h-full" 
-                                    frameborder="0" allowfullscreen>
-                                </iframe>
-                            </div>
-                        `;
-                    } else {
-                        content = `<p class="text-red-400 text-sm">Invalid Instagram URL</p>`;
-                    }
-                } else if (m.type === 'video') {
-                    content = `<video controls class="w-full rounded-xl"><source src="${m.url}" type="video/mp4">Your browser does not support the video tag.</video>`;
-                } else {
-                    content = `<p class="text-gray-400 text-sm">Unsupported media type</p>`;
-                }
-
-                return `
-                    <div class="masonry-item glass rounded-xl overflow-hidden relative glow-card" 
-                         style="--mouse-x:50%;--mouse-y:50%;">
-                        ${currentAdmin ? `
-                            <button class="edit-btn" data-id="${m.id}" data-type="media"><i class="fas fa-pen"></i></button>
-                            <button class="delete-btn" data-id="${m.id}" data-type="media"><i class="fas fa-trash"></i></button>
-                        ` : ''}
-                        <div class="p-3">${content}</div>
-                        ${m.caption ? `<div class="px-4 pb-4 text-sm text-gray-300">${m.caption}</div>` : ''}
-                    </div>
-                `;
-            }).join('');
-        }
-
-        function renderLinks() {
-            const list = document.getElementById('linksList');
-            const links = data.links || [];
-            if (links.length === 0) {
-                list.innerHTML = `<div class="col-span-full text-center text-gray-500 py-12">Belum ada link. Tambahkan melalui Admin Panel.</div>`;
-                return;
-            }
-            list.innerHTML = links.map(l => `
-                <a href="${l.url}" target="_blank" class="link-card relative group">
-                    ${currentAdmin ? `
-                        <button class="edit-btn" data-id="${l.id}" data-type="link"><i class="fas fa-pen"></i></button>
-                        <button class="delete-btn" data-id="${l.id}" data-type="link"><i class="fas fa-trash"></i></button>
-                    ` : ''}
-                    <div class="icon-box"><i class="${l.icon || 'fas fa-link'}"></i></div>
-                    <span class="font-medium">${l.title}</span>
-                    <i class="fas fa-arrow-right ml-auto text-gray-600 group-hover:text-cyan-400 transition-colors"></i>
-                </a>
-            `).join('');
-        }
-
-        function applyAdminClass() {
-            document.body.classList.toggle('admin-mode', currentAdmin);
-            document.querySelectorAll('.admin-only').forEach(el => {
-                el.classList.toggle('hidden', !currentAdmin);
-            });
-        }
-
-        // ---------- TOAST ----------
-        function showToast(message, type = 'success') {
-            let toast = document.getElementById('toast');
-            if (!toast) {
-                toast = document.createElement('div');
-                toast.id = 'toast';
-                toast.className = 'toast';
-                document.body.appendChild(toast);
-            }
-            toast.textContent = message;
-            toast.className = `toast ${type}`;
-            setTimeout(() => toast.classList.add('show'), 10);
-            setTimeout(() => toast.classList.remove('show'), 3000);
-        }
-
-        // ---------- MODAL HELPERS ----------
-        function openModal(id) { document.getElementById(id).classList.add('active'); }
-        function closeModal(id) { document.getElementById(id).classList.remove('active'); }
-
-        // ---------- CRUD (menggunakan "gallery") ----------
-        function addProject(item) {
-            data.projects.push({ id: generateId(), ...item });
-            saveData();
-            renderAll();
-            showToast('Project berhasil ditambahkan');
-        }
-
-        function updateProject(id, updated) {
-            const idx = data.projects.findIndex(p => p.id === id);
-            if (idx !== -1) {
-                data.projects[idx] = { ...data.projects[idx], ...updated };
-                saveData();
-                renderAll();
-                showToast('Project diperbarui');
-            }
-        }
-
-        function deleteProject(id) {
-            data.projects = data.projects.filter(p => p.id !== id);
-            saveData();
-            renderAll();
-            showToast('Project dihapus', 'error');
-        }
-
-        function addGalleryItem(item) {
-            data.gallery.push({ id: generateId(), ...item });
-            saveData();
-            renderAll();
-            showToast('Media berhasil ditambahkan');
-        }
-
-        function updateGalleryItem(id, updated) {
-            const idx = data.gallery.findIndex(m => m.id === id);
-            if (idx !== -1) {
-                data.gallery[idx] = { ...data.gallery[idx], ...updated };
-                saveData();
-                renderAll();
-                showToast('Media diperbarui');
-            }
-        }
-
-        function deleteGalleryItem(id) {
-            data.gallery = data.gallery.filter(m => m.id !== id);
-            saveData();
-            renderAll();
-            showToast('Media dihapus', 'error');
-        }
-
-        function addLink(item) {
-            data.links.push({ id: generateId(), ...item });
-            saveData();
-            renderAll();
-            showToast('Link berhasil ditambahkan');
-        }
-
-        function updateLink(id, updated) {
-            const idx = data.links.findIndex(l => l.id === id);
-            if (idx !== -1) {
-                data.links[idx] = { ...data.links[idx], ...updated };
-                saveData();
-                renderAll();
-                showToast('Link diperbarui');
-            }
-        }
-
-        function deleteLink(id) {
-            data.links = data.links.filter(l => l.id !== id);
-            saveData();
-            renderAll();
-            showToast('Link dihapus', 'error');
-        }
-
-        // ---------- EVENT BINDING ----------
-        function initEvents() {
-            document.getElementById('adminFab').addEventListener('click', () => openModal('loginModal'));
-
-            document.getElementById('loginBtn').addEventListener('click', () => {
-                const pass = document.getElementById('tokenInput').value;
-                if (pass === 'admin') {
-                    currentAdmin = true;
-                    closeModal('loginModal');
-                    applyAdminClass();
-                    renderAll();
-                    showToast('Admin mode aktif');
-                } else {
-                    showToast('Password salah', 'error');
-                }
-            });
-            document.getElementById('cancelLoginBtn').addEventListener('click', () => closeModal('loginModal'));
-
-            document.getElementById('editProfileBtn').addEventListener('click', () => {
-                document.getElementById('profileName').value = data.profile.name || '';
-                document.getElementById('profileBio').value = data.profile.bio || '';
-                document.getElementById('profileAvatar').value = data.profile.avatar || '';
-                document.getElementById('profileLogoText').value = data.profile.logoText || '';
-                openModal('profileModal');
-            });
-            document.getElementById('cancelProfileBtn').addEventListener('click', () => closeModal('profileModal'));
-            document.getElementById('saveProfileBtn').addEventListener('click', () => {
-                data.profile.name = document.getElementById('profileName').value.trim() || 'Nanomind';
-                data.profile.bio = document.getElementById('profileBio').value.trim() || '';
-                data.profile.avatar = document.getElementById('profileAvatar').value.trim() || 'https://via.placeholder.com/120';
-                data.profile.logoText = document.getElementById('profileLogoText').value.trim() || 'N';
-                saveData();
-                renderAll();
-                closeModal('profileModal');
-                showToast('Profile diperbarui');
-            });
-
-            document.getElementById('addProjectBtn').addEventListener('click', () => {
-                document.getElementById('projectModalTitle').textContent = 'Add Project';
-                document.getElementById('projectTitle').value = '';
-                document.getElementById('projectDesc').value = '';
-                document.getElementById('projectImage').value = '';
-                document.getElementById('projectUrl').value = '';
-                document.getElementById('projectTags').value = '';
-                document.getElementById('projectSize').value = 'bento-item';
-                editingId = null;
-                openModal('projectModal');
-            });
-            document.getElementById('cancelProjectBtn').addEventListener('click', () => closeModal('projectModal'));
-            document.getElementById('saveProjectBtn').addEventListener('click', () => {
-                const title = document.getElementById('projectTitle').value.trim();
-                const description = document.getElementById('projectDesc').value.trim();
-                const image = document.getElementById('projectImage').value.trim();
-                const url = document.getElementById('projectUrl').value.trim();
-                const tagsInput = document.getElementById('projectTags').value.trim();
-                const tags = tagsInput ? tagsInput.split(',').map(t => t.trim()) : [];
-                const size = document.getElementById('projectSize').value;
-                if (!title) { showToast('Judul wajib diisi', 'error'); return; }
-                const item = { title, description, image, url, tags, size };
-                if (editingId) {
-                    updateProject(editingId, item);
-                } else {
-                    addProject(item);
-                }
-                closeModal('projectModal');
-            });
-
-            document.getElementById('addMediaBtn').addEventListener('click', () => {
-                document.getElementById('mediaModalTitle').textContent = 'Add Media';
-                document.getElementById('mediaType').value = 'image';
-                document.getElementById('mediaUrl').value = '';
-                document.getElementById('mediaCaption').value = '';
-                editingId = null;
-                openModal('mediaModal');
-            });
-            document.getElementById('cancelMediaBtn').addEventListener('click', () => closeModal('mediaModal'));
-            document.getElementById('saveMediaBtn').addEventListener('click', () => {
-                const type = document.getElementById('mediaType').value;
-                const url = document.getElementById('mediaUrl').value.trim();
-                const caption = document.getElementById('mediaCaption').value.trim();
-                if (!url) { showToast('URL wajib diisi', 'error'); return; }
-                const item = { type, url, caption };
-                if (editingId) {
-                    updateGalleryItem(editingId, item);
-                } else {
-                    addGalleryItem(item);
-                }
-                closeModal('mediaModal');
-            });
-
-            document.getElementById('addLinkBtn').addEventListener('click', () => {
-                document.getElementById('linkModalTitle').textContent = 'Add Link';
-                document.getElementById('linkTitle').value = '';
-                document.getElementById('linkUrl').value = '';
-                document.getElementById('linkIcon').value = '';
-                editingId = null;
-                openModal('linkModal');
-            });
-            document.getElementById('cancelLinkBtn').addEventListener('click', () => closeModal('linkModal'));
-            document.getElementById('saveLinkBtn').addEventListener('click', () => {
-                const title = document.getElementById('linkTitle').value.trim();
-                const url = document.getElementById('linkUrl').value.trim();
-                const icon = document.getElementById('linkIcon').value.trim() || 'fas fa-link';
-                if (!title || !url) { showToast('Judul dan URL wajib diisi', 'error'); return; }
-                const item = { title, url, icon };
-                if (editingId) {
-                    updateLink(editingId, item);
-                } else {
-                    addLink(item);
-                }
-                closeModal('linkModal');
-            });
-
-            // Delegated events for edit & delete
-            document.addEventListener('click', (e) => {
-                const target = e.target.closest('button');
-                if (!target) return;
-
-                if (target.classList.contains('delete-btn')) {
-                    const id = target.dataset.id;
-                    const type = target.dataset.type;
-                    if (!id) return;
-                    if (confirm(`Hapus ${type} ini?`)) {
-                        if (type === 'project') deleteProject(id);
-                        else if (type === 'media') deleteGalleryItem(id);
-                        else if (type === 'link') deleteLink(id);
-                    }
-                    return;
-                }
-
-                if (target.classList.contains('edit-btn')) {
-                    const id = target.dataset.id;
-                    const type = target.dataset.type;
-                    if (!id) return;
-                    editingId = id;
-
-                    if (type === 'project') {
-                        const p = data.projects.find(x => x.id === id);
-                        if (!p) return;
-                        document.getElementById('projectModalTitle').textContent = 'Edit Project';
-                        document.getElementById('projectTitle').value = p.title || '';
-                        document.getElementById('projectDesc').value = p.description || '';
-                        document.getElementById('projectImage').value = p.image || '';
-                        document.getElementById('projectUrl').value = p.url || '';
-                        document.getElementById('projectTags').value = Array.isArray(p.tags) ? p.tags.join(', ') : (p.tags || '');
-                        document.getElementById('projectSize').value = p.size || 'bento-item';
-                        openModal('projectModal');
-                    } else if (type === 'media') {
-                        const m = data.gallery.find(x => x.id === id);
-                        if (!m) return;
-                        document.getElementById('mediaModalTitle').textContent = 'Edit Media';
-                        document.getElementById('mediaType').value = m.type || 'image';
-                        document.getElementById('mediaUrl').value = m.url || '';
-                        document.getElementById('mediaCaption').value = m.caption || '';
-                        openModal('mediaModal');
-                    } else if (type === 'link') {
-                        const l = data.links.find(x => x.id === id);
-                        if (!l) return;
-                        document.getElementById('linkModalTitle').textContent = 'Edit Link';
-                        document.getElementById('linkTitle').value = l.title || '';
-                        document.getElementById('linkUrl').value = l.url || '';
-                        document.getElementById('linkIcon').value = l.icon || '';
-                        openModal('linkModal');
-                    }
-                }
-            });
-
-            // Cursor
-            const dot = document.getElementById('cursorDot');
-            const outline = document.getElementById('cursorOutline');
-            document.addEventListener('mousemove', (e) => {
-                dot.style.left = e.clientX + 'px';
-                dot.style.top = e.clientY + 'px';
-                outline.style.left = e.clientX + 'px';
-                outline.style.top = e.clientY + 'px';
-            });
-            document.addEventListener('mouseover', (e) => {
-                if (e.target.closest('a, button, .btn-primary, .btn-ghost, .link-card, .glow-card')) {
-                    outline.classList.add('hover');
-                }
-            });
-            document.addEventListener('mouseout', (e) => {
-                if (e.target.closest('a, button, .btn-primary, .btn-ghost, .link-card, .glow-card')) {
-                    outline.classList.remove('hover');
-                }
-            });
-
-            // Scroll progress
-            window.addEventListener('scroll', () => {
-                const scrollTop = window.scrollY;
-                const docHeight = document.documentElement.scrollHeight - window.innerHeight;
-                const progress = docHeight > 0 ? (scrollTop / docHeight) * 100 : 0;
-                document.getElementById('scrollProgress').style.width = progress + '%';
-            });
-
-            // Reveal observer
-            const observer = new IntersectionObserver((entries) => {
-                entries.forEach(entry => {
-                    if (entry.isIntersecting) {
-                        entry.target.classList.add('visible');
-                    }
-                });
-            }, { threshold: 0.1 });
-            document.querySelectorAll('.reveal').forEach(el => observer.observe(el));
-        }
-
-        // ---------- INIT ----------
-        loadData();
-        renderAll();
-        initEvents();
-
-        if (!document.getElementById('toast')) {
-            const toastDiv = document.createElement('div');
-            toastDiv.id = 'toast';
-            toastDiv.className = 'toast';
-            document.body.appendChild(toastDiv);
-        }
-    </script>
+    <script src="script.js"></script>
 </body>
 </html>
