@@ -69,6 +69,9 @@ function setupEventListeners() {
     $('addMediaBtn').addEventListener('click', () => openMediaModal());
     $('saveMediaBtn').addEventListener('click', saveMedia);
     $('cancelMediaBtn').addEventListener('click', () => closeModal('mediaModal'));
+
+    // Hint dinamis untuk Media Type
+    $('mediaType').addEventListener('change', (e) => updateMediaTypeHint(e.target.value));
     
     $('addLinkBtn').addEventListener('click', () => openLinkModal());
     $('saveLinkBtn').addEventListener('click', saveLink);
@@ -79,6 +82,19 @@ function setupEventListeners() {
         if (contactLink) window.open(contactLink.url, '_blank');
         else showToast('No contact link found.', 'error');
     });
+}
+
+// Hint teks untuk media type
+function updateMediaTypeHint(type) {
+    const hints = {
+        'image': 'Tip: Paste URL gambar langsung (jpg/png/webp).',
+        'youtube': 'Tip: URL seperti https://www.youtube.com/watch?v=XXXX atau https://youtu.be/XXXX',
+        'youtube-short': 'Tip: URL seperti https://youtube.com/shorts/XXXX atau https://youtu.be/XXXX — tampil portrait 9:16.',
+        'instagram': 'Tip: URL seperti https://www.instagram.com/reel/XXXX/ — tampil portrait 9:16.',
+        'video': 'Tip: URL langsung file .mp4 / .webm.'
+    };
+    const hintEl = $('mediaTypeHint');
+    if (hintEl) hintEl.textContent = hints[type] || '';
 }
 
 // Load Data
@@ -146,13 +162,76 @@ function renderData() {
         });
     }
     
-    // Render Gallery Media
+    // ===== Render Gallery Media =====
+    // Pisahkan jadi dua zona: Shorts & Reels (portrait) + Regular Media (masonry)
+    const shortsGrid = $('shortsGrid');
+    const shortsRow = $('shortsRow');
     const mediaGrid = $('mediaGrid');
+    shortsGrid.innerHTML = '';
     mediaGrid.innerHTML = '';
-    if (gallery.length === 0) {
-        mediaGrid.innerHTML = '<p class="text-gray-500 text-center py-8">No media yet. Add images or videos!</p>';
+
+    const shortTypes = ['youtube-short', 'instagram'];
+    const shortsMedia = (gallery || []).filter(m => shortTypes.includes(m.type));
+    const regularMedia = (gallery || []).filter(m => !shortTypes.includes(m.type));
+
+    // === Shorts & Reels (portrait row) ===
+    if (shortsMedia.length > 0) {
+        shortsRow.classList.remove('hidden');
+        shortsMedia.forEach(media => {
+            let iframeSrc = '';
+            let badgeHTML = '';
+            if (media.type === 'youtube-short') {
+                const id = extractYouTubeId(media.url);
+                if (id) {
+                    iframeSrc = `https://www.youtube.com/embed/${id}?rel=0&modestbranding=1`;
+                    badgeHTML = `<span class="shorts-badge yt"><i class="fab fa-youtube"></i> SHORTS</span>`;
+                }
+            } else if (media.type === 'instagram') {
+                const id = extractInstagramId(media.url);
+                if (id) {
+                    iframeSrc = `https://www.instagram.com/reel/${id}/embed/`;
+                    badgeHTML = `<span class="shorts-badge ig"><i class="fab fa-instagram"></i> REEL</span>`;
+                }
+            }
+
+            // Jika URL tidak valid, tampilkan placeholder error
+            if (!iframeSrc) {
+                const item = document.createElement('div');
+                item.className = 'shorts-card glow-card glass reveal relative flex items-center justify-center';
+                item.innerHTML = `
+                    <div class="edit-btn" onclick="openMediaModal('${media.id}')"><i class="fas fa-pen text-xs"></i></div>
+                    <div class="delete-btn" onclick="deleteMedia('${media.id}')"><i class="fas fa-trash text-xs"></i></div>
+                    <div class="text-center p-4 text-gray-400 text-sm">
+                        <i class="fas fa-exclamation-triangle text-yellow-400 text-2xl mb-2"></i><br>
+                        URL tidak valid
+                    </div>`;
+                shortsGrid.appendChild(item);
+                return;
+            }
+
+            const item = document.createElement('div');
+            item.className = 'shorts-card glow-card glass reveal';
+            item.innerHTML = `
+                <div class="edit-btn" onclick="openMediaModal('${media.id}')"><i class="fas fa-pen text-xs"></i></div>
+                <div class="delete-btn" onclick="deleteMedia('${media.id}')"><i class="fas fa-trash text-xs"></i></div>
+                ${badgeHTML}
+                <iframe src="${iframeSrc}" frameborder="0" allow="autoplay; encrypted-media; picture-in-picture; web-share" allowfullscreen scrolling="no" loading="lazy"></iframe>
+                ${media.caption ? `<div class="shorts-caption">${escapeHtml(media.caption)}</div>` : ''}
+            `;
+            shortsGrid.appendChild(item);
+        });
     } else {
-        gallery.forEach(media => {
+        shortsRow.classList.add('hidden');
+    }
+
+    // === Regular Media (masonry) ===
+    if (regularMedia.length === 0) {
+        if (shortsMedia.length === 0) {
+            mediaGrid.innerHTML = '<p class="text-gray-500 text-center py-8">No media yet. Add images or videos!</p>';
+        }
+        // Kalau ada shorts tapi tidak ada regular media, biarkan mediaGrid kosong (tidak perlu pesan)
+    } else {
+        regularMedia.forEach(media => {
             let mediaHTML = '';
             if (media.type === 'image') {
                 mediaHTML = `<img src="${media.url}" alt="Media" class="w-full h-auto rounded-t-2xl object-cover" onerror="this.src='https://via.placeholder.com/400x300/111/888?text=Image+Error'">`;
@@ -211,11 +290,28 @@ function renderData() {
     setupScrollObserver();
 }
 
-// Extract YouTube ID
+// Extract YouTube ID — sudah mendukung /shorts/, /watch?v=, youtu.be, /embed/, /v/
 function extractYouTubeId(url) {
-    const regex = /(?:youtube\.com\/(?:[^\/\n\s]+\/\S+\/|(?:v|e(?:mbed)?)\/|\S*?[?&]v=)|youtu\.be\/)([a-zA-Z0-9_-]{11})/;
-    const match = url.match(regex);
+    if (!url) return null;
+    const regex = /(?:youtube\.com\/(?:[^\/\n\s]+\/\S+\/|(?:v|e(?:mbed)?|shorts|live)\/|\S*?[?&]v=)|youtu\.be\/)([a-zA-Z0-9_-]{11})/;
+    const match = String(url).match(regex);
     return match ? match[1] : null;
+}
+
+// Extract Instagram Reel/Post ID — mendukung /reel/, /reels/, /p/, /tv/
+function extractInstagramId(url) {
+    if (!url) return null;
+    const regex = /instagram\.com\/(?:reel|reels|p|tv|stories)\/([A-Za-z0-9_-]+)/;
+    const match = String(url).match(regex);
+    return match ? match[1] : null;
+}
+
+// Escape HTML untuk caption (cegah XSS sederhana)
+function escapeHtml(text) {
+    if (!text) return '';
+    const div = document.createElement('div');
+    div.textContent = text;
+    return div.innerHTML;
 }
 
 // Typewriter
@@ -348,7 +444,7 @@ async function deleteProject(id) {
     renderData();
 }
 
-// CRUD Media (FITUR BARU)
+// CRUD Media (Diperbaiki — support youtube-short & instagram)
 function openMediaModal(id = null) {
     state.editingMediaId = id;
     if (id) {
@@ -363,13 +459,27 @@ function openMediaModal(id = null) {
         $('mediaType').value = 'image';
         $('mediaUrl').value = ''; $('mediaCaption').value = '';
     }
+    updateMediaTypeHint($('mediaType').value);
     openModal('mediaModal');
 }
 async function saveMedia() {
+    const type = $('mediaType').value;
+    const url = $('mediaUrl').value.trim();
+
+    // Validasi sederhana berdasarkan tipe
+    if (type === 'youtube-short' && !extractYouTubeId(url)) {
+        showToast('URL YouTube Shorts tidak valid. Contoh: https://youtube.com/shorts/XXXX', 'error');
+        return;
+    }
+    if (type === 'instagram' && !extractInstagramId(url)) {
+        showToast('URL Instagram Reels tidak valid. Contoh: https://www.instagram.com/reel/XXXX/', 'error');
+        return;
+    }
+
     const data = {
         id: state.editingMediaId || generateId(),
-        type: $('mediaType').value,
-        url: $('mediaUrl').value.trim(),
+        type: type,
+        url: url,
         caption: $('mediaCaption').value.trim()
     };
     if (state.editingMediaId) {
