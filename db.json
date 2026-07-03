@@ -1,7 +1,7 @@
 {
   "profile": {
     "name": "Iman Firmansyah",
-    "bio": "learn, craft, and build.",
+    "bio": "learn,  craft , and build.",
     "avatar": "https://raw.githubusercontent.com/NanoMindExplorer/nanomind/main/avatar.jpg",
     "logoText": "N"
   },
@@ -12,7 +12,11 @@
       "description": "Android gamepad-to-touchscreen mapper with overlay, anti-ban, and macro support. Supports Xbox, Switch, Playstation controllers.",
       "image": "https://raw.githubusercontent.com/NanoMindExplorer/GameMapperMind/refs/heads/main/public/icon.svg",
       "url": "https://github.com/NanoMindExplorer/GameMapperMind/releases/tag/v2.1.0",
-      "tags": ["Tools", "Android", "App"],
+      "tags": [
+        "Tools",
+        "Android",
+        "App"
+      ],
       "size": "bento-item"
     },
     {
@@ -21,7 +25,11 @@
       "description": "Web3 Suit & AI Automation Terminal",
       "image": "https://raw.githubusercontent.com/NanoMindExplorer/nanomind/main/Screenshot_20260630_224816.jpg",
       "url": "Private Only",
-      "tags": ["Solidity", "JavaScript", "Python"],
+      "tags": [
+        "Solidity",
+        "JavaScript",
+        "Python"
+      ],
       "size": "bento-item"
     },
     {
@@ -30,7 +38,9 @@
       "description": "Terminal Ai Coding Companion",
       "image": "https://raw.githubusercontent.com/NanoMindExplorer/nanomind/main/progress.png",
       "url": "https://github.com/NanoMindExplorer/codeforge-tui",
-      "tags": ["Go"],
+      "tags": [
+        "Go"
+      ],
       "size": "bento-item"
     },
     {
@@ -39,7 +49,11 @@
       "description": "Terminal Android yang menggabungkan kekuatan mesin C/C++ NDK (Pseudo-Terminal) dengan AI Copilot Multi-Provider untuk pengembang modern.",
       "image": "https://raw.githubusercontent.com/NanoMindExplorer/nanomind/main/progress2.png",
       "url": "https://github.com/NanoMindExplorer/tunnel-terminal",
-      "tags": ["app", "android", "apk"],
+      "tags": [
+        "app",
+        "android",
+        "apk"
+      ],
       "size": "bento-item"
     }
   ],
@@ -64,15 +78,9 @@
     },
     {
       "id": "mr4yu0z9ows433f16pl",
-      "type": "youtube-short",
+      "type": "youtube",
       "url": "https://youtube.com/shorts/0k0nKzn0igc?si=Io2V3ftZuwqPh9ZQ",
-      "caption": "Tunnel Terminal Progress (Short)"
-    },
-    {
-      "id": "instagram-demo-001",
-      "type": "instagram",
-      "url": "https://www.instagram.com/reel/CxYzAbcDEF/",
-      "caption": "Contoh Instagram Reel – Behind the Scene"
+      "caption": "Tunnel Terminal Progress"
     }
   ],
   "links": [
