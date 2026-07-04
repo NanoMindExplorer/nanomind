@@ -81,6 +81,12 @@
       "type": "youtube-short",
       "url": "https://youtube.com/shorts/0k0nKzn0igc?si=Io2V3ftZuwqPh9ZQ",
       "caption": "Tunnel Terminal Progress — quick demo"
+    },
+    {
+      "id": "mr6q2j5b4fao84p0jcq",
+      "type": "youtube",
+      "url": "https://youtu.be/jGGgpR0N284?feature=shared",
+      "caption": "Tunne Terminal Progress Demo"
     }
   ],
   "links": [
