@@ -46,13 +46,16 @@
     {
       "id": "mr28yzusmcwnss8qda",
       "title": "Tunnel Terminal",
-      "description": "Tunnel Terminal adalah terminal Android AI-native yang merubah cara developer bekerja di perangkat mobile. Menggabungkan mesin C/C++ NDK (Pseudo-Terminal asli) dengan AI Copilot multi-provider, terminal berbasis blok, command palette, tool calling, lingkungan Linux Ubuntu asli via proot (tanpa root), dan banyak lagi.",
-      "image": "https://raw.githubusercontent.com/NanoMindExplorer/nanomind/main/progress2.png",
-      "url": "https://github.com/NanoMindExplorer/tunnel-terminal",
+      "description": "Tunnel Terminal adalah terminal Android AI-native untuk developer bekerja di perangkat mobile.",
+      "image": "https://raw.githubusercontent.com/NanoMindExplorer/nanomind/main/tunnelterminal.jpg",
+      "url": "https://github.com/NanoMindExplorer/tunnel-terminal/releases/tag/v7.1.0",
       "tags": [
         "app",
         "android",
-        "apk"
+        "apk",
+        "linux",
+        "ubuntu",
+        "terminal"
       ],
       "size": "bento-item"
     }
