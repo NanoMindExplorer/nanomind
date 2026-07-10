@@ -4,6 +4,22 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Nanomind Explorer | Portfolio & Gallery</title>
+    <meta name="description" content="Portfolio Iman Firmansyah (Nanomind Explorer) — Android tools, AI automation terminal, dan proyek developer lainnya, lengkap dengan galeri video & foto.">
+    <meta name="theme-color" content="#050508">
+    <link rel="canonical" href="https://nanomindexplorer.github.io/nanomind">
+    <meta property="og:type" content="website">
+    <meta property="og:title" content="Nanomind Explorer | Portfolio & Gallery">
+    <meta property="og:description" content="Android tools, AI automation terminal, dan proyek developer lainnya — lengkap dengan galeri video & foto.">
+    <meta property="og:image" content="https://raw.githubusercontent.com/NanoMindExplorer/nanomind/main/avatar.jpg">
+    <meta property="og:url" content="https://nanomindexplorer.github.io/nanomind">
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:title" content="Nanomind Explorer | Portfolio & Gallery">
+    <meta name="twitter:description" content="Android tools, AI automation terminal, dan proyek developer lainnya — lengkap dengan galeri video & foto.">
+    <meta name="twitter:image" content="https://raw.githubusercontent.com/NanoMindExplorer/nanomind/main/avatar.jpg">
+    <link rel="icon" type="image/svg+xml" href="favicon.svg">
+    <link rel="apple-touch-icon" href="avatar.jpg">
+    <link rel="preconnect" href="https://img.youtube.com">
+    <link rel="preconnect" href="https://raw.githubusercontent.com">
     <script src="https://cdn.tailwindcss.com"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -15,91 +31,149 @@
             --card: rgba(255, 255, 255, 0.02); --card-hover: rgba(255, 255, 255, 0.04);
             --border: rgba(255, 255, 255, 0.06); --border-active: rgba(255, 255, 255, 0.15);
             --text: #ffffff; --text-muted: #8888aa;
-            --accent: #00f0ff; --accent-2: #ff00e5;
+            --accent: #00f0ff; --accent-2: #ff00e5; --accent-3: #7700ff;
         }
-        * { -webkit-tap-highlight-color: transparent; cursor: none; }
+        * { -webkit-tap-highlight-color: transparent; cursor: none; box-sizing: border-box; }
         html { scroll-behavior: smooth; }
         body { font-family: 'Space Grotesk', sans-serif; background: var(--bg); color: var(--text); overflow-x: hidden; }
         .font-display { font-family: 'Outfit', sans-serif; }
-        
+        @media (max-width: 768px) { .cursor-dot, .cursor-outline { display: none; } * { cursor: auto; } }
+        @media (prefers-reduced-motion: reduce) {
+            *, *::before, *::after { animation-duration: 0.001ms !important; animation-iteration-count: 1 !important; transition-duration: 0.001ms !important; scroll-behavior: auto !important; }
+        }
+        a:focus-visible, button:focus-visible, [tabindex]:focus-visible, input:focus-visible, .link-card:focus-visible { outline: 2px solid var(--accent); outline-offset: 3px; border-radius: 8px; }
+
+        /* Page Loader */
+        #pageLoader { position: fixed; inset: 0; background: var(--bg); z-index: 500; display: flex; align-items: center; justify-content: center; transition: opacity 0.5s ease, visibility 0.5s ease; }
+        #pageLoader.hide { opacity: 0; visibility: hidden; }
+        .loader-logo { width: 64px; height: 64px; animation: pulseLogo 1.4s ease-in-out infinite; }
+        @keyframes pulseLogo { 0%, 100% { transform: scale(1); opacity: 1; } 50% { transform: scale(1.15); opacity: 0.55; } }
+
         /* Custom Cursor */
         .cursor-dot, .cursor-outline { position: fixed; top: 0; left: 0; transform: translate(-50%, -50%); pointer-events: none; z-index: 9999; border-radius: 50%; transition: opacity 0.3s; }
         .cursor-dot { width: 6px; height: 6px; background: var(--accent); box-shadow: 0 0 10px var(--accent); }
         .cursor-outline { width: 40px; height: 40px; border: 1px solid rgba(255, 255, 255, 0.3); transition: transform 0.15s ease-out, width 0.3s, height 0.3s, border-color 0.3s; }
         .cursor-outline.hover { width: 60px; height: 60px; border-color: var(--accent-2); background: rgba(255, 0, 229, 0.05); }
-        @media (max-width: 768px) { .cursor-dot, .cursor-outline { display: none; } * { cursor: auto; } }
-        
+
         /* Scroll Progress */
         .scroll-progress { position: fixed; top: 0; left: 0; width: 0%; height: 3px; background: linear-gradient(90deg, var(--accent), var(--accent-2)); z-index: 100; box-shadow: 0 0 10px var(--accent); }
-        
+
         /* Backgrounds */
         .aurora { position: fixed; inset: 0; z-index: 0; pointer-events: none; overflow: hidden; }
         .aurora-blob { position: absolute; border-radius: 50%; filter: blur(100px); opacity: 0.3; animation: float 15s infinite ease-in-out; }
         .blob-1 { width: 600px; height: 600px; background: var(--accent); top: -10%; left: -10%; }
         .blob-2 { width: 500px; height: 500px; background: var(--accent-2); bottom: -10%; right: -10%; animation-delay: -5s; }
-        .blob-3 { width: 400px; height: 400px; background: #7700ff; top: 40%; left: 50%; animation-delay: -10s; }
+        .blob-3 { width: 400px; height: 400px; background: var(--accent-3); top: 40%; left: 50%; animation-delay: -10s; }
         @keyframes float { 0%, 100% { transform: translate(0, 0) scale(1); } 33% { transform: translate(80px, -80px) scale(1.2); } 66% { transform: translate(-50px, 50px) scale(0.8); } }
         .grid-bg { position: fixed; inset: 0; z-index: 0; pointer-events: none; background-image: linear-gradient(rgba(255,255,255,0.015) 1px, transparent 1px), linear-gradient(90deg, rgba(255,255,255,0.015) 1px, transparent 1px); background-size: 40px 40px; mask-image: radial-gradient(ellipse at center, black 30%, transparent 90%); -webkit-mask-image: radial-gradient(ellipse at center, black 30%, transparent 90%); }
-        
+
         /* Animated Logo SVG */
         .logo-svg { width: 36px; height: 36px; }
         .logo-ring-outer { animation: spin 8s linear infinite; transform-origin: center; }
         .logo-ring-inner { animation: spin 5s linear infinite reverse; transform-origin: center; }
         @keyframes spin { from { transform: rotate(0deg); } to { transform: rotate(360deg); } }
-        
+
         /* Glass & Glow */
         .glass { background: var(--card); backdrop-filter: blur(20px); border: 1px solid var(--border); transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1); }
         .glow-card { position: relative; overflow: hidden; }
         .glow-card::before { content: ''; position: absolute; top: 0; left: 0; right: 0; bottom: 0; background: radial-gradient(circle at var(--mouse-x) var(--mouse-y), rgba(255,255,255,0.06), transparent 40%); opacity: 0; transition: opacity 0.3s; pointer-events: none; z-index: 1; }
         .glow-card:hover::before { opacity: 1; }
         .glow-card:hover { border-color: rgba(255,255,255,0.1); transform: translateY(-2px); }
-        
+
         /* Buttons */
-        .btn-primary { background: linear-gradient(135deg, var(--accent), var(--accent-2)); color: #050508; font-weight: 700; padding: 12px 24px; border-radius: 100px; transition: all 0.3s; display: inline-flex; align-items: center; justify-content: center; box-shadow: 0 0 0 0 rgba(0, 240, 255, 0.7); }
+        .btn-primary { background: linear-gradient(135deg, var(--accent), var(--accent-2)); color: #050508; font-weight: 700; padding: 12px 24px; border-radius: 100px; transition: all 0.3s; display: inline-flex; align-items: center; justify-content: center; box-shadow: 0 0 0 0 rgba(0, 240, 255, 0.7); border: none; }
         .btn-primary:hover { box-shadow: 0 0 30px -5px var(--accent); transform: translateY(-2px); }
+        .btn-primary:disabled { opacity: 0.6; transform: none; box-shadow: none; }
         .btn-ghost { background: rgba(255,255,255,0.03); border: 1px solid var(--border); color: var(--text); font-weight: 500; padding: 12px 24px; border-radius: 100px; transition: all 0.3s; display: inline-flex; align-items: center; justify-content: center; }
         .btn-ghost:hover { background: rgba(255,255,255,0.08); border-color: var(--accent); color: var(--accent); }
-        
+
         /* Navigation */
         .nav-link { position: relative; padding: 8px 16px; color: var(--text-muted); transition: color 0.2s; font-weight: 500; font-size: 14px; }
         .nav-link::after { content: ''; position: absolute; bottom: -2px; left: 20%; width: 0; height: 1px; background: var(--accent); transition: all 0.3s; box-shadow: 0 0 10px var(--accent); }
         .nav-link:hover, .nav-link.active { color: var(--text); }
         .nav-link:hover::after, .nav-link.active::after { width: 60%; }
-        
+
+        /* Mobile Nav */
+        .mobile-menu-btn { display: none; width: 40px; height: 40px; border-radius: 10px; align-items: center; justify-content: center; background: rgba(255,255,255,0.04); border: 1px solid var(--border); color: #fff; font-size: 16px; }
+        @media (max-width: 768px) { .mobile-menu-btn { display: flex; } }
+        .mobile-nav-backdrop { position: fixed; inset: 0; background: rgba(0,0,0,0.6); backdrop-filter: blur(4px); z-index: 85; opacity: 0; pointer-events: none; transition: opacity 0.3s; }
+        .mobile-nav-backdrop.open { opacity: 1; pointer-events: auto; }
+        .mobile-nav-panel { position: fixed; top: 0; right: 0; height: 100vh; width: 78vw; max-width: 320px; background: var(--bg-2); border-left: 1px solid var(--border); z-index: 90; transform: translateX(100%); transition: transform 0.35s cubic-bezier(0.4,0,0.2,1); padding: 100px 28px 40px; display: flex; flex-direction: column; gap: 4px; box-shadow: -20px 0 60px rgba(0,0,0,0.5); }
+        .mobile-nav-panel.open { transform: translateX(0); }
+        .mobile-nav-panel a { padding: 16px 4px; font-size: 17px; font-weight: 600; color: var(--text-muted); border-bottom: 1px solid var(--border); }
+        .mobile-nav-panel a::after { display: none; }
+        .mobile-nav-panel a.active, .mobile-nav-panel a:hover { color: var(--accent); }
+
         /* Text Gradient */
         .gradient-text { background: linear-gradient(135deg, #fff 20%, var(--accent) 50%, var(--accent-2) 80%); -webkit-background-clip: text; background-clip: text; -webkit-text-fill-color: transparent; background-size: 200% auto; animation: shine 5s linear infinite; }
         @keyframes shine { to { background-position: 200% center; } }
-        
+
+        /* Stats chips */
+        .stat-chip { display: flex; flex-direction: column; align-items: center; padding: 14px 24px; border-radius: 16px; background: rgba(255,255,255,0.02); border: 1px solid var(--border); min-width: 96px; }
+        .stat-chip .num { font-family: 'Outfit', sans-serif; font-weight: 800; font-size: 26px; background: linear-gradient(135deg, var(--accent), var(--accent-2)); -webkit-background-clip: text; background-clip: text; -webkit-text-fill-color: transparent; }
+        .stat-chip .label { font-size: 11px; color: var(--text-muted); text-transform: uppercase; letter-spacing: 0.5px; margin-top: 2px; }
+
         /* Bento & Masonry Grids */
         .bento-grid { display: grid; grid-template-columns: repeat(6, 1fr); gap: 1.5rem; }
         .bento-item { grid-column: span 2; } .bento-item.large { grid-column: span 3; } .bento-item.full { grid-column: span 6; }
         @media (max-width: 768px) { .bento-grid { grid-template-columns: repeat(2, 1fr); } .bento-item, .bento-item.large, .bento-item.full { grid-column: span 2; } }
-        
+
         .masonry-grid { column-count: 3; column-gap: 1.5rem; }
         @media (max-width: 768px) { .masonry-grid { column-count: 1; } }
         @media (min-width: 769px) and (max-width: 1024px) { .masonry-grid { column-count: 2; } }
         .masonry-item { break-inside: avoid; margin-bottom: 1.5rem; }
-        
-        /* ===== SHORTS & REELS — Portrait Cards (9:16) ===== */
+
+        /* Gallery Toolbar */
+        .filter-tabs { display: inline-flex; gap: 4px; padding: 4px; border-radius: 100px; background: rgba(255,255,255,0.03); border: 1px solid var(--border); flex-wrap: wrap; }
+        .filter-tab { padding: 8px 18px; border-radius: 100px; font-size: 13px; font-weight: 600; color: var(--text-muted); transition: all 0.25s; white-space: nowrap; }
+        .filter-tab.active { background: linear-gradient(135deg, var(--accent), var(--accent-2)); color: #050508; }
+        .filter-tab:not(.active):hover { color: var(--text); background: rgba(255,255,255,0.06); }
+        .search-wrap { position: relative; width: 100%; max-width: 280px; }
+        .search-wrap i { position: absolute; left: 16px; top: 50%; transform: translateY(-50%); color: var(--text-muted); font-size: 13px; }
+        .search-wrap input { padding-left: 40px !important; }
+        .gallery-count { font-size: 12.5px; color: var(--text-muted); }
+
+        /* ===== Unified Media Card (Shorts + Landscape + Photos) ===== */
         .shorts-row { display: flex; gap: 1rem; overflow-x: auto; padding: 4px 2px 1rem; scroll-snap-type: x mandatory; scroll-behavior: smooth; -webkit-overflow-scrolling: touch; }
         .shorts-row::-webkit-scrollbar { height: 6px; }
         .shorts-row::-webkit-scrollbar-track { background: rgba(255,255,255,0.03); border-radius: 10px; }
         .shorts-row::-webkit-scrollbar-thumb { background: linear-gradient(90deg, var(--accent), var(--accent-2)); border-radius: 10px; }
-        .shorts-card { position: relative; flex: 0 0 auto; width: 300px; aspect-ratio: 9 / 16; border-radius: 20px; overflow: hidden; scroll-snap-align: start; background: #000; border: 1px solid var(--border); transition: transform 0.4s cubic-bezier(0.34, 1.56, 0.64, 1), box-shadow 0.3s; }
-        .shorts-card:hover { transform: translateY(-6px) scale(1.02); box-shadow: 0 20px 50px -10px rgba(255, 0, 229, 0.3); border-color: var(--border-active); }
-        .shorts-card iframe { position: absolute; inset: 0; width: 100%; height: 100%; border: 0; }
-        .shorts-badge { position: absolute; top: 12px; left: 12px; z-index: 5; font-size: 10px; font-weight: 700; padding: 5px 10px; border-radius: 100px; color: #fff; backdrop-filter: blur(10px); display: inline-flex; align-items: center; gap: 4px; letter-spacing: 0.5px; }
-        .shorts-badge.yt { background: rgba(255, 0, 0, 0.85); }
-        .shorts-badge.ig { background: linear-gradient(135deg, #833ab4, #fd1d1d, #fcb045); }
-        .shorts-caption { position: absolute; left: 0; right: 0; bottom: 0; z-index: 4; padding: 32px 14px 14px; background: linear-gradient(to top, rgba(0,0,0,0.95) 30%, rgba(0,0,0,0.6) 60%, transparent); color: #fff; font-size: 12.5px; line-height: 1.4; pointer-events: none; }
-        .shorts-caption a { pointer-events: auto; color: var(--accent); text-decoration: none; }
-        @media (max-width: 640px) { .shorts-card { width: 230px; } }
-        
+
+        .media-card { position: relative; border-radius: 20px; overflow: hidden; background: #000; border: 1px solid var(--border); transition: transform 0.4s cubic-bezier(0.34, 1.56, 0.64, 1), box-shadow 0.3s, border-color 0.3s; }
+        .media-card:hover { transform: translateY(-6px); box-shadow: 0 20px 50px -10px rgba(255, 0, 229, 0.28); border-color: var(--border-active); }
+        .media-card--portrait { flex: 0 0 auto; width: 260px; aspect-ratio: 9 / 16; scroll-snap-align: start; }
+        @media (max-width: 640px) { .media-card--portrait { width: 210px; } }
+        .media-card--landscape .media-thumb-wrap { aspect-ratio: 16 / 9; }
+        .media-card--landscape.type-image .media-thumb-wrap { aspect-ratio: auto; }
+        .media-thumb-wrap { position: relative; width: 100%; height: 100%; cursor: none; }
+        .media-thumb-wrap img { width: 100%; height: 100%; object-fit: cover; display: block; position: relative; z-index: 1; }
+        .media-card--landscape.type-image .media-thumb-wrap img { height: auto; }
+        .thumb-placeholder { position: absolute; inset: 0; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 10px; background: linear-gradient(135deg, rgba(0,240,255,0.12), rgba(255,0,229,0.12)); color: var(--text-muted); }
+        .thumb-placeholder i { font-size: 32px; opacity: 0.55; }
+        .thumb-placeholder span { font-size: 11px; letter-spacing: 0.5px; text-transform: uppercase; opacity: 0.7; }
+
+        .play-badge { position: absolute; inset: 0; z-index: 3; display: flex; align-items: center; justify-content: center; background: radial-gradient(circle, rgba(0,0,0,0.1), rgba(0,0,0,0.4)); opacity: 0; transition: opacity 0.25s; }
+        .media-card:hover .play-badge, .media-thumb-wrap:focus-visible .play-badge { opacity: 1; }
+        .play-badge i { width: 54px; height: 54px; border-radius: 50%; background: rgba(255,255,255,0.92); color: #050508; display: flex; align-items: center; justify-content: center; font-size: 18px; box-shadow: 0 0 30px rgba(0,240,255,0.5); transform: scale(0.8); transition: transform 0.25s; }
+        .media-card:hover .play-badge i { transform: scale(1); }
+
+        .type-chip { position: absolute; top: 12px; left: 12px; z-index: 5; font-size: 10px; font-weight: 700; padding: 5px 10px; border-radius: 100px; color: #fff; backdrop-filter: blur(10px); display: inline-flex; align-items: center; gap: 4px; letter-spacing: 0.5px; }
+        .type-chip.yt { background: rgba(255, 0, 0, 0.85); }
+        .type-chip.ig { background: linear-gradient(135deg, #833ab4, #fd1d1d, #fcb045); }
+        .type-chip.tt { background: #000; border: 1px solid #ff0050; }
+        .type-chip.vid { background: rgba(0, 240, 255, 0.85); color: #050508; }
+        .type-chip.img { background: rgba(255, 255, 255, 0.15); }
+
+        .media-caption-overlay { position: absolute; left: 0; right: 0; bottom: 0; z-index: 4; padding: 32px 14px 14px; background: linear-gradient(to top, rgba(0,0,0,0.95) 30%, rgba(0,0,0,0.6) 60%, transparent); color: #fff; font-size: 12.5px; line-height: 1.4; pointer-events: none; }
+
+        /* Load more */
+        .load-more-wrap { display: flex; justify-content: center; margin-top: 2rem; }
+
         /* Link Card */
         .link-card { display: flex; align-items: center; gap: 16px; padding: 20px; border-radius: 20px; position: relative; overflow: hidden; border: 1px solid var(--border); background: rgba(255,255,255,0.02); transition: all 0.3s; }
         .link-card .icon-box { width: 48px; height: 48px; border-radius: 12px; display: flex; align-items: center; justify-content: center; background: rgba(0, 240, 255, 0.1); color: var(--accent); font-size: 20px; flex-shrink: 0; transition: all 0.3s; }
         .link-card:hover .icon-box { background: var(--accent); color: #050508; box-shadow: 0 0 20px var(--accent); }
-        
+
         /* Form & Modal */
         .input-field { background: rgba(255,255,255,0.02); border: 1px solid var(--border); border-radius: 12px; padding: 14px 16px; color: var(--text); width: 100%; transition: all 0.2s; font-family: inherit; font-size: 15px; }
         .input-field:focus { outline: none; border-color: var(--accent); box-shadow: 0 0 0 4px rgba(0, 240, 255, 0.1); }
@@ -107,11 +181,28 @@
         .modal-overlay.active { opacity: 1; pointer-events: auto; }
         .modal-content { background: var(--bg-2); border: 1px solid var(--border); border-radius: 24px; padding: 32px; max-width: 500px; width: 100%; max-height: 90vh; overflow-y: auto; transform: scale(0.95) translateY(20px); transition: transform 0.4s cubic-bezier(0.34, 1.56, 0.64, 1); box-shadow: 0 0 50px rgba(0, 240, 255, 0.1); }
         .modal-overlay.active .modal-content { transform: scale(1) translateY(0); }
-        
+
+        /* Lightbox */
+        #lightboxModal .modal-content { background: transparent; border: none; box-shadow: none; padding: 0; max-width: 96vw; overflow: visible; }
+        .lightbox-frame-wrap { position: relative; margin: 0 auto; border-radius: 16px; overflow: hidden; background: #000; box-shadow: 0 0 80px rgba(0,240,255,0.15); }
+        .lightbox-frame-wrap.landscape { width: min(90vw, 960px); aspect-ratio: 16 / 9; }
+        .lightbox-frame-wrap.portrait { height: min(85vh, 780px); width: auto; aspect-ratio: 9 / 16; }
+        .lightbox-frame-wrap.auto { width: min(92vw, 900px); max-height: 85vh; display: flex; align-items: center; justify-content: center; }
+        .lightbox-frame-wrap.auto img { position: static; width: 100%; height: auto; max-height: 85vh; object-fit: contain; }
+        .lightbox-frame-wrap iframe, .lightbox-frame-wrap video { position: absolute; inset: 0; width: 100%; height: 100%; border: 0; background: #000; }
+        .lightbox-close { position: absolute; top: -46px; right: 0; width: 36px; height: 36px; border-radius: 50%; background: rgba(255,255,255,0.08); border: 1px solid var(--border); color: #fff; display: flex; align-items: center; justify-content: center; z-index: 6; }
+        .lightbox-close:hover { background: var(--accent); color: #050508; }
+        .lightbox-caption { text-align: center; color: var(--text-muted); font-size: 13px; margin-top: 16px; max-width: 640px; margin-left: auto; margin-right: auto; }
+
         /* Toast */
         .toast { position: fixed; bottom: 24px; right: 24px; padding: 16px 24px; background: var(--bg-2); border: 1px solid var(--border); border-left: 4px solid var(--accent); border-radius: 12px; box-shadow: 0 10px 40px rgba(0,0,0,0.5); z-index: 200; transform: translateX(120%); transition: transform 0.4s cubic-bezier(0.34, 1.56, 0.64, 1); display: flex; align-items: center; gap: 12px; font-size: 14px; }
         .toast.show { transform: translateX(0); } .toast.error { border-left-color: #ef4444; } .toast.success { border-left-color: var(--accent); }
-        
+
+        /* Back to top */
+        .back-to-top { position: fixed; bottom: 24px; right: 24px; width: 48px; height: 48px; border-radius: 14px; background: rgba(255,255,255,0.05); border: 1px solid var(--border); color: #fff; display: flex; align-items: center; justify-content: center; opacity: 0; pointer-events: none; transform: translateY(10px); transition: all 0.3s; z-index: 45; backdrop-filter: blur(10px); }
+        .back-to-top.show { opacity: 1; pointer-events: auto; transform: translateY(0); }
+        .back-to-top:hover { background: var(--accent); color: #050508; border-color: var(--accent); }
+
         /* Scrollbar & Utils */
         ::-webkit-scrollbar { width: 6px; } ::-webkit-scrollbar-track { background: var(--bg); } ::-webkit-scrollbar-thumb { background: rgba(255,255,255,0.1); border-radius: 10px; }
         .reveal { opacity: 0; transform: translateY(30px); transition: all 0.8s cubic-bezier(0.4, 0, 0.2, 1); } .reveal.visible { opacity: 1; transform: translateY(0); }
@@ -127,16 +218,30 @@
     </style>
 </head>
 <body class="min-h-screen relative">
+    <noscript><div style="padding:60px 24px;text-align:center;font-family:sans-serif;color:#fff;background:#050508;">Situs ini membutuhkan JavaScript untuk menampilkan konten. Mohon aktifkan JavaScript di browser Anda.</div></noscript>
+
+    <div id="pageLoader" aria-hidden="true">
+        <svg class="loader-logo" viewBox="0 0 100 100">
+            <defs>
+                <linearGradient id="gradLoader" x1="0%" y1="0%" x2="100%" y2="100%">
+                    <stop offset="0%" style="stop-color:var(--accent);stop-opacity:1" />
+                    <stop offset="100%" style="stop-color:var(--accent-2);stop-opacity:1" />
+                </linearGradient>
+            </defs>
+            <polygon points="50,5 90,25 90,75 50,95 10,75 10,25" fill="none" stroke="url(#gradLoader)" stroke-width="5" stroke-linejoin="round"/>
+            <circle cx="50" cy="50" r="6" fill="url(#gradLoader)" />
+        </svg>
+    </div>
+
     <div class="cursor-dot" id="cursorDot"></div>
     <div class="cursor-outline" id="cursorOutline"></div>
     <div class="scroll-progress" id="scrollProgress"></div>
     <div class="aurora"><div class="aurora-blob blob-1"></div><div class="aurora-blob blob-2"></div><div class="aurora-blob blob-3"></div></div>
     <div class="grid-bg"></div>
-    
+
     <nav class="sticky top-0 z-40 backdrop-blur-xl bg-black/30 border-b border-white/5">
         <div class="max-w-7xl mx-auto px-6 py-4 flex items-center justify-between">
             <div class="flex items-center gap-3">
-                <!-- Animated Logo SVG -->
                 <svg class="logo-svg" viewBox="0 0 100 100">
                     <defs>
                         <linearGradient id="grad1" x1="0%" y1="0%" x2="100%" y2="100%">
@@ -156,12 +261,26 @@
                 <a href="#gallery" class="nav-link">Gallery</a>
                 <a href="#links" class="nav-link">Connect</a>
             </div>
-            <button id="contactBtn" class="btn-ghost hidden md:flex items-center gap-2 text-sm py-2 px-4">
-                <i class="fas fa-paper-plane text-xs"></i> Contact
-            </button>
+            <div class="flex items-center gap-3">
+                <button id="contactBtn" class="btn-ghost hidden md:flex items-center gap-2 text-sm py-2 px-4">
+                    <i class="fas fa-paper-plane text-xs"></i> Contact
+                </button>
+                <button id="mobileMenuBtn" class="mobile-menu-btn" aria-label="Buka menu navigasi" aria-expanded="false">
+                    <i class="fas fa-bars"></i>
+                </button>
+            </div>
         </div>
     </nav>
-    
+
+    <div class="mobile-nav-backdrop" id="mobileNavBackdrop"></div>
+    <div class="mobile-nav-panel" id="mobileNavPanel">
+        <a href="#home" class="nav-link">Home</a>
+        <a href="#portfolio" class="nav-link">Work</a>
+        <a href="#gallery" class="nav-link">Gallery</a>
+        <a href="#links" class="nav-link">Connect</a>
+        <button id="mobileContactBtn" class="btn-primary mt-6"><i class="fas fa-paper-plane mr-2 text-xs"></i> Contact</button>
+    </div>
+
     <main class="relative z-10 px-6 pb-24">
         <div class="max-w-7xl mx-auto">
             <section id="home" class="min-h-[80vh] flex flex-col items-center justify-center text-center py-20">
@@ -173,17 +292,18 @@
                     <span class="text-xs text-gray-400">Available for collaborations</span>
                 </div>
                 <h1 class="font-display font-black text-5xl md:text-8xl tracking-tighter mb-4 reveal gradient-text" id="heroName">Your Name</h1>
-                <p class="text-gray-400 text-lg md:text-2xl max-w-2xl mb-10 reveal font-light h-8" id="heroBioTypewriter"></p>
-                <div class="flex flex-wrap gap-4 justify-center reveal">
+                <p class="text-gray-400 text-lg md:text-2xl max-w-2xl mb-8 reveal font-light h-8" id="heroBioTypewriter"></p>
+                <div class="flex flex-wrap gap-4 justify-center reveal mb-10">
                     <a href="#portfolio" class="btn-primary">View My Work</a>
                     <a href="#gallery" class="btn-ghost">View Gallery</a>
                     <button class="btn-ghost admin-only hidden" id="editProfileBtn">
                         <i class="fas fa-user-edit mr-2"></i> Edit Profile
                     </button>
                 </div>
+                <div class="flex flex-wrap gap-4 justify-center reveal" id="statsRow"></div>
             </section>
-            
-            <section id="Build" class="py-20">
+
+            <section id="portfolio" class="py-20">
                 <div class="flex items-center justify-between mb-12 reveal">
                     <div>
                         <p class="text-cyan-400 text-sm font-medium mb-2 tracking-widest uppercase">Build</p>
@@ -193,10 +313,10 @@
                 </div>
                 <div id="projectsGrid" class="bento-grid"></div>
             </section>
-            
+
             <!-- MEDIA GALLERY SECTION -->
             <section id="gallery" class="py-20">
-                <div class="flex items-center justify-between mb-12 reveal">
+                <div class="flex items-center justify-between mb-8 reveal">
                     <div>
                         <p class="text-pink-500 text-sm font-medium mb-2 tracking-widest uppercase">Visuals</p>
                         <h2 class="font-display font-bold text-3xl md:text-5xl tracking-tight">Media & Moments</h2>
@@ -204,20 +324,40 @@
                     <button class="btn-primary admin-only hidden" id="addMediaBtn"><i class="fas fa-plus mr-2"></i> Add Media</button>
                 </div>
 
+                <!-- Toolbar: search + filter tabs -->
+                <div class="flex flex-col md:flex-row md:items-center md:justify-between gap-4 mb-4 reveal">
+                    <div class="filter-tabs" id="filterTabs">
+                        <button class="filter-tab active" data-filter="all">All</button>
+                        <button class="filter-tab" data-filter="landscape">Landscape</button>
+                        <button class="filter-tab" data-filter="shorts">Shorts</button>
+                        <button class="filter-tab" data-filter="photos">Photos</button>
+                    </div>
+                    <div class="search-wrap">
+                        <i class="fas fa-search"></i>
+                        <input type="text" class="input-field" id="gallerySearchInput" placeholder="Cari caption atau tag...">
+                    </div>
+                </div>
+                <p class="gallery-count mb-8 reveal" id="galleryCountLabel"></p>
+
                 <!-- ===== SHORTS & REELS — Portrait Row ===== -->
-                <div id="shortsRow" class="mb-14 reveal hidden">
+                <div id="shortsShelfWrap" class="mb-14 reveal hidden">
                     <div class="flex items-center gap-2 mb-4">
                         <i class="fas fa-bolt text-pink-500"></i>
                         <h3 class="font-display font-semibold text-xl">Shorts &amp; Reels</h3>
                         <span class="text-xs text-gray-500 ml-2">(scroll horizontally)</span>
                     </div>
-                    <div id="shortsGrid" class="shorts-row"></div>
+                    <div id="shortsShelfGrid" class="shorts-row"></div>
                 </div>
 
-                <!-- ===== REGULAR MEDIA — Masonry ===== -->
+                <!-- ===== LANDSCAPE VIDEOS & PHOTOS — Masonry ===== -->
                 <div id="mediaGrid" class="masonry-grid"></div>
+                <p id="galleryEmptyState" class="text-gray-500 text-center py-8 hidden"></p>
+
+                <div class="load-more-wrap">
+                    <button class="btn-ghost hidden" id="loadMoreBtn"><i class="fas fa-chevron-down mr-2 text-xs"></i> Load More</button>
+                </div>
             </section>
-            
+
             <section id="links" class="py-20">
                 <div class="flex items-center justify-between mb-12 reveal">
                     <div>
@@ -230,16 +370,17 @@
             </section>
         </div>
     </main>
-    
+
     <footer class="relative z-10 border-t border-white/5 mt-12">
         <div class="max-w-7xl mx-auto px-6 py-8 flex flex-col md:flex-row items-center justify-between gap-4">
             <p class="text-gray-600 text-sm">© <span id="footerYear"></span> <span id="footerName"></span>. All rights reserved.</p>
             <p class="text-gray-600 text-sm flex items-center gap-2">Designed & Built with <i class="fas fa-heart text-pink-500"></i></p>
         </div>
     </footer>
-    
+
     <button class="admin-fab" id="adminFab" title="Admin Panel"><i class="fas fa-cog"></i></button>
-    
+    <button class="back-to-top" id="backToTopBtn" title="Kembali ke atas" aria-label="Kembali ke atas"><i class="fas fa-arrow-up"></i></button>
+
     <!-- Modals -->
     <div class="modal-overlay" id="loginModal">
         <div class="modal-content">
@@ -252,7 +393,7 @@
             <div class="flex gap-3"><button class="btn-ghost flex-1" id="cancelLoginBtn">Cancel</button><button class="btn-primary flex-1" id="loginBtn">Login</button></div>
         </div>
     </div>
-    
+
     <div class="modal-overlay" id="profileModal">
         <div class="modal-content">
             <h3 class="font-display font-bold text-2xl mb-6">Edit Profile</h3>
@@ -289,15 +430,19 @@
                 <div>
                     <label class="block text-sm text-gray-400 mb-2">Media Type</label>
                     <select class="input-field" id="mediaType">
-                        <option value="image">Image (Direct URL)</option>
+                        <option value="image">Foto (Direct URL)</option>
                         <option value="youtube">YouTube Video (Landscape)</option>
                         <option value="youtube-short">YouTube Shorts (Portrait 9:16)</option>
                         <option value="instagram">Instagram Reels (Portrait 9:16)</option>
-                        <option value="video">Direct Video URL (.mp4)</option>
+                        <option value="tiktok">TikTok (Portrait 9:16)</option>
+                        <option value="video">Video Langsung .mp4 (Landscape)</option>
+                        <option value="video-short">Video Langsung .mp4 (Portrait/Short)</option>
                     </select>
                     <p id="mediaTypeHint" class="text-xs text-gray-500 mt-2">Tip: Paste URL lengkap dari browser.</p>
                 </div>
                 <div><label class="block text-sm text-gray-400 mb-2">Media URL</label><input type="text" class="input-field" id="mediaUrl" placeholder="https://..."></div>
+                <div><label class="block text-sm text-gray-400 mb-2">Thumbnail/Poster URL <span class="text-gray-600">(opsional — untuk Instagram/TikTok/Video)</span></label><input type="text" class="input-field" id="mediaThumbnail" placeholder="https://..."></div>
+                <div><label class="block text-sm text-gray-400 mb-2">Tags <span class="text-gray-600">(opsional, pisahkan koma — untuk pencarian)</span></label><input type="text" class="input-field" id="mediaTags" placeholder="android, demo, ai"></div>
                 <div><label class="block text-sm text-gray-400 mb-2">Caption</label><textarea class="input-field" id="mediaCaption" rows="3" placeholder="Tulisan atau caption untuk media ini..."></textarea></div>
             </div>
             <div class="flex gap-3 mt-6"><button class="btn-ghost flex-1" id="cancelMediaBtn">Cancel</button><button class="btn-primary flex-1" id="saveMediaBtn">Save</button></div>
@@ -313,6 +458,15 @@
                 <div><label class="block text-sm text-gray-400 mb-2">Icon Class</label><input type="text" class="input-field" id="linkIcon" placeholder="fab fa-github"></div>
             </div>
             <div class="flex gap-3 mt-6"><button class="btn-ghost flex-1" id="cancelLinkBtn">Cancel</button><button class="btn-primary flex-1" id="saveLinkBtn">Save</button></div>
+        </div>
+    </div>
+
+    <!-- LIGHTBOX MODAL -->
+    <div class="modal-overlay" id="lightboxModal">
+        <div class="modal-content">
+            <button class="lightbox-close" id="lightboxClose" aria-label="Tutup"><i class="fas fa-times"></i></button>
+            <div class="lightbox-frame-wrap" id="lightboxFrameWrap"></div>
+            <p class="lightbox-caption" id="lightboxCaption"></p>
         </div>
     </div>
 
