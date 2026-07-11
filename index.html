@@ -17,14 +17,21 @@
     <meta name="twitter:description" content="Android tools, AI automation terminal, dan proyek developer lainnya — lengkap dengan galeri video & foto.">
     <meta name="twitter:image" content="https://raw.githubusercontent.com/NanoMindExplorer/nanomind/main/avatar.jpg">
     <link rel="icon" type="image/svg+xml" href="favicon.svg">
-    <link rel="apple-touch-icon" href="avatar.jpg">
+    <link rel="icon" type="image/png" sizes="32x32" href="icons/icon-32.png">
+    <link rel="apple-touch-icon" href="icons/apple-touch-icon.png">
+    <link rel="manifest" href="manifest.json">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <meta name="apple-mobile-web-app-title" content="Nanomind">
+    <meta name="mobile-web-app-capable" content="yes">
     <link rel="preconnect" href="https://img.youtube.com">
     <link rel="preconnect" href="https://raw.githubusercontent.com">
+    <link rel="preconnect" href="https://api.github.com">
     <script src="https://cdn.tailwindcss.com"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800;900&family=Space+Grotesk:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800;900&family=Space+Grotesk:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet">
     <style>
         :root {
             --bg: #050508; --bg-2: #0a0a12;
@@ -203,6 +210,39 @@
         .back-to-top.show { opacity: 1; pointer-events: auto; transform: translateY(0); }
         .back-to-top:hover { background: var(--accent); color: #050508; border-color: var(--accent); }
 
+        /* Neural Mesh Background */
+        .neural-mesh { position: fixed; inset: 0; z-index: 0; pointer-events: none; opacity: 0.6; }
+        @media (prefers-reduced-motion: reduce) { .neural-mesh { display: none; } }
+
+        /* Terminal Command Palette */
+        .terminal-fab { position: fixed; bottom: 92px; left: 24px; width: 56px; height: 56px; border-radius: 16px; background: #0b0b12; border: 1px solid var(--border-active); display: flex; align-items: center; justify-content: center; color: var(--accent); font-size: 20px; z-index: 50; box-shadow: 0 10px 30px -5px rgba(0,240,255,0.3); transition: all 0.3s; }
+        .terminal-fab:hover { transform: scale(1.08); border-color: var(--accent); }
+        #terminalModal .modal-content { max-width: 640px; width: 100%; padding: 0; background: #0a0a0f; border: 1px solid var(--border-active); font-family: 'JetBrains Mono', monospace; box-shadow: 0 0 60px rgba(0,240,255,0.15); overflow: hidden; }
+        .terminal-titlebar { display: flex; align-items: center; gap: 8px; padding: 12px 16px; border-bottom: 1px solid var(--border); }
+        .terminal-titlebar .dot { width: 11px; height: 11px; border-radius: 50%; }
+        .terminal-titlebar .dot.red { background: #ff5f56; } .terminal-titlebar .dot.yellow { background: #ffbd2e; } .terminal-titlebar .dot.green { background: #27c93f; }
+        .terminal-title { margin-left: 8px; font-size: 12px; color: var(--text-muted); }
+        .terminal-output { height: 320px; overflow-y: auto; padding: 16px; font-size: 13px; line-height: 1.7; color: #c9f6ff; }
+        .terminal-output .line { white-space: pre-wrap; word-break: break-word; margin-bottom: 4px; }
+        .terminal-output .line.cmd { color: #fff; } .terminal-output .line.cmd::before { content: 'guest@nanomind:~$ '; color: var(--accent); }
+        .terminal-output .line.err { color: #ff6b6b; } .terminal-output .line.ok { color: #7cffb2; }
+        .terminal-output a { color: var(--accent); text-decoration: underline; }
+        .terminal-input-row { display: flex; align-items: center; gap: 8px; padding: 12px 16px; border-top: 1px solid var(--border); }
+        .terminal-prompt { color: var(--accent); font-size: 13px; white-space: nowrap; }
+        .terminal-input { flex: 1; background: transparent; border: none; outline: none; color: #fff; font-family: inherit; font-size: 13px; }
+        .terminal-result-item { display: block; width: 100%; text-align: left; padding: 6px 8px; border-radius: 6px; color: #c9f6ff; font-family: inherit; font-size: 12.5px; background: none; border: none; }
+        .terminal-result-item:hover { background: rgba(0,240,255,0.1); color: #fff; }
+
+        /* Case Study Modal */
+        .case-study-content { max-width: 620px; padding: 0 !important; overflow: hidden; }
+        .case-study-image { width: 100%; max-height: 300px; object-fit: cover; display: block; background: #000; }
+        .case-study-body { padding: 26px 28px 28px; }
+        .gh-badge { display: inline-flex; align-items: center; gap: 6px; font-size: 12px; padding: 6px 12px; border-radius: 100px; background: rgba(255,255,255,0.04); border: 1px solid var(--border); color: var(--text-muted); }
+        .gh-badge i { color: var(--accent); }
+        .gh-badge.skeleton { color: transparent; background: linear-gradient(90deg, rgba(255,255,255,0.03), rgba(255,255,255,0.09), rgba(255,255,255,0.03)); background-size: 200% 100%; animation: shimmer 1.4s infinite; }
+        @keyframes shimmer { 0% { background-position: 200% 0; } 100% { background-position: -200% 0; } }
+        .project-card-clickable { cursor: none; }
+
         /* Scrollbar & Utils */
         ::-webkit-scrollbar { width: 6px; } ::-webkit-scrollbar-track { background: var(--bg); } ::-webkit-scrollbar-thumb { background: rgba(255,255,255,0.1); border-radius: 10px; }
         .reveal { opacity: 0; transform: translateY(30px); transition: all 0.8s cubic-bezier(0.4, 0, 0.2, 1); } .reveal.visible { opacity: 1; transform: translateY(0); }
@@ -238,6 +278,7 @@
     <div class="scroll-progress" id="scrollProgress"></div>
     <div class="aurora"><div class="aurora-blob blob-1"></div><div class="aurora-blob blob-2"></div><div class="aurora-blob blob-3"></div></div>
     <div class="grid-bg"></div>
+    <canvas class="neural-mesh" id="neuralMesh" aria-hidden="true"></canvas>
 
     <nav class="sticky top-0 z-40 backdrop-blur-xl bg-black/30 border-b border-white/5">
         <div class="max-w-7xl mx-auto px-6 py-4 flex items-center justify-between">
@@ -379,6 +420,7 @@
     </footer>
 
     <button class="admin-fab" id="adminFab" title="Admin Panel"><i class="fas fa-cog"></i></button>
+    <button class="terminal-fab" id="terminalFab" title="Command Palette (Ctrl+K)" aria-label="Buka command palette"><i class="fas fa-terminal"></i></button>
     <button class="back-to-top" id="backToTopBtn" title="Kembali ke atas" aria-label="Kembali ke atas"><i class="fas fa-arrow-up"></i></button>
 
     <!-- Modals -->
@@ -467,6 +509,36 @@
             <button class="lightbox-close" id="lightboxClose" aria-label="Tutup"><i class="fas fa-times"></i></button>
             <div class="lightbox-frame-wrap" id="lightboxFrameWrap"></div>
             <p class="lightbox-caption" id="lightboxCaption"></p>
+        </div>
+    </div>
+
+    <!-- TERMINAL / COMMAND PALETTE -->
+    <div class="modal-overlay" id="terminalModal">
+        <div class="modal-content">
+            <div class="terminal-titlebar">
+                <span class="dot red"></span><span class="dot yellow"></span><span class="dot green"></span>
+                <span class="terminal-title">guest@nanomind: ~</span>
+            </div>
+            <div class="terminal-output" id="terminalOutput"></div>
+            <div class="terminal-input-row">
+                <span class="terminal-prompt">guest@nanomind:~$</span>
+                <input type="text" id="terminalInput" class="terminal-input" autocomplete="off" autocapitalize="off" spellcheck="false" placeholder="type 'help'... or search a project">
+            </div>
+        </div>
+    </div>
+
+    <!-- CASE STUDY MODAL (public project detail) -->
+    <div class="modal-overlay" id="caseStudyModal">
+        <div class="modal-content case-study-content">
+            <button class="lightbox-close" id="caseStudyClose" aria-label="Tutup" style="top:16px; right:16px; z-index:20;"><i class="fas fa-times"></i></button>
+            <img id="csImage" class="case-study-image" src="" alt="">
+            <div class="case-study-body">
+                <div class="flex flex-wrap gap-2 mb-3" id="csTags"></div>
+                <h3 class="font-display font-bold text-2xl mb-2" id="csTitle"></h3>
+                <p class="text-gray-400 text-sm mb-4" id="csDesc"></p>
+                <div class="flex flex-wrap items-center gap-2 mb-5" id="csGithubBadges"></div>
+                <a href="#" id="csVisitBtn" target="_blank" rel="noopener" class="btn-primary w-full justify-center">Visit Project</a>
+            </div>
         </div>
     </div>
 
