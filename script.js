@@ -28,6 +28,10 @@ document.addEventListener('DOMContentLoaded', () => {
     setupMobileMenu();
     setupBackToTop();
     setupScrollSpyNav();
+    setupNeuralMesh();
+    setupTerminal();
+    setupKonami();
+    registerServiceWorker();
     checkAdminSession();
     loadData();
 });
@@ -106,6 +110,437 @@ function setupScrollSpyNav() {
     sections.forEach(s => obs.observe(s));
 }
 
+// ==========================================
+// NEURAL MESH — canvas partikel interaktif di background
+// ==========================================
+function setupNeuralMesh() {
+    const canvas = $('neuralMesh');
+    if (!canvas) return;
+    if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+    const ctx = canvas.getContext('2d');
+    let nodes = [];
+    let mouse = { x: -9999, y: -9999 };
+    let running = true;
+    let rafId = null;
+    const colorA = [0, 240, 255], colorB = [255, 0, 229];
+
+    function lerpColorStr(t) {
+        const r = Math.round(colorA[0] + (colorB[0] - colorA[0]) * t);
+        const g = Math.round(colorA[1] + (colorB[1] - colorA[1]) * t);
+        const b = Math.round(colorA[2] + (colorB[2] - colorA[2]) * t);
+        return `${r},${g},${b}`;
+    }
+
+    function resize() {
+        const dpr = Math.min(window.devicePixelRatio || 1, 2);
+        canvas.width = window.innerWidth * dpr;
+        canvas.height = window.innerHeight * dpr;
+        canvas.style.width = window.innerWidth + 'px';
+        canvas.style.height = window.innerHeight + 'px';
+        ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+        const count = window.innerWidth < 640 ? 32 : window.innerWidth < 1024 ? 55 : 80;
+        nodes = Array.from({ length: count }, () => ({
+            x: Math.random() * window.innerWidth,
+            y: Math.random() * window.innerHeight,
+            vx: (Math.random() - 0.5) * 0.3,
+            vy: (Math.random() - 0.5) * 0.3,
+            r: Math.random() * 1.4 + 1
+        }));
+    }
+
+    function loop() {
+        if (!running) return;
+        const W = window.innerWidth, H = window.innerHeight;
+        ctx.clearRect(0, 0, W, H);
+        const linkDist = W < 640 ? 105 : 150;
+
+        nodes.forEach(n => {
+            n.x += n.vx; n.y += n.vy;
+            if (n.x < 0 || n.x > W) n.vx *= -1;
+            if (n.y < 0 || n.y > H) n.vy *= -1;
+            const dx = mouse.x - n.x, dy = mouse.y - n.y;
+            const dist = Math.hypot(dx, dy);
+            if (dist < 140) { n.x -= dx * 0.0025; n.y -= dy * 0.0025; }
+        });
+
+        for (let i = 0; i < nodes.length; i++) {
+            for (let j = i + 1; j < nodes.length; j++) {
+                const a = nodes[i], b = nodes[j];
+                const d = Math.hypot(a.x - b.x, a.y - b.y);
+                if (d < linkDist) {
+                    const t = d / linkDist;
+                    const alpha = (1 - t) * 0.35;
+                    ctx.strokeStyle = `rgba(${lerpColorStr((a.x + b.x) / (2 * W))},${alpha})`;
+                    ctx.lineWidth = 0.6;
+                    ctx.beginPath(); ctx.moveTo(a.x, a.y); ctx.lineTo(b.x, b.y); ctx.stroke();
+                }
+            }
+            const dm = Math.hypot(mouse.x - nodes[i].x, mouse.y - nodes[i].y);
+            if (dm < 160) {
+                ctx.strokeStyle = `rgba(255,255,255,${(1 - dm / 160) * 0.25})`;
+                ctx.lineWidth = 0.6;
+                ctx.beginPath(); ctx.moveTo(nodes[i].x, nodes[i].y); ctx.lineTo(mouse.x, mouse.y); ctx.stroke();
+            }
+        }
+        nodes.forEach(n => {
+            ctx.beginPath();
+            ctx.arc(n.x, n.y, n.r, 0, Math.PI * 2);
+            ctx.fillStyle = 'rgba(0,240,255,0.55)';
+            ctx.fill();
+        });
+        rafId = requestAnimationFrame(loop);
+    }
+
+    window.addEventListener('resize', resize);
+    window.addEventListener('mousemove', (e) => { mouse.x = e.clientX; mouse.y = e.clientY; });
+    window.addEventListener('mouseleave', () => { mouse.x = -9999; mouse.y = -9999; });
+    document.addEventListener('visibilitychange', () => {
+        running = !document.hidden;
+        if (running && !rafId) loop();
+    });
+
+    resize();
+    loop();
+}
+
+// ==========================================
+// MATRIX RAIN — easter egg
+// ==========================================
+function triggerMatrixRain(durationMs = 4500) {
+    if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
+        showToast('Wake up, Neo... (animasi dinonaktifkan sesuai preferensi sistem)', 'success');
+        return;
+    }
+    if ($('matrixRainCanvas')) return;
+    const canvas = document.createElement('canvas');
+    canvas.id = 'matrixRainCanvas';
+    canvas.style.cssText = 'position:fixed;inset:0;z-index:400;pointer-events:none;';
+    document.body.appendChild(canvas);
+    const ctx = canvas.getContext('2d');
+    const dpr = Math.min(window.devicePixelRatio || 1, 2);
+    canvas.width = window.innerWidth * dpr; canvas.height = window.innerHeight * dpr;
+    canvas.style.width = window.innerWidth + 'px'; canvas.style.height = window.innerHeight + 'px';
+    ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+    const fontSize = 16;
+    const columns = Math.floor(window.innerWidth / fontSize);
+    const drops = Array(columns).fill(1);
+    const chars = 'アイウエオカキクケコ01NANOMIND01アイウエオ'.split('');
+    let frameId;
+    function draw() {
+        ctx.fillStyle = 'rgba(5,5,8,0.12)';
+        ctx.fillRect(0, 0, window.innerWidth, window.innerHeight);
+        ctx.fillStyle = '#00f0ff';
+        ctx.font = fontSize + 'px monospace';
+        drops.forEach((y, i) => {
+            const text = chars[Math.floor(Math.random() * chars.length)];
+            ctx.fillText(text, i * fontSize, y * fontSize);
+            if (y * fontSize > window.innerHeight && Math.random() > 0.975) drops[i] = 0;
+            drops[i]++;
+        });
+        frameId = requestAnimationFrame(draw);
+    }
+    draw();
+    showToast('Wake up, Neo... 🐇', 'success');
+    setTimeout(() => { cancelAnimationFrame(frameId); canvas.remove(); }, durationMs);
+}
+
+function setupKonami() {
+    const seq = ['ArrowUp', 'ArrowUp', 'ArrowDown', 'ArrowDown', 'ArrowLeft', 'ArrowRight', 'ArrowLeft', 'ArrowRight', 'b', 'a'];
+    let idx = 0;
+    document.addEventListener('keydown', (e) => {
+        const key = e.key.length === 1 ? e.key.toLowerCase() : e.key;
+        if (key === seq[idx]) {
+            idx++;
+            if (idx === seq.length) { idx = 0; triggerMatrixRain(6000); }
+        } else {
+            idx = (key === seq[0]) ? 1 : 0;
+        }
+    });
+}
+
+// ==========================================
+// PWA — service worker registration
+// ==========================================
+function registerServiceWorker() {
+    if (!('serviceWorker' in navigator)) return;
+    window.addEventListener('load', () => {
+        navigator.serviceWorker.register('sw.js').catch(() => { /* offline / unsupported, ignore */ });
+    });
+}
+
+// ==========================================
+// GITHUB PROOF-OF-WORK — live stats dari GitHub API
+// ==========================================
+function extractGithubRepo(url) {
+    if (!url) return null;
+    const m = String(url).match(/github\.com\/([^\/\s?#]+)\/([^\/\s?#]+)/);
+    if (!m) return null;
+    return { owner: m[1], repo: m[2] };
+}
+async function fetchGithubStats(owner, repo) {
+    const key = `gh_stats:${owner}/${repo}`;
+    try {
+        const cached = sessionStorage.getItem(key);
+        if (cached) return JSON.parse(cached);
+    } catch (e) { /* sessionStorage unavailable, ignore */ }
+    try {
+        const res = await fetch(`https://api.github.com/repos/${owner}/${repo}`);
+        if (!res.ok) return null;
+        const json = await res.json();
+        let release = null;
+        try {
+            const relRes = await fetch(`https://api.github.com/repos/${owner}/${repo}/releases/latest`);
+            if (relRes.ok) release = (await relRes.json()).tag_name;
+        } catch (e) { /* no releases, ignore */ }
+        const stats = { stars: json.stargazers_count, updatedAt: json.pushed_at || json.updated_at, language: json.language, release };
+        try { sessionStorage.setItem(key, JSON.stringify(stats)); } catch (e) { /* ignore */ }
+        return stats;
+    } catch (e) {
+        return null;
+    }
+}
+function relativeTime(dateStr) {
+    if (!dateStr) return '';
+    const diffDay = Math.floor((Date.now() - new Date(dateStr).getTime()) / 86400000);
+    if (diffDay <= 0) return 'hari ini';
+    if (diffDay === 1) return 'kemarin';
+    if (diffDay < 30) return `${diffDay} hari lalu`;
+    const diffMonth = Math.floor(diffDay / 30);
+    if (diffMonth < 12) return `${diffMonth} bulan lalu`;
+    return `${Math.floor(diffMonth / 12)} tahun lalu`;
+}
+function renderGithubBadges(stats) {
+    if (!stats) return '<span class="gh-badge"><i class="fab fa-github"></i> Private / tidak ada repo publik</span>';
+    const parts = [];
+    if (typeof stats.stars === 'number') parts.push(`<span class="gh-badge"><i class="fas fa-star"></i> ${stats.stars} stars</span>`);
+    if (stats.release) parts.push(`<span class="gh-badge"><i class="fas fa-tag"></i> ${escapeHtml(stats.release)}</span>`);
+    if (stats.language) parts.push(`<span class="gh-badge"><i class="fas fa-code"></i> ${escapeHtml(stats.language)}</span>`);
+    if (stats.updatedAt) parts.push(`<span class="gh-badge"><i class="fas fa-clock"></i> Update ${relativeTime(stats.updatedAt)}</span>`);
+    return parts.join('') || '<span class="gh-badge">Data tidak tersedia</span>';
+}
+function attachGithubBadges(projects) {
+    (projects || []).forEach(async (p) => {
+        const repo = extractGithubRepo(p.url);
+        if (!repo) return;
+        const stats = await fetchGithubStats(repo.owner, repo.repo);
+        if (!stats || typeof stats.stars !== 'number') return;
+        const card = document.querySelector(`#projectsGrid [data-id="${p.id}"] .project-tags-row`);
+        if (!card) return;
+        const badge = document.createElement('span');
+        badge.className = 'text-[10px] px-2 py-1 rounded-full bg-cyan-400/10 border border-cyan-400/20 text-cyan-300 flex items-center gap-1';
+        badge.innerHTML = `<i class="fas fa-star"></i> ${stats.stars}`;
+        card.appendChild(badge);
+    });
+}
+
+// ==========================================
+// CASE STUDY MODAL — detail project publik + live GitHub stats
+// ==========================================
+function openCaseStudy(id) {
+    const p = state.data.projects.find(x => x.id === id);
+    if (!p) return;
+    const img = $('csImage');
+    if (p.image) { img.src = p.image; img.style.display = 'block'; } else { img.style.display = 'none'; }
+    $('csTitle').textContent = p.title || '';
+    $('csDesc').textContent = p.description || '';
+    $('csTags').innerHTML = (p.tags || []).map(t => `<span class="text-[11px] px-2 py-1 rounded-full bg-white/5 border border-white/10 text-gray-400">${escapeHtml(t)}</span>`).join('');
+
+    const visitBtn = $('csVisitBtn');
+    if (p.url && p.url !== 'Private Only') {
+        visitBtn.href = p.url; visitBtn.classList.remove('hidden'); visitBtn.textContent = 'Visit Project / Release';
+    } else {
+        visitBtn.classList.add('hidden');
+    }
+
+    const repo = extractGithubRepo(p.url);
+    if (repo) {
+        $('csGithubBadges').innerHTML = '<span class="gh-badge skeleton">Loading live stats...</span>';
+        fetchGithubStats(repo.owner, repo.repo).then(stats => { $('csGithubBadges').innerHTML = renderGithubBadges(stats); });
+    } else {
+        $('csGithubBadges').innerHTML = '';
+    }
+    openModal('caseStudyModal');
+}
+
+// ==========================================
+// TERMINAL / COMMAND PALETTE
+// ==========================================
+let termHistory = [];
+let termHistoryIndex = -1;
+let termBootPrinted = false;
+
+function setupTerminal() {
+    const fab = $('terminalFab');
+    if (!fab) return;
+    fab.addEventListener('click', openTerminal);
+    document.addEventListener('keydown', (e) => {
+        if ((e.ctrlKey || e.metaKey) && e.key.toLowerCase() === 'k') {
+            e.preventDefault();
+            $('terminalModal').classList.contains('active') ? closeModal('terminalModal') : openTerminal();
+        }
+    });
+    $('terminalInput').addEventListener('keydown', handleTerminalKeydown);
+    $('terminalInput').addEventListener('input', handleTerminalLiveSearch);
+}
+function openTerminal() {
+    openModal('terminalModal');
+    setTimeout(() => $('terminalInput').focus(), 50);
+    if (!termBootPrinted) {
+        printTermLine(`Nanomind Terminal v1.0 — ketik <b>help</b> untuk lihat perintah, atau langsung ketik nama project/caption untuk mencari.`, 'ok');
+        termBootPrinted = true;
+    }
+}
+function printTermLine(html, cls = '') {
+    const out = $('terminalOutput');
+    const div = document.createElement('div');
+    div.className = 'line ' + cls;
+    div.innerHTML = html;
+    out.appendChild(div);
+    out.scrollTop = out.scrollHeight;
+}
+function printTermCmd(text) { printTermLine(escapeHtml(text), 'cmd'); }
+function clearLiveResults() {
+    const existing = $('terminalOutput').querySelector('.live-results');
+    if (existing) existing.remove();
+}
+function handleTerminalKeydown(e) {
+    const input = e.target;
+    if (e.key === 'Enter') {
+        const val = input.value.trim();
+        if (val) {
+            printTermCmd(val);
+            termHistory.push(val); termHistoryIndex = termHistory.length;
+            clearLiveResults();
+            runTerminalCommand(val);
+        }
+        input.value = '';
+    } else if (e.key === 'ArrowUp') {
+        e.preventDefault();
+        if (termHistoryIndex > 0) { termHistoryIndex--; input.value = termHistory[termHistoryIndex] || ''; }
+    } else if (e.key === 'ArrowDown') {
+        e.preventDefault();
+        if (termHistoryIndex < termHistory.length - 1) { termHistoryIndex++; input.value = termHistory[termHistoryIndex] || ''; }
+        else { termHistoryIndex = termHistory.length; input.value = ''; }
+    }
+}
+function fuzzySearchSite(q) {
+    const results = [];
+    if (!state.data) return results;
+    (state.data.projects || []).forEach(p => {
+        if ((p.title || '').toLowerCase().includes(q) || (p.tags || []).some(t => t.toLowerCase().includes(q))) {
+            results.push({ label: p.title, section: 'Project', icon: '📦', action: `project:${p.id}` });
+        }
+    });
+    (state.data.gallery || []).forEach(m => {
+        if ((m.caption || '').toLowerCase().includes(q) || (m.tags || []).some(t => t.toLowerCase().includes(q))) {
+            results.push({ label: m.caption || 'Untitled media', section: 'Gallery', icon: '🎬', action: `media:${m.id}` });
+        }
+    });
+    (state.data.links || []).forEach(l => {
+        if ((l.title || '').toLowerCase().includes(q)) {
+            results.push({ label: l.title, section: 'Link', icon: '🔗', action: `link:${l.id}` });
+        }
+    });
+    return results;
+}
+function handleTerminalLiveSearch(e) {
+    clearLiveResults();
+    const q = e.target.value.trim().toLowerCase();
+    if (q.length < 2) return;
+    const results = fuzzySearchSite(q).slice(0, 5);
+    if (!results.length) return;
+    const wrap = document.createElement('div');
+    wrap.className = 'live-results';
+    results.forEach(r => {
+        const btn = document.createElement('button');
+        btn.type = 'button';
+        btn.className = 'terminal-result-item';
+        btn.innerHTML = `${r.icon} ${escapeHtml(r.label)} <span class="text-gray-500">— ${r.section}</span>`;
+        btn.addEventListener('click', () => executeAction(r.action));
+        wrap.appendChild(btn);
+    });
+    const out = $('terminalOutput');
+    out.appendChild(wrap);
+    out.scrollTop = out.scrollHeight;
+}
+function executeAction(action) {
+    const [kind, id] = action.split(':');
+    closeModal('terminalModal');
+    if (kind === 'project') openCaseStudy(id);
+    else if (kind === 'media') { scrollToSection('gallery'); setTimeout(() => openLightbox(id), 400); }
+    else if (kind === 'link') { const l = state.data.links.find(x => x.id === id); if (l) window.open(l.url, '_blank'); }
+}
+function scrollToSection(id) {
+    const el = document.getElementById(id);
+    if (el) el.scrollIntoView({ behavior: 'smooth' });
+}
+function runTerminalCommand(raw) {
+    const cmd = raw.toLowerCase().trim();
+    if (cmd === 'help') {
+        printTermLine(`Available: <b>help</b>, <b>whoami</b>, <b>ls</b> / <b>ls projects</b> / <b>ls gallery</b> / <b>ls links</b>, <b>open [home|portfolio|gallery|links]</b>, <b>contact</b>, <b>social</b>, <b>github</b>, <b>clear</b>. Atau ketik nama project/caption untuk cari langsung.`);
+    } else if (cmd === 'whoami') {
+        const p = state.data.profile || {};
+        printTermLine(`${escapeHtml(p.name || 'Unknown')} — ${escapeHtml(p.bio || '')}`, 'ok');
+    } else if (cmd === 'clear') {
+        $('terminalOutput').innerHTML = '';
+    } else if (cmd === 'ls' || cmd === 'ls projects') {
+        const list = (state.data.projects || []).map(p => `• ${escapeHtml(p.title)}`).join('<br>');
+        printTermLine(list || 'No projects.', 'ok');
+    } else if (cmd === 'ls gallery') {
+        const list = (state.data.gallery || []).map(m => `• [${m.type}] ${escapeHtml(m.caption || 'untitled')}`).join('<br>');
+        printTermLine(list || 'No media.', 'ok');
+    } else if (cmd === 'ls links') {
+        const list = (state.data.links || []).map(l => `• ${escapeHtml(l.title)} → ${escapeHtml(l.url)}`).join('<br>');
+        printTermLine(list || 'No links.', 'ok');
+    } else if (cmd.startsWith('open ')) {
+        const target = cmd.replace('open ', '').trim();
+        const map = { home: 'home', portfolio: 'portfolio', work: 'portfolio', gallery: 'gallery', links: 'links', connect: 'links' };
+        if (map[target]) {
+            printTermLine(`Navigating to #${map[target]}...`, 'ok');
+            closeModal('terminalModal');
+            scrollToSection(map[target]);
+        } else {
+            printTermLine(`Unknown section: ${escapeHtml(target)}`, 'err');
+        }
+    } else if (cmd === 'contact') {
+        printTermLine('Opening contact...', 'ok');
+        openContactLink();
+    } else if (cmd === 'social' || cmd === 'links') {
+        const list = (state.data.links || []).map(l => `<a href="${l.url}" target="_blank" rel="noopener">${escapeHtml(l.title)}</a>`).join(' · ');
+        printTermLine(list || 'No links.', 'ok');
+    } else if (cmd === 'github') {
+        const gh = (state.data.links || []).find(l => l.icon && l.icon.includes('github'));
+        if (gh) { printTermLine('Opening GitHub...', 'ok'); window.open(gh.url, '_blank'); }
+        else printTermLine('No GitHub link found.', 'err');
+    } else if (cmd === 'sudo hire me') {
+        printTermLine('Permission granted. 🎉 Redirecting to contact...', 'ok');
+        setTimeout(() => { closeModal('terminalModal'); openContactLink(); }, 900);
+    } else if (cmd === 'matrix') {
+        printTermLine('Wake up, Neo...', 'ok');
+        triggerMatrixRain();
+    } else if (cmd === 'sudo rm -rf /') {
+        printTermLine("Nice try. This isn't that kind of terminal. 😉", 'err');
+    } else {
+        const results = fuzzySearchSite(cmd);
+        if (results.length) {
+            printTermLine(`Ditemukan ${results.length} hasil untuk "${escapeHtml(raw)}":`);
+            const listWrap = document.createElement('div');
+            results.slice(0, 5).forEach(r => {
+                const btn = document.createElement('button');
+                btn.type = 'button';
+                btn.className = 'terminal-result-item';
+                btn.innerHTML = `${r.icon} ${escapeHtml(r.label)} <span class="text-gray-500">(${r.section})</span>`;
+                btn.addEventListener('click', () => executeAction(r.action));
+                listWrap.appendChild(btn);
+            });
+            $('terminalOutput').appendChild(listWrap);
+            $('terminalOutput').scrollTop = $('terminalOutput').scrollHeight;
+        } else {
+            printTermLine(`Command not found: ${escapeHtml(raw)}. Ketik 'help'.`, 'err');
+        }
+    }
+}
+
 // Event Listeners
 function setupEventListeners() {
     document.querySelectorAll('.nav-link').forEach(link => {
@@ -167,6 +602,7 @@ function setupEventListeners() {
 
     // Lightbox close
     $('lightboxClose').addEventListener('click', closeLightbox);
+    $('caseStudyClose').addEventListener('click', () => closeModal('caseStudyModal'));
 
     // Klik backdrop menutup modal manapun; ESC menutup modal yang aktif
     document.querySelectorAll('.modal-overlay').forEach(ov => {
@@ -245,6 +681,7 @@ function renderData() {
 
     renderStats(projects, gallery);
     renderProjects(projects);
+    attachGithubBadges(projects);
     renderGallery(gallery);
     renderLinks(links);
 
@@ -284,10 +721,11 @@ function renderProjects(projects) {
         const tags = (project.tags || []).map(tag => `<span class="text-[10px] px-2 py-1 rounded-full bg-white/5 border border-white/10 text-gray-400">${escapeHtml(tag)}</span>`).join('');
         const sizeClass = project.size || 'bento-item';
         const card = document.createElement('div');
-        card.className = `${sizeClass} glow-card glass rounded-2xl reveal`;
+        card.className = `${sizeClass} glow-card glass rounded-2xl reveal project-card-clickable`;
+        card.dataset.id = project.id;
         card.innerHTML = `
-            <div class="edit-btn" onclick="openProjectModal('${project.id}')"><i class="fas fa-pen text-xs"></i></div>
-            <div class="delete-btn" onclick="deleteProject('${project.id}')"><i class="fas fa-trash text-xs"></i></div>
+            <div class="edit-btn" onclick="event.stopPropagation(); openProjectModal('${project.id}')"><i class="fas fa-pen text-xs"></i></div>
+            <div class="delete-btn" onclick="event.stopPropagation(); deleteProject('${project.id}')"><i class="fas fa-trash text-xs"></i></div>
             <div class="relative h-full p-6 flex flex-col justify-between min-h-[200px]">
                 ${project.image ? `<div class="absolute inset-0 rounded-2xl overflow-hidden opacity-30"><img src="${project.image}" alt="${escapeHtml(project.title || '')}" class="w-full h-full object-cover"></div>` : ''}
                 <div class="relative z-10">
@@ -295,10 +733,14 @@ function renderProjects(projects) {
                     <p class="text-gray-400 text-sm mb-4">${escapeHtml(project.description || '')}</p>
                 </div>
                 <div class="relative z-10 flex items-center justify-between">
-                    <div class="flex flex-wrap gap-2">${tags}</div>
-                    ${project.url && project.url !== 'Private Only' ? `<a href="${project.url}" target="_blank" class="text-cyan-400 text-sm hover:gap-3 transition-all flex items-center gap-2">Visit <i class="fas fa-arrow-right text-xs"></i></a>` : project.url === 'Private Only' ? `<span class="text-gray-600 text-xs flex items-center gap-1"><i class="fas fa-lock"></i> Private</span>` : ''}
+                    <div class="flex flex-wrap gap-2 project-tags-row">${tags}</div>
+                    ${project.url && project.url !== 'Private Only' ? `<a href="${project.url}" target="_blank" rel="noopener" class="text-cyan-400 text-sm hover:gap-3 transition-all flex items-center gap-2">Visit <i class="fas fa-arrow-right text-xs"></i></a>` : project.url === 'Private Only' ? `<span class="text-gray-600 text-xs flex items-center gap-1"><i class="fas fa-lock"></i> Private</span>` : ''}
                 </div>
             </div>`;
+        card.addEventListener('click', (e) => {
+            if (e.target.closest('.edit-btn') || e.target.closest('.delete-btn') || e.target.closest('a')) return;
+            openCaseStudy(project.id);
+        });
         projectsGrid.appendChild(card);
     });
 }
