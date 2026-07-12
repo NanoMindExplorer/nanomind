@@ -4,6 +4,7 @@ const SHELL_ASSETS = [
     './index.html',
     './article.html',
     './about.html',
+    './watch.html',
     './style.css',
     './script.js',
     './favicon.svg',
