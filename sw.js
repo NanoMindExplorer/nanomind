@@ -1,7 +1,10 @@
-const CACHE_NAME = 'nanomind-cache-v1';
+const CACHE_NAME = 'nanomind-journal-cache-v1';
 const SHELL_ASSETS = [
     './',
     './index.html',
+    './article.html',
+    './about.html',
+    './style.css',
     './script.js',
     './favicon.svg',
     './manifest.json',
@@ -13,7 +16,7 @@ self.addEventListener('install', (event) => {
     event.waitUntil(
         caches.open(CACHE_NAME)
             .then((cache) => cache.addAll(SHELL_ASSETS))
-            .catch(() => { /* asset belum tersedia saat build pertama, aman diabaikan */ })
+            .catch(() => { /* aman diabaikan saat build pertama */ })
     );
     self.skipWaiting();
 });
@@ -32,8 +35,6 @@ self.addEventListener('fetch', (event) => {
     if (req.method !== 'GET') return;
     const url = new URL(req.url);
 
-    // Data dinamis (db.json / GitHub API): network-first supaya selalu fresh saat online,
-    // fallback ke cache saat offline.
     if (url.hostname.includes('githubusercontent.com') || url.hostname.includes('api.github.com')) {
         event.respondWith(
             fetch(req).then((res) => {
@@ -45,7 +46,6 @@ self.addEventListener('fetch', (event) => {
         return;
     }
 
-    // App shell (file di origin sendiri): cache-first, lalu update cache di background.
     if (url.origin === self.location.origin) {
         event.respondWith(
             caches.match(req).then((cached) => {
