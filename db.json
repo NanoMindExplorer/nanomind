@@ -11,10 +11,30 @@
     "logoText": "N"
   },
   "categories": [
-    { "id": "build-log", "name": "Build Log", "accent": "brass", "description": "Catatan proses dari meja kerja — apa yang sedang dibangun, dan bagaimana." },
-    { "id": "deep-dive", "name": "Deep Dive", "accent": "rust", "description": "Eksplorasi teknis yang lebih dalam, satu topik pada satu waktu." },
-    { "id": "field-notes", "name": "Field Notes", "accent": "moss", "description": "Observasi, ide, dan hal-hal yang dipelajari di sepanjang jalan." },
-    { "id": "signals", "name": "Signals", "accent": "slate", "description": "Kabar singkat dan pembaruan cepat." }
+    {
+      "id": "build-log",
+      "name": "Build Log",
+      "accent": "brass",
+      "description": "Catatan proses dari meja kerja — apa yang sedang dibangun, dan bagaimana."
+    },
+    {
+      "id": "deep-dive",
+      "name": "Deep Dive",
+      "accent": "rust",
+      "description": "Eksplorasi teknis yang lebih dalam, satu topik pada satu waktu."
+    },
+    {
+      "id": "field-notes",
+      "name": "Field Notes",
+      "accent": "moss",
+      "description": "Observasi, ide, dan hal-hal yang dipelajari di sepanjang jalan."
+    },
+    {
+      "id": "signals",
+      "name": "Signals",
+      "accent": "slate",
+      "description": "Kabar singkat dan pembaruan cepat."
+    }
   ],
   "photoOfDay": {
     "image": "https://raw.githubusercontent.com/NanoMindExplorer/nanomind/main/Screenshot_20260630_224816.jpg",
@@ -22,7 +42,24 @@
     "credit": "Iman Firmansyah",
     "date": "2026-07-10"
   },
-  "videos": [],
+  "videos": [
+    {
+      "id": "mrhpy6akxyq0oo5nsei",
+      "type": "youtube",
+      "url": "https://youtu.be/AFm_JbUW_t4?si=-EV5eOcqeawiWBo-",
+      "title": "GameMapperMind Demo",
+      "caption": "",
+      "tags": [
+        "Android",
+        "Apps",
+        "Apk",
+        "Game",
+        "Tools"
+      ],
+      "articleId": null,
+      "date": "2026-07-12"
+    }
+  ],
   "articles": [
     {
       "id": "art-tunnel-terminal",
@@ -35,17 +72,52 @@
       "date": "2026-07-08",
       "readTime": 6,
       "featured": true,
-      "tags": ["android", "terminal", "ai", "mobile-dev"],
+      "tags": [
+        "android",
+        "terminal",
+        "ai",
+        "mobile-dev"
+      ],
       "body": [
-        { "type": "paragraph", "text": "Kereta itu penuh, dan satu-satunya ruang yang saya punya untuk bekerja adalah layar berukuran enam inci di tangan. Bertahun-tahun, itu artinya menyerah — menutup laptop mental, menunda pekerjaan sampai ada meja yang layak. Lalu satu pertanyaan sederhana mulai mengganggu: kenapa terminal, alat paling mendasar bagi seorang developer, masih terasa seperti tamu asing di ponsel?" },
-        { "type": "paragraph", "text": "Tunnel Terminal lahir dari kejengkelan itu. Bukan sekadar emulator terminal lain untuk Android, tapi upaya menulis ulang asumsi dasarnya: bahwa keyboard fisik adalah satu-satunya cara serius untuk memberi perintah pada mesin." },
-        { "type": "heading", "text": "Mendesain Ulang Sentuhan" },
-        { "type": "paragraph", "text": "Masalah pertama yang harus dipecahkan bukan soal AI atau otomatisasi — tapi jauh lebih membumi: bagaimana mengetik perintah panjang dengan jempol tanpa ingin melempar ponsel ke dinding. Jawabannya datang dari mengamati bagaimana orang benar-benar menggunakan ponsel mereka, bukan bagaimana developer desktop berharap mereka menggunakannya." },
-        { "type": "image", "url": "https://raw.githubusercontent.com/NanoMindExplorer/nanomind/main/tunnelterminal.jpg", "caption": "Antarmuka Tunnel Terminal — command palette gestur menggantikan sebagian besar ketikan.", "credit": "Iman Firmansyah" },
-        { "type": "quote", "text": "Layar sentuh bukan pengganti keyboard yang buruk. Ia hanya perangkat input yang belum pernah benar-benar kita rancang untuk baris perintah.", "attribution": "Catatan pengembangan, awal proyek" },
-        { "type": "paragraph", "text": "Lapisan AI ditambahkan belakangan, dan sengaja dibuat tidak mencolok: ia menyarankan perintah, menjelaskan galat, dan mengingat konteks sesi sebelumnya — tapi tidak pernah mengambil alih kendali dari pengguna. Filosofinya sederhana: AI seharusnya membuat terminal terasa lebih cepat dipahami, bukan lebih sedikit dipahami." },
-        { "type": "heading", "text": "Yang Dipelajari" },
-        { "type": "paragraph", "text": "Versi 7.2.3 sekarang berjalan stabil di ribuan perangkat, dari flagship sampai ponsel budget dengan RAM terbatas. Pelajaran terbesarnya bukan teknis, melainkan soal kesabaran: alat yang benar-benar nyaman dipakai di ruang sempit — kereta, antrian, sela rapat — butuh jauh lebih banyak iterasi daripada alat yang hanya perlu bekerja di atas meja." }
+        {
+          "type": "paragraph",
+          "text": "Kereta itu penuh, dan satu-satunya ruang yang saya punya untuk bekerja adalah layar berukuran enam inci di tangan. Bertahun-tahun, itu artinya menyerah — menutup laptop mental, menunda pekerjaan sampai ada meja yang layak. Lalu satu pertanyaan sederhana mulai mengganggu: kenapa terminal, alat paling mendasar bagi seorang developer, masih terasa seperti tamu asing di ponsel?"
+        },
+        {
+          "type": "paragraph",
+          "text": "Tunnel Terminal lahir dari kejengkelan itu. Bukan sekadar emulator terminal lain untuk Android, tapi upaya menulis ulang asumsi dasarnya: bahwa keyboard fisik adalah satu-satunya cara serius untuk memberi perintah pada mesin."
+        },
+        {
+          "type": "heading",
+          "text": "Mendesain Ulang Sentuhan"
+        },
+        {
+          "type": "paragraph",
+          "text": "Masalah pertama yang harus dipecahkan bukan soal AI atau otomatisasi — tapi jauh lebih membumi: bagaimana mengetik perintah panjang dengan jempol tanpa ingin melempar ponsel ke dinding. Jawabannya datang dari mengamati bagaimana orang benar-benar menggunakan ponsel mereka, bukan bagaimana developer desktop berharap mereka menggunakannya."
+        },
+        {
+          "type": "image",
+          "url": "https://raw.githubusercontent.com/NanoMindExplorer/nanomind/main/tunnelterminal.jpg",
+          "caption": "Antarmuka Tunnel Terminal — command palette gestur menggantikan sebagian besar ketikan.",
+          "credit": "Iman Firmansyah"
+        },
+        {
+          "type": "quote",
+          "text": "Layar sentuh bukan pengganti keyboard yang buruk. Ia hanya perangkat input yang belum pernah benar-benar kita rancang untuk baris perintah.",
+          "attribution": "Catatan pengembangan, awal proyek"
+        },
+        {
+          "type": "paragraph",
+          "text": "Lapisan AI ditambahkan belakangan, dan sengaja dibuat tidak mencolok: ia menyarankan perintah, menjelaskan galat, dan mengingat konteks sesi sebelumnya — tapi tidak pernah mengambil alih kendali dari pengguna. Filosofinya sederhana: AI seharusnya membuat terminal terasa lebih cepat dipahami, bukan lebih sedikit dipahami."
+        },
+        {
+          "type": "heading",
+          "text": "Yang Dipelajari"
+        },
+        {
+          "type": "paragraph",
+          "text": "Versi 7.2.3 sekarang berjalan stabil di ribuan perangkat, dari flagship sampai ponsel budget dengan RAM terbatas. Pelajaran terbesarnya bukan teknis, melainkan soal kesabaran: alat yang benar-benar nyaman dipakai di ruang sempit — kereta, antrian, sela rapat — butuh jauh lebih banyak iterasi daripada alat yang hanya perlu bekerja di atas meja."
+        }
       ]
     },
     {
@@ -59,16 +131,48 @@
       "date": "2026-06-22",
       "readTime": 5,
       "featured": false,
-      "tags": ["go", "cli", "ai", "developer-tools"],
+      "tags": [
+        "go",
+        "cli",
+        "ai",
+        "developer-tools"
+      ],
       "body": [
-        { "type": "paragraph", "text": "Ada begitu banyak asisten coding berbasis AI sekarang, hampir semuanya hidup di dalam browser atau IDE yang berat. Code Forge dimulai dari pertanyaan yang berlawanan arah: bagaimana jika asisten itu tidak pernah meninggalkan terminal sama sekali?" },
-        { "type": "heading", "text": "Kenapa Go" },
-        { "type": "paragraph", "text": "Go dipilih bukan karena tren, tapi karena kebutuhan yang sangat spesifik: binary tunggal, waktu startup nyaris nol, dan footprint memori yang bisa diprediksi. Sebuah TUI (text user interface) yang lambat untuk dibuka akan gagal di tujuan utamanya — menjadi alat yang dipakai puluhan kali sehari tanpa gesekan." },
-        { "type": "image", "url": "https://raw.githubusercontent.com/NanoMindExplorer/nanomind/main/progress.png", "caption": "Progres awal antarmuka TUI Code Forge, masih dalam tahap eksperimen tata letak.", "credit": "Iman Firmansyah" },
-        { "type": "quote", "text": "Alat terbaik adalah yang paling cepat kita lupakan sedang kita gunakan.", "attribution": "Prinsip desain Code Forge" },
-        { "type": "heading", "text": "Tantangan Konteks" },
-        { "type": "paragraph", "text": "Bagian tersulit bukan memanggil model bahasa — itu solved problem. Yang jauh lebih rumit adalah menjaga konteks percakapan tetap relevan di lingkungan yang secara alami stateless seperti shell. Setiap sesi terminal baru berarti ingatan baru, kecuali dirancang untuk tidak begitu." },
-        { "type": "paragraph", "text": "Solusinya: sebuah lapisan memori ringan yang menyimpan jejak konteks per-direktori kerja, sehingga membuka Code Forge di dalam folder proyek yang sama akan langsung 'mengingat' apa yang sedang dikerjakan — tanpa perlu mengetik ulang konteks setiap kali." }
+        {
+          "type": "paragraph",
+          "text": "Ada begitu banyak asisten coding berbasis AI sekarang, hampir semuanya hidup di dalam browser atau IDE yang berat. Code Forge dimulai dari pertanyaan yang berlawanan arah: bagaimana jika asisten itu tidak pernah meninggalkan terminal sama sekali?"
+        },
+        {
+          "type": "heading",
+          "text": "Kenapa Go"
+        },
+        {
+          "type": "paragraph",
+          "text": "Go dipilih bukan karena tren, tapi karena kebutuhan yang sangat spesifik: binary tunggal, waktu startup nyaris nol, dan footprint memori yang bisa diprediksi. Sebuah TUI (text user interface) yang lambat untuk dibuka akan gagal di tujuan utamanya — menjadi alat yang dipakai puluhan kali sehari tanpa gesekan."
+        },
+        {
+          "type": "image",
+          "url": "https://raw.githubusercontent.com/NanoMindExplorer/nanomind/main/progress.png",
+          "caption": "Progres awal antarmuka TUI Code Forge, masih dalam tahap eksperimen tata letak.",
+          "credit": "Iman Firmansyah"
+        },
+        {
+          "type": "quote",
+          "text": "Alat terbaik adalah yang paling cepat kita lupakan sedang kita gunakan.",
+          "attribution": "Prinsip desain Code Forge"
+        },
+        {
+          "type": "heading",
+          "text": "Tantangan Konteks"
+        },
+        {
+          "type": "paragraph",
+          "text": "Bagian tersulit bukan memanggil model bahasa — itu solved problem. Yang jauh lebih rumit adalah menjaga konteks percakapan tetap relevan di lingkungan yang secara alami stateless seperti shell. Setiap sesi terminal baru berarti ingatan baru, kecuali dirancang untuk tidak begitu."
+        },
+        {
+          "type": "paragraph",
+          "text": "Solusinya: sebuah lapisan memori ringan yang menyimpan jejak konteks per-direktori kerja, sehingga membuka Code Forge di dalam folder proyek yang sama akan langsung 'mengingat' apa yang sedang dikerjakan — tanpa perlu mengetik ulang konteks setiap kali."
+        }
       ]
     },
     {
@@ -82,15 +186,44 @@
       "date": "2026-06-05",
       "readTime": 5,
       "featured": false,
-      "tags": ["android", "gaming", "input-mapping", "tools"],
+      "tags": [
+        "android",
+        "gaming",
+        "input-mapping",
+        "tools"
+      ],
       "body": [
-        { "type": "paragraph", "text": "Colokkan kontroler Xbox ke ponsel, buka game mobile favorit, dan separuh tombol tidak merespons apa pun — karena game itu dirancang untuk jempol, bukan joystick. Ini adalah momen yang dialami hampir setiap gamer mobile yang pernah mencoba naik kelas dari touchscreen." },
-        { "type": "heading", "text": "Anatomi Overlay" },
-        { "type": "paragraph", "text": "Game Mapper Mind bekerja dengan menempatkan lapisan overlay tak terlihat di atas game, menerjemahkan setiap input kontroler menjadi ketukan virtual di titik layar yang tepat. Kedengarannya sederhana; kenyataannya, setiap game punya 'peta' kontrol sentuh yang berbeda, dan overlay harus cukup pintar untuk tidak mengacaukan gestur multi-sentuh asli." },
-        { "type": "image", "url": "https://raw.githubusercontent.com/NanoMindExplorer/nanomind/main/progress2.png", "caption": "Editor pemetaan tombol — menyeret ikon kontrol ke posisi yang sesuai di atas tangkapan layar game.", "credit": "Iman Firmansyah" },
-        { "type": "quote", "text": "Kontroler terbaik bukan yang paling canggih, tapi yang membuat pemain lupa sedang menggunakan alat bantu sama sekali.", "attribution": "Catatan komunitas pengguna" },
-        { "type": "heading", "text": "Uji Coba di Dunia Nyata" },
-        { "type": "paragraph", "text": "Dukungan lintas kontroler — Xbox, Switch Pro, dan DualSense — masing-masing punya kuirk protokol Bluetooth sendiri, jadi sebagian besar waktu pengembangan justru habis untuk menormalkan input, bukan membangun fitur baru. Fitur anti-ban dan makro ditambahkan setelah mendengar langsung dari komunitas pemain yang khawatir akun mereka ditandai oleh sistem deteksi game." }
+        {
+          "type": "paragraph",
+          "text": "Colokkan kontroler Xbox ke ponsel, buka game mobile favorit, dan separuh tombol tidak merespons apa pun — karena game itu dirancang untuk jempol, bukan joystick. Ini adalah momen yang dialami hampir setiap gamer mobile yang pernah mencoba naik kelas dari touchscreen."
+        },
+        {
+          "type": "heading",
+          "text": "Anatomi Overlay"
+        },
+        {
+          "type": "paragraph",
+          "text": "Game Mapper Mind bekerja dengan menempatkan lapisan overlay tak terlihat di atas game, menerjemahkan setiap input kontroler menjadi ketukan virtual di titik layar yang tepat. Kedengarannya sederhana; kenyataannya, setiap game punya 'peta' kontrol sentuh yang berbeda, dan overlay harus cukup pintar untuk tidak mengacaukan gestur multi-sentuh asli."
+        },
+        {
+          "type": "image",
+          "url": "https://raw.githubusercontent.com/NanoMindExplorer/nanomind/main/progress2.png",
+          "caption": "Editor pemetaan tombol — menyeret ikon kontrol ke posisi yang sesuai di atas tangkapan layar game.",
+          "credit": "Iman Firmansyah"
+        },
+        {
+          "type": "quote",
+          "text": "Kontroler terbaik bukan yang paling canggih, tapi yang membuat pemain lupa sedang menggunakan alat bantu sama sekali.",
+          "attribution": "Catatan komunitas pengguna"
+        },
+        {
+          "type": "heading",
+          "text": "Uji Coba di Dunia Nyata"
+        },
+        {
+          "type": "paragraph",
+          "text": "Dukungan lintas kontroler — Xbox, Switch Pro, dan DualSense — masing-masing punya kuirk protokol Bluetooth sendiri, jadi sebagian besar waktu pengembangan justru habis untuk menormalkan input, bukan membangun fitur baru. Fitur anti-ban dan makro ditambahkan setelah mendengar langsung dari komunitas pemain yang khawatir akun mereka ditandai oleh sistem deteksi game."
+        }
       ]
     },
     {
@@ -104,15 +237,44 @@
       "date": "2026-06-30",
       "readTime": 4,
       "featured": false,
-      "tags": ["ai", "automation", "web3", "private-tools"],
+      "tags": [
+        "ai",
+        "automation",
+        "web3",
+        "private-tools"
+      ],
       "body": [
-        { "type": "paragraph", "text": "Tidak semua yang dibangun harus dirilis. Beberapa proyek justru bekerja lebih baik sebagai ruang privat — laboratorium kecil tempat mencoba ide tanpa tekanan pengguna, rating bintang, atau tenggat rilis." },
-        { "type": "heading", "text": "Kenapa Tidak Dirilis" },
-        { "type": "paragraph", "text": "NanomindOS dimulai sebagai eksperimen pribadi menggabungkan automasi berbasis AI dengan interaksi Web3 — semacam pusat kendali untuk tugas-tugas berulang yang sebelumnya dikerjakan manual. Karena dirancang di sekitar alur kerja dan preferensi satu orang, membukanya untuk publik justru akan mengorbankan hal yang membuatnya berguna: keleluasaan untuk berubah bentuk kapan saja." },
-        { "type": "image", "url": "https://raw.githubusercontent.com/NanoMindExplorer/nanomind/main/Screenshot_20260630_224816.jpg", "caption": "Panel kendali NanomindOS, menampilkan modul automasi yang sedang aktif.", "credit": "Iman Firmansyah" },
-        { "type": "quote", "text": "Alat yang paling jujur adalah yang dibangun tanpa audiens.", "attribution": "Jurnal proyek, Juni 2026" },
-        { "type": "heading", "text": "Apa yang Berjalan di Dalamnya" },
-        { "type": "paragraph", "text": "Di balik layar: modul-modul kecil yang saling terhubung, masing-masing menangani satu tugas — memantau, menjalankan skrip, merespons pemicu. Bukan produk yang rapi, tapi laboratorium yang hidup dan terus berubah setiap minggu." }
+        {
+          "type": "paragraph",
+          "text": "Tidak semua yang dibangun harus dirilis. Beberapa proyek justru bekerja lebih baik sebagai ruang privat — laboratorium kecil tempat mencoba ide tanpa tekanan pengguna, rating bintang, atau tenggat rilis."
+        },
+        {
+          "type": "heading",
+          "text": "Kenapa Tidak Dirilis"
+        },
+        {
+          "type": "paragraph",
+          "text": "NanomindOS dimulai sebagai eksperimen pribadi menggabungkan automasi berbasis AI dengan interaksi Web3 — semacam pusat kendali untuk tugas-tugas berulang yang sebelumnya dikerjakan manual. Karena dirancang di sekitar alur kerja dan preferensi satu orang, membukanya untuk publik justru akan mengorbankan hal yang membuatnya berguna: keleluasaan untuk berubah bentuk kapan saja."
+        },
+        {
+          "type": "image",
+          "url": "https://raw.githubusercontent.com/NanoMindExplorer/nanomind/main/Screenshot_20260630_224816.jpg",
+          "caption": "Panel kendali NanomindOS, menampilkan modul automasi yang sedang aktif.",
+          "credit": "Iman Firmansyah"
+        },
+        {
+          "type": "quote",
+          "text": "Alat yang paling jujur adalah yang dibangun tanpa audiens.",
+          "attribution": "Jurnal proyek, Juni 2026"
+        },
+        {
+          "type": "heading",
+          "text": "Apa yang Berjalan di Dalamnya"
+        },
+        {
+          "type": "paragraph",
+          "text": "Di balik layar: modul-modul kecil yang saling terhubung, masing-masing menangani satu tugas — memantau, menjalankan skrip, merespons pemicu. Bukan produk yang rapi, tapi laboratorium yang hidup dan terus berubah setiap minggu."
+        }
       ]
     }
   ],
@@ -123,7 +285,11 @@
       "description": "Android gamepad-to-touchscreen mapper with overlay, anti-ban, and macro support. Supports Xbox, Switch, Playstation controllers.",
       "image": "https://raw.githubusercontent.com/NanoMindExplorer/GameMapperMind/refs/heads/main/public/icon.svg",
       "url": "https://github.com/NanoMindExplorer/GameMapperMind/releases/tag/v2.1.0",
-      "tags": ["Tools", "Android", "App"],
+      "tags": [
+        "Tools",
+        "Android",
+        "App"
+      ],
       "size": "bento-item",
       "articleId": "art-game-mapper-mind"
     },
@@ -133,7 +299,11 @@
       "description": "Web3 Suit & AI Automation Terminal",
       "image": "https://raw.githubusercontent.com/NanoMindExplorer/nanomind/main/Screenshot_20260630_224816.jpg",
       "url": "Private Only",
-      "tags": ["Solidity", "JavaScript", "Python"],
+      "tags": [
+        "Solidity",
+        "JavaScript",
+        "Python"
+      ],
       "size": "bento-item",
       "articleId": "art-nanomindos"
     },
@@ -143,7 +313,9 @@
       "description": "Terminal Ai Coding Companion",
       "image": "https://raw.githubusercontent.com/NanoMindExplorer/nanomind/main/progress.png",
       "url": "https://github.com/NanoMindExplorer/codeforge-tui",
-      "tags": ["Go"],
+      "tags": [
+        "Go"
+      ],
       "size": "bento-item",
       "articleId": "art-code-forge"
     },
@@ -153,18 +325,60 @@
       "description": "Tunnel Terminal adalah terminal Android AI-native untuk developer bekerja di perangkat mobile.",
       "image": "https://raw.githubusercontent.com/NanoMindExplorer/nanomind/main/tunnelterminal.jpg",
       "url": "https://github.com/NanoMindExplorer/tunnel-terminal/releases/tag/v7.2.3",
-      "tags": ["app", "android", "apk", "linux", "ubuntu", "terminal"],
+      "tags": [
+        "app",
+        "android",
+        "apk",
+        "linux",
+        "ubuntu",
+        "terminal"
+      ],
       "size": "bento-item",
       "articleId": "art-tunnel-terminal"
     }
   ],
   "links": [
-    { "id": "link1", "title": "GitHub", "url": "https://github.com/nanomindexplorer", "icon": "fab fa-github" },
-    { "id": "link2", "title": "Email", "url": "mailto:swastac@gmail.com", "icon": "fas fa-envelope" },
-    { "id": "mqyzt0rhe5sfs7y812k", "title": "Youtube", "url": "https://www.youtube.com/@Bakayaro_0/videos", "icon": "fab fa-youtube" },
-    { "id": "mqyzxfv8f1mdi9vt11b", "title": "X", "url": "https://x.com/Deadmouse_jpeg", "icon": "fab fa-x" },
-    { "id": "mqyzythiqmyh8s1yu2r", "title": "Instagram", "url": "https://www.instagram.com/low_and.high?igsh=dXUyMjN1anp5Ymc5", "icon": "fab fa-instagram" },
-    { "id": "mqz17gq17w7i5tvbzyi", "title": "Medium", "url": "https://medium.com/@0wlsky", "icon": "fab fa-medium" },
-    { "id": "mr0yf2v4m75s5n73w1", "title": "Chat & Hangout", "url": "https://t.me/oxnlyfams", "icon": "fab fa-telegram" }
+    {
+      "id": "link1",
+      "title": "GitHub",
+      "url": "https://github.com/nanomindexplorer",
+      "icon": "fab fa-github"
+    },
+    {
+      "id": "link2",
+      "title": "Email",
+      "url": "mailto:swastac@gmail.com",
+      "icon": "fas fa-envelope"
+    },
+    {
+      "id": "mqyzt0rhe5sfs7y812k",
+      "title": "Youtube",
+      "url": "https://www.youtube.com/@Bakayaro_0/videos",
+      "icon": "fab fa-youtube"
+    },
+    {
+      "id": "mqyzxfv8f1mdi9vt11b",
+      "title": "X",
+      "url": "https://x.com/Deadmouse_jpeg",
+      "icon": "fab fa-x"
+    },
+    {
+      "id": "mqyzythiqmyh8s1yu2r",
+      "title": "Instagram",
+      "url": "https://www.instagram.com/low_and.high?igsh=dXUyMjN1anp5Ymc5",
+      "icon": "fab fa-instagram"
+    },
+    {
+      "id": "mqz17gq17w7i5tvbzyi",
+      "title": "Medium",
+      "url": "https://medium.com/@0wlsky",
+      "icon": "fab fa-medium"
+    },
+    {
+      "id": "mr0yf2v4m75s5n73w1",
+      "title": "Chat & Hangout",
+      "url": "https://t.me/oxnlyfams",
+      "icon": "fab fa-telegram"
+    }
   ]
 }
