@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title id="pageTitle">Dispatch — Nanomind Explorer</title>
+    <meta name="description" id="pageDescription" content="">
+    <meta name="theme-color" content="#14140F">
+    <meta property="og:type" content="article">
+    <meta property="og:title" id="ogTitle" content="">
+    <meta property="og:description" id="ogDescription" content="">
+    <meta property="og:image" id="ogImage" content="">
+    <link rel="icon" type="image/svg+xml" href="favicon.svg">
+    <link rel="icon" type="image/png" sizes="32x32" href="icons/icon-32.png">
+    <link rel="apple-touch-icon" href="icons/apple-touch-icon.png">
+    <link rel="manifest" href="manifest.json">
+    <link rel="preconnect" href="https://raw.githubusercontent.com">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,400;0,9..144,500;0,9..144,600;0,9..144,700;1,9..144,500&family=Source+Serif+4:ital,wght@0,400;0,500;1,400&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <noscript><div style="padding:60px 24px;text-align:center;font-family:sans-serif;background:#14140F;color:#EDE8DA;">Situs ini membutuhkan JavaScript untuk menampilkan konten. Mohon aktifkan JavaScript di browser Anda.</div></noscript>
+
+    <div id="pageLoader" aria-hidden="true">
+        <svg class="loader-mark" viewBox="0 0 100 100">
+            <circle cx="50" cy="50" r="38" fill="none" stroke="#C9974A" stroke-width="2.4"/>
+            <polygon points="50,13 59,50 41,50" fill="#C9974A"/>
+            <polygon points="50,87 59,50 41,50" fill="#5C5A48"/>
+            <circle cx="50" cy="50" r="6.5" fill="#14140F" stroke="#C9974A" stroke-width="2.2"/>
+        </svg>
+    </div>
+
+    <div id="navPlaceholder"></div>
+    <div class="mobile-nav-backdrop" id="mobileNavBackdrop"></div>
+    <div class="mobile-nav-panel" id="mobileNavPanel"></div>
+
+    <main>
+        <article id="articleRoot">
+            <div id="articleContent"></div>
+            <div class="max-w-[820px] mx-auto px-6 py-24 text-center font-ui" id="articleNotFound" style="display:none; color:var(--muted-on-ink)">
+                <p class="eyebrow justify-center mb-4">404</p>
+                <h1 class="font-display text-3xl mb-4" style="color:var(--parchment-text)">Dispatch tidak ditemukan</h1>
+                <p class="mb-6">Mungkin sudah dipindahkan atau dihapus.</p>
+                <a href="index.html" class="btn-primary inline-flex">Kembali ke Dispatches</a>
+            </div>
+        </article>
+
+        <section class="related-rail hidden" id="relatedSection">
+            <span class="eyebrow">Baca Juga</span>
+            <h2 class="font-display font-semibold text-2xl md:text-3xl mt-3 mb-8" style="color:var(--parchment-text)">Dispatch Lainnya</h2>
+            <div class="dispatch-grid" id="relatedGrid"></div>
+        </section>
+    </main>
+
+    <div id="footerPlaceholder"></div>
+
+    <button class="search-fab" id="searchFab" title="Search (Ctrl+K)" aria-label="Buka pencarian"><i class="fas fa-search"></i></button>
+    <button class="admin-fab hidden" id="adminFab" title="Admin"><i class="fas fa-compass-drafting"></i></button>
+    <button class="back-to-top" id="backToTopBtn" title="Kembali ke atas" aria-label="Kembali ke atas"><i class="fas fa-arrow-up"></i></button>
+
+    <div id="modalsPlaceholder"></div>
+
+    <script src="script.js"></script>
+</body>
+</html>
