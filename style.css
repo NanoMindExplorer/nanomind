@@ -233,6 +233,37 @@ a:focus-visible, button:focus-visible, [tabindex]:focus-visible, input:focus-vis
 .admin-mode .delete-btn, .admin-mode .edit-btn { display: flex; }
 .delete-btn:hover { background: var(--rust); color: #fff; } .edit-btn:hover { background: var(--brass); color: #16140C; }
 
+/* ===== Watch page: video cards, shorts shelf, lightbox ===== */
+.shorts-shelf { display: flex; gap: 1rem; overflow-x: auto; padding: 4px 2px 16px; scroll-snap-type: x mandatory; -webkit-overflow-scrolling: touch; }
+.shorts-shelf::-webkit-scrollbar { height: 6px; }
+.shorts-shelf::-webkit-scrollbar-track { background: rgba(255,255,255,0.03); border-radius: 10px; }
+.shorts-shelf::-webkit-scrollbar-thumb { background: var(--border-ink-strong); border-radius: 10px; }
+
+.video-card { position: relative; border-radius: 6px; overflow: hidden; background: var(--ink-2); border: 1px solid var(--border-ink); transition: transform 0.4s cubic-bezier(0.16,1,0.3,1), border-color 0.3s; cursor: pointer; }
+.video-card:hover { transform: translateY(-4px); border-color: var(--border-ink-strong); }
+.video-card.portrait { flex: 0 0 auto; width: 220px; aspect-ratio: 9 / 16; scroll-snap-align: start; }
+@media (max-width: 640px) { .video-card.portrait { width: 180px; } }
+.video-card.landscape { aspect-ratio: 16 / 9; }
+.video-card .vthumb-wrap { position: relative; width: 100%; height: 100%; }
+.video-card .vthumb-wrap img { width: 100%; height: 100%; object-fit: cover; display: block; }
+.video-card .vplay-badge { position: absolute; inset: 0; display: flex; align-items: center; justify-content: center; background: radial-gradient(circle, rgba(0,0,0,0.1), rgba(0,0,0,0.45)); opacity: 0; transition: opacity 0.25s; }
+.video-card:hover .vplay-badge { opacity: 1; }
+.video-card .vplay-badge i { width: 52px; height: 52px; border-radius: 50%; background: rgba(241,236,221,0.94); color: var(--ink); display: flex; align-items: center; justify-content: center; font-size: 16px; }
+.video-card .vtype-chip { position: absolute; top: 10px; left: 10px; z-index: 3; font-family: 'Inter', sans-serif; font-size: 10px; font-weight: 700; letter-spacing: 0.06em; text-transform: uppercase; padding: 4px 9px; border-radius: 100px; background: rgba(20,20,15,0.75); color: var(--brass); border: 1px solid rgba(201,151,74,0.35); }
+.video-card .vcaption-overlay { position: absolute; left: 0; right: 0; bottom: 0; z-index: 2; padding: 28px 12px 10px; background: linear-gradient(to top, rgba(15,14,10,0.95) 25%, transparent); color: var(--parchment-text); font-family: 'Inter', sans-serif; font-size: 12px; line-height: 1.4; }
+.video-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 20px; }
+@media (max-width: 860px) { .video-grid { grid-template-columns: repeat(2, 1fr); gap: 14px; } }
+
+#videoLightboxModal .modal-content { background: transparent; border: none; box-shadow: none; padding: 0; max-width: 96vw; overflow: visible; }
+.vlb-frame { position: relative; margin: 0 auto; border-radius: 8px; overflow: hidden; background: #000; }
+.vlb-frame.landscape { width: min(90vw, 900px); aspect-ratio: 16 / 9; }
+.vlb-frame.portrait { height: min(85vh, 760px); width: auto; aspect-ratio: 9 / 16; }
+.vlb-frame iframe { position: absolute; inset: 0; width: 100%; height: 100%; border: 0; }
+.vlb-caption { text-align: center; color: var(--muted-on-ink); font-family: 'Inter', sans-serif; font-size: 13px; margin-top: 14px; max-width: 600px; margin-left: auto; margin-right: auto; }
+
+/* Portrait video embedded inline inside a dispatch article */
+.reading-surface .article-video.portrait { aspect-ratio: 9 / 16; max-width: 380px; margin: 40px auto; }
+
 /* ===== Footer ===== */
 .site-footer { border-top: 1px solid var(--border-ink); margin-top: 60px; }
 .footer-inner { max-width: 1200px; margin: 0 auto; padding: 48px 24px; display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 16px; font-family: 'Inter', sans-serif; }
