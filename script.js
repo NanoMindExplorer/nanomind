@@ -59,6 +59,7 @@ function injectSharedChrome() {
                 </a>
                 <div class="nav-links">
                     <a href="index.html" class="nav-link" data-nav="home">Dispatches</a>
+                    <a href="watch.html" class="nav-link" data-nav="watch">Watch</a>
                     <a href="about.html" class="nav-link" data-nav="about">About</a>
                 </div>
                 <div class="flex items-center gap-2">
@@ -72,6 +73,7 @@ function injectSharedChrome() {
     if (mobilePanel) {
         mobilePanel.innerHTML = `
             <a href="index.html" class="nav-link" data-nav="home">Dispatches</a>
+            <a href="watch.html" class="nav-link" data-nav="watch">Watch</a>
             <a href="about.html" class="nav-link" data-nav="about">About</a>`;
     }
     const footerPh = $('footerPlaceholder');
@@ -91,7 +93,7 @@ function injectSharedChrome() {
 
 function markActiveNav() {
     const path = location.pathname.split('/').pop() || 'index.html';
-    const current = (path === '' || path === 'index.html' || path === 'article.html') ? 'home' : (path === 'about.html' ? 'about' : '');
+    const current = (path === '' || path === 'index.html' || path === 'article.html') ? 'home' : (path === 'about.html' ? 'about' : (path === 'watch.html' ? 'watch' : ''));
     document.querySelectorAll('.nav-link').forEach(a => a.classList.toggle('active', a.dataset.nav === current));
 }
 
@@ -213,6 +215,7 @@ function injectModals() {
                         <button type="button" class="block-add-btn" data-block-type="image"><i class="fas fa-image"></i> Gambar</button>
                         <button type="button" class="block-add-btn" data-block-type="quote"><i class="fas fa-quote-left"></i> Kutipan</button>
                         <button type="button" class="block-add-btn" data-block-type="video"><i class="fas fa-video"></i> Video</button>
+                        <button type="button" class="block-add-btn" data-block-type="video-short"><i class="fas fa-mobile-screen"></i> Video Short</button>
                     </div>
                 </div>
             </div>
@@ -245,6 +248,34 @@ function injectModals() {
                 <span class="search-hint">ESC</span>
             </div>
             <div class="search-results" id="searchResults"><p class="search-empty">Ketik untuk mencari dispatch, project, atau link.</p></div>
+        </div>
+    </div>
+
+    <div class="modal-overlay" id="videoModal">
+        <div class="modal-content">
+            <h3 class="font-display font-semibold text-xl mb-6" id="videoModalTitle" style="color:var(--parchment-text)">Add Video</h3>
+            <div class="space-y-4">
+                <div><label class="block text-sm mb-2" style="color:var(--muted-on-ink)">Type</label>
+                    <select class="input-field" id="videoType">
+                        <option value="youtube">YouTube (Landscape)</option>
+                        <option value="youtube-short">YouTube Shorts (Portrait)</option>
+                    </select>
+                </div>
+                <div><label class="block text-sm mb-2" style="color:var(--muted-on-ink)">URL</label><input type="text" class="input-field" id="videoUrl" placeholder="https://youtube.com/watch?v=... atau /shorts/..."></div>
+                <div><label class="block text-sm mb-2" style="color:var(--muted-on-ink)">Title</label><input type="text" class="input-field" id="videoTitle"></div>
+                <div><label class="block text-sm mb-2" style="color:var(--muted-on-ink)">Caption</label><textarea class="input-field" id="videoCaption" rows="2"></textarea></div>
+                <div><label class="block text-sm mb-2" style="color:var(--muted-on-ink)">Tags (pisah koma)</label><input type="text" class="input-field" id="videoTags"></div>
+                <div><label class="block text-sm mb-2" style="color:var(--muted-on-ink)">Dispatch terkait (opsional)</label><select class="input-field" id="videoArticleId"><option value="">— Tidak ada —</option></select></div>
+            </div>
+            <div class="flex gap-3 mt-6"><button class="btn-ghost flex-1" id="cancelVideoBtn">Cancel</button><button class="btn-primary flex-1" id="saveVideoBtn">Save</button></div>
+        </div>
+    </div>
+
+    <div class="modal-overlay" id="videoLightboxModal">
+        <div class="modal-content">
+            <button class="modal-close-btn" id="videoLightboxClose" aria-label="Tutup"><i class="fas fa-times"></i></button>
+            <div class="vlb-frame" id="vlbFrame"></div>
+            <p class="vlb-caption" id="vlbCaption"></p>
         </div>
     </div>`;
 
@@ -311,6 +342,12 @@ function fuzzySearchAll(q) {
             results.push({ icon: 'fa-link', label: l.title, meta: 'Link', href: l.url, external: true });
         }
     });
+    (state.data.videos || []).forEach(v => {
+        const label = v.title || v.caption || 'Video';
+        if (label.toLowerCase().includes(q) || (v.tags || []).some(t => t.toLowerCase().includes(q))) {
+            results.push({ icon: v.type === 'youtube-short' ? 'fa-mobile-screen' : 'fa-video', label, meta: v.type === 'youtube-short' ? 'Short' : 'Video', href: `watch.html?open=${v.id}` });
+        }
+    });
     return results;
 }
 function renderSearchResults(q) {
@@ -356,10 +393,11 @@ async function loadData() {
         state.data.articles = state.data.articles || [];
         state.data.projects = state.data.projects || [];
         state.data.links = state.data.links || [];
+        state.data.videos = state.data.videos || [];
         renderPageContent();
     } catch (err) {
         console.error('Load failed', err);
-        state.data = { profile: { name: 'Failed to Load', bio: 'Cek konfigurasi script.js' }, site: {}, categories: [], articles: [], projects: [], links: [] };
+        state.data = { profile: { name: 'Failed to Load', bio: 'Cek konfigurasi script.js' }, site: {}, categories: [], articles: [], projects: [], links: [], videos: [] };
         renderPageContent();
         showToast('Gagal memuat data. Cek koneksi internet.', 'error');
     } finally {
@@ -396,6 +434,12 @@ function renderPageContent() {
         renderProjects(projects);
         attachGithubBadges(projects);
         renderLinks(links);
+    }
+    if ($('videoGrid')) {
+        renderVideoFilterTabs();
+        renderVideoGallery();
+        const openId = new URLSearchParams(location.search).get('open');
+        if (openId) setTimeout(() => openVideoLightbox(openId), 300);
     }
 
     setTimeout(() => {
@@ -537,9 +581,10 @@ function renderArticleBody(blocks) {
             html += `</figure>`;
         } else if (b.type === 'quote') {
             html += `<blockquote>${escapeHtml(b.text || '')}${b.attribution ? `<cite>${escapeHtml(b.attribution)}</cite>` : ''}</blockquote>`;
-        } else if (b.type === 'video') {
+        } else if (b.type === 'video' || b.type === 'video-short') {
             const id = extractYouTubeId(b.url);
-            html += `<div class="article-video">${id ? `<iframe src="https://www.youtube.com/embed/${id}" allow="autoplay; encrypted-media" allowfullscreen loading="lazy"></iframe>` : '<p style="padding:20px;">Video tidak valid</p>'}</div>`;
+            const orientClass = b.type === 'video-short' ? ' portrait' : '';
+            html += `<div class="article-video${orientClass}">${id ? `<iframe src="https://www.youtube.com/embed/${id}" allow="autoplay; encrypted-media" allowfullscreen loading="lazy"></iframe>` : '<p style="padding:20px;">Video tidak valid</p>'}</div>`;
         }
     });
     return html;
@@ -664,6 +709,130 @@ function renderLinks(links) {
 }
 
 // ==========================================
+// WATCH PAGE — Videos & Shorts
+// ==========================================
+function renderVideoFilterTabs() {
+    const wrap = $('videoFilterTabs');
+    if (!wrap) return;
+    state.videoFilter = state.videoFilter || 'all';
+    wrap.querySelectorAll('[data-vfilter]').forEach(btn => {
+        btn.classList.toggle('active', btn.dataset.vfilter === state.videoFilter);
+        btn.onclick = () => { state.videoFilter = btn.dataset.vfilter; renderVideoFilterTabs(); renderVideoGallery(); };
+    });
+}
+function videoCardHtml(v, orientation) {
+    const isPortrait = orientation === 'portrait';
+    const id = extractYouTubeId(v.url);
+    const thumb = id ? `https://img.youtube.com/vi/${id}/hqdefault.jpg` : '';
+    return `
+        <div class="video-card ${isPortrait ? 'portrait' : 'landscape'} reveal" data-video-id="${v.id}" role="button" tabindex="0">
+            <div class="edit-btn" onclick="event.stopPropagation(); openVideoModal('${v.id}')"><i class="fas fa-pen text-xs"></i></div>
+            <div class="delete-btn" onclick="event.stopPropagation(); deleteVideo('${v.id}')"><i class="fas fa-trash text-xs"></i></div>
+            <div class="vthumb-wrap">
+                <span class="vtype-chip">${v.type === 'youtube-short' ? 'Shorts' : 'Video'}</span>
+                ${thumb ? `<img src="${thumb}" alt="${escapeHtml(v.title || '')}" loading="lazy" onerror="this.style.display='none'">` : ''}
+                <div class="vplay-badge"><i class="fas fa-play"></i></div>
+                ${(v.caption || v.title) ? `<div class="vcaption-overlay">${escapeHtml(v.caption || v.title)}</div>` : ''}
+            </div>
+        </div>`;
+}
+function renderVideoGallery() {
+    const shelfWrap = $('shortsShelfWrap'), shelfGrid = $('shortsShelfGrid'), grid = $('videoGrid'), emptyMsg = $('videoEmpty');
+    if (!grid) return;
+    const videos = state.data.videos || [];
+    const shorts = videos.filter(v => v.type === 'youtube-short');
+    const landscape = videos.filter(v => v.type === 'youtube');
+    const filter = state.videoFilter || 'all';
+
+    const showShelf = (filter === 'all' || filter === 'shorts') && shorts.length > 0;
+    shelfWrap.classList.toggle('hidden', !showShelf);
+    shelfGrid.innerHTML = showShelf ? shorts.map(v => videoCardHtml(v, 'portrait')).join('') : '';
+
+    const gridSource = (filter === 'all' || filter === 'landscape') ? landscape : [];
+    grid.innerHTML = gridSource.map(v => videoCardHtml(v, 'landscape')).join('');
+
+    emptyMsg.classList.toggle('hidden', showShelf || gridSource.length > 0);
+
+    document.querySelectorAll('[data-video-id]').forEach(card => {
+        card.addEventListener('click', (e) => {
+            if (e.target.closest('.edit-btn') || e.target.closest('.delete-btn')) return;
+            openVideoLightbox(card.dataset.videoId);
+        });
+        card.addEventListener('keydown', (e) => { if (e.key === 'Enter') openVideoLightbox(card.dataset.videoId); });
+    });
+    setTimeout(() => document.querySelectorAll('.reveal').forEach(el => { if (isElementInViewport(el)) el.classList.add('visible'); }), 50);
+    setupScrollObserver();
+}
+function openVideoLightbox(id) {
+    const v = (state.data.videos || []).find(x => x.id === id);
+    if (!v) return;
+    const vid = extractYouTubeId(v.url);
+    const frame = $('vlbFrame');
+    frame.className = 'vlb-frame ' + (v.type === 'youtube-short' ? 'portrait' : 'landscape');
+    frame.innerHTML = vid
+        ? `<iframe src="https://www.youtube.com/embed/${vid}?autoplay=1&rel=0" allow="autoplay; encrypted-media; picture-in-picture" allowfullscreen></iframe>`
+        : `<div style="padding:24px;color:#fff;">URL tidak valid</div>`;
+    $('vlbCaption').textContent = v.caption || v.title || '';
+    openModal('videoLightboxModal');
+}
+function closeVideoLightbox() {
+    const f = $('vlbFrame'); if (f) f.innerHTML = '';
+    closeModal('videoLightboxModal');
+}
+function openVideoModal(id = null) {
+    state.editingVideoId = id;
+    const artSelect = $('videoArticleId');
+    artSelect.innerHTML = '<option value="">— Tidak ada —</option>' + (state.data.articles || []).map(a => `<option value="${a.id}">${escapeHtml(a.title)}</option>`).join('');
+    if (id) {
+        const v = state.data.videos.find(x => x.id === id);
+        if (!v) return;
+        $('videoModalTitle').textContent = 'Edit Video';
+        $('videoType').value = v.type || 'youtube';
+        $('videoUrl').value = v.url || '';
+        $('videoTitle').value = v.title || '';
+        $('videoCaption').value = v.caption || '';
+        $('videoTags').value = (v.tags || []).join(', ');
+        artSelect.value = v.articleId || '';
+    } else {
+        $('videoModalTitle').textContent = 'Add Video';
+        $('videoType').value = 'youtube';
+        $('videoUrl').value = ''; $('videoTitle').value = ''; $('videoCaption').value = ''; $('videoTags').value = '';
+        artSelect.value = '';
+    }
+    openModal('videoModal');
+}
+async function saveVideo() {
+    const url = $('videoUrl').value.trim();
+    if (!url || !extractYouTubeId(url)) { showToast('URL YouTube tidak valid.', 'error'); return; }
+    const data = {
+        id: state.editingVideoId || generateId(),
+        type: $('videoType').value,
+        url,
+        title: $('videoTitle').value.trim(),
+        caption: $('videoCaption').value.trim(),
+        tags: $('videoTags').value.split(',').map(t => t.trim()).filter(Boolean),
+        articleId: $('videoArticleId').value || null,
+        date: new Date().toISOString().slice(0, 10)
+    };
+    state.data.videos = state.data.videos || [];
+    if (state.editingVideoId) {
+        const i = state.data.videos.findIndex(x => x.id === state.editingVideoId);
+        state.data.videos[i] = data;
+    } else {
+        state.data.videos.push(data);
+    }
+    await saveToGitHub();
+    closeModal('videoModal');
+    renderVideoGallery();
+}
+async function deleteVideo(id) {
+    if (!confirm('Hapus video ini?')) return;
+    state.data.videos = (state.data.videos || []).filter(x => x.id !== id);
+    await saveToGitHub();
+    renderVideoGallery();
+}
+
+// ==========================================
 // GITHUB PROOF-OF-WORK
 // ==========================================
 function extractGithubRepo(url) {
@@ -779,7 +948,7 @@ function blockEditorItemHtml(b, i) {
     } else if (b.type === 'quote') {
         fields = `<textarea class="input-field mb-2" rows="2" data-index="${i}" data-field="text" placeholder="Isi kutipan...">${escapeHtml(b.text || '')}</textarea>
             <input type="text" class="input-field" data-index="${i}" data-field="attribution" value="${escapeHtml(b.attribution || '')}" placeholder="Atribusi (opsional)">`;
-    } else if (b.type === 'video') {
+    } else if (b.type === 'video' || b.type === 'video-short') {
         fields = `<input type="text" class="input-field" data-index="${i}" data-field="url" value="${escapeHtml(b.url || '')}" placeholder="URL YouTube...">`;
     }
     return `<div class="block-editor-item">${controls}${fields}</div>`;
@@ -823,7 +992,7 @@ async function saveArticle() {
     if (!$('articleCoverImage').value.trim()) { showToast('Cover image wajib diisi.', 'error'); return; }
     const cleanBlocks = articleBlocks.filter(b => {
         if (b.type === 'paragraph' || b.type === 'heading' || b.type === 'quote') return (b.text || '').trim();
-        if (b.type === 'image' || b.type === 'video') return (b.url || '').trim();
+        if (b.type === 'image' || b.type === 'video' || b.type === 'video-short') return (b.url || '').trim();
         return false;
     });
     const data = {
@@ -1118,15 +1287,24 @@ function setupEventListeners() {
     bind('savePotdBtn', 'click', savePotd);
     bind('cancelPotdBtn', 'click', () => closeModal('potdModal'));
 
+    bind('addVideoBtn', 'click', () => openVideoModal());
+    bind('saveVideoBtn', 'click', saveVideo);
+    bind('cancelVideoBtn', 'click', () => closeModal('videoModal'));
+    bind('videoLightboxClose', 'click', closeVideoLightbox);
+
     bind('caseStudyClose', 'click', () => closeModal('caseStudyModal'));
 
     document.querySelectorAll('.modal-overlay').forEach(ov => {
-        ov.addEventListener('click', (e) => { if (e.target === ov) closeModal(ov.id); });
+        ov.addEventListener('click', (e) => {
+            if (e.target !== ov) return;
+            if (ov.id === 'videoLightboxModal') closeVideoLightbox(); else closeModal(ov.id);
+        });
     });
     document.addEventListener('keydown', (e) => {
         if (e.key !== 'Escape') return;
         const openOv = document.querySelector('.modal-overlay.active');
-        if (openOv) closeModal(openOv.id);
+        if (!openOv) return;
+        if (openOv.id === 'videoLightboxModal') closeVideoLightbox(); else closeModal(openOv.id);
     });
 }
 
@@ -1182,3 +1360,5 @@ window.openProjectModal = openProjectModal;
 window.deleteProject = deleteProject;
 window.openLinkModal = openLinkModal;
 window.deleteLink = deleteLink;
+window.openVideoModal = openVideoModal;
+window.deleteVideo = deleteVideo;
