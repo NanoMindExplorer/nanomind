@@ -160,15 +160,19 @@
         },
         {
           "type": "heading",
-          "text": "Download"
+          "text": "Yang Dipelajari"
         },
         {
           "type": "paragraph",
-          "text": "Tunnel Terminal v8.1.0\nhttps://github.com/NanoMindExplorer/tunnel-terminal/releases/tag/v8.1.0"
+          "text": "Versi 7.2.3 sekarang berjalan stabil di ribuan perangkat, dari flagship sampai ponsel budget dengan RAM terbatas. Pelajaran terbesarnya bukan teknis, melainkan soal kesabaran: alat yang benar-benar nyaman dipakai di ruang sempit — kereta, antrian, sela rapat — butuh jauh lebih banyak iterasi daripada alat yang hanya perlu bekerja di atas meja."
         },
         {
           "type": "video",
           "url": "https://youtu.be/jGGgpR0N284?si=jCKgvC0dD-ZTyI1-"
+        },
+        {
+          "type": "paragraph",
+          "text": "Download here : https://github.com/NanoMindExplorer/tunnel-terminal/releases/tag/v8.1.0"
         }
       ]
     },
