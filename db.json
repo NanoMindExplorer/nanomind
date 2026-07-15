@@ -236,7 +236,7 @@
       "title": "Memetakan Gamepad: Ketika Kontroler Bertemu Layar Sentuh",
       "dek": "Sebuah masalah kecil yang mengganggu jutaan gamer mobile — kenapa game touchscreen terasa canggung dengan kontroler asli, dan bagaimana overlay pintar mengubahnya.",
       "category": "build-log",
-      "coverImage": "https://raw.githubusercontent.com/NanoMindExplorer/nanomind/main/progress2.png",
+      "coverImage": "https://raw.githubusercontent.com/NanoMindExplorer/GameMapperMind/refs/heads/main/public/icon.svg",
       "author": "Iman Firmansyah",
       "date": "2026-06-05",
       "readTime": 5,
@@ -277,7 +277,7 @@
         },
         {
           "type": "paragraph",
-          "text": "Dukungan lintas kontroler — Xbox, Switch Pro, dan DualSense — masing-masing punya kuirk protokol Bluetooth sendiri, jadi sebagian besar waktu pengembangan justru habis untuk menormalkan input, bukan membangun fitur baru. Fitur anti-ban dan makro ditambahkan setelah mendengar langsung dari komunitas pemain yang khawatir akun mereka ditandai oleh sistem deteksi game."
+          "text": "Dukungan lintas kontroler — Xbox, Switch Pro, dan DualSense — masing-masing punya kuirk protokol Bluetooth sendiri, jadi sebagian besar waktu pengembangan justru habis untuk menormalkan input, bukan membangun fitur baru. Fitur anti-ban dan makro ditambahkan setelah mendengar langsung dari komunitas pemain yang khawatir akun mereka ditandai oleh sistem deteksi game.\n\nKunjungingi Halaman About untk mengunduh App."
         },
         {
           "type": "video",
