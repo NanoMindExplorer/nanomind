@@ -107,6 +107,16 @@
       "tags": [],
       "articleId": "art-tunnel-terminal",
       "date": "2026-07-12"
+    },
+    {
+      "id": "mrlca0aunj7d71vwq29",
+      "type": "youtube",
+      "url": "https://youtu.be/OtdO_hg2ZdI?si=ww5mCG2dbUYcAXIC",
+      "title": "GameMapperMind Game Test",
+      "caption": "",
+      "tags": [],
+      "articleId": "art-game-mapper-mind",
+      "date": "2026-07-15"
     }
   ],
   "articles": [
@@ -236,7 +246,8 @@
       "title": "Memetakan Gamepad: Ketika Kontroler Bertemu Layar Sentuh",
       "dek": "Sebuah masalah kecil yang mengganggu jutaan gamer mobile — kenapa game touchscreen terasa canggung dengan kontroler asli, dan bagaimana overlay pintar mengubahnya.",
       "category": "build-log",
-      "coverImage": "https://raw.githubusercontent.com/NanoMindExplorer/GameMapperMind/refs/heads/main/public/icon.svg",
+      "coverImage": "https://raw.githubusercontent.com/NanoMindExplorer/nanomind/main/progress2.png",
+      "coverCredit": "Iman Firmansyah",
       "author": "Iman Firmansyah",
       "date": "2026-06-05",
       "readTime": 5,
