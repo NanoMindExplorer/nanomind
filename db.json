@@ -80,8 +80,8 @@
       "tags": [
         "Tools"
       ],
-      "articleId": "art-nanomindos",
-      "date": "2026-07-15"
+      "articleId": null,
+      "date": "2026-07-12"
     },
     {
       "id": "mrhq5hldl25tg75gnvq",
@@ -291,7 +291,6 @@
       "dek": "Sebuah terminal pribadi yang menggabungkan Web3 dan AI automation — dibangun bukan untuk dirilis publik, tapi untuk menjadi laboratorium sendiri.",
       "category": "field-notes",
       "coverImage": "https://raw.githubusercontent.com/NanoMindExplorer/nanomind/main/Screenshot_20260630_224816.jpg",
-      "coverCredit": "Iman Firmansyah",
       "author": "Iman Firmansyah",
       "date": "2026-06-30",
       "readTime": 4,
@@ -333,6 +332,10 @@
         {
           "type": "paragraph",
           "text": "Di balik layar: modul-modul kecil yang saling terhubung, masing-masing menangani satu tugas — memantau, menjalankan skrip, merespons pemicu. Bukan produk yang rapi, tapi laboratorium yang hidup dan terus berubah setiap minggu."
+        },
+        {
+          "type": "video",
+          "url": "https://youtu.be/5_zUlEm5xpo?si=7fiODOitvUnruvEf"
         }
       ]
     }
