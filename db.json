@@ -174,7 +174,7 @@
         },
         {
           "type": "paragraph",
-          "text": "Versi 7.2.3 sekarang berjalan stabil. Untuk unduhan rilis terbaru, kunjungi [halaman release Tunnel Terminal](https://github.com/NanoMindExplorer/tunnel-terminal/releases/tag/v8.4.0) di GitHub, atau lihat link otomatis di bawah yang ditarik dari halaman About."
+          "text": "Versi 8.4.0 sekarang berjalan stabil. Untuk unduhan rilis terbaru, kunjungi [halaman release Tunnel Terminal](https://github.com/NanoMindExplorer/tunnel-terminal/releases/tag/v8.4.0) di GitHub, atau lihat link otomatis di bawah yang ditarik dari halaman About."
         },
         {
           "type": "video",
@@ -183,7 +183,7 @@
         {
           "type": "link",
           "linkRef": "link1",
-          "text": "Download Here",
+          "text": "Lihat Lainya",
           "url": "https://nanomindexplorer.github.io/nanomind/about.html",
           "icon": "fab fa-github"
         },
