@@ -208,12 +208,16 @@ function injectModals() {
                 <label class="flex items-center gap-2 text-sm" style="color:var(--muted-on-ink)"><input type="checkbox" id="articleFeatured"> Jadikan headline utama (hero homepage)</label>
                 <div class="pt-2">
                     <label class="block text-sm mb-2" style="color:var(--muted-on-ink)">Isi Dispatch</label>
+                    <p class="text-xs mb-2" style="color:var(--muted-on-ink); line-height:1.5;">
+                        Tip: Sisipkan tautan inline dengan <code style="background:rgba(255,255,255,0.06); padding:1px 5px; border-radius:3px;">[label](https://url.com)</code>, atau tarik link dari halaman About dengan <code style="background:rgba(255,255,255,0.06); padding:1px 5px; border-radius:3px;">{{link:ID}}</code> (contoh: <code style="background:rgba(255,255,255,0.06); padding:1px 5px; border-radius:3px;">{{link:link1}}</code>). URL telanjang akan otomatis jadi tautan.
+                    </p>
                     <div id="blockEditorList"></div>
                     <div class="block-add-row mt-2">
                         <button type="button" class="block-add-btn" data-block-type="paragraph"><i class="fas fa-paragraph"></i> Paragraf</button>
                         <button type="button" class="block-add-btn" data-block-type="heading"><i class="fas fa-heading"></i> Judul Bagian</button>
                         <button type="button" class="block-add-btn" data-block-type="image"><i class="fas fa-image"></i> Gambar</button>
                         <button type="button" class="block-add-btn" data-block-type="quote"><i class="fas fa-quote-left"></i> Kutipan</button>
+                        <button type="button" class="block-add-btn" data-block-type="link"><i class="fas fa-link"></i> Tautan</button>
                         <button type="button" class="block-add-btn" data-block-type="video"><i class="fas fa-video"></i> Video</button>
                         <button type="button" class="block-add-btn" data-block-type="video-short"><i class="fas fa-mobile-screen"></i> Video Short</button>
                     </div>
@@ -565,22 +569,81 @@ function dispatchCardHtml(a, i) {
 // ==========================================
 // ARTICLE PAGE
 // ==========================================
+// Render teks paragraf/heading/quote dengan dukungan tautan inline:
+//   [label](https://url.com)         → tautan Markdown style
+//   {{link:ID}}                       → tarik otomatis dari daftar links di halaman About
+//   https://example.com               → URL telanjang otomatis jadi tautan
+function renderTextWithLinks(text) {
+    if (!text) return '';
+    // Escape dulu untuk keamanan
+    let safe = escapeHtml(text);
+    // 1) Placeholder {{link:ID}} — tarik dari state.data.links
+    safe = safe.replace(/\{\{link:([a-zA-Z0-9_-]+)\}\}/g, (m, id) => {
+        const link = (state.data && state.data.links || []).find(l => l.id === id);
+        if (!link) return `<span class="broken-link" title="Link tidak ditemukan di halaman About">[link? ${escapeHtml(id)}]</span>`;
+        const label = escapeHtml(link.title || link.url || 'link');
+        const href = escapeHtml(link.url || '#');
+        const icon = link.icon ? `<i class="${escapeHtml(link.icon)}"></i> ` : '';
+        return `<a href="${href}" target="_blank" rel="noopener noreferrer" class="inline-link about-link" data-link-id="${escapeHtml(id)}">${icon}${label}</a>`;
+    });
+    // 2) Markdown style [label](url)
+    safe = safe.replace(/\[([^\]]+)\]\((https?:\/\/[^\s)]+)\)/g, (m, label, url) => {
+        return `<a href="${url}" target="_blank" rel="noopener noreferrer" class="inline-link">${label}</a>`;
+    });
+    // 3) URL telanjang yang belum tertangkap (tidak dalam atribut href)
+    safe = safe.replace(/(^|[^"'>=\(])(https?:\/\/(?:www\.)?[^\s<]+\.[^\s<]+)/g, (m, prefix, url) => {
+        // Hindari URL yang sudah ada di dalam atribut href="..."
+        return `${prefix}<a href="${url}" target="_blank" rel="noopener noreferrer" class="inline-link bare-url">${url}</a>`;
+    });
+    return safe;
+}
+
+// Cari objek link berdasarkan ref ID (untuk block tipe 'link' yang ditarik dari halaman About)
+// URL selalu ditarik dari About (agar sinkron otomatis), tetapi label/ikon bisa di-override
+// oleh teks kustom yang ditulis admin di artikel.
+function resolveLinkBlock(b) {
+    if (b.linkRef) {
+        const ref = (state.data && state.data.links || []).find(l => l.id === b.linkRef);
+        if (ref) {
+            return {
+                text: (b.text && b.text.trim()) ? b.text : (ref.title || ref.url),
+                url: ref.url,                                  // URL selalu sync dari About
+                icon: (b.icon && b.icon.trim()) ? b.icon : (ref.icon || ''),
+                fromAbout: true
+            };
+        }
+    }
+    return {
+        text: b.text || b.url || '',
+        url: b.url || '',
+        icon: b.icon || '',
+        fromAbout: false
+    };
+}
+
 function renderArticleBody(blocks) {
     let html = '';
     let leadDone = false;
     (blocks || []).forEach(b => {
         if (b.type === 'paragraph') {
             const cls = !leadDone ? ' class="lead"' : '';
-            html += `<p${cls}>${escapeHtml(b.text || '')}</p>`;
+            html += `<p${cls}>${renderTextWithLinks(b.text || '')}</p>`;
             leadDone = true;
         } else if (b.type === 'heading') {
-            html += `<h2>${escapeHtml(b.text || '')}</h2>`;
+            html += `<h2>${renderTextWithLinks(b.text || '')}</h2>`;
         } else if (b.type === 'image') {
             html += `<figure><img src="${b.url}" alt="${escapeHtml(b.caption || '')}" loading="lazy">`;
             if (b.caption || b.credit) html += `<figcaption>${escapeHtml(b.caption || '')}${b.credit ? ` — ${escapeHtml(b.credit)}` : ''}</figcaption>`;
             html += `</figure>`;
         } else if (b.type === 'quote') {
-            html += `<blockquote>${escapeHtml(b.text || '')}${b.attribution ? `<cite>${escapeHtml(b.attribution)}</cite>` : ''}</blockquote>`;
+            html += `<blockquote>${renderTextWithLinks(b.text || '')}${b.attribution ? `<cite>${escapeHtml(b.attribution)}</cite>` : ''}</blockquote>`;
+        } else if (b.type === 'link') {
+            const resolved = resolveLinkBlock(b);
+            if (resolved.url) {
+                const icon = resolved.icon ? `<i class="${escapeHtml(resolved.icon)}"></i>` : '<i class="fas fa-arrow-up-right-from-square"></i>';
+                const badge = resolved.fromAbout ? '<span class="link-from-about" title="Ditarik otomatis dari halaman About"><i class="fas fa-link"></i></span>' : '';
+                html += `<a href="${escapeHtml(resolved.url)}" target="_blank" rel="noopener noreferrer" class="article-link-block">${icon}<span>${escapeHtml(resolved.text)}</span>${badge}</a>`;
+            }
         } else if (b.type === 'video' || b.type === 'video-short') {
             const id = extractYouTubeId(b.url);
             const orientClass = b.type === 'video-short' ? ' portrait' : '';
@@ -929,6 +992,41 @@ function renderBlockEditor() {
     list.querySelectorAll('[data-field]').forEach(inp => {
         inp.addEventListener('input', () => { articleBlocks[+inp.dataset.index][inp.dataset.field] = inp.value; });
     });
+    // Saat user memilih link dari halaman About, auto-isi field URL/label/icon
+    list.querySelectorAll('[data-link-ref]').forEach(sel => {
+        sel.addEventListener('change', () => {
+            const idx = +sel.dataset.linkRef;
+            const linkId = sel.value;
+            const block = articleBlocks[idx];
+            if (!block) return;
+            block.linkRef = linkId;
+            if (linkId) {
+                const ref = (state.data.links || []).find(l => l.id === linkId);
+                if (ref) {
+                    block.url = ref.url || block.url;
+                    block.text = ref.title || block.text;
+                    block.icon = ref.icon || block.icon;
+                    renderBlockEditor();
+                }
+            } else {
+                // Bisa dikosongkan tanpa menghapus field yang sudah terisi
+            }
+        });
+    });
+    // Tombol sisipkan placeholder {{link:ID}} ke textarea paragraf yang sedang aktif
+    list.querySelectorAll('[data-insert-link]').forEach(btn => {
+        btn.addEventListener('click', () => {
+            const idx = +btn.dataset.insertLink;
+            const sel = btn.previousElementSibling;
+            const linkId = sel && sel.value;
+            if (!linkId) { showToast('Pilih link dulu dari dropdown.', 'error'); return; }
+            const block = articleBlocks[idx];
+            if (!block) return;
+            const placeholder = `{{link:${linkId}}}`;
+            block.text = (block.text || '') + placeholder;
+            renderBlockEditor();
+        });
+    });
 }
 function blockEditorItemHtml(b, i) {
     const controls = `<div class="block-type-label"><span>${b.type}</span><span class="flex gap-1">
@@ -938,7 +1036,13 @@ function blockEditorItemHtml(b, i) {
     </span></div>`;
     let fields = '';
     if (b.type === 'paragraph') {
-        fields = `<textarea class="input-field" rows="3" data-index="${i}" data-field="text" placeholder="Tulis paragraf...">${escapeHtml(b.text || '')}</textarea>`;
+        // Helper: insert placeholder {{link:ID}} untuk inline pull dari About
+        const aboutLinks = (state.data.links || []);
+        const linkOptions = ['<option value="">— Pilih link dari About untuk disisipkan —</option>']
+            .concat(aboutLinks.map(l => `<option value="${escapeHtml(l.id)}">${escapeHtml(l.title || l.url)}</option>`))
+            .join('');
+        const linkHelper = aboutLinks.length ? `<div class="flex gap-2 mt-2"><select class="input-field text-xs" data-link-options="${i}" style="flex:1; padding:8px 10px; font-size:12px;">${linkOptions}</select><button type="button" class="btn-ghost" data-insert-link="${i}" style="padding:8px 12px; font-size:12px;"><i class="fas fa-plus"></i> Sisipkan</button></div>` : '';
+        fields = `<textarea class="input-field" rows="3" data-index="${i}" data-field="text" placeholder="Tulis paragraf... (bisa sisipkan [label](url) atau {{link:ID}})">${escapeHtml(b.text || '')}</textarea>${linkHelper}`;
     } else if (b.type === 'heading') {
         fields = `<input type="text" class="input-field" data-index="${i}" data-field="text" value="${escapeHtml(b.text || '')}" placeholder="Judul bagian...">`;
     } else if (b.type === 'image') {
@@ -948,6 +1052,19 @@ function blockEditorItemHtml(b, i) {
     } else if (b.type === 'quote') {
         fields = `<textarea class="input-field mb-2" rows="2" data-index="${i}" data-field="text" placeholder="Isi kutipan...">${escapeHtml(b.text || '')}</textarea>
             <input type="text" class="input-field" data-index="${i}" data-field="attribution" value="${escapeHtml(b.attribution || '')}" placeholder="Atribusi (opsional)">`;
+    } else if (b.type === 'link') {
+        // Dropdown untuk menarik link dari halaman About secara otomatis
+        const aboutLinks = (state.data.links || []);
+        const linkOptions = ['<option value="">— Tautan Custom (ketik manual) —</option>']
+            .concat(aboutLinks.map(l => `<option value="${escapeHtml(l.id)}" ${b.linkRef === l.id ? 'selected' : ''}>${escapeHtml(l.title || l.url)} (dari About)</option>`))
+            .join('');
+        fields = `<div class="mb-2">
+                <label class="block text-xs mb-1" style="color:var(--muted-on-ink)">Tarik otomatis dari halaman About:</label>
+                <select class="input-field" data-index="${i}" data-link-ref="${i}">${linkOptions}</select>
+            </div>
+            <input type="text" class="input-field mb-2" data-index="${i}" data-field="text" value="${escapeHtml(b.text || '')}" placeholder="Label tautan (opsional, default = URL)">
+            <input type="text" class="input-field mb-2" data-index="${i}" data-field="url" value="${escapeHtml(b.url || '')}" placeholder="https://...">
+            <input type="text" class="input-field" data-index="${i}" data-field="icon" value="${escapeHtml(b.icon || '')}" placeholder="Ikon Font Awesome (opsional, mis. fab fa-github)">`;
     } else if (b.type === 'video' || b.type === 'video-short') {
         fields = `<input type="text" class="input-field" data-index="${i}" data-field="url" value="${escapeHtml(b.url || '')}" placeholder="URL YouTube...">`;
     }
@@ -993,6 +1110,7 @@ async function saveArticle() {
     const cleanBlocks = articleBlocks.filter(b => {
         if (b.type === 'paragraph' || b.type === 'heading' || b.type === 'quote') return (b.text || '').trim();
         if (b.type === 'image' || b.type === 'video' || b.type === 'video-short') return (b.url || '').trim();
+        if (b.type === 'link') return (b.url || '').trim() || (b.linkRef || '').trim();
         return false;
     });
     const data = {
