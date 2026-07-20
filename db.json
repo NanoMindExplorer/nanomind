@@ -117,6 +117,16 @@
       "tags": [],
       "articleId": null,
       "date": "2026-07-15"
+    },
+    {
+      "id": "mrt6ygjdtopaqvpdvss",
+      "type": "youtube",
+      "url": "https://youtu.be/ZG2Y2saxG8c?si=kCv1-wVJRELiYLKe",
+      "title": "Nao Tutorial & Demo",
+      "caption": "",
+      "tags": [],
+      "articleId": null,
+      "date": "2026-07-20"
     }
   ],
   "articles": [
@@ -563,10 +573,6 @@
         {
           "type": "paragraph",
           "text": "Klik tombol download di atas dan kamu akan diarahkan ke group Telegram tempat tool ini diunggah dan berdiskusi. Terima kasih."
-        },
-        {
-          "type": "video",
-          "url": "https://youtu.be/ZG2Y2saxG8c?si=kCv1-wVJRELiYLKe"
         }
       ]
     }
