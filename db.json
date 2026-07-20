@@ -174,7 +174,7 @@
         },
         {
           "type": "paragraph",
-          "text": "Versi 7.2.3 sekarang berjalan stabil. Untuk unduhan rilis terbaru, kunjungi [halaman release Tunnel Terminal](https://github.com/NanoMindExplorer/tunnel-terminal/releases/tag/v8.4.0) di GitHub, atau lihat link otomatis di bawah yang ditarik dari halaman About."
+          "text": "Versi 7.2.3 sekarang berjalan stabil. Untuk unduhan rilis terbaru, kunjungi [h[halaman release Tunnel Terminal](https://github.com/NanoMindExplorer/tunnel-terminal/releases/tag/v8.4.0) di GitHub, atau lihat link otomatis di bawah yang ditarik dari halaman About."
         },
         {
           "type": "video",
@@ -243,7 +243,7 @@
         },
         {
           "type": "paragraph",
-          "text": "Solusinya: sebuah lapisan memori ringan yang menyimpan jejak konteks per-direktori kerja, sehingga membuka Code Forge di dalam folder proyek yang sama akan langsung 'mengingat' apa yang sedang dikerjakan — tanpa perlu mengetik ulang konteks setiap kali.\nhttps://nanomindexplorer.github.io/nanomind/about.html"
+          "text": "Solusinya: sebuah lapisan memori ringan yang menyimpan jejak konteks per-direktori kerja, sehingga membuka Code Forge di dalam folder proyek yang sama akan langsung 'mengingat' apa yang sedang dikerjakan — tanpa perlu mengetik ulang konteks setiap kali.\n\nKalau tertarik dengan proyek lain atau ingin hubungi saya, kunjungi [halaman About](https://nanomindexplorer.github.io/nanomind/about.html)."
         }
       ]
     },
@@ -293,7 +293,7 @@
         },
         {
           "type": "paragraph",
-          "text": "Dukungan lintas kontroler — Xbox, Switch Pro, dan DualSense — masing-masing punya kuirk protokol Bluetooth sendiri, jadi sebagian besar waktu pengembangan justru habis untuk menormalkan input, bukan membangun fitur baru. Fitur anti-ban dan makro ditambahkan setelah mendengar langsung dari komunitas pemain yang khawatir akun mereka ditandai oleh sistem deteksi game.\n\nUntuk mengunduh aplikasi, kunjungi [halaman proyek GameMapperMind di GitHub](https://github.com/NanoMindExplorer/GameMapperMind/releases/tag/v2.1.0) atau cek {{link:link1}} untuk repo lainnya. Tautan dari halaman About akan otomatis tersinkron di sini."
+          "text": "Dukungan lintas kontroler — Xbox, Switch Pro, dan DualSense — masing-masing punya kuirk protokol Bluetooth sendiri, jadi sebagian besar waktu pengembangan justru habis untuk menormalkan input, bukan membangun fitur baru. Fitur anti-ban dan makro ditambahkan setelah mendengar langsung dari komunitas pemain yang khawatir akun mereka ditandai oleh sistem deteksi game.\n\nUntuk mengunduh aplikasi, kunjungi [h[halaman proyek GameMapperMind di GitHub](https://github.com/NanoMindExplorer/GameMapperMind/releases/tag/v2.1.0) atau cek {{link:link1}} untuk repo lainnya. Tautan dari halaman About akan otomatis tersinkron di sini."
         },
         {
           "type": "video",
@@ -358,7 +358,7 @@
     {
       "id": "mrt59rwu1crz89u5tju",
       "title": "NanoMind Account Optimizer: Beres-Beres Akun X Kamu, Tanpa Drama",
-      "dek": "⚠️ DISCLAIMER — WAJIB DIBACA SEBELUM PAKAI",
+      "dek": "Sebuah ekstensi Chrome untuk beres-beres following list X: scan akun mati, unfollow aman dengan jeda konservatif, dan cek indikasi shadowban — dibangun untuk diri sendiri, lalu dibagikan gratis.",
       "category": "build-log",
       "coverImage": "https://raw.githubusercontent.com/NanoMindExplorer/nanomind/main/nao.jpg",
       "author": "Iman Firmansyah",
@@ -368,34 +368,201 @@
       "tags": [
         "Tools",
         "Sosialmedia",
-        "Optomizer"
+        "Optimizer"
       ],
       "body": [
         {
+          "type": "heading",
+          "text": "Penting — Disclaimer Wajib Dibaca Sebelum Pakai"
+        },
+        {
           "type": "paragraph",
-          "text": "NanoMind Account Optimizer (NAO) adalah proyek pribadi, dibagikan gratis, dibangun dan dirawat sendiri oleh saya @Deadmouse_jpeg.\n\nSebelum kamu install dan pakai, baca ini baik-baik:\n\n- Tool ini melakukan automasi terbatas (unfollow, navigasi halaman, pembacaan data) di atas sesi login X/Twitter kamu sendiri. Automasi terhadap follow/unfollow berada di area abu-abu Terms of Service X dan X berhak membatasi, memberi warning, rate-limit, sampai men-suspend akun yang polanya dianggap mencurigakan, terlepas dari alat apa yang dipakai.\n\n- Saya sudah mendesain default yang konservatif (jeda antar-aksi, batas harian) untuk memperkecil risiko itu tapi tidak ada jaminan nol risiko. Saya bukan X/Twitter, saya tidak bisa dan tidak akan menjamin akun kamu aman 100% dari tindakan pihak X.\n\n- Dengan menginstall dan/atau memakai NanoMind Account Optimizer, kamu menyatakan setuju bahwa segala risiko termasuk namun tidak terbatas pada suspend, banned, rate-limit, kehilangan follower, atau kerugian lain apa pun pada akun X kamu sepenuhnya menjadi tanggung jawab kamu sendiri.\n\n- Risiko akun kena banned/suspend itu NYATA dan TETAP ADA, sekecil apa pun default yang sudah saya buat konservatif. Tidak ada automasi follow/unfollow dari tool manapun, buatan siapapun yang bisa menjamin nol risiko selama X masih punya sistem deteksi automasi mereka sendiri.\n\n- Kalau akun kamu kena banned, suspend, atau masalah apa pun akibat pakai tool ini, itu BUKAN tanggung jawab saya (Nano / @Deadmouse_jpeg) selaku pembuat. Saya cuma menyediakan alatnya secara gratis dan terbuka keputusan pakai atau tidak, dan cara pakainya, sepenuhnya di tangan kamu. Dengan memakai tool ini, kamu dianggap sudah membaca, mengerti, dan menyetujui poin ini tanpa syarat.\n\n- Tool ini dibagikan apa adanya (\"as-is\"), tanpa jaminan (warranty) tersirat maupun tertulis atas kesesuaian fungsi, keandalan, atau keamanan untuk tujuan tertentu.\n\n- Kalau kamu tidak setuju dengan ketentuan ini, jangan install atau gunakan tool ini.\n\nSudah jelas? Oke, lanjut ke cerita di baliknya."
+          "text": "NanoMind Account Optimizer (NAO) adalah proyek pribadi, dibagikan gratis, dibangun dan dirawat sendiri oleh saya {{link:mqyzxfv8f1mdi9vt11b}}."
+        },
+        {
+          "type": "paragraph",
+          "text": "Sebelum kamu install dan pakai, baca ini baik-baik:"
+        },
+        {
+          "type": "paragraph",
+          "text": "Tool ini melakukan automasi terbatas — unfollow, navigasi halaman, pembacaan data — di atas sesi login X/Twitter kamu sendiri. Automasi terhadap follow/unfollow berada di area abu-abu Terms of Service X, dan X berhak membatasi, memberi warning, rate-limit, sampai men-suspend akun yang polanya dianggap mencurigakan, terlepas dari alat apa yang dipakai."
+        },
+        {
+          "type": "paragraph",
+          "text": "Saya sudah mendesain default yang konservatif (jeda antar-aksi, batas harian) untuk memperkecil risiko itu — tapi tidak ada jaminan nol risiko. Saya bukan X/Twitter, saya tidak bisa dan tidak akan menjamin akun kamu aman 100% dari tindakan pihak X."
+        },
+        {
+          "type": "paragraph",
+          "text": "Dengan menginstall dan/atau memakai NanoMind Account Optimizer, kamu menyatakan setuju bahwa segala risiko — termasuk namun tidak terbatas pada suspend, banned, rate-limit, kehilangan follower, atau kerugian lain apa pun pada akun X kamu — sepenuhnya menjadi tanggung jawab kamu sendiri."
+        },
+        {
+          "type": "paragraph",
+          "text": "Risiko akun kena banned/suspend itu NYATA dan TETAP ADA, sekecil apa pun default yang sudah saya buat konservatif. Tidak ada automasi follow/unfollow dari tool manapun, buatan siapapun, yang bisa menjamin nol risiko selama X masih punya sistem deteksi automasi mereka sendiri."
+        },
+        {
+          "type": "paragraph",
+          "text": "Kalau akun kamu kena banned, suspend, atau masalah apa pun akibat pakai tool ini, itu BUKAN tanggung jawab saya (Nano / {{link:mqyzxfv8f1mdi9vt11b}}) selaku pembuat. Saya cuma menyediakan alatnya secara gratis dan terbuka — keputusan pakai atau tidak, dan cara pakainya, sepenuhnya di tangan kamu. Dengan memakai tool ini, kamu dianggap sudah membaca, mengerti, dan menyetujui poin ini tanpa syarat."
+        },
+        {
+          "type": "paragraph",
+          "text": "Tool ini dibagikan apa adanya (\"as-is\"), tanpa jaminan (warranty) tersirat maupun tertulis atas kesesuaian fungsi, keandalan, atau keamanan untuk tujuan tertentu."
+        },
+        {
+          "type": "paragraph",
+          "text": "Kalau kamu tidak setuju dengan ketentuan ini, jangan install atau gunakan tool ini."
+        },
+        {
+          "type": "paragraph",
+          "text": "Sudah jelas? Oke, lanjut ke cerita di baliknya."
         },
         {
           "type": "image",
           "url": "https://raw.githubusercontent.com/NanoMindExplorer/nanomind/main/nao1.jpg",
+          "caption": "Antarmuka popup NanoMind Account Optimizer",
           "credit": "nanomind"
         },
         {
+          "type": "heading",
+          "text": "Kenapa Saya Bikin Ini"
+        },
+        {
           "type": "paragraph",
-          "text": "Kenapa Saya Bikin Ini\n\nSaya orang yang cukup aktif di X nge-tweet, riset, follow proyek-proyek baru, ikutan komunitas developer sama crypto. Masalahnya, following list saya lama-lama jadi kuburan: puluhan sampai ratusan akun yang saya follow taun lalu udah nggak nge-tweet lagi, entah pindah platform atau emang udah nggak aktif. Belum lagi akun-akun yang saya follow duluan tapi nggak pernah follow-back, numpuk tanpa saya sadari.\n\n\nCek satu-satu manual itu kerjaan yang paling gampang ditunda selamanya. Jadi saya bikin tool buat diri saya sendiri dulu lalu saya pikir, kenapa nggak dibagikan aja sekalian, siapa tau berguna buat yang lain.\n\nApa yang Bisa Dilakukan NAO\n\nNanoMind Account Optimizer adalah ekstensi Chrome dengan empat modul inti:\n\n🔎 Inactivity Scanner : mindai seluruh following list kamu, baca kapan terakhir kali tiap akun nge-tweet, lalu kasih tanda mana yang sudah \"mati\" berdasarkan ambang hari yang kamu tentukan sendiri (default 90 hari).\n\n⤫ Auto-Unfollow Queue : begitu tahu akun mana yang mau di-unfollow (dari hasil scan, atau pilih manual), tool ini jalanin unfollow-nya satu-satu dengan jeda acak antar-aksi. Bukan sekali klik langsung ratusan unfollow dalam sedetik — itu justru pola yang paling gampang dicurigai sistem automasi X.\n\n↔ Non-Followback Detector : bandingin following list vs followers list kamu, langsung ketahuan siapa aja yang kamu follow tapi nggak follow balik.\n\n◎ Shadowban Inspector:  alat bantu cek indikasi shadowban: apakah tweet kamu masih muncul di hasil pencarian, apakah handle kamu masih muncul di saran pencarian, dan panduan buat cek manual apakah reply kamu disembunyikan di thread orang lain.\n\nFilosofi Desain: Aman Dulu, Baru Nyaman\n\nSatu hal yang saya pegang teguh selama bangun ini: kecepatan bukan prioritas utama. Semua nilai default jeda 60 sampai 150 detik antar unfollow, batas 150 unfollow per hari sengaja dipilih longgar. \n\nBukan karena teknis nggak bisa lebih cepat, tapi karena pola automasi yang terlalu rapat itu justru yang paling gampang bikin akun kena flag.\n\nTool ini juga nggak kerja diam-diam di belakang layar tanpa jejak. Setiap aksi scan, unfollow, gagal atau berhasil dicatat real-time di log aktivitas yang bisa kamu lihat langsung di popup. Kamu selalu tahu persis apa yang lagi dikerjakan tool ini terhadap akun kamu, kapan pun.\n\nCara Kerja Singkat\n\nNAO nggak pakai API resmi X (yang sekarang berbayar dan dibatasi ketat). Dia baca halaman X persis seperti kamu browsing manual buka following list, scroll, kumpulin data, buka satu-satu profil buat cek aktivitas, klik tombol follow/unfollow kalau memang kamu suruh. \nSemuanya lewat sesi login kamu sendiri di browser kamu sendiri, nggak ada data yang dikirim ke server manapun following list, hasil scan, semuanya tersimpan lokal di browser kamu.\n\nKonsekuensinya: kalau X ubah tampilan/struktur halaman mereka (yang emang sering terjadi), sebagian fitur bisa berhenti berfungsi sampai saya update. Ada tombol \"Cek Kompatibilitas Selector\" di dalam tool buat diagnosis cepat kalau itu terjadi.\n\n⚠️ Pakai dengan Bijak\n\nTool ini alat bantu, bukan alat \"set and forget\" yang boleh dijalankan sembarangan tanpa dipantau. Sebijak apa pun defaultnya sudah saya atur, keputusan dan risiko akhir tetap ada di tangan kamu sebagai pengguna.\n Jangan buru-buru, jangan serakah (misal langsung unfollow ratusan akun sekaligus di hari pertama pakai), dan selalu pantau apa yang terjadi lewat log aktivitas.\n\nTips Biar Lebih Aman\n\n1. Mulai pelan-pelan. Hari pertama, coba unfollow sedikit dulu (10–20 akun) sambil pantau apakah akun kamu baik-baik saja, sebelum lanjut ke jumlah yang lebih besar.\n\n2. Jangan ubah delay jadi terlalu cepat. Default 60–150 detik itu sudah dipertimbangkan makin kamu percepat, makin gampang polanya kelihatan \"robotic\" di mata sistem X.\n\n3. Perhatikan batas harian. Jangan maksain naikin limit unfollow per hari kalau akun kamu masih baru atau belum banyak riwayat aktivitas organik.\n\n4. Selingi dengan aktivitas manusiawi. Akun yang cuma dipakai buat automasi (nggak pernah nge-tweet/like/reply manual) lebih gampang dicurigai dibanding akun yang aktivitasnya campuran.\n\n5. Berhenti kalau ada tanda-tanda aneh captcha muncul terus, notifikasi pembatasan dari X, atau tindakan follow/unfollow tiba-tiba gagal semua. Itu sinyal buat pause, bukan dipaksa lanjut.\n\n6. Jangan pakai di akun utama kalau ragu. Kalau akun kamu penting banget (akun kerja, akun dengan follower besar), pertimbangkan coba dulu di akun sekunder sebelum yakin ke akun utama.\n\n7. Baca log-nya, jangan cuma klik dan tinggal. Log aktivitas ada bukan hiasan dari situ kamu bisa tahu lebih awal kalau ada yang nggak beres.\n\nIntinya: tool ini dirancang buat bantu kamu kerja lebih efisien, bukan buat dipakai serampangan. Pakai akal sehat.\n\nSatu Syarat: Follow\n\nTool ini gratis, open, dan bakal terus saya rawat tapi bukan berarti nggak ada harga sama sekali. Satu-satunya \"bayaran\" yang saya minta: follow @Deadmouse_jpegdi X. Tanpa itu, tool-nya terkunci nggak bisa dipakai sama sekali. \n\nSaya jelasin ini terbuka, bukan disembunyikan: begitu kamu buka popup-nya, langsung ketahuan syaratnya apa.\n\nInstalasi & Tutorial\n\nBelum ada di Chrome Web Store install manual lewat Developer Mode (desktop paling reliable; sudah teruji juga jalan di Mises Browser, Kiwi Browser Lemur Browser untuk Android). \n\nPanduan lengkap langkah-per-langkah, termasuk troubleshooting kalau ada yang nggak muncul, ada di halaman tutorial bawaan tool ini — otomatis kebuka begitu kamu selesai install.\n\nKalau kamu udah baca disclaimer di atas dan tetap mau coba: follow dulu @Deadmouse_jpeg , install, dan mulai beres-beres following list kamu."
+          "text": "Saya orang yang cukup aktif di X — nge-tweet, riset, follow proyek-proyek baru, ikutan komunitas developer sama crypto. Masalahnya, following list saya lama-lama jadi kuburan: puluhan sampai ratusan akun yang saya follow tahun lalu udah nggak nge-tweet lagi, entah pindah platform atau emang udah nggak aktif. Belum lagi akun-akun yang saya follow duluan tapi nggak pernah follow-back, numpuk tanpa saya sadari."
+        },
+        {
+          "type": "paragraph",
+          "text": "Cek satu-satu manual itu kerjaan yang paling gampang ditunda selamanya. Jadi saya bikin tool buat diri saya sendiri dulu. Lalu saya pikir, kenapa nggak dibagikan aja sekalian, siapa tahu berguna buat yang lain."
+        },
+        {
+          "type": "heading",
+          "text": "Apa yang Bisa Dilakukan NAO"
+        },
+        {
+          "type": "paragraph",
+          "text": "NanoMind Account Optimizer adalah ekstensi Chrome dengan empat modul inti. Berikut cara kerja masing-masing:"
+        },
+        {
+          "type": "paragraph",
+          "text": "🔎 Inactivity Scanner — memindai seluruh following list kamu, membaca kapan terakhir kali tiap akun nge-tweet, lalu memberi tanda mana yang sudah \"mati\" berdasarkan ambang hari yang kamu tentukan sendiri (default 90 hari)."
+        },
+        {
+          "type": "paragraph",
+          "text": "⤫ Auto-Unfollow Queue — begitu tahu akun mana yang mau di-unfollow (dari hasil scan, atau pilih manual), tool ini menjalankan unfollow-nya satu-satu dengan jeda acak antar-aksi. Bukan sekali klik langsung ratusan unfollow dalam sedetik — itu justru pola yang paling gampang dicurigai sistem automasi X."
+        },
+        {
+          "type": "paragraph",
+          "text": "↔ Non-Followback Detector — membandingkan following list vs followers list kamu, langsung ketahuan siapa saja yang kamu follow tapi nggak follow balik."
+        },
+        {
+          "type": "paragraph",
+          "text": "◎ Shadowban Inspector — alat bantu cek indikasi shadowban: apakah tweet kamu masih muncul di hasil pencarian, apakah handle kamu masih muncul di saran pencarian, dan panduan buat cek manual apakah reply kamu disembunyikan di thread orang lain."
+        },
+        {
+          "type": "heading",
+          "text": "Filosofi Desain: Aman Dulu, Baru Nyaman"
+        },
+        {
+          "type": "paragraph",
+          "text": "Satu hal yang saya pegang teguh selama bangun ini: kecepatan bukan prioritas utama. Semua nilai default — jeda 60 sampai 150 detik antar unfollow, batas 150 unfollow per hari — sengaja dipilih longgar. Bukan karena teknis nggak bisa lebih cepat, tapi karena pola automasi yang terlalu rapat itu justru yang paling gampang bikin akun kena flag."
+        },
+        {
+          "type": "paragraph",
+          "text": "Tool ini juga nggak kerja diam-diam di belakang layar tanpa jejak. Setiap aksi — scan, unfollow, gagal atau berhasil — dicatat real-time di log aktivitas yang bisa kamu lihat langsung di popup. Kamu selalu tahu persis apa yang sedang dikerjakan tool ini terhadap akun kamu, kapan pun."
+        },
+        {
+          "type": "heading",
+          "text": "Cara Kerja Singkat"
+        },
+        {
+          "type": "paragraph",
+          "text": "NAO nggak pakai API resmi X (yang sekarang berbayar dan dibatasi ketat). Dia baca halaman X persis seperti kamu browsing manual — buka following list, scroll, kumpulin data, buka satu-satu profil buat cek aktivitas, klik tombol follow/unfollow kalau memang kamu suruh. Semuanya lewat sesi login kamu sendiri di browser kamu sendiri; nggak ada data yang dikirim ke server manapun. Following list, hasil scan, semuanya tersimpan lokal di browser kamu."
+        },
+        {
+          "type": "paragraph",
+          "text": "Konsekuensinya: kalau X ubah tampilan/struktur halaman mereka (yang emang sering terjadi), sebagian fitur bisa berhenti berfungsi sampai saya update. Ada tombol \"Cek Kompatibilitas Selector\" di dalam tool buat diagnosis cepat kalau itu terjadi."
+        },
+        {
+          "type": "heading",
+          "text": "Pakai dengan Bijak"
+        },
+        {
+          "type": "paragraph",
+          "text": "Tool ini alat bantu, bukan alat \"set and forget\" yang boleh dijalankan sembarangan tanpa dipantau. Sebijak apa pun defaultnya sudah saya atur, keputusan dan risiko akhir tetap ada di tangan kamu sebagai pengguna. Jangan buru-buru, jangan serakah (misal langsung unfollow ratusan akun sekaligus di hari pertama pakai), dan selalu pantau apa yang terjadi lewat log aktivitas."
+        },
+        {
+          "type": "heading",
+          "text": "Tips Biar Lebih Aman"
+        },
+        {
+          "type": "paragraph",
+          "text": "1. Mulai pelan-pelan. Hari pertama, coba unfollow sedikit dulu (10–20 akun) sambil pantau apakah akun kamu baik-baik saja, sebelum lanjut ke jumlah yang lebih besar."
+        },
+        {
+          "type": "paragraph",
+          "text": "2. Jangan ubah delay jadi terlalu cepat. Default 60–150 detik itu sudah dipertimbangkan; makin kamu percepat, makin gampang polanya kelihatan \"robotic\" di mata sistem X."
+        },
+        {
+          "type": "paragraph",
+          "text": "3. Perhatikan batas harian. Jangan maksain naikin limit unfollow per hari kalau akun kamu masih baru atau belum banyak riwayat aktivitas organik."
+        },
+        {
+          "type": "paragraph",
+          "text": "4. Selingi dengan aktivitas manusiawi. Akun yang cuma dipakai buat automasi (nggak pernah nge-tweet/like/reply manual) lebih gampang dicurigai dibanding akun yang aktivitasnya campuran."
+        },
+        {
+          "type": "paragraph",
+          "text": "5. Berhenti kalau ada tanda-tanda aneh: captcha muncul terus, notifikasi pembatasan dari X, atau tindakan follow/unfollow tiba-tiba gagal semua. Itu sinyal buat pause, bukan dipaksa lanjut."
+        },
+        {
+          "type": "paragraph",
+          "text": "6. Jangan pakai di akun utama kalau ragu. Kalau akun kamu penting banget (akun kerja, akun dengan follower besar), pertimbangkan coba dulu di akun sekunder sebelum yakin ke akun utama."
+        },
+        {
+          "type": "paragraph",
+          "text": "7. Baca log-nya, jangan cuma klik dan tinggal. Log aktivitas ada bukan hiasan — dari situ kamu bisa tahu lebih awal kalau ada yang nggak beres."
+        },
+        {
+          "type": "paragraph",
+          "text": "Intinya: tool ini dirancang buat bantu kamu kerja lebih efisien, bukan buat dipakai serampangan. Pakai akal sehat."
+        },
+        {
+          "type": "heading",
+          "text": "Satu Syarat: Follow"
+        },
+        {
+          "type": "paragraph",
+          "text": "Tool ini gratis, open, dan bakal terus saya rawat — tapi bukan berarti nggak ada harga sama sekali. Satu-satunya \"bayaran\" yang saya minta: follow {{link:mqyzxfv8f1mdi9vt11b}} di X. Tanpa itu, tool-nya terkunci nggak bisa dipakai sama sekali."
+        },
+        {
+          "type": "paragraph",
+          "text": "Saya jelasin ini terbuka, bukan disembunyikan: begitu kamu buka popup-nya, langsung ketahuan syaratnya apa."
+        },
+        {
+          "type": "heading",
+          "text": "Instalasi & Tutorial"
+        },
+        {
+          "type": "paragraph",
+          "text": "Belum ada di Chrome Web Store — install manual lewat Developer Mode (desktop paling reliable; sudah teruji juga jalan di Mises Browser, Kiwi Browser, dan Lemur Browser untuk Android)."
+        },
+        {
+          "type": "paragraph",
+          "text": "Panduan lengkap langkah-per-langkah, termasuk troubleshooting kalau ada yang nggak muncul, ada di halaman tutorial bawaan tool ini — otomatis kebuka begitu kamu selesai install."
+        },
+        {
+          "type": "paragraph",
+          "text": "Kalau kamu udah baca disclaimer di atas dan tetap mau coba: follow dulu {{link:mqyzxfv8f1mdi9vt11b}}, install, dan mulai beres-beres following list kamu."
         },
         {
           "type": "link",
-          "text": "Download Here",
-          "url": "https://t.me/oxnlyfams/5697"
+          "linkRef": "mr0yf2v4m75s5n73w1",
+          "text": "Download — Gabung Group Telegram",
+          "url": "https://t.me/oxnlyfams",
+          "icon": "fab fa-telegram"
         },
         {
           "type": "paragraph",
-          "text": "Kli tombol dwonload diatas dan kamu akan di arahkan ke sebuah group telegram tempat tools ini di unggah , dan berdiskusi , terimakasih"
-        },
-        {
-          "type": "video",
-          "url": "https://youtu.be/ZG2Y2saxG8c?si=kCv1-wVJRELiYLKe"
+          "text": "Klik tombol download di atas dan kamu akan diarahkan ke group Telegram tempat tool ini diunggah dan berdiskusi. Terima kasih."
         }
       ]
     }
