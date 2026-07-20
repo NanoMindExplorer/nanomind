@@ -183,8 +183,8 @@
         {
           "type": "link",
           "linkRef": "link1",
-          "text": "Lihat semua proyek lain di GitHub",
-          "url": "https://github.com/nanomindexplorer",
+          "text": "Download Here",
+          "url": "https://nanomindexplorer.github.io/nanomind/about.html",
           "icon": "fab fa-github"
         },
         {
