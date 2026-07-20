@@ -174,15 +174,22 @@
         },
         {
           "type": "paragraph",
-          "text": "Versi 7.2.3 sekarang berjalan stabil "
+          "text": "Versi 7.2.3 sekarang berjalan stabil. Untuk unduhan rilis terbaru, kunjungi [halaman release Tunnel Terminal](https://github.com/NanoMindExplorer/tunnel-terminal/releases/tag/v8.4.0) di GitHub, atau lihat link otomatis di bawah yang ditarik dari halaman About."
         },
         {
           "type": "video",
           "url": "https://youtu.be/jGGgpR0N284?si=jCKgvC0dD-ZTyI1-"
         },
         {
+          "type": "link",
+          "linkRef": "link1",
+          "text": "Lihat semua proyek lain di GitHub",
+          "url": "https://github.com/nanomindexplorer",
+          "icon": "fab fa-github"
+        },
+        {
           "type": "paragraph",
-          "text": "Download here : https://github.com/NanoMindExplorer/tunnel-terminal/releases/tag/v8.4.0"
+          "text": "Punya pertanyaan atau ingin menyapa? Hubungi saya via {{link:link2}} atau ikuti update di {{link:mqyzt0rhe5sfs7y812k}}. Semua tautan ini ditarik otomatis dari halaman About — jika saya memperbarui link di sana, artikel ini ikut diperbarui."
         }
       ]
     },
@@ -286,7 +293,7 @@
         },
         {
           "type": "paragraph",
-          "text": "Dukungan lintas kontroler — Xbox, Switch Pro, dan DualSense — masing-masing punya kuirk protokol Bluetooth sendiri, jadi sebagian besar waktu pengembangan justru habis untuk menormalkan input, bukan membangun fitur baru. Fitur anti-ban dan makro ditambahkan setelah mendengar langsung dari komunitas pemain yang khawatir akun mereka ditandai oleh sistem deteksi game.\n\nKunjungingi Halaman About untk mengunduh App."
+          "text": "Dukungan lintas kontroler — Xbox, Switch Pro, dan DualSense — masing-masing punya kuirk protokol Bluetooth sendiri, jadi sebagian besar waktu pengembangan justru habis untuk menormalkan input, bukan membangun fitur baru. Fitur anti-ban dan makro ditambahkan setelah mendengar langsung dari komunitas pemain yang khawatir akun mereka ditandai oleh sistem deteksi game.\n\nUntuk mengunduh aplikasi, kunjungi [halaman proyek GameMapperMind di GitHub](https://github.com/NanoMindExplorer/GameMapperMind/releases/tag/v2.1.0) atau cek {{link:link1}} untuk repo lainnya. Tautan dari halaman About akan otomatis tersinkron di sini."
         },
         {
           "type": "video",
