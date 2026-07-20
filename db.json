@@ -243,7 +243,7 @@
         },
         {
           "type": "paragraph",
-          "text": "Solusinya: sebuah lapisan memori ringan yang menyimpan jejak konteks per-direktori kerja, sehingga membuka Code Forge di dalam folder proyek yang sama akan langsung 'mengingat' apa yang sedang dikerjakan — tanpa perlu mengetik ulang konteks setiap kali.{{https://nanomindexplorer.github.io/nanomind/about.html}}"
+          "text": "Solusinya: sebuah lapisan memori ringan yang menyimpan jejak konteks per-direktori kerja, sehingga membuka Code Forge di dalam folder proyek yang sama akan langsung 'mengingat' apa yang sedang dikerjakan — tanpa perlu mengetik ulang konteks setiap kali.\nhttps://nanomindexplorer.github.io/nanomind/about.html"
         }
       ]
     },
