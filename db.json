@@ -566,13 +566,13 @@
         {
           "type": "link",
           "linkRef": "mr0yf2v4m75s5n73w1",
-          "text": "Download — Gabung Group Telegram",
-          "url": "https://t.me/oxnlyfams/5708",
+          "text": "Download",
+          "url": "https://github.com/NanoMindExplorer/NAO/releases/tag/v.1",
           "icon": "fab fa-telegram"
         },
         {
           "type": "paragraph",
-          "text": "Klik tombol download di atas dan kamu akan diarahkan ke group Telegram tempat tool ini diunggah dan berdiskusi. Terima kasih."
+          "text": "Klik tombol download di atas dan kamu akan diarahkan ke halaman rilis project github tempat tool ini diunggah dan bisa di dwonload disana. Terima kasih."
         },
         {
           "type": "video",
