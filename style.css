@@ -535,7 +535,7 @@ a:focus-visible, button:focus-visible, [tabindex]:focus-visible, input:focus-vis
 .cat-pill:hover { color: var(--parchment-text); border-color: rgba(201,151,74,0.35); background: rgba(201,151,74,0.08); }
 .cat-pill.active {
     color: #16140C;
-    background: linear-gradient(135deg, var(--accent), color-mix(in srgb, var(--accent) 70%, #E0B067));
+    background: linear-gradient(135deg, var(--accent), #D4A85A);
     border-color: transparent;
     box-shadow: 0 4px 14px -6px rgba(201, 151, 74, 0.5);
 }
