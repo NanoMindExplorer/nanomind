@@ -34,6 +34,12 @@
       "name": "Signals",
       "accent": "slate",
       "description": "Kabar singkat dan pembaruan cepat."
+    },
+    {
+      "id": "x-articles",
+      "name": "X Articles",
+      "accent": "slate",
+      "description": "Artikel long-form yang diterbitkan di X (@Deadmouse_jpeg), ditarik otomatis ke situs ini."
     }
   ],
   "photoOfDay": {
@@ -697,5 +703,10 @@
       "url": "https://t.me/oxnlyfams",
       "icon": "fab fa-telegram"
     }
-  ]
+  ],
+  "xArticles": {
+    "enabled": true,
+    "username": "Deadmouse_jpeg",
+    "registryFile": "x-articles.json"
+  }
 }

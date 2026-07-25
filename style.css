@@ -104,6 +104,18 @@ a:focus-visible, button:focus-visible, [tabindex]:focus-visible, input:focus-vis
 .dispatch-card .thumb img { width: 100%; height: 100%; object-fit: cover; transition: transform 0.8s cubic-bezier(0.16,1,0.3,1); display: block; }
 .dispatch-card:hover .thumb img { transform: scale(1.06); }
 .dispatch-card .thumb::after { content: ''; position: absolute; inset: 0; background: linear-gradient(to top, rgba(20,20,15,0.85), transparent 55%); }
+.dispatch-card .x-source-badge {
+    position: absolute; top: 10px; left: 10px; z-index: 2;
+    display: inline-flex; align-items: center; gap: 6px;
+    font-family: 'Inter', sans-serif; font-size: 10.5px; font-weight: 700;
+    letter-spacing: 0.06em; text-transform: uppercase;
+    padding: 5px 10px; border-radius: 100px;
+    background: rgba(20, 20, 15, 0.78); color: #EDE8DA;
+    border: 1px solid rgba(237, 232, 218, 0.18);
+    backdrop-filter: blur(8px);
+}
+.dispatch-card .x-source-badge i { font-size: 11px; color: var(--brass); }
+.dispatch-card.from-x { border-color: rgba(74, 90, 99, 0.45); }
 .dispatch-card .card-body { padding: 18px 4px 4px; }
 .dispatch-card .card-eyebrow { font-family: 'Inter', sans-serif; font-size: 10.5px; font-weight: 700; letter-spacing: 0.1em; text-transform: uppercase; color: var(--accent); margin-bottom: 8px; display: block; }
 .dispatch-card h3 { font-family: 'Fraunces', serif; font-weight: 600; line-height: 1.25; color: var(--parchment-text); }
@@ -159,6 +171,31 @@ a:focus-visible, button:focus-visible, [tabindex]:focus-visible, input:focus-vis
 .reading-surface figcaption { font-family: 'Inter', sans-serif; font-size: 12.5px; color: var(--muted-on-paper); margin-top: 10px; padding: 0 4px; }
 .reading-surface blockquote { border-left: 3px solid var(--rust); padding: 4px 0 4px 28px; margin: 36px 0; font-family: 'Fraunces', serif; font-style: italic; font-size: 24px; line-height: 1.45; color: var(--ink-text); }
 .reading-surface blockquote cite { display: block; font-family: 'Inter', sans-serif; font-style: normal; font-size: 12px; color: var(--muted-on-paper); margin-top: 12px; text-transform: uppercase; letter-spacing: 0.06em; }
+.reading-surface .article-list { margin: 8px 0 28px; padding-left: 1.35em; color: var(--ink-text); }
+.reading-surface .article-list li { font-size: 18px; line-height: 1.7; margin-bottom: 10px; padding-left: 0.25em; }
+.reading-surface .article-list li::marker { color: var(--rust); }
+.reading-surface ol.article-list { list-style: decimal; }
+.reading-surface ul.article-list { list-style: disc; }
+.x-article-source {
+    margin-top: 40px; padding-top: 28px; border-top: 1px solid var(--border-paper);
+}
+.x-article-source-inner {
+    display: flex; flex-wrap: wrap; align-items: center; gap: 16px 20px;
+    padding: 18px 20px; border-radius: 8px;
+    background: linear-gradient(135deg, rgba(74,90,99,0.10), rgba(201,151,74,0.06));
+    border: 1px solid rgba(74,90,99,0.22);
+}
+.x-article-source-inner > i.fab { font-size: 22px; color: var(--ink-text); flex-shrink: 0; }
+.x-article-source-inner strong {
+    display: block; font-family: 'Inter', sans-serif; font-size: 13.5px;
+    color: var(--ink-text); margin-bottom: 4px;
+}
+.x-article-source-inner p {
+    margin: 0; font-family: 'Inter', sans-serif; font-size: 12.5px;
+    line-height: 1.45; color: var(--muted-on-paper);
+}
+.x-article-source-inner > div { flex: 1; min-width: 180px; }
+.x-article-source-inner .btn-primary { flex-shrink: 0; white-space: nowrap; }
 .reading-surface .article-video { position: relative; aspect-ratio: 16/9; margin: 40px -8px; border-radius: 4px; overflow: hidden; background: #000; }
 .reading-surface .article-video iframe { position: absolute; inset: 0; width: 100%; height: 100%; border: 0; }
 

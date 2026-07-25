@@ -5,7 +5,28 @@ const CONFIG = {
     GITHUB_USERNAME: 'NanoMindExplorer',
     REPO_NAME: 'nanomind',
     BRANCH: 'main',
-    DB_FILE: 'db.json'
+    DB_FILE: 'db.json',
+    X_ARTICLES_FILE: 'x-articles.json',
+    // Fallback bila x-articles.json belum tersedia (mis. cache lama)
+    X_ARTICLES: {
+        enabled: true,
+        username: 'Deadmouse_jpeg',
+        displayName: 'Noob Sensei',
+        categoryId: 'x-articles',
+        apiBase: 'https://api.fxtwitter.com',
+        cacheMinutes: 30,
+        statusIds: [
+            '2080309949025136833',
+            '2079807062414946724',
+            '2079487993669148749',
+            '2078757179172278617',
+            '2078444870843421031',
+            '2078391497687269414',
+            '2078128754002739280',
+            '2076342065613668432',
+            '2076175759325237529'
+        ]
+    }
 };
 const DISPATCH_PAGE_SIZE = 7;
 
@@ -13,7 +34,8 @@ let state = {
     data: null, isAdmin: false,
     editingProjectId: null, editingLinkId: null, editingArticleId: null, editingCategoryId: null,
     dispatchFilter: 'all', dispatchPage: 1,
-    lastFocusedEl: null
+    lastFocusedEl: null,
+    xArticlesConfig: null
 };
 let articleBlocks = [];
 const $ = (id) => document.getElementById(id);
@@ -385,12 +407,37 @@ function registerServiceWorker() {
 // ==========================================
 // LOAD DATA
 // ==========================================
-async function loadData() {
-    const rawUrl = `https://raw.githubusercontent.com/${CONFIG.GITHUB_USERNAME}/${CONFIG.REPO_NAME}/${CONFIG.BRANCH}/${CONFIG.DB_FILE}`;
+function githubRawUrl(file) {
+    return `https://raw.githubusercontent.com/${CONFIG.GITHUB_USERNAME}/${CONFIG.REPO_NAME}/${CONFIG.BRANCH}/${file}`;
+}
+
+/** Coba file lokal dulu (dev server), lalu fallback ke raw GitHub. */
+async function fetchJsonPreferLocal(file) {
     try {
-        const res = await fetch(rawUrl, { cache: 'no-store' });
-        if (!res.ok) throw new Error('Failed');
-        state.data = await res.json();
+        const local = await fetch(file, { cache: 'no-store' });
+        if (local.ok) return await local.json();
+    } catch (e) { /* ignore */ }
+    const remote = await fetch(githubRawUrl(file), { cache: 'no-store' });
+    if (!remote.ok) throw new Error(`Failed to load ${file}`);
+    return await remote.json();
+}
+
+function ensureXArticlesCategory() {
+    if (!state.data) return;
+    const cats = state.data.categories || (state.data.categories = []);
+    if (!cats.some(c => c.id === 'x-articles')) {
+        cats.push({
+            id: 'x-articles',
+            name: 'X Articles',
+            accent: 'slate',
+            description: 'Artikel long-form yang diterbitkan di X (@Deadmouse_jpeg), ditarik otomatis ke situs ini.'
+        });
+    }
+}
+
+async function loadData() {
+    try {
+        state.data = await fetchJsonPreferLocal(CONFIG.DB_FILE);
         state.data.profile = state.data.profile || {};
         state.data.site = state.data.site || {};
         state.data.categories = state.data.categories || [];
@@ -398,6 +445,16 @@ async function loadData() {
         state.data.projects = state.data.projects || [];
         state.data.links = state.data.links || [];
         state.data.videos = state.data.videos || [];
+        ensureXArticlesCategory();
+
+        // Tarik X Articles (live) lalu merge ke daftar dispatches
+        try {
+            const xArts = await loadXArticles();
+            if (xArts.length) mergeXArticlesIntoState(xArts);
+        } catch (xErr) {
+            console.warn('X Articles load failed', xErr);
+        }
+
         renderPageContent();
     } catch (err) {
         console.error('Load failed', err);
@@ -407,6 +464,241 @@ async function loadData() {
     } finally {
         hideLoader();
     }
+}
+
+// ==========================================
+// X ARTICLES — live dari @Deadmouse_jpeg via FixTweet
+// ==========================================
+async function loadXArticlesRegistry() {
+    let registry = null;
+    try {
+        registry = await fetchJsonPreferLocal(CONFIG.X_ARTICLES_FILE);
+    } catch (e) {
+        registry = null;
+    }
+    const fallback = CONFIG.X_ARTICLES || {};
+    const cfg = {
+        enabled: (registry && registry.enabled !== undefined) ? registry.enabled : (fallback.enabled !== false),
+        username: (registry && registry.username) || fallback.username || 'Deadmouse_jpeg',
+        displayName: (registry && registry.displayName) || fallback.displayName || 'Noob Sensei',
+        categoryId: (registry && registry.categoryId) || fallback.categoryId || 'x-articles',
+        apiBase: ((registry && registry.apiBase) || fallback.apiBase || 'https://api.fxtwitter.com').replace(/\/$/, ''),
+        cacheMinutes: (registry && registry.cacheMinutes) || fallback.cacheMinutes || 30,
+        statusIds: [
+            ...new Set([
+                ...((registry && registry.statusIds) || []),
+                ...(fallback.statusIds || [])
+            ].map(String).filter(Boolean))
+        ]
+    };
+    // Merge status IDs tambahan dari db.json jika ada
+    const fromDb = (state.data && state.data.xArticles && state.data.xArticles.statusIds) || [];
+    fromDb.forEach(id => { if (id && !cfg.statusIds.includes(String(id))) cfg.statusIds.push(String(id)); });
+    if (state.data && state.data.xArticles) {
+        if (state.data.xArticles.enabled === false) cfg.enabled = false;
+        if (state.data.xArticles.username) cfg.username = state.data.xArticles.username;
+    }
+    state.xArticlesConfig = cfg;
+    return cfg;
+}
+
+function xArticlesCacheKey(username) {
+    return `nanomind_x_articles_v1_${username}`;
+}
+
+function readXArticlesCache(cfg) {
+    try {
+        const raw = sessionStorage.getItem(xArticlesCacheKey(cfg.username));
+        if (!raw) return null;
+        const parsed = JSON.parse(raw);
+        if (!parsed || !parsed.ts || !Array.isArray(parsed.articles)) return null;
+        const maxAge = (cfg.cacheMinutes || 30) * 60 * 1000;
+        if (Date.now() - parsed.ts > maxAge) return null;
+        // Pastikan cache memuat semua statusId yang diminta
+        const cachedIds = new Set(parsed.articles.map(a => a.xStatusId));
+        if (cfg.statusIds.some(id => !cachedIds.has(id))) return null;
+        return parsed.articles;
+    } catch (e) {
+        return null;
+    }
+}
+
+function writeXArticlesCache(cfg, articles) {
+    try {
+        sessionStorage.setItem(xArticlesCacheKey(cfg.username), JSON.stringify({ ts: Date.now(), articles }));
+    } catch (e) { /* quota / private mode */ }
+}
+
+async function fetchWithTimeout(url, ms = 18000) {
+    const ctrl = new AbortController();
+    const timer = setTimeout(() => ctrl.abort(), ms);
+    try {
+        return await fetch(url, { cache: 'no-store', signal: ctrl.signal });
+    } finally {
+        clearTimeout(timer);
+    }
+}
+
+async function fetchXStatus(cfg, statusId, retries = 2) {
+    const url = `${cfg.apiBase}/${encodeURIComponent(cfg.username)}/status/${encodeURIComponent(statusId)}`;
+    let lastErr;
+    for (let attempt = 0; attempt <= retries; attempt++) {
+        try {
+            if (attempt > 0) await new Promise(r => setTimeout(r, 600 * attempt));
+            const res = await fetchWithTimeout(url, 18000);
+            if (!res.ok) throw new Error(`HTTP ${res.status} for ${statusId}`);
+            const data = await res.json();
+            const tweet = data.tweet || data;
+            if (!tweet || !tweet.article) throw new Error(`No article on status ${statusId}`);
+            return tweet;
+        } catch (err) {
+            lastErr = err;
+        }
+    }
+    throw lastErr || new Error(`Failed ${statusId}`);
+}
+
+function estimateReadTimeFromBlocks(blocks) {
+    const text = (blocks || []).map(b => {
+        if (b.type === 'list') return (b.items || []).join(' ');
+        return b.text || '';
+    }).join(' ');
+    const words = text.trim().split(/\s+/).filter(Boolean).length;
+    return Math.max(1, Math.ceil(words / 200));
+}
+
+function parseTwitterDate(str) {
+    if (!str) return new Date().toISOString().slice(0, 10);
+    const d = new Date(str);
+    if (isNaN(d)) {
+        // "Thu Jul 23 15:11:56 +0000 2026"
+        const d2 = new Date(str.replace(/\+(\d{4})/, 'GMT+$1'));
+        if (!isNaN(d2)) return d2.toISOString().slice(0, 10);
+        return new Date().toISOString().slice(0, 10);
+    }
+    return d.toISOString().slice(0, 10);
+}
+
+/** Konversi Draft.js-style blocks dari X Article → body nanomind */
+function convertXContentBlocks(content) {
+    const rawBlocks = (content && content.blocks) || [];
+    const out = [];
+    let listBuf = null; // { type:'list', ordered:bool, items:[] }
+
+    const flushList = () => {
+        if (listBuf && listBuf.items.length) out.push(listBuf);
+        listBuf = null;
+    };
+
+    rawBlocks.forEach(b => {
+        const type = b.type || 'unstyled';
+        const text = (b.text || '').trim();
+
+        if (type === 'unordered-list-item' || type === 'ordered-list-item') {
+            const ordered = type === 'ordered-list-item';
+            if (!listBuf || listBuf.ordered !== ordered) {
+                flushList();
+                listBuf = { type: 'list', ordered, items: [] };
+            }
+            if (text) listBuf.items.push(text);
+            return;
+        }
+
+        flushList();
+
+        if (type === 'header-one' || type === 'header-two' || type === 'header-three') {
+            if (text) out.push({ type: 'heading', text });
+        } else if (type === 'blockquote') {
+            if (text) out.push({ type: 'quote', text });
+        } else if (type === 'atomic') {
+            // media atomic — skip tanpa entity image mapping yang andal
+        } else {
+            // unstyled / default
+            if (text) out.push({ type: 'paragraph', text });
+        }
+    });
+    flushList();
+    return out;
+}
+
+function convertXTweetToArticle(tweet, cfg) {
+    const art = tweet.article || {};
+    const cover = (art.cover_media && art.cover_media.media_info && art.cover_media.media_info.original_img_url)
+        || (art.cover_media && art.cover_media.media_info && art.cover_media.media_info.url)
+        || '';
+    const body = convertXContentBlocks(art.content);
+    const statusId = String(tweet.id || tweet.tweetID || '');
+    const articleId = String(art.id || statusId);
+    const preview = (art.preview_text || '').replace(/\n+/g, ' ').trim();
+    const author = (tweet.author && (tweet.author.name || tweet.author.screen_name))
+        || cfg.displayName
+        || cfg.username;
+    const date = parseTwitterDate(art.created_at || tweet.created_at);
+    const xUrl = `https://x.com/${cfg.username}/status/${statusId}`;
+    const articleUrl = art.id
+        ? `https://x.com/i/article/${art.id}`
+        : xUrl;
+
+    return {
+        id: `x-${statusId || articleId}`,
+        title: art.title || 'Untitled X Article',
+        dek: preview,
+        category: cfg.categoryId || 'x-articles',
+        coverImage: cover || (tweet.author && tweet.author.avatar_url) || '',
+        author,
+        date,
+        readTime: estimateReadTimeFromBlocks(body),
+        featured: false,
+        tags: ['x-articles', `@${cfg.username}`],
+        body,
+        source: 'x',
+        xStatusId: statusId,
+        xArticleId: articleId,
+        xUrl,
+        articleUrl,
+        likes: tweet.likes || 0,
+        views: tweet.views || 0
+    };
+}
+
+async function loadXArticles() {
+    const cfg = await loadXArticlesRegistry();
+    if (!cfg.enabled || !cfg.statusIds.length) return [];
+
+    const cached = readXArticlesCache(cfg);
+    if (cached) return cached;
+
+    // Fetch paralel terbatas + retry di fetchXStatus (hindari rate-limit FixTweet)
+    const CONCURRENCY = 3;
+    const results = [];
+    const ids = cfg.statusIds.slice();
+
+    async function worker() {
+        while (ids.length) {
+            const statusId = ids.shift();
+            try {
+                const tweet = await fetchXStatus(cfg, statusId);
+                results.push(convertXTweetToArticle(tweet, cfg));
+            } catch (err) {
+                console.warn('Gagal tarik X article', statusId, err);
+            }
+        }
+    }
+    await Promise.all(Array.from({ length: Math.min(CONCURRENCY, cfg.statusIds.length) }, () => worker()));
+
+    // Urut terbaru dulu
+    results.sort((a, b) => new Date(b.date) - new Date(a.date));
+    writeXArticlesCache(cfg, results);
+    return results;
+}
+
+function mergeXArticlesIntoState(xArts) {
+    if (!state.data) return;
+    const local = (state.data.articles || []).filter(a => a.source !== 'x');
+    // Jangan timpa id lokal yang kebetulan sama
+    const localIds = new Set(local.map(a => a.id));
+    const mergedX = xArts.filter(a => !localIds.has(a.id));
+    state.data.articles = [...local, ...mergedX];
 }
 
 // ==========================================
@@ -555,9 +847,15 @@ function dispatchCardHtml(a, i) {
     if (pos === 0) { span = 'span-4'; sizeClass = 'size-lg'; }
     else if (pos === 1) { span = 'span-2'; sizeClass = 'size-sm'; }
     else { span = 'span-2'; sizeClass = 'size-md'; }
+    const xBadge = a.source === 'x'
+        ? `<span class="x-source-badge" title="Ditarik live dari X Articles"><i class="fab fa-x-twitter"></i> X</span>`
+        : '';
     return `
-        <a href="article.html?id=${a.id}" class="dispatch-card ${sizeClass} ${span} accent-${cat.accent || 'brass'} reveal">
-            <div class="thumb"><img src="${a.coverImage}" alt="${escapeHtml(a.title)}" loading="lazy"></div>
+        <a href="article.html?id=${encodeURIComponent(a.id)}" class="dispatch-card ${sizeClass} ${span} accent-${cat.accent || 'brass'} reveal${a.source === 'x' ? ' from-x' : ''}">
+            <div class="thumb">
+                <img src="${escapeHtml(a.coverImage || '')}" alt="${escapeHtml(a.title)}" loading="lazy">
+                ${xBadge}
+            </div>
             <div class="card-body">
                 <span class="card-eyebrow">${escapeHtml(cat.name)}</span>
                 <h3>${escapeHtml(a.title)}</h3>
@@ -637,6 +935,10 @@ function renderArticleBody(blocks) {
             html += `</figure>`;
         } else if (b.type === 'quote') {
             html += `<blockquote>${renderTextWithLinks(b.text || '')}${b.attribution ? `<cite>${escapeHtml(b.attribution)}</cite>` : ''}</blockquote>`;
+        } else if (b.type === 'list') {
+            const tag = b.ordered ? 'ol' : 'ul';
+            const items = (b.items || []).map(item => `<li>${renderTextWithLinks(item)}</li>`).join('');
+            html += `<${tag} class="article-list">${items}</${tag}>`;
         } else if (b.type === 'link') {
             const resolved = resolveLinkBlock(b);
             if (resolved.url) {
@@ -665,6 +967,7 @@ function renderArticlePage() {
     }
     $('articleNotFound').style.display = 'none';
     const cat = (state.data.categories || []).find(c => c.id === article.category) || { name: 'Dispatch', accent: 'brass' };
+    const isX = article.source === 'x';
 
     document.title = `${article.title} — Nanomind Explorer`;
     const setMeta = (id2, val) => { const el = $(id2); if (el) el.setAttribute('content', val || ''); };
@@ -673,12 +976,32 @@ function renderArticlePage() {
     setMeta('ogDescription', article.dek);
     setMeta('ogImage', article.coverImage);
 
+    const xSourceHtml = isX ? `
+        <div class="x-article-source">
+            <div class="x-article-source-inner">
+                <i class="fab fa-x-twitter"></i>
+                <div>
+                    <strong>Sumber: X Articles</strong>
+                    <p>Diterbitkan oleh @${escapeHtml((state.xArticlesConfig && state.xArticlesConfig.username) || 'Deadmouse_jpeg')} di X. Konten ditarik live ke situs ini.</p>
+                </div>
+                <a href="${escapeHtml(article.articleUrl || article.xUrl || '#')}" target="_blank" rel="noopener noreferrer" class="btn-primary">
+                    <i class="fab fa-x-twitter"></i> Baca di X
+                </a>
+            </div>
+        </div>` : '';
+
+    const adminControls = isX ? '' : `
+            <div class="mt-10 admin-only" style="display:flex; gap:10px;" id="articleAdminControls">
+                <button class="btn-ghost on-paper" id="editArticleBtn"><i class="fas fa-pen"></i> Edit Dispatch</button>
+                <button class="btn-ghost on-paper" id="deleteArticleBtn" style="color:var(--rust); border-color:var(--rust);"><i class="fas fa-trash"></i> Delete</button>
+            </div>`;
+
     content.className = 'accent-' + (cat.accent || 'brass');
     content.innerHTML = `
         <div class="article-hero">
-            <img src="${article.coverImage}" alt="${escapeHtml(article.title)}">
+            <img src="${escapeHtml(article.coverImage || '')}" alt="${escapeHtml(article.title)}">
             <div class="article-hero-content">
-                <span class="eyebrow" style="color:#fff;">${escapeHtml(cat.name)}</span>
+                <span class="eyebrow" style="color:#fff;">${escapeHtml(cat.name)}${isX ? ' · X' : ''}</span>
                 <h1 class="mt-4">${escapeHtml(article.title)}</h1>
                 ${article.dek ? `<p class="dek">${escapeHtml(article.dek)}</p>` : ''}
                 <div class="byline-row">
@@ -693,14 +1016,14 @@ function renderArticlePage() {
         <div class="reading-surface">
             ${renderArticleBody(article.body)}
             ${(article.tags || []).length ? `<div class="tag-row">${article.tags.map(t => `<span class="tag-chip">${escapeHtml(t)}</span>`).join('')}</div>` : ''}
-            <div class="mt-10 admin-only" style="display:flex; gap:10px;" id="articleAdminControls">
-                <button class="btn-ghost on-paper" id="editArticleBtn"><i class="fas fa-pen"></i> Edit Dispatch</button>
-                <button class="btn-ghost on-paper" id="deleteArticleBtn" style="color:var(--rust); border-color:var(--rust);"><i class="fas fa-trash"></i> Delete</button>
-            </div>
+            ${xSourceHtml}
+            ${adminControls}
         </div>`;
 
-    const editBtn = $('editArticleBtn'); if (editBtn) editBtn.addEventListener('click', () => openArticleModal(article.id));
-    const delBtn = $('deleteArticleBtn'); if (delBtn) delBtn.addEventListener('click', () => deleteArticle(article.id));
+    if (!isX) {
+        const editBtn = $('editArticleBtn'); if (editBtn) editBtn.addEventListener('click', () => openArticleModal(article.id));
+        const delBtn = $('deleteArticleBtn'); if (delBtn) delBtn.addEventListener('click', () => deleteArticle(article.id));
+    }
 
     renderRelated(article);
 }
@@ -1075,6 +1398,13 @@ function blockEditorItemHtml(b, i) {
 // CRUD — ARTICLE (Dispatch)
 // ==========================================
 function openArticleModal(id = null) {
+    if (id) {
+        const existing = (state.data.articles || []).find(x => x.id === id);
+        if (existing && existing.source === 'x') {
+            showToast('Artikel X digeser live — edit di X, bukan di sini.', 'error');
+            return;
+        }
+    }
     state.editingArticleId = id;
     const catSelect = $('articleCategory');
     catSelect.innerHTML = (state.data.categories || []).map(c => `<option value="${c.id}">${escapeHtml(c.name)}</option>`).join('');
@@ -1142,6 +1472,11 @@ async function saveArticle() {
     }
 }
 async function deleteArticle(id) {
+    const target = (state.data.articles || []).find(x => x.id === id);
+    if (target && target.source === 'x') {
+        showToast('Artikel X tidak bisa dihapus dari situs. Hapus di X atau keluarkan status ID dari x-articles.json.', 'error');
+        return;
+    }
     if (!confirm('Hapus dispatch ini?')) return;
     state.data.articles = state.data.articles.filter(x => x.id !== id);
     await saveToGitHub();
@@ -1307,6 +1642,13 @@ async function deleteLink(id) {
 // ==========================================
 // GITHUB SAVE (admin write)
 // ==========================================
+function dataForGithubSave() {
+    // Jangan persist X Articles (sumber live) ke db.json
+    const clone = JSON.parse(JSON.stringify(state.data || {}));
+    clone.articles = (clone.articles || []).filter(a => a.source !== 'x');
+    return clone;
+}
+
 async function saveToGitHub() {
     const token = localStorage.getItem('portfolio_github_token');
     if (!token) return showToast('Not logged in.', 'error');
@@ -1315,7 +1657,7 @@ async function saveToGitHub() {
     const url = `https://api.github.com/repos/${CONFIG.GITHUB_USERNAME}/${CONFIG.REPO_NAME}/contents/${CONFIG.DB_FILE}`;
     let sha = null;
     try { const res = await fetch(url); if (res.ok) sha = (await res.json()).sha; } catch (e) {}
-    const content = btoa(unescape(encodeURIComponent(JSON.stringify(state.data, null, 2))));
+    const content = btoa(unescape(encodeURIComponent(JSON.stringify(dataForGithubSave(), null, 2))));
     const payload = { message: `Update ${new Date().toISOString()}`, content, branch: CONFIG.BRANCH };
     if (sha) payload.sha = sha;
     try {

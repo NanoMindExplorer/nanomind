@@ -1,0 +1,20 @@
+{
+  "enabled": true,
+  "username": "Deadmouse_jpeg",
+  "displayName": "Noob Sensei",
+  "categoryId": "x-articles",
+  "apiBase": "https://api.fxtwitter.com",
+  "cacheMinutes": 30,
+  "statusIds": [
+    "2080309949025136833",
+    "2079807062414946724",
+    "2079487993669148749",
+    "2078757179172278617",
+    "2078444870843421031",
+    "2078391497687269414",
+    "2078128754002739280",
+    "2076342065613668432",
+    "2076175759325237529"
+  ],
+  "notes": "Daftar status ID post X yang memuat X Articles dari @Deadmouse_jpeg. Tambahkan ID status baru di sini saat artikel baru diterbitkan. Konten penuh ditarik live via FixTweet API."
+}
