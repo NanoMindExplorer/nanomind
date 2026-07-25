@@ -723,11 +723,36 @@ function convertXContentBlocks(content) {
     return out;
 }
 
+function normalizeXImageUrl(url) {
+    if (!url) return '';
+    let u = String(url).trim();
+    if (u.startsWith('//')) u = 'https:' + u;
+    // Prefer large variant for pbs.twimg.com media
+    if (/pbs\.twimg\.com\/media\//i.test(u) && !/[?&]name=/.test(u)) {
+        u += (u.includes('?') ? '&' : '?') + 'name=large';
+    }
+    return u;
+}
+
+function extractXArticleCover(tweet, art) {
+    const mi = art && art.cover_media && art.cover_media.media_info;
+    let cover = (mi && (mi.original_img_url || mi.url || mi.preview_image_url)) || '';
+    if (!cover && art && art.cover_image) cover = art.cover_image;
+    if (!cover && tweet) {
+        // some payloads put cover on top-level media
+        const media = (tweet.media && tweet.media.photos && tweet.media.photos[0]) || null;
+        if (media) cover = media.url || media.original_img_url || '';
+        if (!cover && tweet.article && tweet.article.cover_media) {
+            const c = tweet.article.cover_media;
+            cover = (c.media_info && c.media_info.original_img_url) || c.url || '';
+        }
+    }
+    return normalizeXImageUrl(cover);
+}
+
 function convertXTweetToArticle(tweet, cfg) {
     const art = tweet.article || {};
-    const cover = (art.cover_media && art.cover_media.media_info && art.cover_media.media_info.original_img_url)
-        || (art.cover_media && art.cover_media.media_info && art.cover_media.media_info.url)
-        || '';
+    const cover = extractXArticleCover(tweet, art);
     const body = convertXContentBlocks(art.content);
     const statusId = String(tweet.id || tweet.tweetID || '');
     const articleId = String(art.id || statusId);
@@ -746,7 +771,7 @@ function convertXTweetToArticle(tweet, cfg) {
         title: art.title || 'Untitled X Article',
         dek: preview,
         category: cfg.categoryId || 'x-articles',
-        coverImage: cover || (tweet.author && tweet.author.avatar_url) || '',
+        coverImage: cover || (tweet.author && (tweet.author.avatar_url || tweet.author.avatarUrl)) || '',
         author,
         date,
         readTime: estimateReadTimeFromBlocks(body),
@@ -2112,23 +2137,54 @@ function dateMetaHtml(dateStr) {
     if (!abs) return '';
     return `<span title="${escapeHtml(abs)}">${escapeHtml(abs)}</span>${rel ? `<span class="byline-extra">· ${escapeHtml(rel)}</span>` : ''}`;
 }
+/**
+ * Rewrite only local / nanomind-repo asset paths to optimized media/*.webp.
+ * Never touch external hosts (pbs.twimg.com, etc.) — that broke X article covers.
+ */
 function mediaUrl(url) {
     if (!url) return '';
-    // Prefer local media/ webp when path points at known optimized asset
-    const m = String(url).match(/(?:^|\/)(media\/)?([a-zA-Z0-9_-]+)\.(webp|jpg|jpeg|png)$/i);
-    if (m) {
-        const stem = m[2];
-        return `media/${stem}.webp`;
+    const s = String(url).trim();
+
+    // External absolute URLs: keep as-is, except our own GitHub raw assets
+    if (/^https?:\/\//i.test(s)) {
+        const own = s.match(/raw\.githubusercontent\.com\/NanoMindExplorer\/nanomind\/[^/]+\/(.+)$/i)
+            || s.match(/nanomindexplorer\.github\.io\/nanomind\/(.+)$/i);
+        if (own) {
+            const file = own[1].split('?')[0];
+            const stem = file.replace(/^media\//, '').replace(/\.[^.]+$/, '');
+            // only rewrite if we likely have a local optimized copy (common stems)
+            if (stem && !file.includes('/')) {
+                return `media/${stem}.webp`;
+            }
+            if (file.startsWith('media/')) {
+                return file.replace(/\.(jpg|jpeg|png)$/i, '.webp');
+            }
+            return `media/${stem}.webp`;
+        }
+        return s; // pbs.twimg.com, other CDNs, etc.
     }
-    return url;
+
+    // Relative local paths: media/foo.jpg or foo.jpg → media/foo.webp
+    const m = s.match(/^(?:\.\/)?(?:media\/)?([a-zA-Z0-9_-]+)\.(webp|jpg|jpeg|png)$/i);
+    if (m) return `media/${m[1]}.webp`;
+    return s;
 }
+
 function imgTag(src, alt, extra = '') {
-    const s = mediaUrl(src) || src || '';
-    const jpg = s.endsWith('.webp') ? s.replace(/\.webp$/i, '.jpg') : '';
-    if (jpg) {
+    const original = (src || '').trim();
+    if (!original) {
+        return `<img src="" alt="${escapeHtml(alt || '')}" ${extra}>`;
+    }
+    const s = mediaUrl(original) || original;
+
+    // Local optimized assets → <picture> webp + jpg fallback
+    if (/^media\/[a-zA-Z0-9_-]+\.webp$/i.test(s)) {
+        const jpg = s.replace(/\.webp$/i, '.jpg');
         return `<picture><source srcset="${escapeHtml(s)}" type="image/webp"><img src="${escapeHtml(jpg)}" alt="${escapeHtml(alt || '')}" ${extra}></picture>`;
     }
-    return `<img src="${escapeHtml(s)}" alt="${escapeHtml(alt || '')}" ${extra}>`;
+
+    // External (X covers, etc.) — plain <img>, never force local path
+    return `<img src="${escapeHtml(s)}" alt="${escapeHtml(alt || '')}" ${extra} referrerpolicy="no-referrer">`;
 }
 
 function setupOfflineBanner() {
