@@ -1,4 +1,4 @@
-const CACHE_NAME = 'nanomind-journal-cache-v10';
+const CACHE_NAME = 'nanomind-journal-cache-v11';
 const SHELL_ASSETS = [
     './',
     './index.html',
@@ -6,6 +6,7 @@ const SHELL_ASSETS = [
     './about.html',
     './watch.html',
     './style.css',
+    './fonts.css',
     './script.js',
     './x-articles.json',
     './bg-ghibli-poster.webp',
@@ -13,7 +14,11 @@ const SHELL_ASSETS = [
     './favicon.svg',
     './manifest.json',
     './icons/icon-192.png',
-    './icons/icon-512.png'
+    './icons/icon-512.png',
+    './fonts/inter-400.woff2',
+    './fonts/inter-600.woff2',
+    './fonts/fraunces-600.woff2',
+    './fonts/source-serif-4-400.woff2'
 ];
 
 self.addEventListener('install', (event) => {

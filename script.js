@@ -852,6 +852,28 @@ function renderPageContent() {
         document.querySelectorAll('.reveal').forEach(el => { if (isElementInViewport(el)) el.classList.add('visible'); });
     }, 100);
     setupScrollObserver();
+    enhanceImages();
+}
+
+/** Progressive image polish: async decode + soft fade-in */
+function enhanceImages(root) {
+    const scope = root || document;
+    scope.querySelectorAll('img').forEach(img => {
+        if (img.dataset.enhanced === '1') return;
+        img.dataset.enhanced = '1';
+        try { img.decoding = 'async'; } catch (e) { /* ignore */ }
+        if (!img.getAttribute('loading') && !img.hasAttribute('fetchpriority')) {
+            img.loading = 'lazy';
+        }
+        const mark = () => img.classList.add('img-fade', 'is-loaded');
+        if (img.complete && img.naturalWidth > 0) {
+            mark();
+        } else {
+            img.classList.add('img-fade');
+            img.addEventListener('load', mark, { once: true });
+            img.addEventListener('error', mark, { once: true });
+        }
+    });
 }
 
 // ==========================================
@@ -971,7 +993,7 @@ function renderXArticlesRail(articles) {
     rail.innerHTML = xList.map(a => `
         <a href="article.html?id=${encodeURIComponent(a.id)}" class="x-card reveal">
             <div class="x-thumb">
-                <img src="${escapeHtml(a.coverImage || '')}" alt="${escapeHtml(a.title)}" loading="lazy">
+                <img src="${escapeHtml(a.coverImage || '')}" alt="${escapeHtml(a.title)}" loading="lazy" decoding="async">
                 <span class="x-source-badge" title="X Articles"><i class="fab fa-x-twitter"></i> X</span>
             </div>
             <div class="x-body">
@@ -985,6 +1007,7 @@ function renderXArticlesRail(articles) {
             </div>
         </a>
     `).join('');
+    enhanceImages(rail);
 }
 
 function renderDispatchGrid() {
@@ -1007,6 +1030,7 @@ function renderDispatchGrid() {
         };
     }
     setupScrollObserver();
+    enhanceImages(wrap);
 }
 
 function dispatchCardHtml(a, i) {
