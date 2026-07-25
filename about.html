@@ -22,6 +22,8 @@
     <link rel="stylesheet" href="style.css">
 </head>
 <body>
+    <a class="skip-link" href="#mainContent">Loncat ke konten</a>
+    <div id="offlineBanner" class="offline-banner hidden" role="status">Anda offline — menampilkan cache lokal bila ada.</div>
     <noscript><div style="padding:60px 24px;text-align:center;font-family:sans-serif;background:#14140F;color:#EDE8DA;">Situs ini membutuhkan JavaScript untuk menampilkan konten. Mohon aktifkan JavaScript di browser Anda.</div></noscript>
 
     <div id="pageLoader" aria-hidden="true">
@@ -37,10 +39,10 @@
     <div class="mobile-nav-backdrop" id="mobileNavBackdrop"></div>
     <div class="mobile-nav-panel" id="mobileNavPanel"></div>
 
-    <main class="journal-main">
+    <main id="mainContent" class="journal-main">
         <div class="journal-stack journal-stack--narrow">
             <section class="section-surface about-hero reveal">
-                <div class="avatar-ring mb-6"><img id="aboutAvatar" src="avatar.jpg" alt="Avatar" width="132" height="132"></div>
+                <div class="avatar-ring mb-6"><img id="aboutAvatar" src="media/avatar.webp" alt="Avatar" width="132" height="132"></div>
                 <p class="eyebrow justify-center mb-4">The Explorer</p>
                 <h1 class="font-display font-semibold text-4xl md:text-5xl mb-4" style="color:var(--parchment-text)" id="aboutName">Your Name</h1>
                 <p class="font-ui max-w-xl mx-auto" style="color:var(--muted-on-ink)" id="aboutBio">Bio</p>

@@ -1,0 +1,3 @@
+User-agent: *
+Allow: /
+Sitemap: https://nanomindexplorer.github.io/nanomind/sitemap.xml

@@ -11,12 +11,13 @@
     <meta property="og:site_name" content="Nanomind Explorer">
     <meta property="og:title" content="Nanomind Explorer — Dispatches from the Frontier">
     <meta property="og:description" content="Dispatches dari batas eksplorasi kode, ide, dan rasa penasaran.">
-    <meta property="og:image" content="https://raw.githubusercontent.com/NanoMindExplorer/nanomind/main/bg-ghibli-poster.jpg">
+    <meta property="og:image" content="https://nanomindexplorer.github.io/nanomind/media/bg-ghibli-poster.jpg">
     <meta property="og:url" content="https://nanomindexplorer.github.io/nanomind/">
     <meta name="twitter:card" content="summary_large_image">
     <meta name="twitter:title" content="Nanomind Explorer — Dispatches from the Frontier">
     <meta name="twitter:description" content="Dispatches dari batas eksplorasi kode, ide, dan rasa penasaran.">
-    <meta name="twitter:image" content="https://raw.githubusercontent.com/NanoMindExplorer/nanomind/main/bg-ghibli-poster.jpg">
+    <meta name="twitter:image" content="https://nanomindexplorer.github.io/nanomind/media/bg-ghibli-poster.jpg">
+    <link rel="sitemap" type="application/xml" href="sitemap.xml">
     <link rel="icon" type="image/svg+xml" href="favicon.svg">
     <link rel="icon" type="image/png" sizes="32x32" href="icons/icon-32.png">
     <link rel="apple-touch-icon" href="icons/apple-touch-icon.png">
@@ -30,7 +31,9 @@
     <link rel="stylesheet" href="style.css">
 </head>
 <body>
+    <a class="skip-link" href="#mainContent">Loncat ke konten</a>
     <noscript><div style="padding:60px 24px;text-align:center;font-family:sans-serif;background:#14140F;color:#EDE8DA;">Situs ini membutuhkan JavaScript untuk menampilkan konten. Mohon aktifkan JavaScript di browser Anda.</div></noscript>
+    <div id="offlineBanner" class="offline-banner hidden" role="status">Anda offline — menampilkan cache lokal bila ada.</div>
 
     <div id="pageLoader" aria-hidden="true">
         <svg class="loader-mark" viewBox="0 0 100 100">
@@ -45,7 +48,7 @@
     <div class="mobile-nav-backdrop" id="mobileNavBackdrop"></div>
     <div class="mobile-nav-panel" id="mobileNavPanel"></div>
 
-    <main class="journal-main">
+    <main class="journal-main" id="mainContent">
         <!-- HERO / LEAD STORY -->
         <section id="heroFeature" class="hero-slot">
             <div class="skeleton-hero" id="heroSkeleton" aria-hidden="true">
@@ -71,15 +74,19 @@
             </section>
 
             <!-- FROM X — live articles rail -->
-            <section class="section-surface reveal" id="xArticlesSection">
-                <div class="section-surface-head">
+            <section class="section-surface reveal" id="xArticlesSection" aria-labelledby="xArticlesHeading">
+                <div class="section-surface-head flex-wrap gap-4">
                     <div>
                         <span class="eyebrow">From X</span>
-                        <h2 class="section-title">X Articles</h2>
+                        <h2 class="section-title" id="xArticlesHeading">X Articles</h2>
                         <p class="section-sub">Long-form live dari <a href="https://x.com/Deadmouse_jpeg" target="_blank" rel="noopener noreferrer" class="text-brass">@Deadmouse_jpeg</a></p>
                     </div>
+                    <div class="x-live-meta">
+                        <span class="live-pill" id="xLivePill" title="Ditarik live dari X"><span class="live-dot" aria-hidden="true"></span> Live · <span id="xLiveCount">…</span></span>
+                        <button type="button" class="btn-ghost btn-sm" id="xRetryBtn" aria-label="Muat ulang X Articles"><i class="fas fa-rotate"></i> Muat ulang</button>
+                    </div>
                 </div>
-                <div class="x-rail" id="xArticlesRail" aria-label="X Articles">
+                <div class="x-rail" id="xArticlesRail" aria-label="Daftar X Articles" tabindex="0">
                     <div class="skeleton-x-rail" id="xRailSkeleton" aria-hidden="true">
                         <div class="skeleton-block skeleton-x-card"></div>
                         <div class="skeleton-block skeleton-x-card"></div>
@@ -87,20 +94,25 @@
                         <div class="skeleton-block skeleton-x-card"></div>
                     </div>
                 </div>
-                <p class="hidden section-empty" id="xArticlesEmpty">Belum ada X Article yang bisa ditarik. Coba refresh nanti.</p>
+                <div class="hidden empty-state" id="xArticlesEmpty">
+                    <div class="empty-icon" aria-hidden="true"><i class="fab fa-x-twitter"></i></div>
+                    <h3 class="empty-title">X Articles belum tersedia</h3>
+                    <p class="empty-text">Koneksi gagal atau belum ada artikel. Coba muat ulang.</p>
+                    <button type="button" class="btn-primary" id="xEmptyRetryBtn"><i class="fas fa-rotate"></i> Coba lagi</button>
+                </div>
             </section>
 
             <!-- DISPATCHES GRID (local journal) -->
-            <section class="section-surface">
+            <section class="section-surface" aria-labelledby="dispatchesHeading">
                 <div class="section-surface-head flex-wrap gap-4">
                     <div>
                         <span class="eyebrow">Latest</span>
-                        <h2 class="section-title">Dispatches</h2>
+                        <h2 class="section-title" id="dispatchesHeading">Dispatches</h2>
                         <p class="section-sub">Catatan dari meja kerja — build log, deep dive, dan field notes.</p>
                     </div>
                     <button class="btn-primary hidden admin-only" id="addArticleBtn"><i class="fas fa-feather-pointed"></i> New Dispatch</button>
                 </div>
-                <div class="flex flex-wrap gap-2 mb-8" id="categoryPills"></div>
+                <div class="filter-bar sticky-filters" id="categoryPills" role="toolbar" aria-label="Filter kategori"></div>
                 <div class="dispatch-grid" id="dispatchGrid">
                     <div class="skeleton-dispatch-grid" id="dispatchSkeleton" aria-hidden="true">
                         <div class="skeleton-block skeleton-card span-4"></div>
@@ -111,7 +123,12 @@
                         <div class="skeleton-block skeleton-card span-2"></div>
                     </div>
                 </div>
-                <p class="hidden text-center py-10 font-ui section-empty" id="dispatchEmpty">Belum ada dispatch di kategori ini.</p>
+                <div class="hidden empty-state" id="dispatchEmpty">
+                    <div class="empty-icon" aria-hidden="true"><i class="fas fa-feather-pointed"></i></div>
+                    <h3 class="empty-title">Belum ada dispatch di sini</h3>
+                    <p class="empty-text">Coba kategori lain, atau tulis yang pertama lewat mode editor.</p>
+                    <a href="#dispatchesHeading" class="btn-ghost" id="dispatchEmptyReset">Lihat semua</a>
+                </div>
                 <div class="flex justify-center mt-10">
                     <button class="btn-ghost hidden" id="dispatchLoadMoreBtn"><i class="fas fa-chevron-down"></i> Load More</button>
                 </div>

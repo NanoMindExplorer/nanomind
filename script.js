@@ -47,6 +47,8 @@ document.addEventListener('DOMContentLoaded', () => {
     setupMobileMenu();
     setupBackToTop();
     setupSearchPalette();
+    setupOfflineBanner();
+    setupXRetryButtons();
     registerServiceWorker();
     checkAdminSession();
     loadData();
@@ -107,6 +109,7 @@ function injectSharedChrome() {
                     <a href="about.html" class="nav-link" data-nav="about">About</a>
                 </div>
                 <div class="flex items-center gap-2">
+                    <span class="admin-status" id="adminStatus" title="Mode editor aktif"><i class="fas fa-pen-nib"></i> Editor</span>
                     <button class="nav-icon-btn" id="navSearchBtn" title="Search (Ctrl+K)" aria-label="Cari"><i class="fas fa-search"></i></button>
                     <button class="nav-icon-btn mobile-menu-btn" id="mobileMenuBtnNav" aria-label="Buka menu" aria-expanded="false"><i class="fas fa-bars"></i></button>
                 </div>
@@ -832,8 +835,8 @@ function renderPageContent() {
     if ($('aboutName')) {
         const av = $('aboutAvatar');
         if (av) {
-            av.src = profile.avatar || 'avatar.jpg';
-            av.onerror = () => { av.onerror = null; av.src = 'avatar.jpg'; };
+            av.src = mediaUrl(profile.avatar) || profile.avatar || 'media/avatar.webp';
+            av.onerror = () => { av.onerror = null; av.src = 'media/avatar.jpg'; };
         }
         $('aboutName').textContent = profile.name || 'Your Name';
         $('aboutBio').textContent = profile.bio || '';
@@ -899,12 +902,13 @@ function renderHero(articles) {
     wrap.className = 'hero-slot accent-' + (cat.accent || 'brass');
     wrap.innerHTML = `
         <div class="hero-feature">
-            <img src="${escapeHtml(featured.coverImage || '')}" alt="${escapeHtml(featured.title)}" fetchpriority="high">
+            ${imgTag(featured.coverImage, featured.title, 'fetchpriority="high"')}
             <svg class="route-line" viewBox="0 0 200 400" style="left:6%; top:4%; width:100px; height:60%;" aria-hidden="true"><path d="M20,10 C60,80 10,160 90,220 S140,340 100,380" /></svg>
             <div class="hero-feature-content">
                 <span class="eyebrow" style="color:#fff;">${escapeHtml(cat.name)}</span>
                 <h1 class="mt-5">${escapeHtml(featured.title)}</h1>
                 ${featured.dek ? `<p class="dek">${escapeHtml(featured.dek)}</p>` : ''}
+                <p class="t-meta mt-3" style="color:rgba(255,255,255,0.7);">${dateMetaHtml(featured.date)} · ${featured.readTime || 5} min baca</p>
                 <a href="article.html?id=${encodeURIComponent(featured.id)}" class="btn-primary mt-8"><i class="fas fa-book-open"></i> Baca Dispatch</a>
             </div>
         </div>`;
@@ -920,7 +924,7 @@ function renderPhotoOfDay(potd) {
     }
     wrap.innerHTML = `
         <div class="potd">
-            <div class="potd-image"><img src="${potd.image}" alt="Photo of the day" loading="lazy"></div>
+            <div class="potd-image">${imgTag(potd.image, 'Photo of the day', 'loading="lazy" decoding="async"')}</div>
             <div class="potd-text">
                 <span class="potd-label"><i class="fas fa-camera-retro"></i> Photo of the Day</span>
                 <p class="potd-caption">${escapeHtml(potd.caption || '')}</p>
@@ -981,6 +985,9 @@ function renderXArticlesRail(articles) {
         .filter(a => a.source === 'x')
         .sort((a, b) => new Date(b.date) - new Date(a.date));
 
+    const countEl = $('xLiveCount');
+    if (countEl) countEl.textContent = String(xList.length);
+
     if (!xList.length) {
         rail.innerHTML = '';
         if (empty) empty.classList.remove('hidden');
@@ -993,14 +1000,14 @@ function renderXArticlesRail(articles) {
     rail.innerHTML = xList.map(a => `
         <a href="article.html?id=${encodeURIComponent(a.id)}" class="x-card reveal">
             <div class="x-thumb">
-                <img src="${escapeHtml(a.coverImage || '')}" alt="${escapeHtml(a.title)}" loading="lazy" decoding="async">
+                ${imgTag(a.coverImage, a.title, 'loading="lazy" decoding="async"')}
                 <span class="x-source-badge" title="X Articles"><i class="fab fa-x-twitter"></i> X</span>
             </div>
             <div class="x-body">
                 <h3>${escapeHtml(a.title)}</h3>
                 ${a.dek ? `<p class="x-dek">${escapeHtml(a.dek)}</p>` : ''}
                 <div class="x-meta">
-                    <span>${formatDate(a.date)}</span>
+                    ${dateMetaHtml(a.date)}
                     <span>·</span>
                     <span>${a.readTime || 5} min</span>
                 </div>
@@ -1049,14 +1056,14 @@ function dispatchCardHtml(a, i) {
     return `
         <a href="article.html?id=${encodeURIComponent(a.id)}" class="dispatch-card ${sizeClass} ${span} accent-${cat.accent || 'brass'} reveal${a.source === 'x' ? ' from-x' : ''}">
             <div class="thumb">
-                <img src="${escapeHtml(a.coverImage || '')}" alt="${escapeHtml(a.title)}" loading="lazy">
+                ${imgTag(a.coverImage, a.title, 'loading="lazy" decoding="async"')}
                 ${xBadge}
             </div>
             <div class="card-body">
                 <span class="card-eyebrow">${escapeHtml(cat.name)}</span>
                 <h3>${escapeHtml(a.title)}</h3>
                 ${dek}
-                <div class="card-meta"><span>${formatDate(a.date)}</span><span>·</span><span>${a.readTime || 5} min</span></div>
+                <div class="card-meta">${dateMetaHtml(a.date)}<span>·</span><span>${a.readTime || 5} min</span></div>
             </div>
         </a>`;
 }
@@ -1125,9 +1132,10 @@ function renderArticleBody(blocks) {
             html += `<p${cls}>${renderTextWithLinks(b.text || '')}</p>`;
             leadDone = true;
         } else if (b.type === 'heading') {
-            html += `<h2>${renderTextWithLinks(b.text || '')}</h2>`;
+            const idAttr = b._tocId ? ` id="${escapeHtml(b._tocId)}"` : '';
+            html += `<h2${idAttr}>${renderTextWithLinks(b.text || '')}</h2>`;
         } else if (b.type === 'image') {
-            html += `<figure><img src="${b.url}" alt="${escapeHtml(b.caption || '')}" loading="lazy">`;
+            html += `<figure>${imgTag(b.url, b.caption || '', 'loading="lazy" decoding="async"')}`;
             if (b.caption || b.credit) html += `<figcaption>${escapeHtml(b.caption || '')}${b.credit ? ` — ${escapeHtml(b.credit)}` : ''}</figcaption>`;
             html += `</figure>`;
         } else if (b.type === 'quote') {
@@ -1152,6 +1160,67 @@ function renderArticleBody(blocks) {
     return html;
 }
 
+function buildArticleToc(blocks) {
+    const heads = (blocks || []).filter(b => b.type === 'heading' && (b.text || '').trim());
+    if (heads.length < 2) return { html: '', withIds: blocks || [] };
+    const withIds = (blocks || []).map((b, i) => {
+        if (b.type !== 'heading') return b;
+        return { ...b, _tocId: `sec-${i}` };
+    });
+    const items = withIds.filter(b => b._tocId).map(b =>
+        `<li><a href="#${b._tocId}">${escapeHtml(b.text)}</a></li>`
+    ).join('');
+    return {
+        html: `<nav class="article-toc" aria-label="Daftar isi"><p class="article-toc-title">Daftar isi</p><ol>${items}</ol></nav>`,
+        withIds
+    };
+}
+
+function injectJsonLd(article) {
+    document.querySelectorAll('script[data-jsonld="article"]').forEach(n => n.remove());
+    const cover = mediaUrl(article.coverImage) || article.coverImage || '';
+    const absCover = cover.startsWith('http') ? cover : `https://nanomindexplorer.github.io/nanomind/${cover.replace(/^\.\//, '')}`;
+    const data = {
+        '@context': 'https://schema.org',
+        '@type': 'Article',
+        headline: article.title,
+        description: article.dek || '',
+        image: absCover ? [absCover] : undefined,
+        datePublished: article.date,
+        author: { '@type': 'Person', name: article.author || 'Nanomind Explorer' },
+        publisher: { '@type': 'Organization', name: 'Nanomind Explorer' },
+        mainEntityOfPage: location.href
+    };
+    const s = document.createElement('script');
+    s.type = 'application/ld+json';
+    s.dataset.jsonld = 'article';
+    s.textContent = JSON.stringify(data);
+    document.head.appendChild(s);
+}
+
+function bindArticleShare(article) {
+    const copyBtn = $('shareCopyBtn');
+    const xBtn = $('shareXBtn');
+    const url = location.href;
+    const text = `${article.title}${article.dek ? ' — ' + article.dek : ''}`;
+    if (copyBtn) {
+        copyBtn.addEventListener('click', async () => {
+            try {
+                await navigator.clipboard.writeText(url);
+                showToast('Tautan disalin.', 'success');
+            } catch (e) {
+                showToast('Gagal menyalin tautan.', 'error');
+            }
+        });
+    }
+    if (xBtn) {
+        xBtn.addEventListener('click', () => {
+            const share = `https://twitter.com/intent/tweet?text=${encodeURIComponent(text)}&url=${encodeURIComponent(url)}`;
+            window.open(share, '_blank', 'noopener,noreferrer');
+        });
+    }
+}
+
 function renderArticlePage() {
     const params = new URLSearchParams(location.search);
     const id = params.get('id');
@@ -1165,13 +1234,18 @@ function renderArticlePage() {
     $('articleNotFound').style.display = 'none';
     const cat = (state.data.categories || []).find(c => c.id === article.category) || { name: 'Dispatch', accent: 'brass' };
     const isX = article.source === 'x';
+    const rt = article.readTime || 5;
 
     document.title = `${article.title} — Nanomind Explorer`;
     const setMeta = (id2, val) => { const el = $(id2); if (el) el.setAttribute('content', val || ''); };
     setMeta('pageDescription', article.dek);
     setMeta('ogTitle', article.title);
     setMeta('ogDescription', article.dek);
-    setMeta('ogImage', article.coverImage);
+    setMeta('ogImage', mediaUrl(article.coverImage) || article.coverImage);
+    injectJsonLd(article);
+
+    const toc = buildArticleToc(article.body);
+    const bodyBlocks = toc.withIds;
 
     const xSourceHtml = isX ? `
         <div class="x-article-source">
@@ -1188,15 +1262,22 @@ function renderArticlePage() {
         </div>` : '';
 
     const adminControls = isX ? '' : `
-            <div class="mt-10 admin-only" style="display:flex; gap:10px;" id="articleAdminControls">
+            <div class="mt-10 admin-only" id="articleAdminControls">
                 <button class="btn-ghost on-paper" id="editArticleBtn"><i class="fas fa-pen"></i> Edit Dispatch</button>
                 <button class="btn-ghost on-paper" id="deleteArticleBtn" style="color:var(--rust); border-color:var(--rust);"><i class="fas fa-trash"></i> Delete</button>
             </div>`;
 
+    const shareHtml = `
+        <div class="article-share">
+            <span class="share-label">Bagikan</span>
+            <button type="button" class="share-btn" id="shareCopyBtn"><i class="fas fa-link"></i> Salin tautan</button>
+            <button type="button" class="share-btn" id="shareXBtn"><i class="fab fa-x-twitter"></i> Bagikan ke X</button>
+        </div>`;
+
     content.className = 'accent-' + (cat.accent || 'brass');
     content.innerHTML = `
         <div class="article-hero">
-            <img src="${escapeHtml(article.coverImage || '')}" alt="${escapeHtml(article.title)}">
+            ${imgTag(article.coverImage, article.title, 'fetchpriority="high"')}
             <div class="article-hero-content">
                 <span class="eyebrow" style="color:#fff;">${escapeHtml(cat.name)}${isX ? ' · X' : ''}</span>
                 <h1 class="mt-4">${escapeHtml(article.title)}</h1>
@@ -1205,25 +1286,36 @@ function renderArticlePage() {
                     <span>${escapeHtml(article.author || '')}</span>
                     <span class="sep"></span>
                     <span>${formatDate(article.date)}</span>
+                    <span class="byline-extra">(${formatRelativeDate(article.date)})</span>
                     <span class="sep"></span>
-                    <span>${article.readTime || 5} min baca</span>
+                    <span>${rt} min baca · selesai ± ${rt} menit</span>
                 </div>
             </div>
         </div>
         <div class="reading-surface">
-            ${renderArticleBody(article.body)}
+            ${toc.html}
+            ${renderArticleBody(bodyBlocks)}
             ${(article.tags || []).length ? `<div class="tag-row">${article.tags.map(t => `<span class="tag-chip">${escapeHtml(t)}</span>`).join('')}</div>` : ''}
+            ${shareHtml}
             ${xSourceHtml}
             ${adminControls}
         </div>`;
+
+    // Heading anchors for TOC
+    content.querySelectorAll('.reading-surface h2').forEach((h, idx) => {
+        const blockHeads = bodyBlocks.filter(b => b.type === 'heading');
+        if (blockHeads[idx] && blockHeads[idx]._tocId) h.id = blockHeads[idx]._tocId;
+    });
 
     if (!isX) {
         const editBtn = $('editArticleBtn'); if (editBtn) editBtn.addEventListener('click', () => openArticleModal(article.id));
         const delBtn = $('deleteArticleBtn'); if (delBtn) delBtn.addEventListener('click', () => deleteArticle(article.id));
     }
 
+    bindArticleShare(article);
     renderRelated(article);
     setupReadingProgress();
+    enhanceImages(content);
 }
 
 function renderRelated(article) {
@@ -1634,7 +1726,21 @@ function openArticleModal(id = null) {
 async function saveArticle() {
     const title = $('articleTitle').value.trim();
     if (!title) { showToast('Judul wajib diisi.', 'error'); return; }
-    if (!$('articleCoverImage').value.trim()) { showToast('Cover image wajib diisi.', 'error'); return; }
+    const cover = $('articleCoverImage').value.trim();
+    if (!cover) { showToast('Cover image wajib diisi.', 'error'); return; }
+    // Soft-validate cover URL/path loads (non-blocking if cors fails)
+    try {
+        await new Promise((resolve, reject) => {
+            const im = new Image();
+            im.onload = resolve;
+            im.onerror = () => reject(new Error('Cover image tidak bisa dimuat. Cek URL/path.'));
+            im.src = cover;
+            setTimeout(resolve, 2500); // jangan blokir terlalu lama
+        });
+    } catch (e) {
+        showToast(e.message || 'Cover image bermasalah.', 'error');
+        return;
+    }
     const cleanBlocks = articleBlocks.filter(b => {
         if (b.type === 'paragraph' || b.type === 'heading' || b.type === 'quote') return (b.text || '').trim();
         if (b.type === 'image' || b.type === 'video' || b.type === 'video-short') return (b.url || '').trim();
@@ -1899,13 +2005,17 @@ function toggleAdminMode() {
 function handleLogin() {
     const token = $('tokenInput').value.trim();
     if (!token) { showToast('Token cannot be empty.', 'error'); return; }
+    if (!/^gh[pousr]_/.test(token) && !token.startsWith('github_pat_')) {
+        showToast('Token GitHub sepertinya tidak valid (format).', 'error');
+        return;
+    }
     state.isAdmin = true;
     localStorage.setItem('portfolio_github_token', token);
     document.body.classList.add('admin-mode');
     document.querySelectorAll('.admin-only').forEach(el => el.classList.remove('hidden'));
     const fab = $('adminFab'); if (fab) fab.innerHTML = '<i class="fas fa-right-from-bracket"></i>';
     closeModal('loginModal');
-    showToast('Welcome back, Editor!', 'success');
+    showToast('Mode editor aktif. Status: terhubung.', 'success');
     renderPageContent();
 }
 
@@ -1982,6 +2092,108 @@ function formatDate(dateStr) {
     const months = ['Jan', 'Feb', 'Mar', 'Apr', 'Mei', 'Jun', 'Jul', 'Agu', 'Sep', 'Okt', 'Nov', 'Des'];
     return `${d.getDate()} ${months[d.getMonth()]} ${d.getFullYear()}`;
 }
+function formatRelativeDate(dateStr) {
+    if (!dateStr) return '';
+    const d = new Date(dateStr);
+    if (isNaN(d)) return '';
+    const diffMs = Date.now() - d.getTime();
+    const day = 86400000;
+    if (diffMs < 0) return 'segera';
+    if (diffMs < day) return 'hari ini';
+    if (diffMs < 2 * day) return 'kemarin';
+    if (diffMs < 7 * day) return `${Math.floor(diffMs / day)} hari lalu`;
+    if (diffMs < 30 * day) return `${Math.floor(diffMs / (7 * day))} minggu lalu`;
+    if (diffMs < 365 * day) return `${Math.floor(diffMs / (30 * day))} bulan lalu`;
+    return `${Math.floor(diffMs / (365 * day))} tahun lalu`;
+}
+function dateMetaHtml(dateStr) {
+    const abs = formatDate(dateStr);
+    const rel = formatRelativeDate(dateStr);
+    if (!abs) return '';
+    return `<span title="${escapeHtml(abs)}">${escapeHtml(abs)}</span>${rel ? `<span class="byline-extra">· ${escapeHtml(rel)}</span>` : ''}`;
+}
+function mediaUrl(url) {
+    if (!url) return '';
+    // Prefer local media/ webp when path points at known optimized asset
+    const m = String(url).match(/(?:^|\/)(media\/)?([a-zA-Z0-9_-]+)\.(webp|jpg|jpeg|png)$/i);
+    if (m) {
+        const stem = m[2];
+        return `media/${stem}.webp`;
+    }
+    return url;
+}
+function imgTag(src, alt, extra = '') {
+    const s = mediaUrl(src) || src || '';
+    const jpg = s.endsWith('.webp') ? s.replace(/\.webp$/i, '.jpg') : '';
+    if (jpg) {
+        return `<picture><source srcset="${escapeHtml(s)}" type="image/webp"><img src="${escapeHtml(jpg)}" alt="${escapeHtml(alt || '')}" ${extra}></picture>`;
+    }
+    return `<img src="${escapeHtml(s)}" alt="${escapeHtml(alt || '')}" ${extra}>`;
+}
+
+function setupOfflineBanner() {
+    const banner = $('offlineBanner');
+    if (!banner) return;
+    const sync = () => banner.classList.toggle('hidden', navigator.onLine);
+    window.addEventListener('online', sync);
+    window.addEventListener('offline', sync);
+    sync();
+}
+
+function setupXRetryButtons() {
+    const retry = async () => {
+        showToast('Memuat ulang X Articles…', 'info');
+        try {
+            sessionStorage.removeItem(xArticlesCacheKey((state.xArticlesConfig && state.xArticlesConfig.username) || CONFIG.X_ARTICLES.username));
+            const xArts = await loadXArticles();
+            if (xArts.length && state.data) {
+                mergeXArticlesIntoState(xArts);
+                renderXArticlesRail(state.data.articles);
+                renderDispatchGrid();
+                showToast(`${xArts.length} X Article dimuat.`, 'success');
+            } else {
+                showToast('Tidak ada X Article yang bisa ditarik.', 'error');
+                renderXArticlesRail(state.data ? state.data.articles : []);
+            }
+        } catch (e) {
+            showToast('Gagal memuat X Articles.', 'error');
+        }
+    };
+    const a = $('xRetryBtn'); if (a) a.addEventListener('click', retry);
+    const b = $('xEmptyRetryBtn'); if (b) b.addEventListener('click', retry);
+    const reset = $('dispatchEmptyReset');
+    if (reset) reset.addEventListener('click', (e) => {
+        e.preventDefault();
+        state.dispatchFilter = 'all';
+        state.dispatchPage = 1;
+        if (state.data) {
+            renderCategoryPills(state.data.categories, 'all');
+            renderDispatchGrid();
+        }
+    });
+}
+
+function trapFocus(overlay) {
+    if (!overlay) return;
+    const focusable = overlay.querySelectorAll('button, [href], input, select, textarea, [tabindex]:not([tabindex="-1"])');
+    if (!focusable.length) return;
+    const first = focusable[0];
+    const last = focusable[focusable.length - 1];
+    const handler = (e) => {
+        if (e.key !== 'Tab') return;
+        if (e.shiftKey && document.activeElement === first) { e.preventDefault(); last.focus(); }
+        else if (!e.shiftKey && document.activeElement === last) { e.preventDefault(); first.focus(); }
+    };
+    overlay.addEventListener('keydown', handler);
+    overlay._trapHandler = handler;
+    setTimeout(() => first.focus(), 50);
+}
+function releaseFocusTrap(overlay) {
+    if (overlay && overlay._trapHandler) {
+        overlay.removeEventListener('keydown', overlay._trapHandler);
+        delete overlay._trapHandler;
+    }
+}
 function escapeHtml(text) {
     if (!text) return '';
     const div = document.createElement('div');
@@ -1989,15 +2201,32 @@ function escapeHtml(text) {
     return div.innerHTML;
 }
 function generateId() { return Date.now().toString(36) + Math.random().toString(36).substr(2); }
-function openModal(id) { const el = $(id); if (el) el.classList.add('active'); }
-function closeModal(id) { const el = $(id); if (el) el.classList.remove('active'); }
+function openModal(id) {
+    const el = $(id);
+    if (!el) return;
+    state.lastFocusedEl = document.activeElement;
+    el.classList.add('active');
+    el.setAttribute('aria-modal', 'true');
+    el.setAttribute('role', 'dialog');
+    trapFocus(el);
+}
+function closeModal(id) {
+    const el = $(id);
+    if (!el) return;
+    releaseFocusTrap(el);
+    el.classList.remove('active');
+    if (state.lastFocusedEl && state.lastFocusedEl.focus) {
+        try { state.lastFocusedEl.focus(); } catch (e) { /* ignore */ }
+    }
+}
 function showToast(msg, type = 'info') {
     const t = document.createElement('div');
     t.className = `toast ${type}`;
-    t.innerHTML = `<i class="fas ${type === 'success' ? 'fa-check-circle' : 'fa-exclamation-circle'}"></i><span>${escapeHtml(msg)}</span>`;
+    const icon = type === 'success' ? 'fa-check-circle' : (type === 'error' ? 'fa-exclamation-circle' : 'fa-circle-info');
+    t.innerHTML = `<i class="fas ${icon}"></i><span>${escapeHtml(msg)}</span>`;
     document.body.appendChild(t);
     setTimeout(() => t.classList.add('show'), 100);
-    setTimeout(() => { t.classList.remove('show'); setTimeout(() => t.remove(), 400); }, 3000);
+    setTimeout(() => { t.classList.remove('show'); setTimeout(() => t.remove(), 400); }, 3200);
 }
 function isElementInViewport(el) {
     const r = el.getBoundingClientRect();

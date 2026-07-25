@@ -7,7 +7,7 @@
   "profile": {
     "name": "Iman Firmansyah",
     "bio": "learn,  craft , and build.",
-    "avatar": "https://raw.githubusercontent.com/NanoMindExplorer/nanomind/main/avatar.jpg",
+    "avatar": "media/avatar.webp",
     "logoText": "N"
   },
   "categories": [
@@ -43,7 +43,7 @@
     }
   ],
   "photoOfDay": {
-    "image": "https://raw.githubusercontent.com/NanoMindExplorer/nanomind/main/Screenshot_20260630_224816.jpg",
+    "image": "media/Screenshot_20260630_224816.webp",
     "caption": "Panel kontrol NanomindOS, tengah malam. Bukan untuk dirilis — hanya untuk dipakai sendiri.",
     "credit": "Iman Firmansyah",
     "date": "2026-07-10"
@@ -141,7 +141,7 @@
       "title": "Tunnel Terminal: Menaruh Ruang Kerja Developer di Dalam Saku",
       "dek": "Bagaimana rasanya membangun terminal AI-native untuk Android — dan kenapa layar sentuh ternyata bukan penghalang, melainkan kanvas baru.",
       "category": "build-log",
-      "coverImage": "https://raw.githubusercontent.com/NanoMindExplorer/nanomind/main/tunnelterminal.jpg",
+      "coverImage": "media/tunnelterminal.webp",
       "author": "Iman Firmansyah",
       "date": "2026-07-08",
       "readTime": 6,
@@ -214,7 +214,7 @@
       "title": "Code Forge: Saat Terminal Belajar Berpikir",
       "dek": "Menulis AI companion berbasis Go yang hidup langsung di command line — tanpa browser, tanpa tab, hanya kursor yang berkedip dan satu masalah yang harus diselesaikan.",
       "category": "deep-dive",
-      "coverImage": "https://raw.githubusercontent.com/NanoMindExplorer/nanomind/main/codeforge.jpg",
+      "coverImage": "media/codeforge.webp",
       "author": "Iman Firmansyah",
       "date": "2026-06-22",
       "readTime": 5,
@@ -322,7 +322,7 @@
       "title": "NanomindOS: Ruang Privat di Tengah Ledakan Otomatisasi AI",
       "dek": "Sebuah terminal pribadi yang menggabungkan Web3 dan AI automation — dibangun bukan untuk dirilis publik, tapi untuk menjadi laboratorium sendiri.",
       "category": "field-notes",
-      "coverImage": "https://raw.githubusercontent.com/NanoMindExplorer/nanomind/main/Screenshot_20260630_224816.jpg",
+      "coverImage": "media/Screenshot_20260630_224816.webp",
       "author": "Iman Firmansyah",
       "date": "2026-06-30",
       "readTime": 4,
@@ -376,7 +376,7 @@
       "title": "NanoMind Account Optimizer: Beres-Beres Akun X Kamu, Tanpa Drama",
       "dek": "Sebuah ekstensi Chrome untuk beres-beres following list X: scan akun mati, unfollow aman dengan jeda konservatif, dan cek indikasi shadowban — dibangun untuk diri sendiri, lalu dibagikan gratis.",
       "category": "build-log",
-      "coverImage": "https://raw.githubusercontent.com/NanoMindExplorer/nanomind/main/nao.jpg",
+      "coverImage": "media/nao.webp",
       "author": "Iman Firmansyah",
       "date": "2026-07-20",
       "readTime": 5,
@@ -606,7 +606,7 @@
       "id": "mr0u4b08hluuuu0t3ah",
       "title": "NanomindOS",
       "description": "Web3 Suit & AI Automation Terminal",
-      "image": "https://raw.githubusercontent.com/NanoMindExplorer/nanomind/main/Screenshot_20260630_224816.jpg",
+      "image": "media/Screenshot_20260630_224816.webp",
       "url": "Private Only",
       "tags": [
         "Solidity",
@@ -620,7 +620,7 @@
       "id": "mr113t145fmea6bvgpa",
       "title": "Code Forge",
       "description": "Terminal Ai Coding Companion",
-      "image": "https://raw.githubusercontent.com/NanoMindExplorer/nanomind/main/progress.png",
+      "image": "media/progress.webp",
       "url": "https://github.com/NanoMindExplorer/codeforge-tui",
       "tags": [
         "Go"
@@ -632,7 +632,7 @@
       "id": "mr28yzusmcwnss8qda",
       "title": "Tunnel Terminal",
       "description": "Tunnel Terminal adalah terminal Android AI-native untuk developer bekerja di perangkat mobile.",
-      "image": "https://raw.githubusercontent.com/NanoMindExplorer/nanomind/main/tunnelterminal.jpg",
+      "image": "media/tunnelterminal.webp",
       "url": "https://github.com/NanoMindExplorer/tunnel-terminal/releases/tag/v7.2.3",
       "tags": [
         "app",
@@ -649,7 +649,7 @@
       "id": "mrt6seplxosejcld6go",
       "title": "NanoMind Account Optimizer (NAO)",
       "description": "Beres-Beres Akun X Kamu, Tanpa Drama",
-      "image": "https://raw.githubusercontent.com/NanoMindExplorer/nanomind/main/nao.jpg",
+      "image": "media/nao.webp",
       "url": "https://github.com/NanoMindExplorer/NAO/releases/tag/v.1",
       "tags": [
         "Tools",
