@@ -16,5 +16,12 @@
     "2076342065613668432",
     "2076175759325237529"
   ],
-  "notes": "Daftar status ID post X yang memuat X Articles dari @Deadmouse_jpeg. Tambahkan ID status baru di sini saat artikel baru diterbitkan. Konten penuh ditarik live via FixTweet API."
+  "notes": "Auto-updated by tools/sync-x-articles.py (GitHub Actions). statusIds = X post IDs that carry published X Articles. Website fetches full content live via FixTweet.",
+  "lastSync": "2026-07-25T04:39:14Z",
+  "lastSyncStats": {
+    "candidates": 164,
+    "verified": 9,
+    "added": [],
+    "total": 9
+  }
 }

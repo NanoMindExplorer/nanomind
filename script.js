@@ -586,6 +586,7 @@ async function loadXArticlesRegistry() {
         categoryId: (registry && registry.categoryId) || fallback.categoryId || 'x-articles',
         apiBase: ((registry && registry.apiBase) || fallback.apiBase || 'https://api.fxtwitter.com').replace(/\/$/, ''),
         cacheMinutes: (registry && registry.cacheMinutes) || fallback.cacheMinutes || 30,
+        lastSync: (registry && registry.lastSync) || null,
         statusIds: [
             ...new Set([
                 ...((registry && registry.statusIds) || []),
@@ -600,6 +601,25 @@ async function loadXArticlesRegistry() {
         if (state.data.xArticles.enabled === false) cfg.enabled = false;
         if (state.data.xArticles.username) cfg.username = state.data.xArticles.username;
     }
+    // Invalidate browser session cache if registry sync is newer than cache
+    try {
+        const cacheKey = xArticlesCacheKey(cfg.username);
+        const raw = sessionStorage.getItem(cacheKey);
+        if (raw && cfg.lastSync) {
+            const parsed = JSON.parse(raw);
+            const cacheTs = parsed && parsed.ts ? parsed.ts : 0;
+            const syncTs = Date.parse(cfg.lastSync) || 0;
+            if (syncTs && cacheTs && syncTs > cacheTs) {
+                sessionStorage.removeItem(cacheKey);
+            }
+            // also invalidate if status id set changed
+            const cachedIds = new Set((parsed.articles || []).map(a => a.xStatusId));
+            if (cfg.statusIds.some(id => !cachedIds.has(id)) || (parsed.articles || []).length !== cfg.statusIds.length) {
+                sessionStorage.removeItem(cacheKey);
+            }
+        }
+    } catch (e) { /* ignore */ }
+
     state.xArticlesConfig = cfg;
     return cfg;
 }
@@ -1012,6 +1032,11 @@ function renderXArticlesRail(articles) {
 
     const countEl = $('xLiveCount');
     if (countEl) countEl.textContent = String(xList.length);
+    const pill = $('xLivePill');
+    if (pill && state.xArticlesConfig && state.xArticlesConfig.lastSync) {
+        const sync = state.xArticlesConfig.lastSync;
+        pill.title = `Auto-sync terakhir: ${sync}`;
+    }
 
     if (!xList.length) {
         rail.innerHTML = '';
