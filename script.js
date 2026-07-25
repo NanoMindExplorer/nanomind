@@ -60,7 +60,7 @@ function hideLoader() {
 }
 
 // ==========================================
-// LIVING ANIME BACKGROUND — original painted valley + life layers
+// LIVING ANIME BACKGROUND — refined (art + soft fireflies)
 // ==========================================
 function injectLivingBackground() {
     if (document.getElementById('livingBg')) return;
@@ -72,10 +72,6 @@ function injectLivingBackground() {
     root.setAttribute('aria-hidden', 'true');
     root.innerHTML = `
         <div class="living-bg-photo"></div>
-        <div class="living-bg-kenburns"></div>
-        <div class="living-bg-mist living-bg-mist-a"></div>
-        <div class="living-bg-mist living-bg-mist-b"></div>
-        <div class="living-bg-rays"></div>
         <div class="living-bg-glow"></div>
         <div class="living-bg-veil"></div>
         <div class="living-bg-vignette"></div>
@@ -89,8 +85,7 @@ function injectLivingBackground() {
 function initLivingParticles() {
     const canvas = document.getElementById('livingBgCanvas');
     if (!canvas) return;
-    const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
-    if (reduceMotion) {
+    if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
         canvas.style.display = 'none';
         return;
     }
@@ -98,70 +93,61 @@ function initLivingParticles() {
     const ctx = canvas.getContext('2d', { alpha: true });
     let w = 0, h = 0, raf = 0, particles = [];
     const isMobile = window.matchMedia('(max-width: 720px)').matches;
-    const COUNT = isMobile ? 28 : 48;
+    // Sedikit partikel — aksen halus, bukan confetti
+    const COUNT = isMobile ? 12 : 20;
+    let dpr = Math.min(window.devicePixelRatio || 1, 2);
 
     function resize() {
-        w = canvas.width = window.innerWidth;
-        h = canvas.height = window.innerHeight;
+        dpr = Math.min(window.devicePixelRatio || 1, 2);
+        w = window.innerWidth;
+        h = window.innerHeight;
+        canvas.width = Math.floor(w * dpr);
+        canvas.height = Math.floor(h * dpr);
+        canvas.style.width = w + 'px';
+        canvas.style.height = h + 'px';
+        ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
     }
 
-    function spawn(i) {
-        const kind = Math.random() < 0.55 ? 'firefly' : 'lantern';
+    function spawn() {
+        // Partikel hanya di area tengah-bawah agar tidak mengganggu hero/teks
         return {
-            kind,
             x: Math.random() * w,
-            y: Math.random() * h,
-            r: kind === 'lantern' ? (2.2 + Math.random() * 3.2) : (0.8 + Math.random() * 1.8),
-            vx: (Math.random() - 0.5) * (kind === 'lantern' ? 0.18 : 0.35),
-            vy: kind === 'lantern' ? (-0.08 - Math.random() * 0.18) : ((Math.random() - 0.5) * 0.25),
+            y: h * (0.35 + Math.random() * 0.6),
+            r: 0.7 + Math.random() * 1.6,
+            vx: (Math.random() - 0.5) * 0.12,
+            vy: -0.04 - Math.random() * 0.1,
             phase: Math.random() * Math.PI * 2,
-            pulse: 0.6 + Math.random() * 0.8,
-            alpha: kind === 'lantern' ? (0.22 + Math.random() * 0.35) : (0.18 + Math.random() * 0.4)
+            pulse: 0.5 + Math.random() * 0.6,
+            alpha: 0.12 + Math.random() * 0.18
         };
     }
 
     function resetParticles() {
-        particles = Array.from({ length: COUNT }, (_, i) => spawn(i));
+        particles = Array.from({ length: COUNT }, () => spawn());
     }
 
     function tick(t) {
         ctx.clearRect(0, 0, w, h);
         const time = t * 0.001;
         for (const p of particles) {
-            p.phase += 0.012 * p.pulse;
-            p.x += p.vx + Math.sin(time * 0.4 + p.phase) * 0.12;
-            p.y += p.vy + Math.cos(time * 0.3 + p.phase) * 0.08;
-            if (p.y < -20) { p.y = h + 10; p.x = Math.random() * w; }
-            if (p.y > h + 20) { p.y = -10; p.x = Math.random() * w; }
-            if (p.x < -20) p.x = w + 10;
-            if (p.x > w + 20) p.x = -10;
+            p.phase += 0.008 * p.pulse;
+            p.x += p.vx + Math.sin(time * 0.35 + p.phase) * 0.06;
+            p.y += p.vy;
+            if (p.y < h * 0.2) { p.y = h + 8; p.x = Math.random() * w; }
+            if (p.x < -12) p.x = w + 8;
+            if (p.x > w + 12) p.x = -8;
 
-            const twinkle = 0.55 + 0.45 * Math.sin(time * (1.2 + p.pulse) + p.phase);
+            const twinkle = 0.65 + 0.35 * Math.sin(time * (0.9 + p.pulse) + p.phase);
             const a = p.alpha * twinkle;
-
-            if (p.kind === 'lantern') {
-                const g = ctx.createRadialGradient(p.x, p.y, 0, p.x, p.y, p.r * 7);
-                g.addColorStop(0, `rgba(255, 214, 140, ${a * 0.9})`);
-                g.addColorStop(0.35, `rgba(232, 176, 90, ${a * 0.35})`);
-                g.addColorStop(1, 'rgba(201, 151, 74, 0)');
-                ctx.fillStyle = g;
-                ctx.beginPath();
-                ctx.arc(p.x, p.y, p.r * 7, 0, Math.PI * 2);
-                ctx.fill();
-                ctx.fillStyle = `rgba(255, 236, 190, ${Math.min(0.95, a + 0.2)})`;
-                ctx.beginPath();
-                ctx.ellipse(p.x, p.y, p.r * 0.7, p.r * 1.15, 0, 0, Math.PI * 2);
-                ctx.fill();
-            } else {
-                const g = ctx.createRadialGradient(p.x, p.y, 0, p.x, p.y, p.r * 5);
-                g.addColorStop(0, `rgba(255, 248, 210, ${a})`);
-                g.addColorStop(0.5, `rgba(201, 151, 74, ${a * 0.35})`);
-                g.addColorStop(1, 'rgba(201, 151, 74, 0)');
-                ctx.fillStyle = g;
-                ctx.beginPath();
-                ctx.arc(p.x, p.y, p.r * 5, 0, Math.PI * 2);
-                ctx.fill();
-            }
+            const radius = p.r * 4.5;
+            const g = ctx.createRadialGradient(p.x, p.y, 0, p.x, p.y, radius);
+            g.addColorStop(0, `rgba(255, 236, 190, ${a})`);
+            g.addColorStop(0.45, `rgba(201, 151, 74, ${a * 0.28})`);
+            g.addColorStop(1, 'rgba(201, 151, 74, 0)');
+            ctx.fillStyle = g;
+            ctx.beginPath();
+            ctx.arc(p.x, p.y, radius, 0, Math.PI * 2);
+            ctx.fill();
         }
         raf = requestAnimationFrame(tick);
     }
