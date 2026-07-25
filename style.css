@@ -77,20 +77,23 @@ a { color: inherit; }
     background-color: #0b0d0b;
     background-image: url('bg-ghibli-poster.jpg');
     background-size: cover;
-    background-position: center 42%;
+    background-position: center 48%;
     background-repeat: no-repeat;
-    filter: saturate(0.96) contrast(1.03) brightness(0.8);
+    filter: saturate(0.97) contrast(1.02) brightness(0.82);
 }
 @supports (background-image: url('bg-ghibli-poster.webp')) {
     .living-bg-poster { background-image: url('bg-ghibli-poster.webp'); }
 }
 .living-bg-video {
     object-fit: cover;
-    object-position: center 42%;
-    filter: saturate(0.98) contrast(1.04) brightness(0.82);
-    /* soft fade-in after first frame */
+    object-position: center 48%;
+    filter: saturate(0.98) contrast(1.03) brightness(0.84);
+    /* soft fade-in after first frame; GPU layer stabilizes playback */
     opacity: 0;
-    transition: opacity 1.2s ease;
+    transition: opacity 1.4s ease;
+    transform: translateZ(0);
+    backface-visibility: hidden;
+    -webkit-backface-visibility: hidden;
 }
 .living-bg-video.is-ready,
 .living-bg-video:not([poster]) {

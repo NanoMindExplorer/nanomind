@@ -1,4 +1,4 @@
-const CACHE_NAME = 'nanomind-journal-cache-v5';
+const CACHE_NAME = 'nanomind-journal-cache-v6';
 const SHELL_ASSETS = [
     './',
     './index.html',
