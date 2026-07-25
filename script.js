@@ -125,14 +125,83 @@ function injectSharedChrome() {
         footerPh.innerHTML = `
         <footer class="site-footer">
             <div class="footer-inner">
-                <p>&copy; <span id="footerYear"></span> <span id="footerBrandName">Nanomind Explorer</span>. All dispatches reserved.</p>
-                <p class="font-display" style="font-style:italic; color:var(--muted-on-ink)" id="footerTagline"></p>
+                <div class="footer-brand">
+                    <div class="footer-logo">
+                        <svg viewBox="0 0 100 100" aria-hidden="true">
+                            <circle cx="50" cy="50" r="38" fill="none" stroke="#C9974A" stroke-width="4"/>
+                            <polygon points="50,13 59,50 41,50" fill="#C9974A"/>
+                            <polygon points="50,87 59,50 41,50" fill="#5C5A48"/>
+                            <circle cx="50" cy="50" r="7" fill="#14140F" stroke="#C9974A" stroke-width="3.5"/>
+                        </svg>
+                        <span class="footer-name" id="footerBrandName">Nanomind Explorer</span>
+                    </div>
+                    <p class="footer-tagline" id="footerTagline"></p>
+                </div>
+                <div>
+                    <p class="footer-col-title">Explore</p>
+                    <ul class="footer-nav">
+                        <li><a href="index.html">Dispatches</a></li>
+                        <li><a href="watch.html">Watch</a></li>
+                        <li><a href="about.html">About</a></li>
+                    </ul>
+                </div>
+                <div>
+                    <p class="footer-col-title">Connect</p>
+                    <ul class="footer-social" id="footerSocialList">
+                        <li><a href="https://x.com/Deadmouse_jpeg" target="_blank" rel="noopener noreferrer"><i class="fab fa-x-twitter"></i> @Deadmouse_jpeg</a></li>
+                        <li><a href="https://github.com/NanoMindExplorer" target="_blank" rel="noopener noreferrer"><i class="fab fa-github"></i> GitHub</a></li>
+                    </ul>
+                </div>
+            </div>
+            <div class="footer-bottom">
+                <span>&copy; <span id="footerYear"></span> <span id="footerCopyBrand">Nanomind Explorer</span>. All dispatches reserved.</span>
+                <span class="t-meta">Journal over the landscape</span>
             </div>
         </footer>`;
         $('footerYear').textContent = new Date().getFullYear();
     }
+    // Reading progress bar (article page)
+    if ($('articleContent') && !document.getElementById('readingProgress')) {
+        const bar = document.createElement('div');
+        bar.id = 'readingProgress';
+        bar.className = 'reading-progress';
+        bar.setAttribute('aria-hidden', 'true');
+        document.body.appendChild(bar);
+    }
     injectModals();
     markActiveNav();
+}
+
+function updateFooterSocial(links) {
+    const list = $('footerSocialList');
+    if (!list) return;
+    const fromData = (links || []).filter(l => l.url).slice(0, 5);
+    if (!fromData.length) return;
+    list.innerHTML = fromData.map(l => {
+        const icon = l.icon ? `<i class="${escapeHtml(l.icon)}"></i>` : '<i class="fas fa-link"></i>';
+        return `<li><a href="${escapeHtml(l.url)}" target="_blank" rel="noopener noreferrer">${icon} ${escapeHtml(l.title || l.url)}</a></li>`;
+    }).join('');
+}
+
+function setupReadingProgress() {
+    const bar = $('readingProgress');
+    const surface = document.querySelector('.reading-surface') || $('articleContent');
+    if (!bar || !surface) return;
+    const onScroll = () => {
+        const rect = surface.getBoundingClientRect();
+        const total = surface.offsetHeight - window.innerHeight;
+        if (total <= 0) {
+            bar.style.width = '100%';
+            return;
+        }
+        // Progress based on how far we've scrolled through the article surface
+        const scrolled = Math.min(Math.max(-rect.top, 0), total);
+        const pct = Math.min(100, Math.max(0, (scrolled / total) * 100));
+        bar.style.width = pct + '%';
+    };
+    window.addEventListener('scroll', onScroll, { passive: true });
+    window.addEventListener('resize', onScroll, { passive: true });
+    onScroll();
 }
 
 function markActiveNav() {
@@ -740,9 +809,15 @@ function renderPageContent() {
 
     const navBrandName = $('navBrandName'); if (navBrandName) navBrandName.textContent = site.title || profile.name || 'Nanomind Explorer';
     const navBrandTagline = $('navBrandTagline'); if (navBrandTagline) navBrandTagline.textContent = site.tagline || '';
-    const footerBrandName = $('footerBrandName'); if (footerBrandName) footerBrandName.textContent = site.title || profile.name || '';
-    const footerTagline = $('footerTagline'); if (footerTagline) footerTagline.textContent = site.tagline || '';
-    document.title = site.title ? `${site.title} — Dispatches from the Frontier` : document.title;
+    const brand = site.title || profile.name || 'Nanomind Explorer';
+    const footerBrandName = $('footerBrandName'); if (footerBrandName) footerBrandName.textContent = brand;
+    const footerCopyBrand = $('footerCopyBrand'); if (footerCopyBrand) footerCopyBrand.textContent = brand;
+    const footerTagline = $('footerTagline'); if (footerTagline) footerTagline.textContent = site.tagline || profile.bio || '';
+    updateFooterSocial(links);
+    if ($('heroFeature') || $('articleContent') || $('aboutName') || $('videoGrid')) {
+        // keep path-specific titles; homepage:
+        if ($('heroFeature') && site.title) document.title = `${site.title} — Dispatches from the Frontier`;
+    }
 
     if ($('heroFeature')) {
         renderHero(articles);
@@ -1124,6 +1199,7 @@ function renderArticlePage() {
     }
 
     renderRelated(article);
+    setupReadingProgress();
 }
 
 function renderRelated(article) {
