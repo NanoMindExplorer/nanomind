@@ -9,7 +9,8 @@
     <meta property="og:type" content="article">
     <meta property="og:title" id="ogTitle" content="">
     <meta property="og:description" id="ogDescription" content="">
-    <meta property="og:image" id="ogImage" content="">
+    <meta property="og:image" id="ogImage" content="https://raw.githubusercontent.com/NanoMindExplorer/nanomind/main/bg-ghibli-poster.jpg">
+    <meta name="twitter:card" content="summary_large_image">
     <link rel="icon" type="image/svg+xml" href="favicon.svg">
     <link rel="icon" type="image/png" sizes="32x32" href="icons/icon-32.png">
     <link rel="apple-touch-icon" href="icons/apple-touch-icon.png">
@@ -38,22 +39,24 @@
     <div class="mobile-nav-backdrop" id="mobileNavBackdrop"></div>
     <div class="mobile-nav-panel" id="mobileNavPanel"></div>
 
-    <main>
+    <main class="journal-main">
         <article id="articleRoot">
             <div id="articleContent"></div>
-            <div class="max-w-[820px] mx-auto px-6 py-24 text-center font-ui" id="articleNotFound" style="display:none; color:var(--muted-on-ink)">
+            <div class="section-surface max-w-[820px] mx-auto my-16 text-center" id="articleNotFound" style="display:none;">
                 <p class="eyebrow justify-center mb-4">404</p>
                 <h1 class="font-display text-3xl mb-4" style="color:var(--parchment-text)">Dispatch tidak ditemukan</h1>
-                <p class="mb-6">Mungkin sudah dipindahkan atau dihapus.</p>
+                <p class="mb-6 section-sub" style="margin:0 auto 1.5rem;">Mungkin sudah dipindahkan atau dihapus.</p>
                 <a href="index.html" class="btn-primary inline-flex">Kembali ke Dispatches</a>
             </div>
         </article>
 
-        <section class="related-rail hidden" id="relatedSection">
-            <span class="eyebrow">Baca Juga</span>
-            <h2 class="font-display font-semibold text-2xl md:text-3xl mt-3 mb-8" style="color:var(--parchment-text)">Dispatch Lainnya</h2>
-            <div class="dispatch-grid" id="relatedGrid"></div>
-        </section>
+        <div class="journal-stack">
+            <section class="section-surface related-rail hidden" id="relatedSection">
+                <span class="eyebrow">Baca Juga</span>
+                <h2 class="section-title mt-3 mb-8">Dispatch Lainnya</h2>
+                <div class="dispatch-grid" id="relatedGrid"></div>
+            </section>
+        </div>
     </main>
 
     <div id="footerPlaceholder"></div>

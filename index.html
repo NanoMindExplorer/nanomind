@@ -4,13 +4,19 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Nanomind Explorer — Dispatches from the Frontier</title>
-    <meta name="description" content="Dispatches dari batas eksplorasi kode, ide, dan rasa penasaran — oleh Iman Firmansyah.">
+    <meta name="description" content="Dispatches dari batas eksplorasi kode, ide, dan rasa penasaran — oleh Iman Firmansyah. Termasuk X Articles live dari @Deadmouse_jpeg.">
     <meta name="theme-color" content="#14140F">
     <link rel="canonical" href="https://nanomindexplorer.github.io/nanomind/">
     <meta property="og:type" content="website">
+    <meta property="og:site_name" content="Nanomind Explorer">
     <meta property="og:title" content="Nanomind Explorer — Dispatches from the Frontier">
     <meta property="og:description" content="Dispatches dari batas eksplorasi kode, ide, dan rasa penasaran.">
-    <meta property="og:image" content="https://raw.githubusercontent.com/NanoMindExplorer/nanomind/main/tunnelterminal.jpg">
+    <meta property="og:image" content="https://raw.githubusercontent.com/NanoMindExplorer/nanomind/main/bg-ghibli-poster.jpg">
+    <meta property="og:url" content="https://nanomindexplorer.github.io/nanomind/">
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:title" content="Nanomind Explorer — Dispatches from the Frontier">
+    <meta name="twitter:description" content="Dispatches dari batas eksplorasi kode, ide, dan rasa penasaran.">
+    <meta name="twitter:image" content="https://raw.githubusercontent.com/NanoMindExplorer/nanomind/main/bg-ghibli-poster.jpg">
     <link rel="icon" type="image/svg+xml" href="favicon.svg">
     <link rel="icon" type="image/png" sizes="32x32" href="icons/icon-32.png">
     <link rel="apple-touch-icon" href="icons/apple-touch-icon.png">
@@ -41,30 +47,78 @@
     <div class="mobile-nav-backdrop" id="mobileNavBackdrop"></div>
     <div class="mobile-nav-panel" id="mobileNavPanel"></div>
 
-    <main>
+    <main class="journal-main">
         <!-- HERO / LEAD STORY -->
-        <section id="heroFeature"></section>
-
-        <!-- PHOTO OF THE DAY -->
-        <section class="max-w-[1200px] mx-auto px-6 mt-20 reveal" id="potdSection"></section>
-
-        <!-- CATEGORY FILTER + DISPATCHES GRID -->
-        <section class="max-w-[1200px] mx-auto px-6 mt-24">
-            <div class="flex items-center justify-between mb-8 reveal flex-wrap gap-4">
-                <div>
-                    <span class="eyebrow">Latest</span>
-                    <h2 class="font-display font-semibold text-3xl md:text-4xl mt-3" style="color:var(--parchment-text)">Dispatches</h2>
-                    <p class="font-ui text-sm mt-2" style="color:var(--muted-on-ink)">Termasuk X Articles live dari <a href="https://x.com/Deadmouse_jpeg" target="_blank" rel="noopener noreferrer" style="color:var(--brass);">@Deadmouse_jpeg</a></p>
-                </div>
-                <button class="btn-primary hidden admin-only" id="addArticleBtn"><i class="fas fa-feather-pointed"></i> New Dispatch</button>
-            </div>
-            <div class="flex flex-wrap gap-2 mb-10 reveal" id="categoryPills"></div>
-            <div class="dispatch-grid" id="dispatchGrid"></div>
-            <p class="hidden text-center py-10 font-ui" style="color:var(--muted-on-ink)" id="dispatchEmpty">Belum ada dispatch di kategori ini.</p>
-            <div class="flex justify-center mt-12">
-                <button class="btn-ghost hidden" id="dispatchLoadMoreBtn"><i class="fas fa-chevron-down"></i> Load More</button>
+        <section id="heroFeature" class="hero-slot">
+            <div class="skeleton-hero" id="heroSkeleton" aria-hidden="true">
+                <div class="skeleton-block skeleton-hero-inner"></div>
             </div>
         </section>
+
+        <!-- JOURNAL STACK: panels over landscape -->
+        <div class="journal-stack">
+            <!-- PHOTO OF THE DAY -->
+            <section class="section-surface reveal" id="potdSectionWrap">
+                <div id="potdSection">
+                    <div class="skeleton-potd" id="potdSkeleton" aria-hidden="true">
+                        <div class="skeleton-block skeleton-potd-img"></div>
+                        <div class="skeleton-potd-text">
+                            <div class="skeleton-line w-32"></div>
+                            <div class="skeleton-line w-full"></div>
+                            <div class="skeleton-line w-4/5"></div>
+                            <div class="skeleton-line w-24"></div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- FROM X — live articles rail -->
+            <section class="section-surface reveal" id="xArticlesSection">
+                <div class="section-surface-head">
+                    <div>
+                        <span class="eyebrow">From X</span>
+                        <h2 class="section-title">X Articles</h2>
+                        <p class="section-sub">Long-form live dari <a href="https://x.com/Deadmouse_jpeg" target="_blank" rel="noopener noreferrer" class="text-brass">@Deadmouse_jpeg</a></p>
+                    </div>
+                </div>
+                <div class="x-rail" id="xArticlesRail" aria-label="X Articles">
+                    <div class="skeleton-x-rail" id="xRailSkeleton" aria-hidden="true">
+                        <div class="skeleton-block skeleton-x-card"></div>
+                        <div class="skeleton-block skeleton-x-card"></div>
+                        <div class="skeleton-block skeleton-x-card"></div>
+                        <div class="skeleton-block skeleton-x-card"></div>
+                    </div>
+                </div>
+                <p class="hidden section-empty" id="xArticlesEmpty">Belum ada X Article yang bisa ditarik. Coba refresh nanti.</p>
+            </section>
+
+            <!-- DISPATCHES GRID (local journal) -->
+            <section class="section-surface">
+                <div class="section-surface-head flex-wrap gap-4">
+                    <div>
+                        <span class="eyebrow">Latest</span>
+                        <h2 class="section-title">Dispatches</h2>
+                        <p class="section-sub">Catatan dari meja kerja — build log, deep dive, dan field notes.</p>
+                    </div>
+                    <button class="btn-primary hidden admin-only" id="addArticleBtn"><i class="fas fa-feather-pointed"></i> New Dispatch</button>
+                </div>
+                <div class="flex flex-wrap gap-2 mb-8" id="categoryPills"></div>
+                <div class="dispatch-grid" id="dispatchGrid">
+                    <div class="skeleton-dispatch-grid" id="dispatchSkeleton" aria-hidden="true">
+                        <div class="skeleton-block skeleton-card span-4"></div>
+                        <div class="skeleton-block skeleton-card span-2"></div>
+                        <div class="skeleton-block skeleton-card span-2"></div>
+                        <div class="skeleton-block skeleton-card span-2"></div>
+                        <div class="skeleton-block skeleton-card span-2"></div>
+                        <div class="skeleton-block skeleton-card span-2"></div>
+                    </div>
+                </div>
+                <p class="hidden text-center py-10 font-ui section-empty" id="dispatchEmpty">Belum ada dispatch di kategori ini.</p>
+                <div class="flex justify-center mt-10">
+                    <button class="btn-ghost hidden" id="dispatchLoadMoreBtn"><i class="fas fa-chevron-down"></i> Load More</button>
+                </div>
+            </section>
+        </div>
     </main>
 
     <div id="footerPlaceholder"></div>

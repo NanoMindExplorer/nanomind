@@ -1,0 +1,7 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100" role="img" aria-label="Nanomind Explorer">
+  <rect width="100" height="100" rx="18" fill="#14140F"/>
+  <circle cx="50" cy="50" r="34" fill="none" stroke="#C9974A" stroke-width="4"/>
+  <polygon points="50,18 58,50 42,50" fill="#C9974A"/>
+  <polygon points="50,82 58,50 42,50" fill="#5C5A48"/>
+  <circle cx="50" cy="50" r="6.5" fill="#14140F" stroke="#C9974A" stroke-width="3"/>
+</svg>

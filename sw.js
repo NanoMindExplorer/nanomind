@@ -1,4 +1,4 @@
-const CACHE_NAME = 'nanomind-journal-cache-v8';
+const CACHE_NAME = 'nanomind-journal-cache-v9';
 const SHELL_ASSETS = [
     './',
     './index.html',
@@ -15,7 +15,6 @@ const SHELL_ASSETS = [
     './icons/icon-192.png',
     './icons/icon-512.png'
 ];
-/* Video loop (webm/mp4) dimuat on-demand — tidak di-precache agar shell tetap ringan */
 
 self.addEventListener('install', (event) => {
     event.waitUntil(

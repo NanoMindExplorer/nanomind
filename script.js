@@ -484,8 +484,16 @@ async function loadData() {
         renderPageContent();
         showToast('Gagal memuat data. Cek koneksi internet.', 'error');
     } finally {
+        hideHomepageSkeletons();
         hideLoader();
     }
+}
+
+function hideHomepageSkeletons() {
+    ['heroSkeleton', 'potdSkeleton', 'xRailSkeleton', 'dispatchSkeleton'].forEach(id => {
+        const el = $(id);
+        if (el) el.remove();
+    });
 }
 
 // ==========================================
@@ -739,6 +747,7 @@ function renderPageContent() {
     if ($('heroFeature')) {
         renderHero(articles);
         renderPhotoOfDay(photoOfDay);
+        renderXArticlesRail(articles);
         renderCategoryPills(categories, state.dispatchFilter);
         renderDispatchGrid();
     }
@@ -746,7 +755,11 @@ function renderPageContent() {
         renderArticlePage();
     }
     if ($('aboutName')) {
-        $('aboutAvatar').src = profile.avatar || 'https://via.placeholder.com/132';
+        const av = $('aboutAvatar');
+        if (av) {
+            av.src = profile.avatar || 'avatar.jpg';
+            av.onerror = () => { av.onerror = null; av.src = 'avatar.jpg'; };
+        }
         $('aboutName').textContent = profile.name || 'Your Name';
         $('aboutBio').textContent = profile.bio || '';
         renderProjects(projects);
@@ -772,22 +785,30 @@ function renderPageContent() {
 function renderHero(articles) {
     const wrap = $('heroFeature');
     if (!wrap) return;
-    const featured = (articles || []).find(a => a.featured) || articles[0];
+    const list = articles || [];
+    // Prefer local featured for journal hero; fall back to any featured, then first local, then any
+    const local = list.filter(a => a.source !== 'x');
+    const featured =
+        local.find(a => a.featured) ||
+        list.find(a => a.featured) ||
+        local[0] ||
+        list[0];
     if (!featured) {
-        wrap.innerHTML = `<div class="max-w-[1200px] mx-auto px-6 py-24 text-center font-ui" style="color:var(--muted-on-ink)">Belum ada dispatch. Mulai tulis yang pertama lewat tombol admin di pojok kanan bawah.</div>`;
+        wrap.innerHTML = `<div class="section-surface mx-6 text-center font-ui" style="color:var(--muted-on-ink)">Belum ada dispatch. Mulai tulis yang pertama lewat tombol admin di pojok kanan bawah.</div>`;
+        wrap.className = 'hero-slot';
         return;
     }
     const cat = (state.data.categories || []).find(c => c.id === featured.category) || { name: 'Dispatch', accent: 'brass' };
-    wrap.className = 'accent-' + (cat.accent || 'brass');
+    wrap.className = 'hero-slot accent-' + (cat.accent || 'brass');
     wrap.innerHTML = `
         <div class="hero-feature">
-            <img src="${featured.coverImage}" alt="${escapeHtml(featured.title)}">
+            <img src="${escapeHtml(featured.coverImage || '')}" alt="${escapeHtml(featured.title)}" fetchpriority="high">
             <svg class="route-line" viewBox="0 0 200 400" style="left:6%; top:4%; width:100px; height:60%;" aria-hidden="true"><path d="M20,10 C60,80 10,160 90,220 S140,340 100,380" /></svg>
             <div class="hero-feature-content">
                 <span class="eyebrow" style="color:#fff;">${escapeHtml(cat.name)}</span>
                 <h1 class="mt-5">${escapeHtml(featured.title)}</h1>
                 ${featured.dek ? `<p class="dek">${escapeHtml(featured.dek)}</p>` : ''}
-                <a href="article.html?id=${featured.id}" class="btn-primary mt-8"><i class="fas fa-book-open"></i> Baca Dispatch</a>
+                <a href="article.html?id=${encodeURIComponent(featured.id)}" class="btn-primary mt-8"><i class="fas fa-book-open"></i> Baca Dispatch</a>
             </div>
         </div>`;
 }
@@ -840,15 +861,66 @@ function renderCategoryPills(categories, activeFilter) {
     if (manageBtn) manageBtn.addEventListener('click', () => openCategoryModal());
 }
 
+function getArticlesSorted() {
+    return (state.data.articles || []).slice().sort((a, b) => new Date(b.date) - new Date(a.date));
+}
+
+/** Grid dispatches: saat "all", X Articles ditampilkan di rail terpisah — grid fokus local journal. */
+function getDispatchArticles() {
+    const all = getArticlesSorted();
+    const filter = state.dispatchFilter || 'all';
+    if (filter === 'all') return all.filter(a => a.source !== 'x');
+    if (filter === 'x-articles') return all.filter(a => a.source === 'x' || a.category === 'x-articles');
+    return all.filter(a => a.category === filter);
+}
+
+function renderXArticlesRail(articles) {
+    const rail = $('xArticlesRail');
+    const section = $('xArticlesSection');
+    const empty = $('xArticlesEmpty');
+    if (!rail) return;
+
+    const xList = (articles || [])
+        .filter(a => a.source === 'x')
+        .sort((a, b) => new Date(b.date) - new Date(a.date));
+
+    if (!xList.length) {
+        rail.innerHTML = '';
+        if (empty) empty.classList.remove('hidden');
+        if (section) section.classList.add('is-empty');
+        return;
+    }
+    if (empty) empty.classList.add('hidden');
+    if (section) section.classList.remove('is-empty');
+
+    rail.innerHTML = xList.map(a => `
+        <a href="article.html?id=${encodeURIComponent(a.id)}" class="x-card reveal">
+            <div class="x-thumb">
+                <img src="${escapeHtml(a.coverImage || '')}" alt="${escapeHtml(a.title)}" loading="lazy">
+                <span class="x-source-badge" title="X Articles"><i class="fab fa-x-twitter"></i> X</span>
+            </div>
+            <div class="x-body">
+                <h3>${escapeHtml(a.title)}</h3>
+                ${a.dek ? `<p class="x-dek">${escapeHtml(a.dek)}</p>` : ''}
+                <div class="x-meta">
+                    <span>${formatDate(a.date)}</span>
+                    <span>·</span>
+                    <span>${a.readTime || 5} min</span>
+                </div>
+            </div>
+        </a>
+    `).join('');
+}
+
 function renderDispatchGrid() {
     const wrap = $('dispatchGrid');
     if (!wrap) return;
-    const all = (state.data.articles || []).slice().sort((a, b) => new Date(b.date) - new Date(a.date));
-    const filtered = (state.dispatchFilter && state.dispatchFilter !== 'all') ? all.filter(a => a.category === state.dispatchFilter) : all;
+    const filtered = getDispatchArticles();
     const visibleCount = state.dispatchPage * DISPATCH_PAGE_SIZE;
     const visible = filtered.slice(0, visibleCount);
 
-    $('dispatchEmpty').classList.toggle('hidden', visible.length > 0);
+    const emptyEl = $('dispatchEmpty');
+    if (emptyEl) emptyEl.classList.toggle('hidden', visible.length > 0);
     wrap.innerHTML = visible.map((a, i) => dispatchCardHtml(a, i)).join('');
     const loadMoreBtn = $('dispatchLoadMoreBtn');
     if (loadMoreBtn) {
@@ -872,6 +944,9 @@ function dispatchCardHtml(a, i) {
     const xBadge = a.source === 'x'
         ? `<span class="x-source-badge" title="Ditarik live dari X Articles"><i class="fab fa-x-twitter"></i> X</span>`
         : '';
+    const dek = a.dek
+        ? `<p class="card-dek">${escapeHtml(a.dek)}</p>`
+        : '';
     return `
         <a href="article.html?id=${encodeURIComponent(a.id)}" class="dispatch-card ${sizeClass} ${span} accent-${cat.accent || 'brass'} reveal${a.source === 'x' ? ' from-x' : ''}">
             <div class="thumb">
@@ -881,6 +956,7 @@ function dispatchCardHtml(a, i) {
             <div class="card-body">
                 <span class="card-eyebrow">${escapeHtml(cat.name)}</span>
                 <h3>${escapeHtml(a.title)}</h3>
+                ${dek}
                 <div class="card-meta"><span>${formatDate(a.date)}</span><span>·</span><span>${a.readTime || 5} min</span></div>
             </div>
         </a>`;

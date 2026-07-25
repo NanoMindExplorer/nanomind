@@ -6,6 +6,10 @@
     <title>Watch — Nanomind Explorer</title>
     <meta name="description" content="Kumpulan video dan shorts dari Nanomind Explorer — cuplikan lapangan dari proses build.">
     <meta name="theme-color" content="#14140F">
+    <meta property="og:type" content="website">
+    <meta property="og:title" content="Watch — Nanomind Explorer">
+    <meta property="og:description" content="Kumpulan video dan shorts dari Nanomind Explorer — cuplikan lapangan dari proses build.">
+    <meta property="og:image" content="https://raw.githubusercontent.com/NanoMindExplorer/nanomind/main/bg-ghibli-poster.jpg">
     <link rel="icon" type="image/svg+xml" href="favicon.svg">
     <link rel="icon" type="image/png" sizes="32x32" href="icons/icon-32.png">
     <link rel="apple-touch-icon" href="icons/apple-touch-icon.png">
@@ -35,32 +39,34 @@
     <div class="mobile-nav-backdrop" id="mobileNavBackdrop"></div>
     <div class="mobile-nav-panel" id="mobileNavPanel"></div>
 
-    <main>
-        <section class="max-w-[1200px] mx-auto px-6 pt-16 pb-4">
-            <div class="flex items-center justify-between mb-8 reveal flex-wrap gap-4">
-                <div>
-                    <span class="eyebrow">Field Footage</span>
-                    <h1 class="font-display font-semibold text-4xl md:text-5xl mt-3" style="color:var(--parchment-text)">Watch</h1>
-                    <p class="font-ui mt-3 max-w-lg" style="color:var(--muted-on-ink)">Cuplikan video dan shorts dari proses build — di lapangan, bukan cuma di layar.</p>
+    <main class="journal-main">
+        <div class="journal-stack">
+            <section class="section-surface reveal">
+                <div class="section-surface-head flex-wrap gap-4">
+                    <div>
+                        <span class="eyebrow">Field Footage</span>
+                        <h1 class="section-title section-title--lg">Watch</h1>
+                        <p class="section-sub">Cuplikan video dan shorts dari proses build — di lapangan, bukan cuma di layar.</p>
+                    </div>
+                    <button class="btn-primary hidden admin-only" id="addVideoBtn"><i class="fas fa-video"></i> Add Video</button>
                 </div>
-                <button class="btn-primary hidden admin-only" id="addVideoBtn"><i class="fas fa-video"></i> Add Video</button>
-            </div>
-            <div class="flex flex-wrap gap-2 mb-4 reveal" id="videoFilterTabs">
-                <button class="cat-pill active" data-vfilter="all">All</button>
-                <button class="cat-pill" data-vfilter="landscape">Landscape</button>
-                <button class="cat-pill" data-vfilter="shorts">Shorts</button>
-            </div>
-        </section>
+                <div class="flex flex-wrap gap-2 mb-2" id="videoFilterTabs">
+                    <button class="cat-pill active" data-vfilter="all">All</button>
+                    <button class="cat-pill" data-vfilter="landscape">Landscape</button>
+                    <button class="cat-pill" data-vfilter="shorts">Shorts</button>
+                </div>
+            </section>
 
-        <section class="max-w-[1200px] mx-auto px-6 mb-6 reveal hidden" id="shortsShelfWrap">
-            <h2 class="font-display font-semibold text-xl mb-4 flex items-center gap-2" style="color:var(--parchment-text)"><i class="fas fa-bolt" style="color:var(--brass)"></i> Shorts</h2>
-            <div class="shorts-shelf" id="shortsShelfGrid"></div>
-        </section>
+            <section class="section-surface reveal hidden" id="shortsShelfWrap">
+                <h2 class="font-display font-semibold text-xl mb-4 flex items-center gap-2" style="color:var(--parchment-text)"><i class="fas fa-bolt" style="color:var(--brass)"></i> Shorts</h2>
+                <div class="shorts-shelf" id="shortsShelfGrid"></div>
+            </section>
 
-        <section class="max-w-[1200px] mx-auto px-6 mt-8 mb-24">
-            <div class="video-grid" id="videoGrid"></div>
-            <p class="hidden text-center py-10 font-ui" style="color:var(--muted-on-ink)" id="videoEmpty">Belum ada video. Tambahkan lewat tombol admin di pojok kanan bawah.</p>
-        </section>
+            <section class="section-surface">
+                <div class="video-grid" id="videoGrid"></div>
+                <p class="hidden text-center py-10 font-ui section-empty" id="videoEmpty">Belum ada video. Tambahkan lewat tombol admin di pojok kanan bawah.</p>
+            </section>
+        </div>
     </main>
 
     <div id="footerPlaceholder"></div>
