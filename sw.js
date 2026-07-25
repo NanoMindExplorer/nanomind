@@ -1,4 +1,4 @@
-const CACHE_NAME = 'nanomind-journal-cache-v2';
+const CACHE_NAME = 'nanomind-journal-cache-v3';
 const SHELL_ASSETS = [
     './',
     './index.html',
@@ -8,6 +8,8 @@ const SHELL_ASSETS = [
     './style.css',
     './script.js',
     './x-articles.json',
+    './bg-living-valley.webp',
+    './bg-living-valley.jpg',
     './favicon.svg',
     './manifest.json',
     './icons/icon-192.png',
