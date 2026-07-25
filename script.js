@@ -60,115 +60,73 @@ function hideLoader() {
 }
 
 // ==========================================
-// LIVING ANIME BACKGROUND — refined (art + soft fireflies)
+// LIVING GHIBLI-INSPIRED BACKGROUND — original looping ambient video
 // ==========================================
 function injectLivingBackground() {
     if (document.getElementById('livingBg')) return;
     document.body.classList.add('has-living-bg');
 
+    const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
     const root = document.createElement('div');
     root.id = 'livingBg';
     root.className = 'living-bg';
     root.setAttribute('aria-hidden', 'true');
+
+    // Poster still always present; video layer only when motion is OK
     root.innerHTML = `
-        <div class="living-bg-photo"></div>
+        <div class="living-bg-poster"></div>
+        ${reduceMotion ? '' : `
+        <video class="living-bg-video" id="livingBgVideo"
+            autoplay muted loop playsinline preload="metadata"
+            poster="bg-ghibli-poster.webp">
+            <source src="bg-ghibli-loop.webm" type="video/webm">
+            <source src="bg-ghibli-loop.mp4" type="video/mp4">
+        </video>`}
         <div class="living-bg-glow"></div>
         <div class="living-bg-veil"></div>
         <div class="living-bg-vignette"></div>
-        <canvas class="living-bg-canvas" id="livingBgCanvas"></canvas>
         <div class="living-bg-noise"></div>
     `;
     document.body.prepend(root);
-    initLivingParticles();
+
+    if (!reduceMotion) {
+        const video = document.getElementById('livingBgVideo');
+        if (video) setupLivingBgVideo(video);
+    }
 }
 
-function initLivingParticles() {
-    const canvas = document.getElementById('livingBgCanvas');
-    if (!canvas) return;
-    if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
-        canvas.style.display = 'none';
-        return;
-    }
-
-    const ctx = canvas.getContext('2d', { alpha: true });
-    let w = 0, h = 0, raf = 0, particles = [];
-    const isMobile = window.matchMedia('(max-width: 720px)').matches;
-    // Sedikit partikel — aksen halus, bukan confetti
-    const COUNT = isMobile ? 12 : 20;
-    let dpr = Math.min(window.devicePixelRatio || 1, 2);
-
-    function resize() {
-        dpr = Math.min(window.devicePixelRatio || 1, 2);
-        w = window.innerWidth;
-        h = window.innerHeight;
-        canvas.width = Math.floor(w * dpr);
-        canvas.height = Math.floor(h * dpr);
-        canvas.style.width = w + 'px';
-        canvas.style.height = h + 'px';
-        ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
-    }
-
-    function spawn() {
-        // Partikel hanya di area tengah-bawah agar tidak mengganggu hero/teks
-        return {
-            x: Math.random() * w,
-            y: h * (0.35 + Math.random() * 0.6),
-            r: 0.7 + Math.random() * 1.6,
-            vx: (Math.random() - 0.5) * 0.12,
-            vy: -0.04 - Math.random() * 0.1,
-            phase: Math.random() * Math.PI * 2,
-            pulse: 0.5 + Math.random() * 0.6,
-            alpha: 0.12 + Math.random() * 0.18
-        };
-    }
-
-    function resetParticles() {
-        particles = Array.from({ length: COUNT }, () => spawn());
-    }
-
-    function tick(t) {
-        ctx.clearRect(0, 0, w, h);
-        const time = t * 0.001;
-        for (const p of particles) {
-            p.phase += 0.008 * p.pulse;
-            p.x += p.vx + Math.sin(time * 0.35 + p.phase) * 0.06;
-            p.y += p.vy;
-            if (p.y < h * 0.2) { p.y = h + 8; p.x = Math.random() * w; }
-            if (p.x < -12) p.x = w + 8;
-            if (p.x > w + 12) p.x = -8;
-
-            const twinkle = 0.65 + 0.35 * Math.sin(time * (0.9 + p.pulse) + p.phase);
-            const a = p.alpha * twinkle;
-            const radius = p.r * 4.5;
-            const g = ctx.createRadialGradient(p.x, p.y, 0, p.x, p.y, radius);
-            g.addColorStop(0, `rgba(255, 236, 190, ${a})`);
-            g.addColorStop(0.45, `rgba(201, 151, 74, ${a * 0.28})`);
-            g.addColorStop(1, 'rgba(201, 151, 74, 0)');
-            ctx.fillStyle = g;
-            ctx.beginPath();
-            ctx.arc(p.x, p.y, radius, 0, Math.PI * 2);
-            ctx.fill();
+function setupLivingBgVideo(video) {
+    const markReady = () => {
+        video.classList.add('is-ready');
+        video.dataset.playing = video.paused ? '0' : '1';
+    };
+    const tryPlay = () => {
+        const p = video.play();
+        if (p && typeof p.catch === 'function') {
+            p.then(() => { video.dataset.playing = '1'; markReady(); })
+             .catch(() => { /* keep poster underneath */ });
+        } else {
+            markReady();
         }
-        raf = requestAnimationFrame(tick);
-    }
+    };
+    video.addEventListener('canplay', () => { markReady(); tryPlay(); }, { once: true });
+    video.addEventListener('playing', () => { video.dataset.playing = '1'; markReady(); });
+    tryPlay();
 
-    resize();
-    resetParticles();
-    raf = requestAnimationFrame(tick);
-
-    let resizeTimer;
-    window.addEventListener('resize', () => {
-        clearTimeout(resizeTimer);
-        resizeTimer = setTimeout(() => { resize(); resetParticles(); }, 150);
-    }, { passive: true });
-
+    // Hemat baterai: pause saat tab tidak aktif
     document.addEventListener('visibilitychange', () => {
         if (document.hidden) {
-            cancelAnimationFrame(raf);
-            raf = 0;
-        } else if (!raf) {
-            raf = requestAnimationFrame(tick);
+            video.pause();
+            video.dataset.playing = '0';
+        } else {
+            tryPlay();
         }
+    });
+
+    // Jika video gagal, biarkan poster saja
+    video.addEventListener('error', () => {
+        video.style.display = 'none';
+        document.body.classList.add('living-bg-static');
     });
 }
 

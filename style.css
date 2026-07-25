@@ -54,10 +54,9 @@ body.has-living-bg { background: #0b0d0b; }
 a { color: inherit; }
 @media (prefers-reduced-motion: reduce) {
     *, *::before, *::after { animation-duration: 0.001ms !important; animation-iteration-count: 1 !important; transition-duration: 0.001ms !important; scroll-behavior: auto !important; }
-    .living-bg-photo { animation: none !important; transform: scale(1.06) !important; }
 }
 
-/* ===== Living anime background — refined, readable =====
+/* ===== Living Ghibli-inspired ambient loop (original art, not licensed Ghibli) =====
    z-index: -1 keeps bg behind all content without stacking hacks */
 .living-bg {
     position: fixed;
@@ -67,76 +66,79 @@ a { color: inherit; }
     pointer-events: none;
     background: #0b0d0b;
 }
-.living-bg-photo {
+.living-bg-poster,
+.living-bg-video {
     position: absolute;
-    inset: -3%;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+}
+.living-bg-poster {
     background-color: #0b0d0b;
-    background-image: url('bg-living-valley.jpg');
+    background-image: url('bg-ghibli-poster.jpg');
     background-size: cover;
-    background-position: center 40%;
+    background-position: center 42%;
     background-repeat: no-repeat;
-    filter: saturate(0.92) contrast(1.02) brightness(0.78);
-    transform: scale(1.06);
-    animation: livingDrift 70s ease-in-out infinite alternate;
-    will-change: transform;
+    filter: saturate(0.96) contrast(1.03) brightness(0.8);
 }
-@supports (background-image: url('bg-living-valley.webp')) {
-    .living-bg-photo { background-image: url('bg-living-valley.webp'); }
+@supports (background-image: url('bg-ghibli-poster.webp')) {
+    .living-bg-poster { background-image: url('bg-ghibli-poster.webp'); }
 }
-@keyframes livingDrift {
-    0%   { transform: scale(1.06) translate3d(-0.8%, 0.4%, 0); }
-    100% { transform: scale(1.1) translate3d(0.9%, -0.5%, 0); }
+.living-bg-video {
+    object-fit: cover;
+    object-position: center 42%;
+    filter: saturate(0.98) contrast(1.04) brightness(0.82);
+    /* soft fade-in after first frame */
+    opacity: 0;
+    transition: opacity 1.2s ease;
 }
-/* Warm ambient wash — soft, not flashy */
+.living-bg-video.is-ready,
+.living-bg-video:not([poster]) {
+    opacity: 1;
+}
+/* JS sets .is-ready on canplay; also show when playing */
+.living-bg-video[data-playing="1"] { opacity: 1; }
+/* Warm golden-hour wash — soft, cinematic */
 .living-bg-glow {
     position: absolute;
     inset: 0;
     background:
-        radial-gradient(ellipse 60% 50% at 70% 32%, rgba(201, 151, 74, 0.14), transparent 58%),
-        radial-gradient(ellipse 50% 40% at 18% 78%, rgba(70, 100, 90, 0.12), transparent 60%);
-    opacity: 0.9;
+        radial-gradient(ellipse 58% 48% at 72% 28%, rgba(255, 196, 120, 0.16), transparent 60%),
+        radial-gradient(ellipse 48% 38% at 18% 80%, rgba(70, 110, 95, 0.12), transparent 62%);
+    opacity: 0.95;
 }
-/* Readability scrim — consistent dark so content never fights the art */
+/* Readability scrim — content stays legible over the loop */
 .living-bg-veil {
     position: absolute;
     inset: 0;
     background:
         linear-gradient(180deg,
-            rgba(11, 13, 11, 0.72) 0%,
-            rgba(11, 13, 11, 0.66) 35%,
-            rgba(11, 13, 11, 0.74) 70%,
+            rgba(11, 13, 11, 0.7) 0%,
+            rgba(11, 13, 11, 0.62) 32%,
+            rgba(11, 13, 11, 0.7) 68%,
             rgba(11, 13, 11, 0.88) 100%);
 }
 .living-bg-vignette {
     position: absolute;
     inset: 0;
-    background: radial-gradient(ellipse 85% 75% at 50% 40%, transparent 20%, rgba(8, 10, 9, 0.55) 100%);
-}
-.living-bg-canvas {
-    position: absolute;
-    inset: 0;
-    width: 100%;
-    height: 100%;
-    display: block;
-    opacity: 0.55;
+    background: radial-gradient(ellipse 88% 78% at 50% 40%, transparent 18%, rgba(8, 10, 9, 0.52) 100%);
 }
 .living-bg-noise {
     position: absolute;
     inset: 0;
-    opacity: 0.03;
+    opacity: 0.028;
     background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='2' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
     background-size: 160px 160px;
     pointer-events: none;
 }
 @media (max-width: 720px) {
-    .living-bg-photo {
-        animation-duration: 90s;
-        filter: saturate(0.9) contrast(1.02) brightness(0.72);
+    .living-bg-poster,
+    .living-bg-video {
+        filter: saturate(0.95) contrast(1.02) brightness(0.76);
     }
-    .living-bg-canvas { opacity: 0.4; }
 }
 @media (prefers-reduced-motion: reduce) {
-    .living-bg-canvas { display: none !important; }
+    .living-bg-video { display: none !important; }
 }
 a:focus-visible, button:focus-visible, [tabindex]:focus-visible, input:focus-visible, textarea:focus-visible, select:focus-visible { outline: 2px solid var(--brass); outline-offset: 3px; border-radius: 4px; }
 ::selection { background: var(--brass); color: var(--ink); }

@@ -1,4 +1,4 @@
-const CACHE_NAME = 'nanomind-journal-cache-v4';
+const CACHE_NAME = 'nanomind-journal-cache-v5';
 const SHELL_ASSETS = [
     './',
     './index.html',
@@ -8,13 +8,14 @@ const SHELL_ASSETS = [
     './style.css',
     './script.js',
     './x-articles.json',
-    './bg-living-valley.webp',
-    './bg-living-valley.jpg',
+    './bg-ghibli-poster.webp',
+    './bg-ghibli-poster.jpg',
     './favicon.svg',
     './manifest.json',
     './icons/icon-192.png',
     './icons/icon-512.png'
 ];
+/* Video loop (webm/mp4) dimuat on-demand — tidak di-precache agar shell tetap ringan */
 
 self.addEventListener('install', (event) => {
     event.waitUntil(
