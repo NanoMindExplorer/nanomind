@@ -60,74 +60,24 @@ function hideLoader() {
 }
 
 // ==========================================
-// LIVING GHIBLI-INSPIRED BACKGROUND — original looping ambient video
+// GHIBLI-INSPIRED BACKGROUND — static 1080p art (no video = no shake)
 // ==========================================
 function injectLivingBackground() {
     if (document.getElementById('livingBg')) return;
     document.body.classList.add('has-living-bg');
 
-    const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
     const root = document.createElement('div');
     root.id = 'livingBg';
     root.className = 'living-bg';
     root.setAttribute('aria-hidden', 'true');
-
-    // Poster still always present; video layer only when motion is OK
+    // Static image only — looping video caused visible shake/vibration
     root.innerHTML = `
         <div class="living-bg-poster"></div>
-        ${reduceMotion ? '' : `
-        <video class="living-bg-video" id="livingBgVideo"
-            autoplay muted loop playsinline preload="metadata"
-            poster="bg-ghibli-poster.webp">
-            <source src="bg-ghibli-loop.webm" type="video/webm">
-            <source src="bg-ghibli-loop.mp4" type="video/mp4">
-        </video>`}
         <div class="living-bg-glow"></div>
         <div class="living-bg-veil"></div>
-        <div class="living-bg-vignette"></div>
         <div class="living-bg-noise"></div>
     `;
     document.body.prepend(root);
-
-    if (!reduceMotion) {
-        const video = document.getElementById('livingBgVideo');
-        if (video) setupLivingBgVideo(video);
-    }
-}
-
-function setupLivingBgVideo(video) {
-    const markReady = () => {
-        video.classList.add('is-ready');
-        video.dataset.playing = video.paused ? '0' : '1';
-    };
-    const tryPlay = () => {
-        const p = video.play();
-        if (p && typeof p.catch === 'function') {
-            p.then(() => { video.dataset.playing = '1'; markReady(); })
-             .catch(() => { /* keep poster underneath */ });
-        } else {
-            markReady();
-        }
-    };
-    video.addEventListener('canplay', () => { markReady(); tryPlay(); }, { once: true });
-    video.addEventListener('playing', () => { video.dataset.playing = '1'; markReady(); });
-    tryPlay();
-
-    // Hemat baterai: pause saat tab tidak aktif
-    document.addEventListener('visibilitychange', () => {
-        if (document.hidden) {
-            video.pause();
-            video.dataset.playing = '0';
-        } else {
-            tryPlay();
-        }
-    });
-
-    // Jika video gagal, biarkan poster saja
-    video.addEventListener('error', () => {
-        video.style.display = 'none';
-        document.body.classList.add('living-bg-static');
-    });
 }
 
 // ==========================================
