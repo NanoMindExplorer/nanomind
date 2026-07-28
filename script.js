@@ -3090,6 +3090,14 @@ function setupMediumRetryButtons() {
  * Klik-tahan-geser dengan mouse buat rail horizontal (X/Medium Articles).
  * .x-rail sebelumnya cuma overflow-x:auto — jalan lewat sentuhan/trackpad/scrollbar,
  * tapi mouse biasa (tanpa trackpad/touch) gak bisa "nge-drag" isinya.
+ *
+ * BUG FIX: threshold lama `moved > 6` terlalu sensitif. Pada mouse dengan
+ * sedikit jitter, atau trackpad, user gak sadar "drag" 7-10px saat klik
+ * card → click di-block → artikel gak kebuka. Fix:
+ *   - threshold 6 → 15px (lebih toleran terhadap micro-movement)
+ *   - reset `moved` ke 0 langsung setelah click handler dieksekusi,
+ *     supaya klik berikutnya mulai dari kondisi bersih
+ *   - hanya block jika drag terjadi dalam 500ms terakhir (anti false-positive)
  */
 function enableRailDragScroll(rail) {
     if (!rail || rail.dataset.dragScrollBound) return;
@@ -3098,20 +3106,33 @@ function enableRailDragScroll(rail) {
     let startX = 0;
     let startScroll = 0;
     let moved = 0;
+    let lastDragTime = 0;
 
     const onDown = (e) => {
+        // Hanya tangani klik kiri (button 0). Klik kanan/tengah jangan trigger drag.
+        if (e.button !== 0) return;
         isDown = true;
         moved = 0;
         startX = e.pageX;
         startScroll = rail.scrollLeft;
         rail.classList.add('dragging');
-        e.preventDefault(); // cegah browser nge-drag <img> di dalam card
+        // JANGAN preventDefault di sini — itu bikin klik <a> di dalam card
+        // gak ke-trigger sama sekali. Kita tangani scroll via mousemove saja.
     };
     const onMove = (e) => {
         if (!isDown) return;
         const dx = e.pageX - startX;
-        moved = Math.max(moved, Math.abs(dx));
-        rail.scrollLeft = startScroll - dx;
+        const absDx = Math.abs(dx);
+        // Update moved (max distance yang pernah tercapai)
+        if (absDx > moved) {
+            moved = absDx;
+            lastDragTime = Date.now();
+        }
+        // Hanya scroll kalau benar-benar drag (> 3px) supaya micro-jitter
+        // gak menggeser rail saat user cuma mau klik.
+        if (absDx > 3) {
+            rail.scrollLeft = startScroll - dx;
+        }
     };
     const stop = () => {
         if (!isDown) return;
@@ -3123,9 +3144,14 @@ function enableRailDragScroll(rail) {
     window.addEventListener('mousemove', onMove);
     window.addEventListener('mouseup', stop);
 
-    // Kalau abis nge-drag (bukan klik biasa), jangan biarkan <a> di dalamnya ke-navigasi
+    // Kalau BENAR-BENAR drag (> 15px) DAN baru saja (< 500ms), block klik <a>.
+    // Threshold 15px cukup tinggi supaya klik biasa + micro-jitter tetap lewat.
+    // Reset moved ke 0 setelah handle, supaya klik berikutnya fresh.
     rail.addEventListener('click', (e) => {
-        if (moved > 6) {
+        const wasRealDrag = moved > 15 && (Date.now() - lastDragTime) < 500;
+        // Reset state supaya klik berikutnya mulai dari 0
+        moved = 0;
+        if (wasRealDrag) {
             e.preventDefault();
             e.stopPropagation();
         }
