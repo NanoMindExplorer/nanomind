@@ -5,7 +5,7 @@
   "categoryId": "medium-articles",
   "feedUrl": "https://medium.com/feed/@0wlsky",
   "cacheMinutes": 30,
-  "lastSync": "2026-07-28T09:32:54Z",
+  "lastSync": "2026-07-28T12:22:58Z",
   "articles": [
     {
       "guid": "https://medium.com/p/53c3b511c543",
@@ -133,7 +133,7 @@
   "notes": "Auto-updated by tools/sync-medium-articles.py (GitHub Actions) dari RSS resmi Medium (https://medium.com/feed/@0wlsky). Medium hanya mengekspos story terbaru lewat RSS (biasanya ~10-25), jadi script ini menggabungkan story baru dengan yang sudah tersimpan supaya story lama tidak hilang begitu tergeser dari feed.",
   "lastSyncStats": {
     "fetched": 10,
-    "added": 10,
+    "added": 0,
     "total": 10
   }
 }
