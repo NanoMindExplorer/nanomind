@@ -557,7 +557,28 @@ function renderSearchResults(q) {
 // ==========================================
 function registerServiceWorker() {
     if (!('serviceWorker' in navigator)) return;
-    window.addEventListener('load', () => { navigator.serviceWorker.register('sw.js').catch(() => {}); });
+    window.addEventListener('load', () => {
+        navigator.serviceWorker.register('sw.js', { updateViaCache: 'none' })
+            .then(reg => {
+                // Cek update SW setiap 1 jam
+                setInterval(() => reg.update().catch(() => {}), 60 * 60 * 1000);
+            })
+            .catch(() => {});
+        // Saat SW baru activated, reload page sekali supaya dapat code baru
+        let refreshing = false;
+        navigator.serviceWorker.addEventListener('controllerchange', () => {
+            if (refreshing) return;
+            refreshing = true;
+            console.log('[SW] controller changed — reloading to get new code');
+            location.reload();
+        });
+        // Listen for messages from SW
+        navigator.serviceWorker.addEventListener('message', (event) => {
+            if (event.data && event.data.type === 'SW_UPDATED') {
+                console.log('[SW] got SW_UPDATED message:', event.data.version);
+            }
+        });
+    });
 }
 
 // ==========================================

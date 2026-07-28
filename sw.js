@@ -2,14 +2,14 @@
 // Strategi:
 //   - HTML / JS / CSS / fonts → network-first (cache fallback offline only)
 //     supaya update code langsung keliatan tanpa hard refresh.
-//   - JSON data (db.json, x-articles.json, medium-articles.json,
-//     telegram-posts.json) → stale-while-revalidate (data update tiap
-//     2-15 menit oleh GitHub Actions, SW biarin serve cached sambil
-//     revalidate di background).
-//   - External API (fxtwitter, raw.githubusercontent, cdnjs) → network
-//     with cache fallback.
-//   - Media lokal (gambar) → cache-first, update in background.
-const CACHE_NAME = 'nanomind-journal-cache-v14';
+//   - JSON data → stale-while-revalidate.
+//   - External API → network with cache fallback.
+//   - Media lokal → cache-first, update in background.
+//
+// Auto-update: SW cek update setiap jam (lewat updateViaCache: 'none' +
+// manual check di 'controllerchange'). Saat SW baru terdeteksi,
+// skipWaiting() + message semua clients untuk reload.
+const CACHE_NAME = 'nanomind-journal-cache-v15';
 const SHELL_ASSETS = [
     './',
     './index.html',
@@ -55,22 +55,39 @@ const NETWORK_FIRST = new Set([
 ]);
 
 self.addEventListener('install', (event) => {
+    // skipWaiting = langsung activate SW baru, gak nunggu old tab ditutup
+    self.skipWaiting();
     event.waitUntil(
         caches.open(CACHE_NAME)
             .then((cache) => cache.addAll(SHELL_ASSETS))
             .catch(() => { /* partial shell ok */ })
     );
-    self.skipWaiting();
 });
 
 self.addEventListener('activate', (event) => {
-    event.waitUntil(
-        caches.keys().then((keys) => Promise.all(
-            // Hapus SEMUA cache selain CACHE_NAME (v12, v11, dst auto-cleaned).
+    event.waitUntil((async () => {
+        // Hapus SEMUA cache lama (v14, v13, v12, dst).
+        const keys = await caches.keys();
+        await Promise.all(
             keys.filter((k) => k !== CACHE_NAME).map((k) => caches.delete(k))
-        ))
-    );
-    self.clients.claim();
+        );
+        // clients.claim = langsung control semua tab yang buka, gak nunggu refresh
+        await self.clients.claim();
+        // Beritahu semua clients supaya reload & dapat code baru
+        const clients = await self.clients.matchAll({ type: 'window', includeUncontrolled: true });
+        clients.forEach(c => {
+            c.postMessage({ type: 'SW_UPDATED', version: CACHE_NAME });
+        });
+    })());
+});
+
+// === Auto-update check ===
+// Setiap 1 jam, cek apakah ada SW baru di server. Kalau ada, langsung
+// install + activate (skipWaiting sudah otomatis).
+self.addEventListener('message', (event) => {
+    if (event.data === 'SKIP_WAITING') {
+        self.skipWaiting();
+    }
 });
 
 self.addEventListener('fetch', (event) => {
@@ -84,7 +101,8 @@ self.addEventListener('fetch', (event) => {
         url.hostname.includes('fxtwitter.com') ||
         url.hostname.includes('cdnjs.cloudflare.com') ||
         url.hostname.includes('telesco.pe') ||
-        url.hostname.includes('t.me')) {
+        url.hostname.includes('t.me') ||
+        url.hostname.includes('pbs.twimg.com')) {
         event.respondWith(
             fetch(req).then((res) => {
                 const resClone = res.clone();
@@ -102,6 +120,8 @@ self.addEventListener('fetch', (event) => {
 
     // === Network-first: HTML / JS / CSS / sw.js / manifest ===
     // Update code langsung keliatan. Cache cuma fallback offline.
+    // Tambahan: cache-busting — kalau request punya query string ?v=...,
+    // anggap sebagai resource baru, selalu fetch dari network.
     if (NETWORK_FIRST.has(rootRel) ||
         rootRel === './' ||
         rootRel.endsWith('.html') ||
@@ -120,8 +140,6 @@ self.addEventListener('fetch', (event) => {
     }
 
     // === JSON data: stale-while-revalidate ===
-    // Data ditarik otomatis tiap 15 menit oleh GitHub Actions — biarin
-    // cached version serve dulu sambil revalidate di background.
     if (url.pathname.endsWith('.json')) {
         event.respondWith(
             caches.open(CACHE_NAME).then(async (cache) => {
