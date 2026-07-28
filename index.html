@@ -102,6 +102,34 @@
                 </div>
             </section>
 
+            <!-- FROM MEDIUM — live articles rail -->
+            <section class="section-surface reveal" id="mediumArticlesSection" aria-labelledby="mediumArticlesHeading">
+                <div class="section-surface-head flex-wrap gap-4">
+                    <div>
+                        <span class="eyebrow">From Medium</span>
+                        <h2 class="section-title" id="mediumArticlesHeading">Medium Articles</h2>
+                        <p class="section-sub">Tulisan long-form dari <a href="https://medium.com/@0wlsky" target="_blank" rel="noopener noreferrer" class="text-brass">@0wlsky</a></p>
+                    </div>
+                    <div class="x-live-meta">
+                        <span class="live-pill" id="mediumLivePill" title="Daftar artikel di-sync otomatis tiap ~2 jam dari RSS resmi Medium"><span class="live-dot" aria-hidden="true"></span> Auto · <span id="mediumLiveCount">…</span></span>
+                        <button type="button" class="btn-ghost btn-sm" id="mediumRetryBtn" aria-label="Muat ulang Medium Articles"><i class="fas fa-rotate"></i> Muat ulang</button>
+                    </div>
+                </div>
+                <div class="x-rail" id="mediumArticlesRail" aria-label="Daftar Medium Articles" tabindex="0">
+                    <div class="skeleton-x-rail" id="mediumRailSkeleton" aria-hidden="true">
+                        <div class="skeleton-block skeleton-x-card"></div>
+                        <div class="skeleton-block skeleton-x-card"></div>
+                        <div class="skeleton-block skeleton-x-card"></div>
+                    </div>
+                </div>
+                <div class="hidden empty-state" id="mediumArticlesEmpty">
+                    <div class="empty-icon" aria-hidden="true"><i class="fab fa-medium"></i></div>
+                    <h3 class="empty-title">Medium Articles belum tersedia</h3>
+                    <p class="empty-text">Koneksi gagal atau belum ada artikel. Coba muat ulang.</p>
+                    <button type="button" class="btn-primary" id="mediumEmptyRetryBtn"><i class="fas fa-rotate"></i> Coba lagi</button>
+                </div>
+            </section>
+
             <!-- DISPATCHES GRID (local journal) -->
             <section class="section-surface" aria-labelledby="dispatchesHeading">
                 <div class="section-surface-head flex-wrap gap-4">

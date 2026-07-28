@@ -1,0 +1,11 @@
+{
+  "enabled": true,
+  "username": "0wlsky",
+  "displayName": "nanomind",
+  "categoryId": "medium-articles",
+  "feedUrl": "https://medium.com/feed/@0wlsky",
+  "cacheMinutes": 30,
+  "lastSync": null,
+  "articles": [],
+  "notes": "Diisi otomatis oleh tools/sync-medium-articles.py lewat GitHub Actions (.github/workflows/sync-medium-articles.yml), yang menarik RSS resmi Medium tiap ~2 jam. Jalankan workflow itu manual (workflow_dispatch) sekali di GitHub, atau tunggu jadwal cron berikutnya, untuk mengisi data pertama kali."
+}

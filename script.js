@@ -26,6 +26,15 @@ const CONFIG = {
             '2076342065613668432',
             '2076175759325237529'
         ]
+    },
+    MEDIUM_ARTICLES_FILE: 'medium-articles.json',
+    // Fallback bila medium-articles.json belum tersedia (mis. cache lama)
+    MEDIUM_ARTICLES: {
+        enabled: true,
+        username: '0wlsky',
+        displayName: 'nanomind',
+        categoryId: 'medium-articles',
+        cacheMinutes: 30
     }
 };
 const DISPATCH_PAGE_SIZE = 7;
@@ -35,7 +44,8 @@ let state = {
     editingProjectId: null, editingLinkId: null, editingArticleId: null, editingCategoryId: null,
     dispatchFilter: 'all', dispatchPage: 1,
     lastFocusedEl: null,
-    xArticlesConfig: null
+    xArticlesConfig: null,
+    mediumArticlesConfig: null
 };
 let articleBlocks = [];
 const $ = (id) => document.getElementById(id);
@@ -49,6 +59,7 @@ document.addEventListener('DOMContentLoaded', () => {
     setupSearchPalette();
     setupOfflineBanner();
     setupXRetryButtons();
+    setupMediumRetryButtons();
     registerServiceWorker();
     checkAdminSession();
     loadData();
@@ -529,6 +540,19 @@ function ensureXArticlesCategory() {
     }
 }
 
+function ensureMediumArticlesCategory() {
+    if (!state.data) return;
+    const cats = state.data.categories || (state.data.categories = []);
+    if (!cats.some(c => c.id === 'medium-articles')) {
+        cats.push({
+            id: 'medium-articles',
+            name: 'Medium',
+            accent: 'moss',
+            description: 'Tulisan yang diterbitkan di Medium (@0wlsky), ditarik otomatis ke situs ini.'
+        });
+    }
+}
+
 async function loadData() {
     try {
         state.data = await fetchJsonPreferLocal(CONFIG.DB_FILE);
@@ -540,6 +564,7 @@ async function loadData() {
         state.data.links = state.data.links || [];
         state.data.videos = state.data.videos || [];
         ensureXArticlesCategory();
+        ensureMediumArticlesCategory();
 
         // Tarik X Articles (live) lalu merge ke daftar dispatches
         try {
@@ -547,6 +572,14 @@ async function loadData() {
             if (xArts.length) mergeXArticlesIntoState(xArts);
         } catch (xErr) {
             console.warn('X Articles load failed', xErr);
+        }
+
+        // Tarik Medium Articles (live via RSS resmi) lalu merge ke daftar dispatches
+        try {
+            const medArts = await loadMediumArticles();
+            if (medArts.length) mergeMediumArticlesIntoState(medArts);
+        } catch (medErr) {
+            console.warn('Medium Articles load failed', medErr);
         }
 
         renderPageContent();
@@ -562,7 +595,7 @@ async function loadData() {
 }
 
 function hideHomepageSkeletons() {
-    ['heroSkeleton', 'potdSkeleton', 'xRailSkeleton', 'dispatchSkeleton'].forEach(id => {
+    ['heroSkeleton', 'potdSkeleton', 'xRailSkeleton', 'mediumRailSkeleton', 'dispatchSkeleton'].forEach(id => {
         const el = $(id);
         if (el) el.remove();
     });
@@ -849,6 +882,218 @@ function mergeXArticlesIntoState(xArts) {
 }
 
 // ==========================================
+// MEDIUM ARTICLES — tarik live dari medium-articles.json
+// (registry itu sendiri disinkron via GitHub Actions dari RSS resmi Medium,
+//  lihat tools/sync-medium-articles.py). Berbeda dari X, konten lengkap
+//  (content:encoded) sudah tersedia di registry, jadi tidak perlu fetch
+//  per-artikel saat halaman dibuka — cukup konversi HTML → blocks di sini.
+// ==========================================
+async function loadMediumArticlesRegistry() {
+    let registry = null;
+    try {
+        registry = await fetchJsonPreferLocal(CONFIG.MEDIUM_ARTICLES_FILE);
+    } catch (e) {
+        registry = null;
+    }
+    const fallback = CONFIG.MEDIUM_ARTICLES || {};
+    const cfg = {
+        enabled: (registry && registry.enabled !== undefined) ? registry.enabled : (fallback.enabled !== false),
+        username: (registry && registry.username) || fallback.username || '0wlsky',
+        displayName: (registry && registry.displayName) || fallback.displayName || 'nanomind',
+        categoryId: (registry && registry.categoryId) || fallback.categoryId || 'medium-articles',
+        cacheMinutes: (registry && registry.cacheMinutes) || fallback.cacheMinutes || 30,
+        lastSync: (registry && registry.lastSync) || null,
+        posts: (registry && Array.isArray(registry.articles)) ? registry.articles : []
+    };
+    state.mediumArticlesConfig = cfg;
+    return cfg;
+}
+
+function mediumArticlesCacheKey(username) {
+    return `nanomind_medium_articles_v1_${username}`;
+}
+
+function readMediumArticlesCache(cfg) {
+    try {
+        const raw = sessionStorage.getItem(mediumArticlesCacheKey(cfg.username));
+        if (!raw) return null;
+        const parsed = JSON.parse(raw);
+        if (!parsed || !parsed.ts || !Array.isArray(parsed.articles)) return null;
+        const maxAge = (cfg.cacheMinutes || 30) * 60 * 1000;
+        if (Date.now() - parsed.ts > maxAge) return null;
+        if (parsed.count !== cfg.posts.length) return null;
+        if (cfg.lastSync && parsed.lastSync !== cfg.lastSync) return null;
+        return parsed.articles;
+    } catch (e) {
+        return null;
+    }
+}
+
+function writeMediumArticlesCache(cfg, articles) {
+    try {
+        sessionStorage.setItem(mediumArticlesCacheKey(cfg.username), JSON.stringify({
+            ts: Date.now(), count: cfg.posts.length, lastSync: cfg.lastSync, articles
+        }));
+    } catch (e) { /* quota / private mode */ }
+}
+
+function normalizeMediumImageUrl(url) {
+    if (!url) return '';
+    let u = String(url).trim();
+    if (u.startsWith('//')) u = 'https:' + u;
+    // Upsize thumbnail Medium (…/resize:fill:100:100/…) ke lebar yang layak baca
+    u = u.replace(/resize:(fill|fit):\d+:?\d*/i, 'resize:fit:1400');
+    return u;
+}
+
+/** Konversi HTML content:encoded dari RSS Medium → body blocks nanomind (sama seperti convertXContentBlocks). */
+function convertMediumHtmlToBlocks(html) {
+    const out = [];
+    if (!html) return out;
+    let doc;
+    try {
+        doc = new DOMParser().parseFromString(html, 'text/html');
+    } catch (e) {
+        return out;
+    }
+    const root = doc.body;
+    if (!root) return out;
+
+    // Ganti <a href> jadi markdown [label](url) (dipahami renderTextWithLinks),
+    // baru ambil textContent — mempertahankan tautan inline tanpa perlu block tipe baru.
+    const textWithLinks = (el) => {
+        const clone = el.cloneNode(true);
+        clone.querySelectorAll('a[href]').forEach(a => {
+            const label = (a.textContent || '').trim();
+            const href = a.getAttribute('href') || '';
+            if (label && /^https?:\/\//i.test(href)) {
+                a.replaceWith(doc.createTextNode(`[${label}](${href})`));
+            } else if (label) {
+                a.replaceWith(doc.createTextNode(label));
+            }
+        });
+        return (clone.textContent || '').replace(/\s+/g, ' ').trim();
+    };
+
+    const pushImage = (imgEl, captionText) => {
+        const src = imgEl.getAttribute('src') || imgEl.getAttribute('data-src') || '';
+        if (!src) return;
+        out.push({ type: 'image', url: normalizeMediumImageUrl(src), caption: captionText || imgEl.getAttribute('alt') || '' });
+    };
+
+    const walk = (nodes) => {
+        nodes.forEach(node => {
+            if (node.nodeType !== 1) return; // elemen saja
+            const tag = node.tagName.toLowerCase();
+            if (tag === 'figure') {
+                const img = node.querySelector('img');
+                const cap = node.querySelector('figcaption');
+                if (img) pushImage(img, cap ? textWithLinks(cap) : '');
+                else walk(Array.from(node.children));
+                return;
+            }
+            if (tag === 'img') { pushImage(node, ''); return; }
+            if (tag === 'p') {
+                const onlyImg = node.querySelector('img');
+                if (onlyImg && (node.textContent || '').trim() === '') { pushImage(onlyImg, ''); return; }
+                const text = textWithLinks(node);
+                if (text) out.push({ type: 'paragraph', text });
+                return;
+            }
+            if (/^h[1-4]$/.test(tag)) {
+                const text = textWithLinks(node);
+                if (text) out.push({ type: 'heading', text });
+                return;
+            }
+            if (tag === 'blockquote') {
+                const text = textWithLinks(node);
+                if (text) out.push({ type: 'quote', text });
+                return;
+            }
+            if (tag === 'ul' || tag === 'ol') {
+                const items = Array.from(node.querySelectorAll(':scope > li')).map(li => textWithLinks(li)).filter(Boolean);
+                if (items.length) out.push({ type: 'list', ordered: tag === 'ol', items });
+                return;
+            }
+            if (tag === 'pre') {
+                const text = (node.textContent || '').trim();
+                if (text) out.push({ type: 'paragraph', text });
+                return;
+            }
+            if (tag === 'iframe') {
+                const src = node.getAttribute('src') || '';
+                if (extractYouTubeId(src)) out.push({ type: 'video', url: src });
+                else if (src) out.push({ type: 'link', text: 'Lihat lampiran', url: src });
+                return;
+            }
+            if (tag === 'hr') return;
+            // Wrapper generik (div/section) → turun ke elemen anak
+            if (node.children && node.children.length) { walk(Array.from(node.children)); return; }
+            const text = textWithLinks(node);
+            if (text) out.push({ type: 'paragraph', text });
+        });
+    };
+
+    walk(Array.from(root.children));
+    return out;
+}
+
+function convertMediumPostToArticle(post, cfg) {
+    const body = convertMediumHtmlToBlocks(post.contentHtml || '');
+    const rawId = post.guid || post.link || '';
+    const idSafe = rawId.replace(/[^a-zA-Z0-9]+/g, '-').replace(/^-+|-+$/g, '').split('-').pop() || generateId();
+    let cover = normalizeMediumImageUrl(post.coverImage || '');
+    if (!cover) {
+        const firstImg = body.find(b => b.type === 'image');
+        if (firstImg) cover = firstImg.url;
+    }
+    return {
+        id: `medium-${idSafe}`,
+        title: post.title || 'Untitled Medium Story',
+        dek: post.excerpt || '',
+        category: cfg.categoryId || 'medium-articles',
+        coverImage: cover,
+        author: post.creator || cfg.displayName || cfg.username,
+        date: post.pubDate ? String(post.pubDate).slice(0, 10) : new Date().toISOString().slice(0, 10),
+        readTime: estimateReadTimeFromBlocks(body),
+        featured: false,
+        tags: ['medium-articles', ...(post.categories || [])],
+        body,
+        source: 'medium',
+        mediumUrl: post.link || ''
+    };
+}
+
+async function loadMediumArticles() {
+    const cfg = await loadMediumArticlesRegistry();
+    if (!cfg.enabled || !cfg.posts.length) return [];
+
+    const cached = readMediumArticlesCache(cfg);
+    if (cached) return cached;
+
+    const results = cfg.posts.map(post => {
+        try {
+            return convertMediumPostToArticle(post, cfg);
+        } catch (err) {
+            console.warn('Gagal konversi Medium post', post && post.link, err);
+            return null;
+        }
+    }).filter(Boolean);
+
+    results.sort((a, b) => new Date(b.date) - new Date(a.date));
+    writeMediumArticlesCache(cfg, results);
+    return results;
+}
+
+function mergeMediumArticlesIntoState(medArts) {
+    if (!state.data) return;
+    const rest = (state.data.articles || []).filter(a => a.source !== 'medium');
+    const restIds = new Set(rest.map(a => a.id));
+    const mergedM = medArts.filter(a => !restIds.has(a.id));
+    state.data.articles = [...rest, ...mergedM];
+}
+
+// ==========================================
 // PAGE DISPATCHER
 // ==========================================
 function renderPageContent() {
@@ -871,6 +1116,7 @@ function renderPageContent() {
         renderHero(articles);
         renderPhotoOfDay(photoOfDay);
         renderXArticlesRail(articles);
+        renderMediumArticlesRail(articles);
         renderCategoryPills(categories, state.dispatchFilter);
         renderDispatchGrid();
     }
@@ -1011,12 +1257,13 @@ function getArticlesSorted() {
     return (state.data.articles || []).slice().sort((a, b) => new Date(b.date) - new Date(a.date));
 }
 
-/** Grid dispatches: saat "all", X Articles ditampilkan di rail terpisah — grid fokus local journal. */
+/** Grid dispatches: saat "all", X Articles & Medium Articles ditampilkan di rail terpisah — grid fokus local journal. */
 function getDispatchArticles() {
     const all = getArticlesSorted();
     const filter = state.dispatchFilter || 'all';
-    if (filter === 'all') return all.filter(a => a.source !== 'x');
+    if (filter === 'all') return all.filter(a => a.source !== 'x' && a.source !== 'medium');
     if (filter === 'x-articles') return all.filter(a => a.source === 'x' || a.category === 'x-articles');
+    if (filter === 'medium-articles') return all.filter(a => a.source === 'medium' || a.category === 'medium-articles');
     return all.filter(a => a.category === filter);
 }
 
@@ -1067,6 +1314,52 @@ function renderXArticlesRail(articles) {
     enhanceImages(rail);
 }
 
+function renderMediumArticlesRail(articles) {
+    const rail = $('mediumArticlesRail');
+    const section = $('mediumArticlesSection');
+    const empty = $('mediumArticlesEmpty');
+    if (!rail) return;
+
+    const list = (articles || [])
+        .filter(a => a.source === 'medium')
+        .sort((a, b) => new Date(b.date) - new Date(a.date));
+
+    const countEl = $('mediumLiveCount');
+    if (countEl) countEl.textContent = String(list.length);
+    const pill = $('mediumLivePill');
+    if (pill && state.mediumArticlesConfig && state.mediumArticlesConfig.lastSync) {
+        pill.title = `Auto-sync terakhir: ${state.mediumArticlesConfig.lastSync}`;
+    }
+
+    if (!list.length) {
+        rail.innerHTML = '';
+        if (empty) empty.classList.remove('hidden');
+        if (section) section.classList.add('is-empty');
+        return;
+    }
+    if (empty) empty.classList.add('hidden');
+    if (section) section.classList.remove('is-empty');
+
+    rail.innerHTML = list.map(a => `
+        <a href="article.html?id=${encodeURIComponent(a.id)}" class="x-card reveal">
+            <div class="x-thumb">
+                ${imgTag(a.coverImage, a.title, 'loading="lazy" decoding="async"')}
+                <span class="x-source-badge" title="Medium"><i class="fab fa-medium"></i> Medium</span>
+            </div>
+            <div class="x-body">
+                <h3>${escapeHtml(a.title)}</h3>
+                ${a.dek ? `<p class="x-dek">${escapeHtml(a.dek)}</p>` : ''}
+                <div class="x-meta">
+                    ${dateMetaHtml(a.date)}
+                    <span>·</span>
+                    <span>${a.readTime || 5} min</span>
+                </div>
+            </div>
+        </a>
+    `).join('');
+    enhanceImages(rail);
+}
+
 function renderDispatchGrid() {
     const wrap = $('dispatchGrid');
     if (!wrap) return;
@@ -1097,17 +1390,20 @@ function dispatchCardHtml(a, i) {
     if (pos === 0) { span = 'span-4'; sizeClass = 'size-lg'; }
     else if (pos === 1) { span = 'span-2'; sizeClass = 'size-sm'; }
     else { span = 'span-2'; sizeClass = 'size-md'; }
-    const xBadge = a.source === 'x'
+    const sourceBadge = a.source === 'x'
         ? `<span class="x-source-badge" title="Ditarik live dari X Articles"><i class="fab fa-x-twitter"></i> X</span>`
-        : '';
+        : a.source === 'medium'
+            ? `<span class="x-source-badge" title="Ditarik live dari Medium"><i class="fab fa-medium"></i> Medium</span>`
+            : '';
+    const sourceClass = a.source === 'x' ? ' from-x' : (a.source === 'medium' ? ' from-medium' : '');
     const dek = a.dek
         ? `<p class="card-dek">${escapeHtml(a.dek)}</p>`
         : '';
     return `
-        <a href="article.html?id=${encodeURIComponent(a.id)}" class="dispatch-card ${sizeClass} ${span} accent-${cat.accent || 'brass'} reveal${a.source === 'x' ? ' from-x' : ''}">
+        <a href="article.html?id=${encodeURIComponent(a.id)}" class="dispatch-card ${sizeClass} ${span} accent-${cat.accent || 'brass'} reveal${sourceClass}">
             <div class="thumb">
                 ${imgTag(a.coverImage, a.title, 'loading="lazy" decoding="async"')}
-                ${xBadge}
+                ${sourceBadge}
             </div>
             <div class="card-body">
                 <span class="card-eyebrow">${escapeHtml(cat.name)}</span>
@@ -1284,6 +1580,8 @@ function renderArticlePage() {
     $('articleNotFound').style.display = 'none';
     const cat = (state.data.categories || []).find(c => c.id === article.category) || { name: 'Dispatch', accent: 'brass' };
     const isX = article.source === 'x';
+    const isMedium = article.source === 'medium';
+    const isImported = isX || isMedium;
     const rt = article.readTime || 5;
 
     document.title = `${article.title} — Nanomind Explorer`;
@@ -1311,7 +1609,21 @@ function renderArticlePage() {
             </div>
         </div>` : '';
 
-    const adminControls = isX ? '' : `
+    const mediumSourceHtml = isMedium ? `
+        <div class="x-article-source">
+            <div class="x-article-source-inner">
+                <i class="fab fa-medium"></i>
+                <div>
+                    <strong>Sumber: Medium</strong>
+                    <p>Diterbitkan oleh @${escapeHtml((state.mediumArticlesConfig && state.mediumArticlesConfig.username) || '0wlsky')} di Medium. Konten ditarik live ke situs ini.</p>
+                </div>
+                <a href="${escapeHtml(article.mediumUrl || '#')}" target="_blank" rel="noopener noreferrer" class="btn-primary">
+                    <i class="fab fa-medium"></i> Baca di Medium
+                </a>
+            </div>
+        </div>` : '';
+
+    const adminControls = isImported ? '' : `
             <div class="mt-10 admin-only" id="articleAdminControls">
                 <button class="btn-ghost on-paper" id="editArticleBtn"><i class="fas fa-pen"></i> Edit Dispatch</button>
                 <button class="btn-ghost on-paper" id="deleteArticleBtn" style="color:var(--rust); border-color:var(--rust);"><i class="fas fa-trash"></i> Delete</button>
@@ -1329,7 +1641,7 @@ function renderArticlePage() {
         <div class="article-hero">
             ${imgTag(article.coverImage, article.title, 'fetchpriority="high"')}
             <div class="article-hero-content">
-                <span class="eyebrow" style="color:#fff;">${escapeHtml(cat.name)}${isX ? ' · X' : ''}</span>
+                <span class="eyebrow" style="color:#fff;">${escapeHtml(cat.name)}${isX ? ' · X' : (isMedium ? ' · Medium' : '')}</span>
                 <h1 class="mt-4">${escapeHtml(article.title)}</h1>
                 ${article.dek ? `<p class="dek">${escapeHtml(article.dek)}</p>` : ''}
                 <div class="byline-row">
@@ -1348,6 +1660,7 @@ function renderArticlePage() {
             ${(article.tags || []).length ? `<div class="tag-row">${article.tags.map(t => `<span class="tag-chip">${escapeHtml(t)}</span>`).join('')}</div>` : ''}
             ${shareHtml}
             ${xSourceHtml}
+            ${mediumSourceHtml}
             ${adminControls}
         </div>`;
 
@@ -1357,7 +1670,7 @@ function renderArticlePage() {
         if (blockHeads[idx] && blockHeads[idx]._tocId) h.id = blockHeads[idx]._tocId;
     });
 
-    if (!isX) {
+    if (!isImported) {
         const editBtn = $('editArticleBtn'); if (editBtn) editBtn.addEventListener('click', () => openArticleModal(article.id));
         const delBtn = $('deleteArticleBtn'); if (delBtn) delBtn.addEventListener('click', () => deleteArticle(article.id));
     }
@@ -1741,7 +2054,11 @@ function openArticleModal(id = null) {
     if (id) {
         const existing = (state.data.articles || []).find(x => x.id === id);
         if (existing && existing.source === 'x') {
-            showToast('Artikel X digeser live — edit di X, bukan di sini.', 'error');
+            showToast('Artikel X ditarik live — edit di X, bukan di sini.', 'error');
+            return;
+        }
+        if (existing && existing.source === 'medium') {
+            showToast('Artikel Medium ditarik live — edit di Medium, bukan di sini.', 'error');
             return;
         }
     }
@@ -1829,6 +2146,10 @@ async function deleteArticle(id) {
     const target = (state.data.articles || []).find(x => x.id === id);
     if (target && target.source === 'x') {
         showToast('Artikel X tidak bisa dihapus dari situs. Hapus di X atau keluarkan status ID dari x-articles.json.', 'error');
+        return;
+    }
+    if (target && target.source === 'medium') {
+        showToast('Artikel Medium tidak bisa dihapus dari situs. Hapus di Medium — akan otomatis hilang dari feed saat sync berikutnya.', 'error');
         return;
     }
     if (!confirm('Hapus dispatch ini?')) return;
@@ -2252,6 +2573,29 @@ function setupXRetryButtons() {
             renderDispatchGrid();
         }
     });
+}
+
+function setupMediumRetryButtons() {
+    const retry = async () => {
+        showToast('Memuat ulang Medium Articles…', 'info');
+        try {
+            sessionStorage.removeItem(mediumArticlesCacheKey((state.mediumArticlesConfig && state.mediumArticlesConfig.username) || CONFIG.MEDIUM_ARTICLES.username));
+            const medArts = await loadMediumArticles();
+            if (medArts.length && state.data) {
+                mergeMediumArticlesIntoState(medArts);
+                renderMediumArticlesRail(state.data.articles);
+                renderDispatchGrid();
+                showToast(`${medArts.length} Medium Article dimuat.`, 'success');
+            } else {
+                showToast('Tidak ada Medium Article yang bisa ditarik.', 'error');
+                renderMediumArticlesRail(state.data ? state.data.articles : []);
+            }
+        } catch (e) {
+            showToast('Gagal memuat Medium Articles.', 'error');
+        }
+    };
+    const a = $('mediumRetryBtn'); if (a) a.addEventListener('click', retry);
+    const b = $('mediumEmptyRetryBtn'); if (b) b.addEventListener('click', retry);
 }
 
 function trapFocus(overlay) {
