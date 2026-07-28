@@ -300,7 +300,14 @@ a.text-brass { color: var(--brass); text-decoration: none; border-bottom: 1px so
     -webkit-overflow-scrolling: touch;
     scrollbar-width: thin;
     scrollbar-color: var(--border-ink-strong) transparent;
+    cursor: grab;
 }
+.x-rail.dragging {
+    cursor: grabbing;
+    scroll-snap-type: none;
+    user-select: none;
+}
+.x-rail.dragging .x-card { pointer-events: none; }
 .x-rail::-webkit-scrollbar { height: 6px; }
 .x-rail::-webkit-scrollbar-thumb { background: var(--border-ink-strong); border-radius: 10px; }
 .x-card {

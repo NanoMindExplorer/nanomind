@@ -60,6 +60,7 @@ document.addEventListener('DOMContentLoaded', () => {
     setupOfflineBanner();
     setupXRetryButtons();
     setupMediumRetryButtons();
+    setupRailDragScroll();
     registerServiceWorker();
     checkAdminSession();
     loadData();
@@ -2596,6 +2597,57 @@ function setupMediumRetryButtons() {
     };
     const a = $('mediumRetryBtn'); if (a) a.addEventListener('click', retry);
     const b = $('mediumEmptyRetryBtn'); if (b) b.addEventListener('click', retry);
+}
+
+/**
+ * Klik-tahan-geser dengan mouse buat rail horizontal (X/Medium Articles).
+ * .x-rail sebelumnya cuma overflow-x:auto — jalan lewat sentuhan/trackpad/scrollbar,
+ * tapi mouse biasa (tanpa trackpad/touch) gak bisa "nge-drag" isinya.
+ */
+function enableRailDragScroll(rail) {
+    if (!rail || rail.dataset.dragScrollBound) return;
+    rail.dataset.dragScrollBound = '1';
+    let isDown = false;
+    let startX = 0;
+    let startScroll = 0;
+    let moved = 0;
+
+    const onDown = (e) => {
+        isDown = true;
+        moved = 0;
+        startX = e.pageX;
+        startScroll = rail.scrollLeft;
+        rail.classList.add('dragging');
+        e.preventDefault(); // cegah browser nge-drag <img> di dalam card
+    };
+    const onMove = (e) => {
+        if (!isDown) return;
+        const dx = e.pageX - startX;
+        moved = Math.max(moved, Math.abs(dx));
+        rail.scrollLeft = startScroll - dx;
+    };
+    const stop = () => {
+        if (!isDown) return;
+        isDown = false;
+        rail.classList.remove('dragging');
+    };
+
+    rail.addEventListener('mousedown', onDown);
+    window.addEventListener('mousemove', onMove);
+    window.addEventListener('mouseup', stop);
+
+    // Kalau abis nge-drag (bukan klik biasa), jangan biarkan <a> di dalamnya ke-navigasi
+    rail.addEventListener('click', (e) => {
+        if (moved > 6) {
+            e.preventDefault();
+            e.stopPropagation();
+        }
+    }, true);
+}
+
+function setupRailDragScroll() {
+    enableRailDragScroll($('xArticlesRail'));
+    enableRailDragScroll($('mediumArticlesRail'));
 }
 
 function trapFocus(overlay) {
