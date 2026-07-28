@@ -18,9 +18,9 @@
     "2076175759325237529"
   ],
   "notes": "Auto-updated by tools/sync-x-articles.py (GitHub Actions). statusIds = X post IDs that carry published X Articles. Website fetches full content live via FixTweet.",
-  "lastSync": "2026-07-28T14:42:33Z",
+  "lastSync": "2026-07-28T17:47:04Z",
   "lastSyncStats": {
-    "candidates": 492,
+    "candidates": 174,
     "verified": 10,
     "added": [],
     "total": 10
