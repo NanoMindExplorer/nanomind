@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Telegram Journal — Nanomind Explorer</title>
+    <meta name="description" content="Feed langsung dari channel Telegram @nanojournal — semua post ditarik otomatis ke sini.">
+    <meta name="theme-color" content="#14140F">
+    <meta property="og:type" content="website">
+    <meta property="og:title" content="Telegram Journal — Nanomind Explorer">
+    <meta property="og:description" content="Feed langsung dari channel Telegram @nanojournal — semua post ditarik otomatis ke sini.">
+    <meta property="og:image" content="https://raw.githubusercontent.com/NanoMindExplorer/nanomind/main/bg-ghibli-poster.jpg">
+    <link rel="icon" type="image/svg+xml" href="favicon.svg">
+    <link rel="icon" type="image/png" sizes="32x32" href="icons/icon-32.png">
+    <link rel="apple-touch-icon" href="icons/apple-touch-icon.png">
+    <link rel="manifest" href="manifest.json">
+    <link rel="preconnect" href="https://t.me">
+    <link rel="preconnect" href="https://cdn5.telesco.pe">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="preload" href="fonts/inter-400.woff2" as="font" type="font/woff2" crossorigin>
+    <link rel="preload" href="fonts/fraunces-600.woff2" as="font" type="font/woff2" crossorigin>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <a class="skip-link" href="#mainContent">Loncat ke konten</a>
+    <div id="offlineBanner" class="offline-banner hidden" role="status">Anda offline — menampilkan cache lokal bila ada.</div>
+    <noscript><div style="padding:60px 24px;text-align:center;font-family:sans-serif;background:#14140F;color:#EDE8DA;">Situs ini membutuhkan JavaScript untuk menampilkan konten. Mohon aktifkan JavaScript di browser Anda.</div></noscript>
+
+    <div id="pageLoader" aria-hidden="true">
+        <svg class="loader-mark" viewBox="0 0 100 100">
+            <circle cx="50" cy="50" r="38" fill="none" stroke="#C9974A" stroke-width="2.4"/>
+            <polygon points="50,13 59,50 41,50" fill="#C9974A"/>
+            <polygon points="50,87 59,50 41,50" fill="#5C5A48"/>
+            <circle cx="50" cy="50" r="6.5" fill="#14140F" stroke="#C9974A" stroke-width="2.2"/>
+        </svg>
+    </div>
+
+    <div id="navPlaceholder"></div>
+    <div class="mobile-nav-backdrop" id="mobileNavBackdrop"></div>
+    <div class="mobile-nav-panel" id="mobileNavPanel"></div>
+
+    <main id="mainContent" class="journal-main">
+        <div class="journal-stack">
+            <section class="section-surface reveal">
+                <div class="section-surface-head flex-wrap gap-4">
+                    <div>
+                        <span class="eyebrow">Live Feed</span>
+                        <h1 class="section-title section-title--lg">Telegram Journal</h1>
+                        <p class="section-sub">Setiap post dari channel <a href="https://t.me/nanojournal" target="_blank" rel="noopener noreferrer" class="text-brass">@nanojournal</a> ditarik otomatis ke sini — biasanya muncul dalam &lt;15 menit setelah dikirim.</p>
+                    </div>
+                    <div class="x-live-meta">
+                        <span class="live-pill" id="tgLivePill" title="Di-sync otomatis tiap ~15 menit dari t.me/s/nanojournal"><span class="live-dot" aria-hidden="true"></span> Auto · <span id="tgLiveCount">…</span></span>
+                        <button type="button" class="btn-ghost btn-sm" id="tgRetryBtn" aria-label="Muat ulang feed Telegram"><i class="fas fa-rotate"></i> Muat ulang</button>
+                    </div>
+                </div>
+
+                <div class="tg-filter-bar" id="tgFilterBar" role="toolbar" aria-label="Filter post Telegram">
+                    <button class="cat-pill active" data-tgfilter="all">Semua</button>
+                    <button class="cat-pill" data-tgfilter="withphoto">Ada Gambar</button>
+                    <button class="cat-pill" data-tgfilter="textonly">Hanya Teks</button>
+                    <button class="cat-pill" data-tgfilter="withlink">Ada Link</button>
+                </div>
+            </section>
+
+            <section class="section-surface">
+                <div class="skeleton-x-rail" id="tgSkeleton" aria-hidden="true" style="display:flex;flex-direction:column;gap:18px;">
+                    <div class="skeleton-block" style="height:160px;border-radius:10px;"></div>
+                    <div class="skeleton-block" style="height:160px;border-radius:10px;"></div>
+                    <div class="skeleton-block" style="height:160px;border-radius:10px;"></div>
+                </div>
+                <div class="tg-feed" id="tgFeed" aria-label="Daftar post Telegram" aria-live="polite"></div>
+                <div class="hidden empty-state" id="tgEmpty">
+                    <div class="empty-icon" aria-hidden="true"><i class="fab fa-telegram"></i></div>
+                    <h3 class="empty-title">Belum ada post</h3>
+                    <p class="empty-text">Feed belum ter-load atau channel belum memiliki post. Coba muat ulang.</p>
+                    <button type="button" class="btn-primary" id="tgEmptyRetryBtn"><i class="fas fa-rotate"></i> Coba lagi</button>
+                </div>
+                <div class="flex justify-center mt-10">
+                    <button class="btn-ghost hidden" id="tgLoadMoreBtn"><i class="fas fa-chevron-down"></i> Muat lebih lama</button>
+                </div>
+            </section>
+        </div>
+    </main>
+
+    <div id="footerPlaceholder"></div>
+
+    <button class="search-fab" id="searchFab" title="Search (Ctrl+K)" aria-label="Buka pencarian"><i class="fas fa-search"></i></button>
+    <button class="admin-fab hidden" id="adminFab" title="Admin"><i class="fas fa-compass-drafting"></i></button>
+    <button class="back-to-top" id="backToTopBtn" title="Kembali ke atas" aria-label="Kembali ke atas"><i class="fas fa-arrow-up"></i></button>
+
+    <div id="modalsPlaceholder"></div>
+
+    <script src="script.js"></script>
+</body>
+</html>

@@ -1,0 +1,60 @@
+name: Sync Telegram Channel
+
+# Auto-pull posts dari t.me/s/nanojournal ke telegram-posts.json.
+# Berjalan setiap 15 menit — post baru akan muncul di website <=15 menit
+# setelah dikirim di channel (selama GitHub Actions tidak antri).
+#
+# Note: Telegram tidak expose webhook ke GitHub Pages (static site),
+# jadi polling adalah cara paling murah & paling reliable untuk auto-sync.
+# Mau lebih cepat? Pindahkan ke Cloudflare Workers atau Vercel cron (1 menit).
+
+on:
+  schedule:
+    # Setiap 15 menit
+    - cron: "*/15 * * * *"
+  workflow_dispatch: {}
+  repository_dispatch:
+    types: [sync-telegram]
+
+permissions:
+  contents: write
+
+concurrency:
+  group: sync-telegram-channel
+  cancel-in-progress: false
+
+jobs:
+  sync:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+
+      - name: Sync telegram-posts.json
+        run: |
+          set -euo pipefail
+          chmod +x tools/sync-telegram-channel.py
+          # --pages 2: ambil ~30 post terbaru tiap run. Kalau ada burst post >30
+          # dalam 15 menit, naikkan ke 3-5. Registry lama tetap dipertahankan.
+          # --max-posts 600: cap registry supaya file gak gede tak terbatas.
+          python3 tools/sync-telegram-channel.py --channel nanojournal --pages 2 --max-posts 600
+
+      - name: Commit if changed
+        run: |
+          set -euo pipefail
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add telegram-posts.json
+          if git diff --staged --quiet; then
+            echo "No changes to commit"
+          else
+            git commit -m "chore: auto-sync Telegram posts ($(date -u +%Y-%m-%dT%H:%MZ))"
+            git push
+            echo "Pushed updated telegram-posts.json"
+          fi

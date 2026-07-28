@@ -35,6 +35,15 @@ const CONFIG = {
         displayName: 'nanomind',
         categoryId: 'medium-articles',
         cacheMinutes: 30
+    },
+    TELEGRAM_POSTS_FILE: 'telegram-posts.json',
+    TELEGRAM: {
+        enabled: true,
+        channel: 'nanojournal',
+        channelUrl: 'https://t.me/nanojournal',
+        previewUrl: 'https://t.me/s/nanojournal',
+        categoryId: 'telegram',
+        cacheMinutes: 5
     }
 };
 const DISPATCH_PAGE_SIZE = 7;
@@ -45,7 +54,10 @@ let state = {
     dispatchFilter: 'all', dispatchPage: 1,
     lastFocusedEl: null,
     xArticlesConfig: null,
-    mediumArticlesConfig: null
+    mediumArticlesConfig: null,
+    telegramConfig: null,
+    telegramFilter: 'all',
+    telegramPage: 1
 };
 let articleBlocks = [];
 const $ = (id) => document.getElementById(id);
@@ -61,6 +73,7 @@ document.addEventListener('DOMContentLoaded', () => {
     setupXRetryButtons();
     setupMediumRetryButtons();
     setupRailDragScroll();
+    setupTelegramRetryButtons();
     registerServiceWorker();
     checkAdminSession();
     loadData();
@@ -117,6 +130,7 @@ function injectSharedChrome() {
                 </a>
                 <div class="nav-links">
                     <a href="index.html" class="nav-link" data-nav="home">Dispatches</a>
+                    <a href="telegram.html" class="nav-link" data-nav="telegram"><i class="fab fa-telegram" style="font-size:0.92em;margin-right:4px;"></i>Telegram</a>
                     <a href="watch.html" class="nav-link" data-nav="watch">Watch</a>
                     <a href="about.html" class="nav-link" data-nav="about">About</a>
                 </div>
@@ -132,6 +146,7 @@ function injectSharedChrome() {
     if (mobilePanel) {
         mobilePanel.innerHTML = `
             <a href="index.html" class="nav-link" data-nav="home">Dispatches</a>
+            <a href="telegram.html" class="nav-link" data-nav="telegram"><i class="fab fa-telegram" style="font-size:0.92em;margin-right:4px;"></i>Telegram</a>
             <a href="watch.html" class="nav-link" data-nav="watch">Watch</a>
             <a href="about.html" class="nav-link" data-nav="about">About</a>`;
     }
@@ -156,6 +171,7 @@ function injectSharedChrome() {
                     <p class="footer-col-title">Explore</p>
                     <ul class="footer-nav">
                         <li><a href="index.html">Dispatches</a></li>
+                        <li><a href="telegram.html">Telegram</a></li>
                         <li><a href="watch.html">Watch</a></li>
                         <li><a href="about.html">About</a></li>
                     </ul>
@@ -202,17 +218,25 @@ function setupReadingProgress() {
     const bar = $('readingProgress');
     const surface = document.querySelector('.reading-surface') || $('articleContent');
     if (!bar || !surface) return;
+    // rAF-throttled supaya scroll gak nge-trigger layout thrashing.
+    let ticking = false;
     const onScroll = () => {
-        const rect = surface.getBoundingClientRect();
-        const total = surface.offsetHeight - window.innerHeight;
-        if (total <= 0) {
-            bar.style.width = '100%';
-            return;
-        }
-        // Progress based on how far we've scrolled through the article surface
-        const scrolled = Math.min(Math.max(-rect.top, 0), total);
-        const pct = Math.min(100, Math.max(0, (scrolled / total) * 100));
-        bar.style.width = pct + '%';
+        if (ticking) return;
+        ticking = true;
+        window.requestAnimationFrame(() => {
+            const rect = surface.getBoundingClientRect();
+            const total = surface.offsetHeight - window.innerHeight;
+            if (total <= 0) {
+                bar.style.width = '100%';
+                ticking = false;
+                return;
+            }
+            // Progress based on how far we've scrolled through the article surface
+            const scrolled = Math.min(Math.max(-rect.top, 0), total);
+            const pct = Math.min(100, Math.max(0, (scrolled / total) * 100));
+            bar.style.width = pct + '%';
+            ticking = false;
+        });
     };
     window.addEventListener('scroll', onScroll, { passive: true });
     window.addEventListener('resize', onScroll, { passive: true });
@@ -221,7 +245,10 @@ function setupReadingProgress() {
 
 function markActiveNav() {
     const path = location.pathname.split('/').pop() || 'index.html';
-    const current = (path === '' || path === 'index.html' || path === 'article.html') ? 'home' : (path === 'about.html' ? 'about' : (path === 'watch.html' ? 'watch' : ''));
+    const current = (path === '' || path === 'index.html' || path === 'article.html') ? 'home'
+        : (path === 'about.html' ? 'about'
+        : (path === 'watch.html' ? 'watch'
+        : (path === 'telegram.html' ? 'telegram' : '')));
     document.querySelectorAll('.nav-link').forEach(a => a.classList.toggle('active', a.dataset.nav === current));
 }
 
@@ -431,7 +458,17 @@ function setupMobileMenu() {
 function setupBackToTop() {
     const btn = $('backToTopBtn');
     if (!btn) return;
-    window.addEventListener('scroll', () => btn.classList.toggle('show', window.scrollY > 500));
+    // Throttled via rAF — listener scroll bare bikin jank di mobile / long page.
+    let ticking = false;
+    const update = () => {
+        btn.classList.toggle('show', window.scrollY > 500);
+        ticking = false;
+    };
+    window.addEventListener('scroll', () => {
+        if (ticking) return;
+        ticking = true;
+        window.requestAnimationFrame(update);
+    }, { passive: true });
     btn.addEventListener('click', () => window.scrollTo({ top: 0, behavior: 'smooth' }));
 }
 
@@ -478,6 +515,19 @@ function fuzzySearchAll(q) {
         const label = v.title || v.caption || 'Video';
         if (label.toLowerCase().includes(q) || (v.tags || []).some(t => t.toLowerCase().includes(q))) {
             results.push({ icon: v.type === 'youtube-short' ? 'fa-mobile-screen' : 'fa-video', label, meta: v.type === 'youtube-short' ? 'Short' : 'Video', href: `watch.html?open=${v.id}` });
+        }
+    });
+    // Telegram posts (di-cache di state.telegramPosts setelah loadTelegramPage pertama)
+    (state.telegramPosts || []).forEach(p => {
+        const text = (p.textPlain || '').toLowerCase();
+        if (text.includes(q) || (p.links || []).some(l => (l.text || '').toLowerCase().includes(q))) {
+            results.push({
+                icon: 'fa-telegram',
+                label: tgExcerpt(p.textPlain || '(post tanpa teks)', 80),
+                meta: 'Telegram · #' + p.postId,
+                href: p.url,
+                external: true
+            });
         }
     });
     return results;
@@ -1095,6 +1145,291 @@ function mergeMediumArticlesIntoState(medArts) {
 }
 
 // ==========================================
+// TELEGRAM POSTS — dari @nanojournal (sync via GitHub Actions ke telegram-posts.json)
+// ==========================================
+async function loadTelegramRegistry() {
+    let registry = null;
+    try {
+        registry = await fetchJsonPreferLocal(CONFIG.TELEGRAM_POSTS_FILE);
+    } catch (e) {
+        registry = null;
+    }
+    const fallback = CONFIG.TELEGRAM || {};
+    const cfg = {
+        enabled: (registry && registry.enabled !== undefined) ? registry.enabled : (fallback.enabled !== false),
+        channel: (registry && registry.channel) || fallback.channel || 'nanojournal',
+        channelUrl: (registry && registry.channelUrl) || fallback.channelUrl || `https://t.me/${fallback.channel || 'nanojournal'}`,
+        previewUrl: (registry && registry.previewUrl) || fallback.previewUrl || `https://t.me/s/${fallback.channel || 'nanojournal'}`,
+        categoryId: (registry && registry.categoryId) || fallback.categoryId || 'telegram',
+        cacheMinutes: (registry && registry.cacheMinutes) || fallback.cacheMinutes || 5,
+        lastSync: (registry && registry.lastSync) || null,
+        lastSyncStats: (registry && registry.lastSyncStats) || null,
+        posts: (registry && Array.isArray(registry.posts)) ? registry.posts : []
+    };
+    state.telegramConfig = cfg;
+    return cfg;
+}
+
+function telegramCacheKey(channel) {
+    return `nanomind_telegram_v1_${channel}`;
+}
+
+function readTelegramCache(cfg) {
+    try {
+        const raw = sessionStorage.getItem(telegramCacheKey(cfg.channel));
+        if (!raw) return null;
+        const parsed = JSON.parse(raw);
+        if (!parsed || !parsed.ts || !Array.isArray(parsed.posts)) return null;
+        const maxAge = (cfg.cacheMinutes || 5) * 60 * 1000;
+        if (Date.now() - parsed.ts > maxAge) return null;
+        if (cfg.lastSync && parsed.lastSync !== cfg.lastSync) return null;
+        return parsed.posts;
+    } catch (e) {
+        return null;
+    }
+}
+
+function writeTelegramCache(cfg, posts) {
+    try {
+        sessionStorage.setItem(telegramCacheKey(cfg.channel), JSON.stringify({
+            ts: Date.now(), count: posts.length, lastSync: cfg.lastSync, posts
+        }));
+    } catch (e) { /* quota / private mode */ }
+}
+
+/** Sanitize Telegram HTML (sudah di-escape oleh parser Python) menjadi safe innerHTML.
+ *  Kita izinkan: <br>, <b>, <i>, <strong>, <em>, <a>, <s>, <u>, <code>, <pre>.
+ *  Selain itu di-strip. */
+function sanitizeTgHtml(html) {
+    if (!html) return '';
+    // Unescape dulu supaya bisa di-parse
+    const txt = document.createElement('textarea');
+    txt.innerHTML = html;
+    const raw = txt.value;
+    // Parse ke DOM
+    const doc = new DOMParser().parseFromString(`<div>${raw}</div>`, 'text/html');
+    const root = doc.body.firstChild;
+    if (!root) return '';
+    const ALLOWED = new Set(['B', 'I', 'STRONG', 'EM', 'A', 'BR', 'S', 'U', 'CODE', 'PRE', 'SPAN']);
+    const walker = document.createTreeWalker(root, NodeFilter.SHOW_ELEMENT);
+    const toRemove = [];
+    let node;
+    while ((node = walker.nextNode())) {
+        if (!ALLOWED.has(node.tagName)) {
+            toRemove.push(node);
+            continue;
+        }
+        if (node.tagName === 'A') {
+            const href = node.getAttribute('href') || '';
+            // Hanya izinkan http/https/mailto; selain itu strip jadi text
+            if (!/^(https?:|mailto:)/i.test(href)) {
+                toRemove.push(node);
+                continue;
+            }
+            node.setAttribute('target', '_blank');
+            node.setAttribute('rel', 'noopener noreferrer');
+            node.classList.add('inline-link');
+        }
+        // Strip inline style, class asli Telegram, dst — biar gak bentrok
+        if (node.tagName !== 'A') {
+            node.removeAttribute('style');
+            node.removeAttribute('class');
+        }
+    }
+    toRemove.forEach(n => {
+        // ganti elemen dengan text content-nya (preserve content)
+        const parent = n.parentNode;
+        if (parent) {
+            while (n.firstChild) parent.insertBefore(n.firstChild, n);
+            parent.removeChild(n);
+        }
+    });
+    return root.innerHTML;
+}
+
+/** Convert satu post Telegram → shape yang dipakai renderTelegramFeed. */
+function normalizeTelegramPost(p, cfg) {
+    const id = String(p.postId || '');
+    const url = p.url || (cfg.channelUrl ? `${cfg.channelUrl}/${id}` : `https://t.me/${cfg.channel}/${id}`);
+    const dt = p.datetime || new Date().toISOString();
+    const textPlain = (p.textPlain || '').trim();
+    const textHtml = sanitizeTgHtml(p.textHtml || '');
+    const photos = Array.isArray(p.photos) ? p.photos.slice(0, 4) : [];
+    const links = Array.isArray(p.links) ? p.links.filter(l => l && l.href) : [];
+    // Preview: ambil link non-telegram pertama (skip link ke post telegram sendiri)
+    const externalLink = links.find(l => /^https?:\/\//i.test(l.href) && !/^https?:\/\/t\.me\//i.test(l.href));
+    return {
+        id,
+        postId: id,
+        channel: cfg.channel,
+        url,
+        datetime: dt,
+        date: dt.slice(0, 10),
+        textPlain,
+        textHtml,
+        photos,
+        links,
+        externalLink,
+        views: p.views || '',
+        replyTo: p.replyTo || null,
+        source: 'telegram'
+    };
+}
+
+async function loadTelegramPosts() {
+    const cfg = await loadTelegramRegistry();
+    if (!cfg.enabled) return { cfg, posts: [] };
+    const cached = readTelegramCache(cfg);
+    if (cached) return { cfg, posts: cached };
+    const posts = cfg.posts
+        .map(p => { try { return normalizeTelegramPost(p, cfg); } catch (e) { return null; } })
+        .filter(Boolean)
+        .sort((a, b) => parseInt(b.postId, 10) - parseInt(a.postId, 10));
+    writeTelegramCache(cfg, posts);
+    return { cfg, posts };
+}
+
+const TELEGRAM_PAGE_SIZE = 20;
+
+/** Escape & truncate helper untuk preview text. */
+function tgExcerpt(text, max = 280) {
+    const t = (text || '').replace(/\s+/g, ' ').trim();
+    if (t.length <= max) return t;
+    return t.slice(0, max - 1).trimEnd() + '…';
+}
+
+function tgCardHtml(p) {
+    const date = formatDate(p.date);
+    const rel = formatRelativeDate(p.date);
+    const hasPhoto = p.photos.length > 0;
+    const hasLink = !!p.externalLink;
+    const coverPhoto = p.photos[0] || '';
+    const extraPhotos = p.photos.length > 1 ? `<span class="tg-photo-count">+${p.photos.length - 1}</span>` : '';
+    const photoBlock = hasPhoto ? `
+        <div class="tg-card-photo">
+            <img src="${escapeHtml(coverPhoto)}" alt="" loading="lazy" decoding="async" onerror="this.style.display='none'">
+            ${extraPhotos}
+        </div>` : '';
+    const textBlock = p.textHtml
+        ? `<div class="tg-card-text">${p.textHtml}</div>`
+        : (hasPhoto
+            ? `<div class="tg-card-text tg-card-text--muted"><em>(Post ini hanya berisi media)</em></div>`
+            : `<div class="tg-card-text tg-card-text--muted"><em>(Post tanpa teks)</em></div>`);
+    const linkBlock = hasLink ? `
+        <a class="tg-card-link" href="${escapeHtml(p.externalLink.href)}" target="_blank" rel="noopener noreferrer">
+            <i class="fas fa-arrow-up-right-from-square"></i>
+            <span>${escapeHtml(tgExcerpt(p.externalLink.text || p.externalLink.href, 70))}</span>
+        </a>` : '';
+    const viewsBlock = p.views ? `<span class="tg-meta-item"><i class="far fa-eye"></i> ${escapeHtml(p.views)}</span>` : '';
+    return `
+        <article class="tg-card reveal" data-tg-post="${escapeHtml(p.postId)}" data-hasphoto="${hasPhoto ? '1' : '0'}" data-haslink="${hasLink ? '1' : '0'}">
+            <a class="tg-card-permalink" href="${escapeHtml(p.url)}" target="_blank" rel="noopener noreferrer" aria-label="Buka post asli di Telegram" title="Buka di Telegram">
+                <i class="fab fa-telegram"></i>
+            </a>
+            ${photoBlock}
+            <div class="tg-card-body">
+                ${textBlock}
+                ${linkBlock}
+                <div class="tg-card-meta">
+                    <span class="tg-meta-item"><i class="far fa-clock"></i> ${escapeHtml(date)} <span class="tg-meta-rel">(${escapeHtml(rel)})</span></span>
+                    ${viewsBlock}
+                    <span class="tg-meta-item">#${escapeHtml(p.postId)}</span>
+                </div>
+            </div>
+        </article>`;
+}
+
+function applyTelegramFilter(posts) {
+    const f = state.telegramFilter || 'all';
+    if (f === 'withphoto') return posts.filter(p => p.photos.length > 0);
+    if (f === 'textonly') return posts.filter(p => p.photos.length === 0 && p.textPlain);
+    if (f === 'withlink') return posts.filter(p => p.externalLink);
+    return posts;
+}
+
+function renderTelegramFeed(posts) {
+    const wrap = $('tgFeed');
+    const empty = $('tgEmpty');
+    const skeleton = $('tgSkeleton');
+    const loadMore = $('tgLoadMoreBtn');
+    if (skeleton) skeleton.style.display = 'none';
+    if (!wrap) return;
+
+    const filtered = applyTelegramFilter(posts);
+    const visibleCount = state.telegramPage * TELEGRAM_PAGE_SIZE;
+    const visible = filtered.slice(0, visibleCount);
+
+    if (!filtered.length) {
+        wrap.innerHTML = '';
+        if (empty) empty.classList.remove('hidden');
+        if (loadMore) loadMore.classList.add('hidden');
+        return;
+    }
+    if (empty) empty.classList.add('hidden');
+
+    wrap.innerHTML = visible.map(p => tgCardHtml(p)).join('');
+    if (loadMore) {
+        loadMore.classList.toggle('hidden', visibleCount >= filtered.length);
+        loadMore.onclick = () => {
+            state.telegramPage++;
+            renderTelegramFeed(posts);
+            setTimeout(() => document.querySelectorAll('.reveal').forEach(el => { if (isElementInViewport(el)) el.classList.add('visible'); }), 50);
+        };
+    }
+    setupScrollObserver();
+}
+
+function setupTelegramFilterTabs(posts) {
+    const wrap = $('tgFilterBar');
+    if (!wrap) return;
+    wrap.querySelectorAll('[data-tgfilter]').forEach(btn => {
+        btn.classList.toggle('active', btn.dataset.tgfilter === state.telegramFilter);
+        btn.onclick = () => {
+            state.telegramFilter = btn.dataset.tgfilter;
+            state.telegramPage = 1;
+            setupTelegramFilterTabs(posts);
+            renderTelegramFeed(posts);
+        };
+    });
+}
+
+async function renderTelegramPage() {
+    const countEl = $('tgLiveCount');
+    const pill = $('tgLivePill');
+    const empty = $('tgEmpty');
+    try {
+        const { cfg, posts } = await loadTelegramPosts();
+        state.telegramPosts = posts; // expose supaya search palette bisa nemu
+        if (pill && cfg.lastSync) pill.title = `Auto-sync terakhir: ${cfg.lastSync}`;
+        if (countEl) countEl.textContent = String(posts.length);
+        setupTelegramFilterTabs(posts);
+        renderTelegramFeed(posts);
+    } catch (err) {
+        console.warn('Telegram load failed', err);
+        if (countEl) countEl.textContent = '0';
+        if (empty) {
+            empty.classList.remove('hidden');
+            const sk = $('tgSkeleton'); if (sk) sk.style.display = 'none';
+        }
+    }
+}
+
+function setupTelegramRetryButtons() {
+    const retry = async () => {
+        try {
+            if (state.telegramConfig && state.telegramConfig.channel) {
+                sessionStorage.removeItem(telegramCacheKey(state.telegramConfig.channel));
+            }
+        } catch (e) { /* ignore */ }
+        const sk = $('tgSkeleton'); if (sk) sk.style.display = 'flex';
+        const empty = $('tgEmpty'); if (empty) empty.classList.add('hidden');
+        await renderTelegramPage();
+    };
+    const b1 = $('tgRetryBtn'); if (b1) b1.addEventListener('click', retry);
+    const b2 = $('tgEmptyRetryBtn'); if (b2) b2.addEventListener('click', retry);
+}
+
+// ==========================================
 // PAGE DISPATCHER
 // ==========================================
 function renderPageContent() {
@@ -1141,6 +1476,9 @@ function renderPageContent() {
         renderVideoGallery();
         const openId = new URLSearchParams(location.search).get('open');
         if (openId) setTimeout(() => openVideoLightbox(openId), 300);
+    }
+    if ($('tgFeed')) {
+        renderTelegramPage();
     }
 
     setTimeout(() => {
@@ -1571,14 +1909,116 @@ function bindArticleShare(article) {
 function renderArticlePage() {
     const params = new URLSearchParams(location.search);
     const id = params.get('id');
-    const article = (state.data.articles || []).find(a => a.id === id);
     const content = $('articleContent');
-    if (!article) {
-        $('articleNotFound').style.display = 'block';
-        content.innerHTML = '';
+    const notFound = $('articleNotFound');
+    const article = (state.data.articles || []).find(a => a.id === id);
+
+    if (article) {
+        if (notFound) notFound.style.display = 'none';
+        renderArticleIntoContent(article);
         return;
     }
-    $('articleNotFound').style.display = 'none';
+
+    // === Fallback: artikel belum ada di state.data.articles ===
+    // Ini terjadi saat user klik link X/Medium langsung (mis. dari search engine
+    // atau share), padahal loadXArticles() belum kelar / gagal fetch sebagian.
+    // Kita fetch langsung by-ID biar halaman tetap kebuka, bukan 404.
+    if (id && id.startsWith('x-')) {
+        const statusId = id.slice(2);
+        if (/^\d{10,}$/.test(statusId)) {
+            content.innerHTML = `
+                <div class="article-loading-state" role="status" aria-live="polite">
+                    <div class="article-loading-spinner" aria-hidden="true"></div>
+                    <p>Menarik artikel dari X…</p>
+                    <p class="article-loading-sub">Mungkin butuh beberapa detik.</p>
+                </div>`;
+            if (notFound) notFound.style.display = 'none';
+            (async () => {
+                try {
+                    const cfg = state.xArticlesConfig || await loadXArticlesRegistry();
+                    const tweet = await fetchXStatus(cfg, statusId, /*retries*/ 2);
+                    const art = convertXTweetToArticle(tweet, cfg);
+                    // merge supaya renderRelated & lookup berikutnya bisa nemu
+                    if (state.data && Array.isArray(state.data.articles)) {
+                        if (!state.data.articles.some(a => a.id === art.id)) state.data.articles.push(art);
+                    }
+                    renderArticleIntoContent(art);
+                } catch (err) {
+                    console.warn('Direct X article fetch failed', err);
+                    content.innerHTML = '';
+                    if (notFound) {
+                        notFound.style.display = 'block';
+                        notFound.innerHTML = `
+                            <p class="eyebrow justify-center mb-4">X Article</p>
+                            <h1 class="font-display text-3xl mb-4" style="color:var(--parchment-text)">Artikel belum bisa dimuat</h1>
+                            <p class="mb-6 section-sub" style="margin:0 auto 1.5rem;">Koneksi ke X/FixTweet terganggu atau artikel sudah tidak publik. Coba lagi, atau buka langsung di X.</p>
+                            <div class="flex flex-wrap gap-3 justify-center">
+                                <button type="button" class="btn-primary inline-flex" onclick="location.reload()"><i class="fas fa-rotate"></i> Coba lagi</button>
+                                <a class="btn-ghost inline-flex" href="https://x.com/${encodeURIComponent((state.xArticlesConfig && state.xArticlesConfig.username) || 'Deadmouse_jpeg')}/status/${encodeURIComponent(statusId)}" target="_blank" rel="noopener noreferrer"><i class="fab fa-x-twitter"></i> Buka di X</a>
+                                <a href="index.html" class="btn-ghost inline-flex">Kembali ke Dispatches</a>
+                            </div>`;
+                    }
+                }
+            })();
+            return;
+        }
+    }
+
+    if (id && id.startsWith('medium-')) {
+        // ID Medium di-generate dari GUID/URL — kita reload registry & cari match
+        // berdasarkan suffix id. Kalau ketemu, convert & render.
+        const idSuffix = id.slice(7);
+        content.innerHTML = `
+            <div class="article-loading-state" role="status" aria-live="polite">
+                <div class="article-loading-spinner" aria-hidden="true"></div>
+                <p>Menarik artikel dari Medium…</p>
+            </div>`;
+        if (notFound) notFound.style.display = 'none';
+        (async () => {
+            try {
+                const cfg = await loadMediumArticlesRegistry();
+                const post = (cfg.posts || []).find(p => {
+                    const raw = (p.guid || p.link || '');
+                    const safe = raw.replace(/[^a-zA-Z0-9]+/g, '-').replace(/^-+|-+$/g, '').split('-').pop() || '';
+                    return safe === idSuffix;
+                });
+                if (!post) throw new Error('Post tidak ada di registry');
+                const art = convertMediumPostToArticle(post, cfg);
+                if (state.data && Array.isArray(state.data.articles)) {
+                    if (!state.data.articles.some(a => a.id === art.id)) state.data.articles.push(art);
+                }
+                renderArticleIntoContent(art);
+            } catch (err) {
+                console.warn('Direct Medium article lookup failed', err);
+                content.innerHTML = '';
+                if (notFound) {
+                    notFound.style.display = 'block';
+                    notFound.innerHTML = `
+                        <p class="eyebrow justify-center mb-4">Medium</p>
+                        <h1 class="font-display text-3xl mb-4" style="color:var(--parchment-text)">Artikel belum bisa dimuat</h1>
+                        <p class="mb-6 section-sub" style="margin:0 auto 1.5rem;">Registry Medium belum ter-load atau koneksi terganggu. Coba lagi, atau buka langsung di Medium.</p>
+                        <div class="flex flex-wrap gap-3 justify-center">
+                            <button type="button" class="btn-primary inline-flex" onclick="location.reload()"><i class="fas fa-rotate"></i> Coba lagi</button>
+                            <a href="index.html" class="btn-ghost inline-flex">Kembali ke Dispatches</a>
+                        </div>`;
+                }
+            }
+        })();
+        return;
+    }
+
+    // Bener-bener gak ketemu & bukan prefix x-/medium-
+    if (notFound) notFound.style.display = 'block';
+    content.innerHTML = '';
+}
+
+// Render isi artikel ke #articleContent — di-refactor dari renderArticlePage
+// supaya bisa dipanggil ulang setelah direct-fetch.
+function renderArticleIntoContent(article) {
+    const content = $('articleContent');
+    if (!content || !article) return;
+    const notFound = $('articleNotFound');
+    if (notFound) notFound.style.display = 'none';
     const cat = (state.data.categories || []).find(c => c.id === article.category) || { name: 'Dispatch', accent: 'brass' };
     const isX = article.source === 'x';
     const isMedium = article.source === 'medium';
