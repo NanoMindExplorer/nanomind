@@ -617,23 +617,36 @@ async function loadData() {
         ensureXArticlesCategory();
         ensureMediumArticlesCategory();
 
-        // Tarik X Articles (live) lalu merge ke daftar dispatches
-        try {
-            const xArts = await loadXArticles();
-            if (xArts.length) mergeXArticlesIntoState(xArts);
-        } catch (xErr) {
-            console.warn('X Articles load failed', xErr);
-        }
-
-        // Tarik Medium Articles (live via RSS resmi) lalu merge ke daftar dispatches
-        try {
-            const medArts = await loadMediumArticles();
-            if (medArts.length) mergeMediumArticlesIntoState(medArts);
-        } catch (medErr) {
-            console.warn('Medium Articles load failed', medErr);
-        }
-
+        // === Render page SEGERA setelah db.json load ===
+        // Dulu: renderPageContent() dipanggil SETELAH loadXArticles() + loadMediumArticles()
+        // selesai. Itu bikin article.html & telegram.html blank 10-30 detik saat X/Medium
+        // bulk-fetch dari fxtwitter (terutama setelah clear cache, no sessionStorage).
+        // Fix: render dulu, lalu load X/Medium di background → re-render kalau perlu.
         renderPageContent();
+
+        // === Background load: X Articles (live via fxtwitter) ===
+        // Jangan block page render. Kalau gagal/timeout, page tetap jalan —
+        // article.html fallback direct-fetch sudah handle individu.
+        loadXArticlesWithTimeout(20000)
+            .then(xArts => {
+                if (xArts && xArts.length) {
+                    mergeXArticlesIntoState(xArts);
+                    // Re-render rail di homepage kalau ada
+                    if ($('xArticlesRail')) renderXArticlesRail(state.data.articles);
+                }
+            })
+            .catch(xErr => console.warn('X Articles background load failed', xErr));
+
+        // === Background load: Medium Articles (dari medium-articles.json) ===
+        loadMediumArticles()
+            .then(medArts => {
+                if (medArts && medArts.length) {
+                    mergeMediumArticlesIntoState(medArts);
+                    if ($('mediumArticlesRail')) renderMediumArticlesRail(state.data.articles);
+                }
+            })
+            .catch(medErr => console.warn('Medium Articles background load failed', medErr));
+
     } catch (err) {
         console.error('Load failed', err);
         state.data = { profile: { name: 'Failed to Load', bio: 'Cek konfigurasi script.js' }, site: {}, categories: [], articles: [], projects: [], links: [], videos: [] };
@@ -643,6 +656,19 @@ async function loadData() {
         hideHomepageSkeletons();
         hideLoader();
     }
+}
+
+/**
+ * Wrapper untuk loadXArticles() dengan timeout.
+ * Kalau fxtwitter lambat/gangguan, gak block page selamanya.
+ */
+async function loadXArticlesWithTimeout(ms = 20000) {
+    return Promise.race([
+        loadXArticles(),
+        new Promise((_, reject) =>
+            setTimeout(() => reject(new Error(`X Articles timeout after ${ms}ms`)), ms)
+        )
+    ]);
 }
 
 function hideHomepageSkeletons() {

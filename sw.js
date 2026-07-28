@@ -9,7 +9,7 @@
 //   - External API (fxtwitter, raw.githubusercontent, cdnjs) → network
 //     with cache fallback.
 //   - Media lokal (gambar) → cache-first, update in background.
-const CACHE_NAME = 'nanomind-journal-cache-v13';
+const CACHE_NAME = 'nanomind-journal-cache-v14';
 const SHELL_ASSETS = [
     './',
     './index.html',
