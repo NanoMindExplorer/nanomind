@@ -75,6 +75,7 @@ document.addEventListener('DOMContentLoaded', () => {
     setupRailDragScroll();
     setupTelegramRetryButtons();
     setupTelegramCardClicks();
+    setupCardClickFeedback();
     registerServiceWorker();
     checkAdminSession();
     loadData();
@@ -3145,26 +3146,34 @@ function setupMediumRetryButtons() {
 /**
  * Klik-tahan-geser dengan mouse buat rail horizontal (X/Medium Articles).
  *
- * FIX KOMPREHENSIF: versi sebelumnya pakai e.preventDefault() di mousedown
- * untuk cegah native image-drag. Tapi preventDefault(mousedown) pada
- * beberapa browser (terutama Chrome mobile + wallet extensions) bisa
- * mengganggu event click yang menyusul → kartu gak bisa diklik.
+ * FIX KOMPREHENSIF (patch-7): HAPUS click handler block sepenuhnya.
  *
- * Solusi: GANTI preventDefault dengan draggable=false pada <img> di dalam
- * rail (CSS .x-rail img { draggable=false }). Ini cegah native image-drag
- * TANPA menyentuh event click. Tambah touch events untuk mobile.
+ * Bug sebelumnya: variable `moved` nyangkut setelah drag tanpa click.
+ * Skenario:
+ *   1. User drag rail 20px, mouseup di area rail KOSONG (bukan di card)
+ *   2. Click event TIDAK fire (karena mouseup bukan di <a>)
+ *   3. `moved` tetap 20 (tidak di-reset)
+ *   4. User klik card → click handler: moved=20 > 15 → preventDefault →
+ *      NAVIGASI DIBLOK! Artikel gak kebuka.
+ *
+ * Solusi: HAPUS click handler block. Drag-scroll tetap jalan (mouse down +
+ * move + up geser rail), tapi click TIDAK PERNAH di-block. Kalau user drag
+ * lalu mouseup di atas card, click fire → navigasi ke card itu (behavior
+ * yang expected — user sudah lihat rail scroll, klik card untuk baca).
+ *
+ * Kalau user mau scroll rail tanpa navigasi, mouseup di area rail kosong
+ * (bukan di atas card). Itu natural UX.
  */
 function enableRailDragScroll(rail) {
     if (!rail || rail.dataset.dragScrollBound) return;
     rail.dataset.dragScrollBound = '1';
 
     // Set draggable=false pada semua <img> di dalam rail → cegah native
-    // image-drag TANPA preventDefault(mousedown) yang bisa block click.
+    // image-drag TANPA preventDefault(mousedown).
     const makeImagesNonDraggable = () => {
         rail.querySelectorAll('img').forEach(img => { img.draggable = false; img.ondragstart = () => false; });
     };
     makeImagesNonDraggable();
-    // Re-apply kalau rail di-render ulang (Observer untuk DOM changes)
     const observer = new MutationObserver(makeImagesNonDraggable);
     observer.observe(rail, { childList: true, subtree: true });
 
@@ -3172,18 +3181,14 @@ function enableRailDragScroll(rail) {
     let startX = 0;
     let startY = 0;
     let startScroll = 0;
-    let moved = 0;
-    let lastDragTime = 0;
 
     const onDown = (e) => {
         if (e.button !== 0) return; // hanya klik kiri
         isDown = true;
-        moved = 0;
         startX = e.pageX;
         startY = e.pageY;
         startScroll = rail.scrollLeft;
         rail.classList.add('dragging');
-        // TIDAK ADA preventDefault di sini — biarkan click event mengalir natural.
     };
     const onMove = (e) => {
         if (!isDown) return;
@@ -3191,12 +3196,8 @@ function enableRailDragScroll(rail) {
         const dy = e.pageY - startY;
         const absDx = Math.abs(dx);
         const absDy = Math.abs(dy);
-        // Hanya anggap drag horizontal kalau dx > dy (bukan vertical scroll)
-        if (absDx > absDy && absDx > moved) {
-            moved = absDx;
-            lastDragTime = Date.now();
-        }
-        if (absDx > 3 && absDx > absDy) {
+        // Hanya scroll kalau horizontal drag > vertical (bukan vertical scroll)
+        if (absDx > absDy && absDx > 3) {
             rail.scrollLeft = startScroll - dx;
         }
     };
@@ -3213,42 +3214,80 @@ function enableRailDragScroll(rail) {
     rail.addEventListener('dragstart', (e) => { e.preventDefault(); stop(); });
 
     // === Touch support untuk mobile ===
-    let touchStartX = 0, touchStartY = 0, touchStartScroll = 0, touchMoved = 0;
+    let touchStartX = 0, touchStartY = 0, touchStartScroll = 0;
     rail.addEventListener('touchstart', (e) => {
         if (e.touches.length !== 1) return;
         touchStartX = e.touches[0].pageX;
         touchStartY = e.touches[0].pageY;
         touchStartScroll = rail.scrollLeft;
-        touchMoved = 0;
     }, { passive: true });
     rail.addEventListener('touchmove', (e) => {
         if (e.touches.length !== 1) return;
         const dx = e.touches[0].pageX - touchStartX;
         const dy = e.touches[0].pageY - touchStartY;
         if (Math.abs(dx) > Math.abs(dy)) {
-            touchMoved = Math.max(touchMoved, Math.abs(dx));
             rail.scrollLeft = touchStartScroll - dx;
         }
     }, { passive: true });
 
-    // Kalau BENAR-BENAR drag (> 15px horizontal) DAN baru saja (< 500ms),
-    // block klik <a>. Touch punya threshold terpisah.
-    rail.addEventListener('click', (e) => {
-        const wasRealDrag = moved > 15 && (Date.now() - lastDragTime) < 500;
-        const wasRealTouch = touchMoved > 15;
-        moved = 0;
-        touchMoved = 0;
-        if (wasRealDrag || wasRealTouch) {
-            e.preventDefault();
-            e.stopPropagation();
-        }
-    }, true);
+    // TIDAK ADA click handler block. Click <a> selalu jalan natural.
+    // Drag-scroll tetap berfungsi via mousedown/mousemove/mouseup.
 }
 
 function setupRailDragScroll() {
     enableRailDragScroll($('xArticlesRail'));
     enableRailDragScroll($('mediumArticlesRail'));
 }
+
+/**
+ * Visible feedback saat user klik card → article.html.
+ * Tampilkan loading overlay supaya user TAHU bahwa klik mereka terdaftar
+ * dan halaman sedang dimuat. Ini penting karena navigasi antar halaman
+ * di static site bisa feel "nothing happened" walau sebenarnya jalan.
+ */
+function setupCardClickFeedback() {
+    // Event delegation — tangkap SEMUA click di document, cek apakah
+    // target-nya adalah <a> card (x-card / dispatch-card / related card).
+    document.addEventListener('click', (e) => {
+        const link = e.target.closest('a.x-card, a.dispatch-card');
+        if (!link) return;
+        const href = link.getAttribute('href') || '';
+        // Hanya untuk link ke article.html (bukan external)
+        if (!href.startsWith('article.html')) return;
+        // Tampilkan loading overlay
+        showCardClickLoader();
+    }, true); // capture phase — tampil SEBELUM navigasi
+}
+
+function showCardClickLoader() {
+    // Hapus overlay lama kalau ada
+    const existing = document.getElementById('cardClickLoader');
+    if (existing) existing.remove();
+    const loader = document.createElement('div');
+    loader.id = 'cardClickLoader';
+    loader.style.cssText = `
+        position: fixed; top: 0; left: 0; right: 0; height: 3px;
+        background: linear-gradient(90deg, transparent, var(--brass, #C9974A), transparent);
+        background-size: 200% 100%;
+        animation: cardClickLoaderSlide 1s linear infinite;
+        z-index: 9999; pointer-events: none;
+    `;
+    document.body.appendChild(loader);
+    // Auto-hapus setelah 5 detik (fallback kalau navigasi lambat)
+    setTimeout(() => { if (loader.parentNode) loader.remove(); }, 5000);
+}
+
+// Inject keyframes untuk loader animation
+(function injectCardClickLoaderStyle() {
+    const style = document.createElement('style');
+    style.textContent = `
+        @keyframes cardClickLoaderSlide {
+            0% { background-position: 200% 0; }
+            100% { background-position: -200% 0; }
+        }
+    `;
+    document.head.appendChild(style);
+})();
 
 function trapFocus(overlay) {
     if (!overlay) return;
