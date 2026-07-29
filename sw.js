@@ -9,7 +9,7 @@
 // Auto-update: SW cek update setiap jam (lewat updateViaCache: 'none' +
 // manual check di 'controllerchange'). Saat SW baru terdeteksi,
 // skipWaiting() + message semua clients untuk reload.
-const CACHE_NAME = 'nanomind-journal-cache-v16';
+const CACHE_NAME = 'nanomind-journal-cache-v17';
 const SHELL_ASSETS = [
     './',
     './index.html',
@@ -139,17 +139,22 @@ self.addEventListener('fetch', (event) => {
         return;
     }
 
-    // === JSON data: stale-while-revalidate ===
+    // === JSON data: network-first (dulu stale-while-revalidate) ===
+    // db.json / x-articles.json / medium-articles.json / telegram-posts.json
+    // sering berubah (auto-sync tiap ~2 jam). Stale-while-revalidate bikin
+    // pengunjung yang browsernya udah pernah cache versi lama/kosong akan
+    // TERUS lihat versi itu sampai revalidate berikutnya — kadang gak pernah
+    // "kelihatan" update karena tab jarang di-reload. Network-first pastikan
+    // data selalu fresh selama online; cache cuma fallback pas offline.
     if (url.pathname.endsWith('.json')) {
         event.respondWith(
-            caches.open(CACHE_NAME).then(async (cache) => {
-                const cached = await cache.match(req);
-                const network = fetch(req).then((res) => {
-                    if (res && res.ok) cache.put(req, res.clone());
-                    return res;
-                }).catch(() => cached);
-                return cached || network;
-            })
+            fetch(req).then((res) => {
+                if (res && res.ok) {
+                    const resClone = res.clone();
+                    caches.open(CACHE_NAME).then((cache) => cache.put(req, resClone));
+                }
+                return res;
+            }).catch(() => caches.match(req).then(c => c || Response.error()))
         );
         return;
     }

@@ -1239,12 +1239,17 @@ body.has-living-bg .living-bg-veil {
     overflow: hidden;
     text-decoration: none;
     color: inherit;
+    cursor: pointer;
     transition: transform 0.3s cubic-bezier(0.16,1,0.3,1), border-color 0.25s, box-shadow 0.3s;
 }
 .tg-card:hover {
     transform: translateY(-2px);
     border-color: rgba(86, 161, 223, 0.55);
     box-shadow: 0 14px 36px -16px rgba(0,0,0,0.6);
+}
+.tg-card:focus-visible {
+    outline: 2px solid #56A1DF;
+    outline-offset: 2px;
 }
 .tg-card-permalink {
     position: absolute;

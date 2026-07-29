@@ -74,6 +74,7 @@ document.addEventListener('DOMContentLoaded', () => {
     setupMediumRetryButtons();
     setupRailDragScroll();
     setupTelegramRetryButtons();
+    setupTelegramCardClicks();
     registerServiceWorker();
     checkAdminSession();
     loadData();
@@ -680,16 +681,19 @@ async function loadData() {
 }
 
 /**
- * Wrapper untuk loadXArticles() dengan timeout.
- * Kalau fxtwitter lambat/gangguan, gak block page selamanya.
+ * Wrapper untuk loadXArticles() dengan batas waktu.
+ *
+ * FIX: implementasi lama pakai Promise.race([loadXArticles(), timeoutReject]).
+ * Kalau timeout duluan, race REJECT dan SELURUH hasil yang sudah berhasil
+ * ditarik ikut terbuang — padahal fetchXStatus() bisa retry sampai ~3x
+ * percobaan @ 18 detik/percobaan per status ID (bisa >20 detik total kalau
+ * FixTweet lambat/rate-limited), jadi timeout 20 detik sering kepotong
+ * padahal 8-9 dari 10 artikel sebenarnya sudah sukses ditarik. Sekarang
+ * loadXArticles() menerima `deadline` dan SELALU mengembalikan apapun yang
+ * berhasil dikumpulkan sejauh itu — gak pernah all-or-nothing lagi.
  */
 async function loadXArticlesWithTimeout(ms = 20000) {
-    return Promise.race([
-        loadXArticles(),
-        new Promise((_, reject) =>
-            setTimeout(() => reject(new Error(`X Articles timeout after ${ms}ms`)), ms)
-        )
-    ]);
+    return loadXArticles({ deadline: Date.now() + ms });
 }
 
 function hideHomepageSkeletons() {
@@ -939,7 +943,7 @@ function convertXTweetToArticle(tweet, cfg) {
     };
 }
 
-async function loadXArticles() {
+async function loadXArticles(opts = {}) {
     const cfg = await loadXArticlesRegistry();
     if (!cfg.enabled || !cfg.statusIds.length) return [];
 
@@ -950,23 +954,43 @@ async function loadXArticles() {
     const CONCURRENCY = 3;
     const results = [];
     const ids = cfg.statusIds.slice();
+    // Deadline: default 20 detik dari sekarang kalau caller gak kasih (mis.
+    // dipanggil langsung tanpa lewat loadXArticlesWithTimeout).
+    const deadline = opts.deadline || (Date.now() + 20000);
 
     async function worker() {
         while (ids.length) {
+            const remaining = deadline - Date.now();
+            if (remaining <= 1000) break; // sisa waktu terlalu mepet, stop ambil ID baru
             const statusId = ids.shift();
             try {
-                const tweet = await fetchXStatus(cfg, statusId);
+                // Retry penuh (2x) kalau waktu masih longgar, retry minim/0 kalau mepet —
+                // biar gak kepotong di tengah percobaan terakhir.
+                const retries = remaining > 12000 ? 2 : (remaining > 6000 ? 1 : 0);
+                const tweet = await fetchXStatus(cfg, statusId, retries);
                 results.push(convertXTweetToArticle(tweet, cfg));
             } catch (err) {
                 console.warn('Gagal tarik X article', statusId, err);
             }
         }
     }
-    await Promise.all(Array.from({ length: Math.min(CONCURRENCY, cfg.statusIds.length) }, () => worker()));
+    // Tunggu semua worker beres SECARA WAJAR, tapi jangan lebih dari sisa
+    // waktu + sedikit grace period — dan yang PALING PENTING: apapun yang
+    // terjadi (selesai normal ATAU grace period habis), `results` yang
+    // sudah terkumpul tetap dipakai. Beda dari implementasi lama yang pakai
+    // Promise.race + reject → buang SEMUA hasil kalau telat.
+    const graceMs = Math.max(500, deadline - Date.now() + 1000);
+    await Promise.race([
+        Promise.all(Array.from({ length: Math.min(CONCURRENCY, cfg.statusIds.length) }, () => worker())),
+        new Promise(resolve => setTimeout(resolve, graceMs))
+    ]);
 
     // Urut terbaru dulu
     results.sort((a, b) => new Date(b.date) - new Date(a.date));
-    writeXArticlesCache(cfg, results);
+    // Cache hasil HANYA kalau semua ID kebagian giliran (bukan kepotong deadline) —
+    // supaya hasil parsial gak "mengunci" sessionStorage dan bikin sisa artikel
+    // gak pernah dicoba lagi sampai cache expire.
+    if (results.length && !ids.length) writeXArticlesCache(cfg, results);
     return results;
 }
 
@@ -1369,7 +1393,7 @@ function tgCardHtml(p) {
         </a>` : '';
     const viewsBlock = p.views ? `<span class="tg-meta-item"><i class="far fa-eye"></i> ${escapeHtml(p.views)}</span>` : '';
     return `
-        <article class="tg-card reveal" data-tg-post="${escapeHtml(p.postId)}" data-hasphoto="${hasPhoto ? '1' : '0'}" data-haslink="${hasLink ? '1' : '0'}">
+        <article class="tg-card reveal" data-tg-post="${escapeHtml(p.postId)}" data-hasphoto="${hasPhoto ? '1' : '0'}" data-haslink="${hasLink ? '1' : '0'}" tabindex="0" role="link" aria-label="Buka post Telegram ${escapeHtml(date)}">
             <a class="tg-card-permalink" href="${escapeHtml(p.url)}" target="_blank" rel="noopener noreferrer" aria-label="Buka post asli di Telegram" title="Buka di Telegram">
                 <i class="fab fa-telegram"></i>
             </a>
@@ -1474,6 +1498,41 @@ function setupTelegramRetryButtons() {
     };
     const b1 = $('tgRetryBtn'); if (b1) b1.addEventListener('click', retry);
     const b2 = $('tgEmptyRetryBtn'); if (b2) b2.addEventListener('click', retry);
+}
+
+/**
+ * FIX: tgCardHtml() cuma bikin satu ikon kecil (.tg-card-permalink) yang
+ * benar-benar <a> — sisa kartu (foto, teks, meta) statis & gak bisa diklik
+ * sama sekali. User natural-nya coba klik teks/foto buat baca post, gak
+ * nemu apa-apa. Fix: delegasikan klik di seluruh #tgFeed (container-nya gak
+ * pernah diganti, cuma innerHTML-nya — jadi bind SEKALI, tetap kepasang
+ * walau kartu di-render ulang) — buka post asli kalau klik area kartu yang
+ * bukan link/tombol lain (link eksternal di dalam teks tetap jalan normal).
+ */
+function setupTelegramCardClicks() {
+    const wrap = $('tgFeed');
+    if (!wrap || wrap.dataset.cardClickBound) return;
+    wrap.dataset.cardClickBound = '1';
+    wrap.addEventListener('click', (e) => {
+        // Kalau yang diklik adalah <a> asli (permalink icon, link eksternal
+        // di dalam teks pesan, dst) — biarkan browser handle secara normal.
+        if (e.target.closest('a')) return;
+        const card = e.target.closest('.tg-card');
+        if (!card) return;
+        const permalink = card.querySelector('.tg-card-permalink');
+        const url = permalink ? permalink.getAttribute('href') : null;
+        if (url) window.open(url, '_blank', 'noopener,noreferrer');
+    });
+    // Aksesibilitas: kartu bisa di-fokus & dibuka pakai keyboard (Enter/Space)
+    wrap.addEventListener('keydown', (e) => {
+        if (e.key !== 'Enter' && e.key !== ' ') return;
+        const card = e.target.closest('.tg-card');
+        if (!card || e.target.closest('a')) return;
+        e.preventDefault();
+        const permalink = card.querySelector('.tg-card-permalink');
+        const url = permalink ? permalink.getAttribute('href') : null;
+        if (url) window.open(url, '_blank', 'noopener,noreferrer');
+    });
 }
 
 // ==========================================
@@ -3116,8 +3175,15 @@ function enableRailDragScroll(rail) {
         startX = e.pageX;
         startScroll = rail.scrollLeft;
         rail.classList.add('dragging');
-        // JANGAN preventDefault di sini — itu bikin klik <a> di dalam card
-        // gak ke-trigger sama sekali. Kita tangani scroll via mousemove saja.
+        // preventDefault DI SINI PENTING: tanpa ini, mousedown di atas <img>
+        // memicu native browser "drag image" — begitu native drag jalan,
+        // event mouseup/mousemove kita berhenti ke-fire (browser ambil alih
+        // jadi dragstart/dragend), sehingga isDown gak pernah balik ke false
+        // dan class "dragging" (pointer-events:none di .x-card) NYANGKUT
+        // SELAMANYA → kartu jadi gak bisa diklik lagi sampai reload. Ini
+        // beda dari "klik <a> gak ke-trigger" — preventDefault(mousedown)
+        // TIDAK memblokir event click, cuma mencegah drag-native/text-select.
+        e.preventDefault();
     };
     const onMove = (e) => {
         if (!isDown) return;
@@ -3143,6 +3209,11 @@ function enableRailDragScroll(rail) {
     rail.addEventListener('mousedown', onDown);
     window.addEventListener('mousemove', onMove);
     window.addEventListener('mouseup', stop);
+    // Safety-net tambahan: kalau mouseup ke-miss karena tab pindah fokus,
+    // window blur, atau native dragstart tetap kesulut — paksa stop supaya
+    // "dragging" gak pernah nyangkut permanen.
+    window.addEventListener('blur', stop);
+    rail.addEventListener('dragstart', (e) => { e.preventDefault(); stop(); });
 
     // Kalau BENAR-BENAR drag (> 15px) DAN baru saja (< 500ms), block klik <a>.
     // Threshold 15px cukup tinggi supaya klik biasa + micro-jitter tetap lewat.
