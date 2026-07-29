@@ -565,18 +565,15 @@ function registerServiceWorker() {
                 setInterval(() => reg.update().catch(() => {}), 60 * 60 * 1000);
             })
             .catch(() => {});
-        // Saat SW baru activated, reload page sekali supaya dapat code baru
-        let refreshing = false;
-        navigator.serviceWorker.addEventListener('controllerchange', () => {
-            if (refreshing) return;
-            refreshing = true;
-            console.log('[SW] controller changed — reloading to get new code');
-            location.reload();
-        });
-        // Listen for messages from SW
+        // CATATAN: JANGAN auto-reload pada controllerchange.
+        // Reload otomatis bikin reload loop (variable 'refreshing' reset pada
+        // new page load) → artikel gak pernah sempat render. SW v18 sudah
+        // network-first untuk HTML/JS/CSS + cache-bust ?v=18 → user pasti
+        // dapat code baru pada navigasi berikutnya tanpa perlu reload paksa.
+        // Listen for messages from SW (untuk debug saja)
         navigator.serviceWorker.addEventListener('message', (event) => {
             if (event.data && event.data.type === 'SW_UPDATED') {
-                console.log('[SW] got SW_UPDATED message:', event.data.version);
+                console.log('[SW] updated to:', event.data.version);
             }
         });
     });
@@ -3147,56 +3144,59 @@ function setupMediumRetryButtons() {
 
 /**
  * Klik-tahan-geser dengan mouse buat rail horizontal (X/Medium Articles).
- * .x-rail sebelumnya cuma overflow-x:auto — jalan lewat sentuhan/trackpad/scrollbar,
- * tapi mouse biasa (tanpa trackpad/touch) gak bisa "nge-drag" isinya.
  *
- * BUG FIX: threshold lama `moved > 6` terlalu sensitif. Pada mouse dengan
- * sedikit jitter, atau trackpad, user gak sadar "drag" 7-10px saat klik
- * card → click di-block → artikel gak kebuka. Fix:
- *   - threshold 6 → 15px (lebih toleran terhadap micro-movement)
- *   - reset `moved` ke 0 langsung setelah click handler dieksekusi,
- *     supaya klik berikutnya mulai dari kondisi bersih
- *   - hanya block jika drag terjadi dalam 500ms terakhir (anti false-positive)
+ * FIX KOMPREHENSIF: versi sebelumnya pakai e.preventDefault() di mousedown
+ * untuk cegah native image-drag. Tapi preventDefault(mousedown) pada
+ * beberapa browser (terutama Chrome mobile + wallet extensions) bisa
+ * mengganggu event click yang menyusul → kartu gak bisa diklik.
+ *
+ * Solusi: GANTI preventDefault dengan draggable=false pada <img> di dalam
+ * rail (CSS .x-rail img { draggable=false }). Ini cegah native image-drag
+ * TANPA menyentuh event click. Tambah touch events untuk mobile.
  */
 function enableRailDragScroll(rail) {
     if (!rail || rail.dataset.dragScrollBound) return;
     rail.dataset.dragScrollBound = '1';
+
+    // Set draggable=false pada semua <img> di dalam rail → cegah native
+    // image-drag TANPA preventDefault(mousedown) yang bisa block click.
+    const makeImagesNonDraggable = () => {
+        rail.querySelectorAll('img').forEach(img => { img.draggable = false; img.ondragstart = () => false; });
+    };
+    makeImagesNonDraggable();
+    // Re-apply kalau rail di-render ulang (Observer untuk DOM changes)
+    const observer = new MutationObserver(makeImagesNonDraggable);
+    observer.observe(rail, { childList: true, subtree: true });
+
     let isDown = false;
     let startX = 0;
+    let startY = 0;
     let startScroll = 0;
     let moved = 0;
     let lastDragTime = 0;
 
     const onDown = (e) => {
-        // Hanya tangani klik kiri (button 0). Klik kanan/tengah jangan trigger drag.
-        if (e.button !== 0) return;
+        if (e.button !== 0) return; // hanya klik kiri
         isDown = true;
         moved = 0;
         startX = e.pageX;
+        startY = e.pageY;
         startScroll = rail.scrollLeft;
         rail.classList.add('dragging');
-        // preventDefault DI SINI PENTING: tanpa ini, mousedown di atas <img>
-        // memicu native browser "drag image" — begitu native drag jalan,
-        // event mouseup/mousemove kita berhenti ke-fire (browser ambil alih
-        // jadi dragstart/dragend), sehingga isDown gak pernah balik ke false
-        // dan class "dragging" (pointer-events:none di .x-card) NYANGKUT
-        // SELAMANYA → kartu jadi gak bisa diklik lagi sampai reload. Ini
-        // beda dari "klik <a> gak ke-trigger" — preventDefault(mousedown)
-        // TIDAK memblokir event click, cuma mencegah drag-native/text-select.
-        e.preventDefault();
+        // TIDAK ADA preventDefault di sini — biarkan click event mengalir natural.
     };
     const onMove = (e) => {
         if (!isDown) return;
         const dx = e.pageX - startX;
+        const dy = e.pageY - startY;
         const absDx = Math.abs(dx);
-        // Update moved (max distance yang pernah tercapai)
-        if (absDx > moved) {
+        const absDy = Math.abs(dy);
+        // Hanya anggap drag horizontal kalau dx > dy (bukan vertical scroll)
+        if (absDx > absDy && absDx > moved) {
             moved = absDx;
             lastDragTime = Date.now();
         }
-        // Hanya scroll kalau benar-benar drag (> 3px) supaya micro-jitter
-        // gak menggeser rail saat user cuma mau klik.
-        if (absDx > 3) {
+        if (absDx > 3 && absDx > absDy) {
             rail.scrollLeft = startScroll - dx;
         }
     };
@@ -3209,20 +3209,36 @@ function enableRailDragScroll(rail) {
     rail.addEventListener('mousedown', onDown);
     window.addEventListener('mousemove', onMove);
     window.addEventListener('mouseup', stop);
-    // Safety-net tambahan: kalau mouseup ke-miss karena tab pindah fokus,
-    // window blur, atau native dragstart tetap kesulut — paksa stop supaya
-    // "dragging" gak pernah nyangkut permanen.
     window.addEventListener('blur', stop);
     rail.addEventListener('dragstart', (e) => { e.preventDefault(); stop(); });
 
-    // Kalau BENAR-BENAR drag (> 15px) DAN baru saja (< 500ms), block klik <a>.
-    // Threshold 15px cukup tinggi supaya klik biasa + micro-jitter tetap lewat.
-    // Reset moved ke 0 setelah handle, supaya klik berikutnya fresh.
+    // === Touch support untuk mobile ===
+    let touchStartX = 0, touchStartY = 0, touchStartScroll = 0, touchMoved = 0;
+    rail.addEventListener('touchstart', (e) => {
+        if (e.touches.length !== 1) return;
+        touchStartX = e.touches[0].pageX;
+        touchStartY = e.touches[0].pageY;
+        touchStartScroll = rail.scrollLeft;
+        touchMoved = 0;
+    }, { passive: true });
+    rail.addEventListener('touchmove', (e) => {
+        if (e.touches.length !== 1) return;
+        const dx = e.touches[0].pageX - touchStartX;
+        const dy = e.touches[0].pageY - touchStartY;
+        if (Math.abs(dx) > Math.abs(dy)) {
+            touchMoved = Math.max(touchMoved, Math.abs(dx));
+            rail.scrollLeft = touchStartScroll - dx;
+        }
+    }, { passive: true });
+
+    // Kalau BENAR-BENAR drag (> 15px horizontal) DAN baru saja (< 500ms),
+    // block klik <a>. Touch punya threshold terpisah.
     rail.addEventListener('click', (e) => {
         const wasRealDrag = moved > 15 && (Date.now() - lastDragTime) < 500;
-        // Reset state supaya klik berikutnya mulai dari 0
+        const wasRealTouch = touchMoved > 15;
         moved = 0;
-        if (wasRealDrag) {
+        touchMoved = 0;
+        if (wasRealDrag || wasRealTouch) {
             e.preventDefault();
             e.stopPropagation();
         }
