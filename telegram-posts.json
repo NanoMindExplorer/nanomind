@@ -5,8 +5,22 @@
   "previewUrl": "https://t.me/s/nanojournal",
   "categoryId": "telegram",
   "cacheMinutes": 5,
-  "lastSync": "2026-07-30T04:21:05Z",
+  "lastSync": "2026-07-30T07:12:56Z",
   "posts": [
+    {
+      "postId": "1197",
+      "channel": "nanojournal",
+      "url": "https://t.me/nanojournal/1197",
+      "textHtml": "Day 1 try to listGameMapperMind list on Huawei App Gallery",
+      "textPlain": "Day 1 try to listGameMapperMind list on Huawei App Gallery",
+      "links": [],
+      "photos": [
+        "https://cdn5.telesco.pe/file/MwNwhSPjIv9wmg3j_0IR7tbWXMahOVnfdekmIVrpxoWh6o5WrDd6x4PsG5xXAqxeguEwbTmEv57Wr4qmRIkpnaOxAiaF5eXWYOsJvHYiKlqRXTLr2VuwKKFqw5cmcAXgd4U9hn1nQ-sCFfeqpq8EkpS-VgvQFM-a9O6XhvSd0wKcTTeFIaqg08lGy1nXKnE_siT4wn32YnzloabuKe6KmMhM9hhdF84vr1iInTCh51_HqkcF7hGSZG-DXL19SKD2Ojwpiz5GWW76FdAj37OAVXM6uPorU-OPYW6DkyT9kLwIOKU0DuNK8a9F72x99LAGwBolCx1kNuqAz47K6pgXZA.jpg"
+      ],
+      "datetime": "2026-07-30T05:32:04Z",
+      "views": "1",
+      "replyTo": null
+    },
     {
       "postId": "1196",
       "channel": "nanojournal",
@@ -6353,9 +6367,9 @@
     }
   ],
   "lastSyncStats": {
-    "pagesFetched": 1,
-    "newPosts": 0,
-    "total": 377
+    "pagesFetched": 2,
+    "newPosts": 1,
+    "total": 378
   },
   "notes": "Auto-updated by tools/sync-telegram-channel.py (GitHub Actions). Posts ditarik dari t.me/s/<channel> (web preview resmi, no auth). Run tiap 15 menit — post baru akan muncul di website dalam <=15 menit."
 }
