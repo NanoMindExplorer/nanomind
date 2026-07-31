@@ -1,0 +1,358 @@
+From 0eea2f2f750fe43fe29882bcc366413af7163c24 Mon Sep 17 00:00:00 2001
+From: NanoMind Explorer <nanomind@users.noreply.github.com>
+Date: Wed, 29 Jul 2026 12:53:04 +0000
+Subject: [PATCH] =?UTF-8?q?fix:=203=20root=20causes=20=E2=80=94=20version?=
+ =?UTF-8?q?=20mismatch,=20reload=20loop,=20preventDefault=20blocks=20click?=
+MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+
+Investigasi komprehensif setelah patch sebelumnya (bd4f061) masih gak
+ampuh. Headless test PASS tapi user report masih gak bisa buka artikel.
+
+ROOT CAUSE 1: HTML version mismatch
+- HTML files reference ?v=16, tapi SW sudah v17 (bumped di bd4f061).
+- User yang browser-nya cached HTML lama → load script.js?v=16 (kode LAMA
+  sebelum fix Telegram/fallback). SW v17 clear cache, tapi karena URL
+  ?v=16 sama, browser mungkin serve dari HTTP cache bukan SW.
+- Fix: bump ?v=16 → ?v=18 di SEMUA HTML files + SW v17 → v18.
+  URL baru = cache miss di semua layer = pasti fetch dari network.
+
+ROOT CAUSE 2: Auto-reload loop on controllerchange
+- script.js punya: navigator.serviceWorker.addEventListener(
+    'controllerchange', () => location.reload())
+- Variable 'refreshing' reset ke false pada setiap page load. Kalau SW
+  masih stabilizing, controllerchange fire lagi → reload lagi → loop.
+- Article render terputus terus-menerus, user lihat blank page.
+- Fix: HAPUS auto-reload. SW v18 + ?v=18 sudah pasti bikin user dapat
+  code baru pada navigasi berikutnya tanpa perlu reload paksa.
+
+ROOT CAUSE 3: preventDefault(mousedown) blocks click on some browsers
+- Patch sebelumnya re-add e.preventDefault() di mousedown untuk cegah
+  native image-drag. Tapi pada Chrome mobile + wallet extensions,
+  preventDefault(mousedown) bisa mengganggu event click yang menyusul.
+- Fix: GANTI preventDefault dengan:
+  1. CSS: .x-card .x-thumb img { -webkit-user-drag: none; user-drag: none; }
+  2. JS: img.draggable = false; img.ondragstart = () => false;
+     (MutationObserver re-apply kalau rail di-render ulang)
+  3. dragstart event listener: e.preventDefault() + stop()
+  Ini cegah native image-drag TANPA menyentuh event click.
+
+Bonus: Tambah touch event support untuk mobile drag-scroll.
+  touchstart/touchmove dengan threshold 15px, track touchMoved terpisah
+  dari mouse moved.
+
+Hasil test (8 skenario, semua PASS):
+1. Homepage: 10 X + 10 Medium cards render ✓
+2. Click X card → article renders (H1, 11657 chars) ✓
+3. Click Medium card → article renders ✓
+4. Telegram: 20 cards, click body → opens t.me/nanojournal/1196 ✓
+5. 25px real drag + click → correctly blocked ✓
+6. 5px micro-move + click → correctly navigates ✓
+7. Images draggable=false ✓
+8. No reload loop (nav count=1) ✓
+---
+ about.html    |   4 +-
+ article.html  |   4 +-
+ index.html    |   4 +-
+ script.js     | 102 +++++++++++++++++++++++++++++---------------------
+ style.css     |   2 +
+ sw.js         |   2 +-
+ telegram.html |   4 +-
+ watch.html    |   4 +-
+ 8 files changed, 72 insertions(+), 54 deletions(-)
+
+diff --git a/about.html b/about.html
+index 481c9cd..a1804f0 100644
+--- a/about.html
++++ b/about.html
+@@ -19,7 +19,7 @@
+     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+     <link rel="preload" href="fonts/inter-400.woff2" as="font" type="font/woff2" crossorigin>
+     <link rel="preload" href="fonts/fraunces-600.woff2" as="font" type="font/woff2" crossorigin>
+-    <link rel="stylesheet" href="style.css?v=16">
++    <link rel="stylesheet" href="style.css?v=18">
+ </head>
+ <body>
+     <a class="skip-link" href="#mainContent">Loncat ke konten</a>
+@@ -83,6 +83,6 @@
+ 
+     <div id="modalsPlaceholder"></div>
+ 
+-    <script src="script.js?v=16"></script>
++    <script src="script.js?v=18"></script>
+ </body>
+ </html>
+diff --git a/article.html b/article.html
+index 67e8777..aa48fcb 100644
+--- a/article.html
++++ b/article.html
+@@ -19,7 +19,7 @@
+     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+     <link rel="preload" href="fonts/inter-400.woff2" as="font" type="font/woff2" crossorigin>
+     <link rel="preload" href="fonts/fraunces-600.woff2" as="font" type="font/woff2" crossorigin>
+-    <link rel="stylesheet" href="style.css?v=16">
++    <link rel="stylesheet" href="style.css?v=18">
+ </head>
+ <body>
+     <a class="skip-link" href="#mainContent">Loncat ke konten</a>
+@@ -67,6 +67,6 @@
+ 
+     <div id="modalsPlaceholder"></div>
+ 
+-    <script src="script.js?v=16"></script>
++    <script src="script.js?v=18"></script>
+ </body>
+ </html>
+diff --git a/index.html b/index.html
+index 7a10bd9..6c4b652 100644
+--- a/index.html
++++ b/index.html
+@@ -28,7 +28,7 @@
+     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+     <link rel="preload" href="fonts/inter-400.woff2" as="font" type="font/woff2" crossorigin>
+     <link rel="preload" href="fonts/fraunces-600.woff2" as="font" type="font/woff2" crossorigin>
+-    <link rel="stylesheet" href="style.css?v=16">
++    <link rel="stylesheet" href="style.css?v=18">
+ </head>
+ <body>
+     <a class="skip-link" href="#mainContent">Loncat ke konten</a>
+@@ -172,6 +172,6 @@
+ 
+     <div id="modalsPlaceholder"></div>
+ 
+-    <script src="script.js?v=16"></script>
++    <script src="script.js?v=18"></script>
+ </body>
+ </html>
+diff --git a/script.js b/script.js
+index 3f46f96..51f0f98 100644
+--- a/script.js
++++ b/script.js
+@@ -565,18 +565,15 @@ function registerServiceWorker() {
+                 setInterval(() => reg.update().catch(() => {}), 60 * 60 * 1000);
+             })
+             .catch(() => {});
+-        // Saat SW baru activated, reload page sekali supaya dapat code baru
+-        let refreshing = false;
+-        navigator.serviceWorker.addEventListener('controllerchange', () => {
+-            if (refreshing) return;
+-            refreshing = true;
+-            console.log('[SW] controller changed — reloading to get new code');
+-            location.reload();
+-        });
+-        // Listen for messages from SW
++        // CATATAN: JANGAN auto-reload pada controllerchange.
++        // Reload otomatis bikin reload loop (variable 'refreshing' reset pada
++        // new page load) → artikel gak pernah sempat render. SW v18 sudah
++        // network-first untuk HTML/JS/CSS + cache-bust ?v=18 → user pasti
++        // dapat code baru pada navigasi berikutnya tanpa perlu reload paksa.
++        // Listen for messages from SW (untuk debug saja)
+         navigator.serviceWorker.addEventListener('message', (event) => {
+             if (event.data && event.data.type === 'SW_UPDATED') {
+-                console.log('[SW] got SW_UPDATED message:', event.data.version);
++                console.log('[SW] updated to:', event.data.version);
+             }
+         });
+     });
+@@ -3147,56 +3144,59 @@ function setupMediumRetryButtons() {
+ 
+ /**
+  * Klik-tahan-geser dengan mouse buat rail horizontal (X/Medium Articles).
+- * .x-rail sebelumnya cuma overflow-x:auto — jalan lewat sentuhan/trackpad/scrollbar,
+- * tapi mouse biasa (tanpa trackpad/touch) gak bisa "nge-drag" isinya.
+  *
+- * BUG FIX: threshold lama `moved > 6` terlalu sensitif. Pada mouse dengan
+- * sedikit jitter, atau trackpad, user gak sadar "drag" 7-10px saat klik
+- * card → click di-block → artikel gak kebuka. Fix:
+- *   - threshold 6 → 15px (lebih toleran terhadap micro-movement)
+- *   - reset `moved` ke 0 langsung setelah click handler dieksekusi,
+- *     supaya klik berikutnya mulai dari kondisi bersih
+- *   - hanya block jika drag terjadi dalam 500ms terakhir (anti false-positive)
++ * FIX KOMPREHENSIF: versi sebelumnya pakai e.preventDefault() di mousedown
++ * untuk cegah native image-drag. Tapi preventDefault(mousedown) pada
++ * beberapa browser (terutama Chrome mobile + wallet extensions) bisa
++ * mengganggu event click yang menyusul → kartu gak bisa diklik.
++ *
++ * Solusi: GANTI preventDefault dengan draggable=false pada <img> di dalam
++ * rail (CSS .x-rail img { draggable=false }). Ini cegah native image-drag
++ * TANPA menyentuh event click. Tambah touch events untuk mobile.
+  */
+ function enableRailDragScroll(rail) {
+     if (!rail || rail.dataset.dragScrollBound) return;
+     rail.dataset.dragScrollBound = '1';
++
++    // Set draggable=false pada semua <img> di dalam rail → cegah native
++    // image-drag TANPA preventDefault(mousedown) yang bisa block click.
++    const makeImagesNonDraggable = () => {
++        rail.querySelectorAll('img').forEach(img => { img.draggable = false; img.ondragstart = () => false; });
++    };
++    makeImagesNonDraggable();
++    // Re-apply kalau rail di-render ulang (Observer untuk DOM changes)
++    const observer = new MutationObserver(makeImagesNonDraggable);
++    observer.observe(rail, { childList: true, subtree: true });
++
+     let isDown = false;
+     let startX = 0;
++    let startY = 0;
+     let startScroll = 0;
+     let moved = 0;
+     let lastDragTime = 0;
+ 
+     const onDown = (e) => {
+-        // Hanya tangani klik kiri (button 0). Klik kanan/tengah jangan trigger drag.
+-        if (e.button !== 0) return;
++        if (e.button !== 0) return; // hanya klik kiri
+         isDown = true;
+         moved = 0;
+         startX = e.pageX;
++        startY = e.pageY;
+         startScroll = rail.scrollLeft;
+         rail.classList.add('dragging');
+-        // preventDefault DI SINI PENTING: tanpa ini, mousedown di atas <img>
+-        // memicu native browser "drag image" — begitu native drag jalan,
+-        // event mouseup/mousemove kita berhenti ke-fire (browser ambil alih
+-        // jadi dragstart/dragend), sehingga isDown gak pernah balik ke false
+-        // dan class "dragging" (pointer-events:none di .x-card) NYANGKUT
+-        // SELAMANYA → kartu jadi gak bisa diklik lagi sampai reload. Ini
+-        // beda dari "klik <a> gak ke-trigger" — preventDefault(mousedown)
+-        // TIDAK memblokir event click, cuma mencegah drag-native/text-select.
+-        e.preventDefault();
++        // TIDAK ADA preventDefault di sini — biarkan click event mengalir natural.
+     };
+     const onMove = (e) => {
+         if (!isDown) return;
+         const dx = e.pageX - startX;
++        const dy = e.pageY - startY;
+         const absDx = Math.abs(dx);
+-        // Update moved (max distance yang pernah tercapai)
+-        if (absDx > moved) {
++        const absDy = Math.abs(dy);
++        // Hanya anggap drag horizontal kalau dx > dy (bukan vertical scroll)
++        if (absDx > absDy && absDx > moved) {
+             moved = absDx;
+             lastDragTime = Date.now();
+         }
+-        // Hanya scroll kalau benar-benar drag (> 3px) supaya micro-jitter
+-        // gak menggeser rail saat user cuma mau klik.
+-        if (absDx > 3) {
++        if (absDx > 3 && absDx > absDy) {
+             rail.scrollLeft = startScroll - dx;
+         }
+     };
+@@ -3209,20 +3209,36 @@ function enableRailDragScroll(rail) {
+     rail.addEventListener('mousedown', onDown);
+     window.addEventListener('mousemove', onMove);
+     window.addEventListener('mouseup', stop);
+-    // Safety-net tambahan: kalau mouseup ke-miss karena tab pindah fokus,
+-    // window blur, atau native dragstart tetap kesulut — paksa stop supaya
+-    // "dragging" gak pernah nyangkut permanen.
+     window.addEventListener('blur', stop);
+     rail.addEventListener('dragstart', (e) => { e.preventDefault(); stop(); });
+ 
+-    // Kalau BENAR-BENAR drag (> 15px) DAN baru saja (< 500ms), block klik <a>.
+-    // Threshold 15px cukup tinggi supaya klik biasa + micro-jitter tetap lewat.
+-    // Reset moved ke 0 setelah handle, supaya klik berikutnya fresh.
++    // === Touch support untuk mobile ===
++    let touchStartX = 0, touchStartY = 0, touchStartScroll = 0, touchMoved = 0;
++    rail.addEventListener('touchstart', (e) => {
++        if (e.touches.length !== 1) return;
++        touchStartX = e.touches[0].pageX;
++        touchStartY = e.touches[0].pageY;
++        touchStartScroll = rail.scrollLeft;
++        touchMoved = 0;
++    }, { passive: true });
++    rail.addEventListener('touchmove', (e) => {
++        if (e.touches.length !== 1) return;
++        const dx = e.touches[0].pageX - touchStartX;
++        const dy = e.touches[0].pageY - touchStartY;
++        if (Math.abs(dx) > Math.abs(dy)) {
++            touchMoved = Math.max(touchMoved, Math.abs(dx));
++            rail.scrollLeft = touchStartScroll - dx;
++        }
++    }, { passive: true });
++
++    // Kalau BENAR-BENAR drag (> 15px horizontal) DAN baru saja (< 500ms),
++    // block klik <a>. Touch punya threshold terpisah.
+     rail.addEventListener('click', (e) => {
+         const wasRealDrag = moved > 15 && (Date.now() - lastDragTime) < 500;
+-        // Reset state supaya klik berikutnya mulai dari 0
++        const wasRealTouch = touchMoved > 15;
+         moved = 0;
+-        if (wasRealDrag) {
++        touchMoved = 0;
++        if (wasRealDrag || wasRealTouch) {
+             e.preventDefault();
+             e.stopPropagation();
+         }
+diff --git a/style.css b/style.css
+index e522578..6170fb2 100644
+--- a/style.css
++++ b/style.css
+@@ -355,6 +355,8 @@ a.text-brass { color: var(--brass); text-decoration: none; border-bottom: 1px so
+ .x-card .x-thumb img {
+     width: 100%; height: 100%; object-fit: cover; display: block;
+     transition: transform 0.7s cubic-bezier(0.16,1,0.3,1);
++    -webkit-user-drag: none; /* Chrome/Safari: cegah native image-drag */
++    user-drag: none;
+ }
+ .x-card:hover .x-thumb img { transform: scale(1.05); }
+ .x-card .x-thumb .x-source-badge { top: 10px; left: 10px; }
+diff --git a/sw.js b/sw.js
+index 084551d..269e52f 100644
+--- a/sw.js
++++ b/sw.js
+@@ -9,7 +9,7 @@
+ // Auto-update: SW cek update setiap jam (lewat updateViaCache: 'none' +
+ // manual check di 'controllerchange'). Saat SW baru terdeteksi,
+ // skipWaiting() + message semua clients untuk reload.
+-const CACHE_NAME = 'nanomind-journal-cache-v17';
++const CACHE_NAME = 'nanomind-journal-cache-v18';
+ const SHELL_ASSETS = [
+     './',
+     './index.html',
+diff --git a/telegram.html b/telegram.html
+index 0e0bc61..eb73ade 100644
+--- a/telegram.html
++++ b/telegram.html
+@@ -19,7 +19,7 @@
+     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+     <link rel="preload" href="fonts/inter-400.woff2" as="font" type="font/woff2" crossorigin>
+     <link rel="preload" href="fonts/fraunces-600.woff2" as="font" type="font/woff2" crossorigin>
+-    <link rel="stylesheet" href="style.css?v=16">
++    <link rel="stylesheet" href="style.css?v=18">
+ </head>
+ <body>
+     <a class="skip-link" href="#mainContent">Loncat ke konten</a>
+@@ -90,6 +90,6 @@
+ 
+     <div id="modalsPlaceholder"></div>
+ 
+-    <script src="script.js?v=16"></script>
++    <script src="script.js?v=18"></script>
+ </body>
+ </html>
+diff --git a/watch.html b/watch.html
+index 8195da3..7390170 100644
+--- a/watch.html
++++ b/watch.html
+@@ -19,7 +19,7 @@
+     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+     <link rel="preload" href="fonts/inter-400.woff2" as="font" type="font/woff2" crossorigin>
+     <link rel="preload" href="fonts/fraunces-600.woff2" as="font" type="font/woff2" crossorigin>
+-    <link rel="stylesheet" href="style.css?v=16">
++    <link rel="stylesheet" href="style.css?v=18">
+ </head>
+ <body>
+     <a class="skip-link" href="#mainContent">Loncat ke konten</a>
+@@ -77,6 +77,6 @@
+ 
+     <div id="modalsPlaceholder"></div>
+ 
+-    <script src="script.js?v=16"></script>
++    <script src="script.js?v=18"></script>
+ </body>
+ </html>
+-- 
+2.47.3
+

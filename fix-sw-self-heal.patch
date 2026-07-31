@@ -1,0 +1,250 @@
+From a09face6b0a3f62ed762c5e82b0aa6cf41755600 Mon Sep 17 00:00:00 2001
+From: Claude <claude@anthropic.local>
+Date: Fri, 31 Jul 2026 10:23:14 +0000
+Subject: [PATCH] =?UTF-8?q?fix:=20self-heal=20Service=20Worker=20=E2=80=94?=
+ =?UTF-8?q?=20bersihkan=20SW=20lama=20tanpa=20nunggu=20siklus=20update?=
+MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+
+Audit end-to-end (git pull fresh, baca ulang semua commit yang udah masuk
+sejak fix saya sebelumnya - ternyata sudah ada 2 ronde fix lain: d9c0b09
+dan ff3be80, keduanya soal drag-scroll/versioning). Saya verifikasi ulang
+SEMUA logic klik X/Medium/Telegram lewat simulasi jsdom nyata (bukan cuma
+baca kode) terhadap state repo yang SEBENARNYA (a38ff5d):
+
+- Homepage rail render benar (Medium: 10 kartu, href benar)
+- Klik kartu Telegram -> window.open ke URL post asli, benar
+- Navigasi langsung ke article.html?id=medium-xxx -> render lengkap di
+  percobaan pertama
+- Skenario PERSIS yang diklaim fix di ff3be80 (drag di rail lalu klik
+  card) -> defaultPrevented === false, navigasi TIDAK ke-block
+
+Kesimpulan: logic di kode SUDAH benar. Kalau user masih lihat gejala sama
+setelah 3 ronde fix + reload manual, satu-satunya penjelasan yang masuk
+akal: Service Worker versi LAMA (dari sebelum semua fix ini, mungkin dari
+v12-v16) masih aktif ngontrol tab browser, dan siklus update normalnya
+(reg.update() interval, browser cek update pas navigasi) belum/gak
+sempat mendeteksi versi baru untuk sesi spesifik itu.
+
+Fix: tambah self-heal script inline di <head> SEMUA halaman (index,
+article, about, watch, telegram) — jalan PALING AWAL, sebelum resource
+lain apapun, sebelum script.js bahkan sempat dimuat. Sekali per browser
+(guard localStorage flag 'nanomind_sw_heal_v1'): unregister SEMUA
+registrasi Service Worker apapun versinya + hapus SEMUA Cache Storage,
+lalu reload sekali. Ini gak bergantung sama sekali ke mekanisme update SW
+normal (reg.update(), controllerchange, cache versioning) yang sudah 3x
+dicoba diperbaiki tapi propagasinya gak terjamin cepat untuk sesi yang
+SUDAH terlanjur nyangkut. Setelah heal ini jalan sekali, registerServiceWorker()
+yang normal akan install ulang sw.js versi terbaru dari nol, bersih.
+---
+ about.html    | 29 +++++++++++++++++++++++++++++
+ article.html  | 29 +++++++++++++++++++++++++++++
+ index.html    | 29 +++++++++++++++++++++++++++++
+ telegram.html | 29 +++++++++++++++++++++++++++++
+ watch.html    | 29 +++++++++++++++++++++++++++++
+ 5 files changed, 145 insertions(+)
+
+diff --git a/about.html b/about.html
+index b2d712a..b158e2d 100644
+--- a/about.html
++++ b/about.html
+@@ -3,6 +3,35 @@
+ <head>
+     <meta charset="UTF-8">
+     <meta name="viewport" content="width=device-width, initial-scale=1.0">
++    <script>
++    // SELF-HEAL, sekali per browser: paksa bersihkan Service Worker LAMA +
++    // seluruh Cache Storage, TANPA bergantung ke siklus update SW normal
++    // (yang gak terjamin cepat — bisa nunggu sampai 1 jam / navigasi
++    // berikutnya). Taruh paling awal <head>, sebelum resource lain, supaya
++    // langsung kejadian begitu HTML ini (yang sudah pasti fresh) kebuka.
++    // Naikkan angka di NANOMIND_SW_HEAL_FLAG kalau di masa depan perlu
++    // heal ulang lagi.
++    (function () {
++        var FLAG = 'nanomind_sw_heal_v1';
++        try { if (localStorage.getItem(FLAG) === '1') return; } catch (e) { return; }
++        if (!('serviceWorker' in navigator)) {
++            try { localStorage.setItem(FLAG, '1'); } catch (e) {}
++            return;
++        }
++        Promise.resolve().then(async function () {
++            try {
++                var regs = await navigator.serviceWorker.getRegistrations();
++                await Promise.all(regs.map(function (r) { return r.unregister(); }));
++                if (window.caches) {
++                    var keys = await caches.keys();
++                    await Promise.all(keys.map(function (k) { return caches.delete(k); }));
++                }
++                try { localStorage.setItem(FLAG, '1'); } catch (e) {}
++                if (regs.length) location.reload();
++            } catch (e) { /* biarkan alur normal yang urus kalau ini gagal */ }
++        });
++    })();
++    </script>
+     <title>About — Nanomind Explorer</title>
+     <meta name="description" content="Tentang penulis di balik Nanomind Explorer — proyek, alat, dan cara menghubungi.">
+     <meta name="theme-color" content="#14140F">
+diff --git a/article.html b/article.html
+index 55796ef..1a753c0 100644
+--- a/article.html
++++ b/article.html
+@@ -3,6 +3,35 @@
+ <head>
+     <meta charset="UTF-8">
+     <meta name="viewport" content="width=device-width, initial-scale=1.0">
++    <script>
++    // SELF-HEAL, sekali per browser: paksa bersihkan Service Worker LAMA +
++    // seluruh Cache Storage, TANPA bergantung ke siklus update SW normal
++    // (yang gak terjamin cepat — bisa nunggu sampai 1 jam / navigasi
++    // berikutnya). Taruh paling awal <head>, sebelum resource lain, supaya
++    // langsung kejadian begitu HTML ini (yang sudah pasti fresh) kebuka.
++    // Naikkan angka di NANOMIND_SW_HEAL_FLAG kalau di masa depan perlu
++    // heal ulang lagi.
++    (function () {
++        var FLAG = 'nanomind_sw_heal_v1';
++        try { if (localStorage.getItem(FLAG) === '1') return; } catch (e) { return; }
++        if (!('serviceWorker' in navigator)) {
++            try { localStorage.setItem(FLAG, '1'); } catch (e) {}
++            return;
++        }
++        Promise.resolve().then(async function () {
++            try {
++                var regs = await navigator.serviceWorker.getRegistrations();
++                await Promise.all(regs.map(function (r) { return r.unregister(); }));
++                if (window.caches) {
++                    var keys = await caches.keys();
++                    await Promise.all(keys.map(function (k) { return caches.delete(k); }));
++                }
++                try { localStorage.setItem(FLAG, '1'); } catch (e) {}
++                if (regs.length) location.reload();
++            } catch (e) { /* biarkan alur normal yang urus kalau ini gagal */ }
++        });
++    })();
++    </script>
+     <title id="pageTitle">Dispatch — Nanomind Explorer</title>
+     <meta name="description" id="pageDescription" content="">
+     <meta name="theme-color" content="#14140F">
+diff --git a/index.html b/index.html
+index 719db8c..86e1ba0 100644
+--- a/index.html
++++ b/index.html
+@@ -3,6 +3,35 @@
+ <head>
+     <meta charset="UTF-8">
+     <meta name="viewport" content="width=device-width, initial-scale=1.0">
++    <script>
++    // SELF-HEAL, sekali per browser: paksa bersihkan Service Worker LAMA +
++    // seluruh Cache Storage, TANPA bergantung ke siklus update SW normal
++    // (yang gak terjamin cepat — bisa nunggu sampai 1 jam / navigasi
++    // berikutnya). Taruh paling awal <head>, sebelum resource lain, supaya
++    // langsung kejadian begitu HTML ini (yang sudah pasti fresh) kebuka.
++    // Naikkan angka di NANOMIND_SW_HEAL_FLAG kalau di masa depan perlu
++    // heal ulang lagi.
++    (function () {
++        var FLAG = 'nanomind_sw_heal_v1';
++        try { if (localStorage.getItem(FLAG) === '1') return; } catch (e) { return; }
++        if (!('serviceWorker' in navigator)) {
++            try { localStorage.setItem(FLAG, '1'); } catch (e) {}
++            return;
++        }
++        Promise.resolve().then(async function () {
++            try {
++                var regs = await navigator.serviceWorker.getRegistrations();
++                await Promise.all(regs.map(function (r) { return r.unregister(); }));
++                if (window.caches) {
++                    var keys = await caches.keys();
++                    await Promise.all(keys.map(function (k) { return caches.delete(k); }));
++                }
++                try { localStorage.setItem(FLAG, '1'); } catch (e) {}
++                if (regs.length) location.reload();
++            } catch (e) { /* biarkan alur normal yang urus kalau ini gagal */ }
++        });
++    })();
++    </script>
+     <title>Nanomind Explorer — Dispatches from the Frontier</title>
+     <meta name="description" content="Dispatches dari batas eksplorasi kode, ide, dan rasa penasaran — oleh Iman Firmansyah. Termasuk X Articles live dari @Deadmouse_jpeg.">
+     <meta name="theme-color" content="#14140F">
+diff --git a/telegram.html b/telegram.html
+index 5beb5c5..6062a4e 100644
+--- a/telegram.html
++++ b/telegram.html
+@@ -3,6 +3,35 @@
+ <head>
+     <meta charset="UTF-8">
+     <meta name="viewport" content="width=device-width, initial-scale=1.0">
++    <script>
++    // SELF-HEAL, sekali per browser: paksa bersihkan Service Worker LAMA +
++    // seluruh Cache Storage, TANPA bergantung ke siklus update SW normal
++    // (yang gak terjamin cepat — bisa nunggu sampai 1 jam / navigasi
++    // berikutnya). Taruh paling awal <head>, sebelum resource lain, supaya
++    // langsung kejadian begitu HTML ini (yang sudah pasti fresh) kebuka.
++    // Naikkan angka di NANOMIND_SW_HEAL_FLAG kalau di masa depan perlu
++    // heal ulang lagi.
++    (function () {
++        var FLAG = 'nanomind_sw_heal_v1';
++        try { if (localStorage.getItem(FLAG) === '1') return; } catch (e) { return; }
++        if (!('serviceWorker' in navigator)) {
++            try { localStorage.setItem(FLAG, '1'); } catch (e) {}
++            return;
++        }
++        Promise.resolve().then(async function () {
++            try {
++                var regs = await navigator.serviceWorker.getRegistrations();
++                await Promise.all(regs.map(function (r) { return r.unregister(); }));
++                if (window.caches) {
++                    var keys = await caches.keys();
++                    await Promise.all(keys.map(function (k) { return caches.delete(k); }));
++                }
++                try { localStorage.setItem(FLAG, '1'); } catch (e) {}
++                if (regs.length) location.reload();
++            } catch (e) { /* biarkan alur normal yang urus kalau ini gagal */ }
++        });
++    })();
++    </script>
+     <title>Telegram Journal — Nanomind Explorer</title>
+     <meta name="description" content="Feed langsung dari channel Telegram @nanojournal — semua post ditarik otomatis ke sini.">
+     <meta name="theme-color" content="#14140F">
+diff --git a/watch.html b/watch.html
+index 66119e8..6af2f64 100644
+--- a/watch.html
++++ b/watch.html
+@@ -3,6 +3,35 @@
+ <head>
+     <meta charset="UTF-8">
+     <meta name="viewport" content="width=device-width, initial-scale=1.0">
++    <script>
++    // SELF-HEAL, sekali per browser: paksa bersihkan Service Worker LAMA +
++    // seluruh Cache Storage, TANPA bergantung ke siklus update SW normal
++    // (yang gak terjamin cepat — bisa nunggu sampai 1 jam / navigasi
++    // berikutnya). Taruh paling awal <head>, sebelum resource lain, supaya
++    // langsung kejadian begitu HTML ini (yang sudah pasti fresh) kebuka.
++    // Naikkan angka di NANOMIND_SW_HEAL_FLAG kalau di masa depan perlu
++    // heal ulang lagi.
++    (function () {
++        var FLAG = 'nanomind_sw_heal_v1';
++        try { if (localStorage.getItem(FLAG) === '1') return; } catch (e) { return; }
++        if (!('serviceWorker' in navigator)) {
++            try { localStorage.setItem(FLAG, '1'); } catch (e) {}
++            return;
++        }
++        Promise.resolve().then(async function () {
++            try {
++                var regs = await navigator.serviceWorker.getRegistrations();
++                await Promise.all(regs.map(function (r) { return r.unregister(); }));
++                if (window.caches) {
++                    var keys = await caches.keys();
++                    await Promise.all(keys.map(function (k) { return caches.delete(k); }));
++                }
++                try { localStorage.setItem(FLAG, '1'); } catch (e) {}
++                if (regs.length) location.reload();
++            } catch (e) { /* biarkan alur normal yang urus kalau ini gagal */ }
++        });
++    })();
++    </script>
+     <title>Watch — Nanomind Explorer</title>
+     <meta name="description" content="Kumpulan video dan shorts dari Nanomind Explorer — cuplikan lapangan dari proses build.">
+     <meta name="theme-color" content="#14140F">
+-- 
+2.43.0
+
