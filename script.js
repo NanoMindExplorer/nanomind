@@ -637,27 +637,41 @@ async function loadData() {
         ensureXArticlesCategory();
         ensureMediumArticlesCategory();
 
-        // === Render page SEGERA setelah db.json load ===
-        // Dulu: renderPageContent() dipanggil SETELAH loadXArticles() + loadMediumArticles()
-        // selesai. Itu bikin article.html & telegram.html blank 10-30 detik saat X/Medium
-        // bulk-fetch dari fxtwitter (terutama setelah clear cache, no sessionStorage).
-        // Fix: render dulu, lalu load X/Medium di background → re-render kalau perlu.
+        // === Pre-render rail dengan PLACEHOLDER cards dari registry ===
+        // Registry (x-articles.json / medium-articles.json) berisi status IDs
+        // dan (untuk Medium) full content. Render placeholder cards SEGERA
+        // supaya user lihat rail terisi — bukan kosong/blank selama 10-20 detik
+        // tunggu fxtwitter fetch.
+        if ($('xArticlesRail')) {
+            const xCfg = await loadXArticlesRegistry();
+            renderXArticlesRailPlaceholder(xCfg);
+        }
+        if ($('mediumArticlesRail')) {
+            const medCfg = await loadMediumArticlesRegistry();
+            // Medium registry sudah ada full content — render lengkap SEGERA
+            // (tidak perlu placeholder, konversi langsung jadi cards).
+            const medArts = await loadMediumArticles();
+            if (medArts && medArts.length) {
+                mergeMediumArticlesIntoState(medArts);
+            }
+        }
+
+        // === Render page SEGERA setelah db.json + registries load ===
         renderPageContent();
 
         // === Background load: X Articles (live via fxtwitter) ===
-        // Jangan block page render. Kalau gagal/timeout, page tetap jalan —
-        // article.html fallback direct-fetch sudah handle individu.
+        // Ganti placeholder dengan cards berisi content asli setelah fetch selesai.
         loadXArticlesWithTimeout(20000)
             .then(xArts => {
                 if (xArts && xArts.length) {
                     mergeXArticlesIntoState(xArts);
-                    // Re-render rail di homepage kalau ada
                     if ($('xArticlesRail')) renderXArticlesRail(state.data.articles);
                 }
             })
             .catch(xErr => console.warn('X Articles background load failed', xErr));
 
-        // === Background load: Medium Articles (dari medium-articles.json) ===
+        // === Background load: Medium Articles (sudah di-render di atas, 
+        //     tapi re-render untuk pastikan state konsisten) ===
         loadMediumArticles()
             .then(medArts => {
                 if (medArts && medArts.length) {
@@ -1755,6 +1769,55 @@ function renderXArticlesRail(articles) {
         </a>
     `).join('');
     enhanceImages(rail);
+}
+
+/**
+ * Render PLACEHOLDER cards untuk X Articles dari registry (status IDs).
+ * Dipanggil SEGERA setelah db.json load, sebelum fxtwitter fetch selesai.
+ * User lihat rail terisi dengan cards yang bisa diklik → langsung navigasi
+ * ke article.html (yang akan direct-fetch artikel by-ID via fallback).
+ *
+ * Setelah loadXArticles() selesai di background, renderXArticlesRail()
+ * dipanggil lagi untuk ganti placeholder dengan cards berisi content asli
+ * (title, cover image, dek, dll dari fxtwitter API).
+ */
+function renderXArticlesRailPlaceholder(cfg) {
+    const rail = $('xArticlesRail');
+    const section = $('xArticlesSection');
+    const empty = $('xArticlesEmpty');
+    if (!rail || !cfg || !cfg.statusIds || !cfg.statusIds.length) return;
+
+    if (empty) empty.classList.add('hidden');
+    if (section) section.classList.remove('is-empty');
+
+    const countEl = $('xLiveCount');
+    if (countEl) countEl.textContent = String(cfg.statusIds.length);
+    const pill = $('xLivePill');
+    if (pill && cfg.lastSync) {
+        pill.title = `Auto-sync terakhir: ${cfg.lastSync}`;
+    }
+
+    // Render placeholder cards — bisa diklik, navigasi ke article.html
+    // yang akan direct-fetch artikel by-ID.
+    rail.innerHTML = cfg.statusIds.map(statusId => `
+        <a href="article.html?id=x-${encodeURIComponent(statusId)}" class="x-card reveal x-card-placeholder">
+            <div class="x-thumb">
+                <div class="x-thumb-placeholder" aria-hidden="true">
+                    <i class="fab fa-x-twitter"></i>
+                </div>
+                <span class="x-source-badge" title="X Articles"><i class="fab fa-x-twitter"></i> X</span>
+            </div>
+            <div class="x-body">
+                <h3>Memuat artikel…</h3>
+                <p class="x-dek x-dek-placeholder">Klik untuk membaca artikel dari X</p>
+                <div class="x-meta">
+                    <span class="x-meta-placeholder">···</span>
+                    <span>·</span>
+                    <span>— min</span>
+                </div>
+            </div>
+        </a>
+    `).join('');
 }
 
 function renderMediumArticlesRail(articles) {
