@@ -314,17 +314,32 @@ a.text-brass { color: var(--brass); text-decoration: none; border-bottom: 1px so
     -webkit-overflow-scrolling: touch;
     scrollbar-width: thin;
     scrollbar-color: var(--border-ink-strong) transparent;
-    cursor: grab;
     overscroll-behavior-x: contain;
 }
-.x-rail.dragging {
-    cursor: grabbing;
-    scroll-snap-type: none;
-    user-select: none;
-}
-.x-rail.dragging .x-card { pointer-events: none; }
 .x-rail::-webkit-scrollbar { height: 6px; }
 .x-rail::-webkit-scrollbar-thumb { background: var(--border-ink-strong); border-radius: 10px; }
+
+/* Tombol panah kiri/kanan — elemen TERPISAH dari kartu, gak pernah
+   nyentuh event klik kartu sama sekali. Scroll mouse-wheel (vertikal)
+   di atas rail juga otomatis diterjemahkan jadi scroll horizontal
+   lewat JS (lihat enableRailDragScroll di script.js). */
+.rail-nav-wrap { position: relative; }
+.rail-nav-btn {
+    position: absolute; top: 50%; transform: translateY(-50%);
+    z-index: 5; width: 36px; height: 36px; border-radius: 50%;
+    background: rgba(20, 20, 15, 0.85); border: 1px solid rgba(237, 232, 218, 0.18);
+    color: #EDE8DA; display: flex; align-items: center; justify-content: center;
+    cursor: pointer; transition: background 0.2s, color 0.2s, transform 0.2s;
+    backdrop-filter: blur(6px); font-size: 13px;
+}
+.rail-nav-btn:hover { background: var(--brass); color: #14140F; }
+.rail-nav-btn:focus-visible { outline: 2px solid var(--brass); outline-offset: 2px; }
+.rail-nav-prev { left: -6px; }
+.rail-nav-next { right: -6px; }
+@media (max-width: 780px) {
+    /* Layar sentuh udah native swipe — tombol panah cuma nambah noise */
+    .rail-nav-btn { display: none; }
+}
 .x-card {
     flex: 0 0 min(280px, 78vw);
     scroll-snap-align: start;

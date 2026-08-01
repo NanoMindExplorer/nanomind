@@ -3164,74 +3164,63 @@ function setupMediumRetryButtons() {
  * Kalau user mau scroll rail tanpa navigasi, mouseup di area rail kosong
  * (bukan di atas card). Itu natural UX.
  */
+/**
+ * Geser rail horizontal (X/Medium Articles) pakai mouse.
+ *
+ * RIWAYAT: sebelumnya ini pakai custom mousedown/mousemove/mouseup buat
+ * "drag-to-scroll" gaya carousel. Setelah 4 ronde percobaan fix (macam-
+ * macam kombinasi preventDefault/threshold/dragstart-guard) klik kartu
+ * MASIH kadang ke-block di device tertentu — dan yang paling penting,
+ * user mengonfirmasi klik artikel jalan NORMAL sebelum fitur ini pernah
+ * ada. Kesimpulannya: masalahnya bukan cara implementasinya, tapi
+ * PENDEKATANNYA — apapun bentuk mousedown-di-atas-<a>-nya, itu ambil
+ * alih start dari sequence klik natural, dan gampang rapuh lintas
+ * browser/kondisi (native image-drag, focus, dst) dengan cara yang gak
+ * selalu bisa diverifikasi dari simulasi headless.
+ *
+ * Fix definitif: HAPUS TOTAL mousedown-drag. Diganti 2 cara yang secara
+ * STRUKTURAL gak mungkin nyentuh event apapun di kartu:
+ *   1. Wheel: scroll mouse (vertikal, yang biasa) di atas rail otomatis
+ *      diterjemahkan jadi geser horizontal.
+ *   2. Tombol panah kiri/kanan — elemen terpisah, cuma manggil scrollBy().
+ * Touch/trackpad/scrollbar tetap native (sudah jalan dari awal, gak
+ * pernah jadi masalah — hanya mouse-drag yang diminta dan itu sekarang
+ * digantikan wheel + tombol, bukan direplikasi lewat mousedown lagi).
+ */
 function enableRailDragScroll(rail) {
     if (!rail || rail.dataset.dragScrollBound) return;
     rail.dataset.dragScrollBound = '1';
 
-    // Set draggable=false pada semua <img> di dalam rail → cegah native
-    // image-drag TANPA preventDefault(mousedown).
-    const makeImagesNonDraggable = () => {
-        rail.querySelectorAll('img').forEach(img => { img.draggable = false; img.ondragstart = () => false; });
-    };
-    makeImagesNonDraggable();
-    const observer = new MutationObserver(makeImagesNonDraggable);
-    observer.observe(rail, { childList: true, subtree: true });
+    // Wheel vertikal di atas rail -> scroll horizontal. Event 'wheel' 100%
+    // terpisah dari 'mousedown'/'click' — gak ada cara ini bisa ganggu
+    // navigasi kartu.
+    rail.addEventListener('wheel', (e) => {
+        if (Math.abs(e.deltaX) > Math.abs(e.deltaY)) return; // udah horizontal native (trackpad), biarkan
+        if (e.deltaY === 0) return;
+        e.preventDefault();
+        rail.scrollLeft += e.deltaY;
+    }, { passive: false });
 
-    let isDown = false;
-    let startX = 0;
-    let startY = 0;
-    let startScroll = 0;
-
-    const onDown = (e) => {
-        if (e.button !== 0) return; // hanya klik kiri
-        isDown = true;
-        startX = e.pageX;
-        startY = e.pageY;
-        startScroll = rail.scrollLeft;
-        rail.classList.add('dragging');
-    };
-    const onMove = (e) => {
-        if (!isDown) return;
-        const dx = e.pageX - startX;
-        const dy = e.pageY - startY;
-        const absDx = Math.abs(dx);
-        const absDy = Math.abs(dy);
-        // Hanya scroll kalau horizontal drag > vertical (bukan vertical scroll)
-        if (absDx > absDy && absDx > 3) {
-            rail.scrollLeft = startScroll - dx;
-        }
-    };
-    const stop = () => {
-        if (!isDown) return;
-        isDown = false;
-        rail.classList.remove('dragging');
-    };
-
-    rail.addEventListener('mousedown', onDown);
-    window.addEventListener('mousemove', onMove);
-    window.addEventListener('mouseup', stop);
-    window.addEventListener('blur', stop);
-    rail.addEventListener('dragstart', (e) => { e.preventDefault(); stop(); });
-
-    // === Touch support untuk mobile ===
-    let touchStartX = 0, touchStartY = 0, touchStartScroll = 0;
-    rail.addEventListener('touchstart', (e) => {
-        if (e.touches.length !== 1) return;
-        touchStartX = e.touches[0].pageX;
-        touchStartY = e.touches[0].pageY;
-        touchStartScroll = rail.scrollLeft;
-    }, { passive: true });
-    rail.addEventListener('touchmove', (e) => {
-        if (e.touches.length !== 1) return;
-        const dx = e.touches[0].pageX - touchStartX;
-        const dy = e.touches[0].pageY - touchStartY;
-        if (Math.abs(dx) > Math.abs(dy)) {
-            rail.scrollLeft = touchStartScroll - dx;
-        }
-    }, { passive: true });
-
-    // TIDAK ADA click handler block. Click <a> selalu jalan natural.
-    // Drag-scroll tetap berfungsi via mousedown/mousemove/mouseup.
+    // Tombol panah — elemen BARU, bukan bagian dari kartu, click handler-nya
+    // cuma scrollBy(). Gak ada jalan buat ini mem-block klik <a>.
+    if (!rail.parentNode.classList.contains('rail-nav-wrap')) {
+        const wrap = document.createElement('div');
+        wrap.className = 'rail-nav-wrap';
+        rail.parentNode.insertBefore(wrap, rail);
+        wrap.appendChild(rail);
+        [['prev', -360, 'left'], ['next', 360, 'right']].forEach(([dir, dist, icon]) => {
+            const btn = document.createElement('button');
+            btn.type = 'button';
+            btn.className = `rail-nav-btn rail-nav-${dir}`;
+            btn.setAttribute('aria-label', dir === 'prev' ? 'Geser ke kiri' : 'Geser ke kanan');
+            btn.innerHTML = `<i class="fas fa-chevron-${icon}" aria-hidden="true"></i>`;
+            btn.addEventListener('click', (e) => {
+                e.preventDefault();
+                rail.scrollBy({ left: dist, behavior: 'smooth' });
+            });
+            wrap.appendChild(btn);
+        });
+    }
 }
 
 function setupRailDragScroll() {
