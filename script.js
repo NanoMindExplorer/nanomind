@@ -368,7 +368,7 @@ function injectModals() {
                     <div><label class="block text-sm mb-2" style="color:var(--muted-on-ink)">Date</label><input type="date" class="input-field" id="articleDate"></div>
                 </div>
                 <div><label class="block text-sm mb-2" style="color:var(--muted-on-ink)">Tags (pisah koma)</label><input type="text" class="input-field" id="articleTags"></div>
-                <label class="flex items-center gap-2 text-sm" style="color:var(--muted-on-ink)"><input type="checkbox" id="articleFeatured"> Jadikan headline utama (hero homepage)</label>
+                <label class="flex items-center gap-2 text-sm" style="color:var(--muted-on-ink)"><input type="checkbox" id="articleFeatured"> Prioritas (jika tanggal sama; hero tetap otomatis artikel terbaru)</label>
                 <div class="pt-2">
                     <label class="block text-sm mb-2" style="color:var(--muted-on-ink)">Isi Dispatch</label>
                     <p class="text-xs mb-2" style="color:var(--muted-on-ink); line-height:1.5;">
@@ -768,14 +768,18 @@ async function bootstrapXArticlesLoad() {
     }
 }
 
-/** Re-render rail + dispatch yang bergantung pada X/Medium tanpa full page rebuild. */
+/** Re-render rail + dispatch + hero (lead = artikel terbaru) tanpa full page rebuild. */
 function refreshArticleSurfaces(opts = {}) {
     if (!state.data) return;
     const arts = state.data.articles || [];
+    // Hero / lead story: selalu ikuti artikel paling baru (X/Medium/Dispatches)
+    if (opts.hero !== false && $('heroFeature')) {
+        renderHero(arts);
+    }
     if (opts.x !== false && $('xArticlesRail')) renderXArticlesRail(arts);
     if (opts.medium !== false && $('mediumArticlesRail')) renderMediumArticlesRail(arts);
     if ($('dispatchGrid')) {
-        // Update category pills count + grid bila filter X/Medium/all
+        // Update category pills count + grid (all = feed terbaru unified)
         if ($('categoryPills') && state.data.categories) {
             renderCategoryPills(state.data.categories, state.dispatchFilter);
         }
@@ -787,7 +791,7 @@ function refreshArticleSurfaces(opts = {}) {
         const id = params.get('id');
         if (id && (id.startsWith('x-') || id.startsWith('medium-'))) {
             const found = arts.find(a => a.id === id);
-            if (found && !document.querySelector('.article-body, .article-header')) {
+            if (found && !document.querySelector('.article-body, .article-header') && !document.querySelector('.reading-surface')) {
                 renderArticleIntoContent(found);
             }
         }
@@ -2004,23 +2008,80 @@ function enhanceImages(root) {
 // ==========================================
 // HOMEPAGE — Hero, Photo of the Day, Dispatch Grid
 // ==========================================
+
+/**
+ * Timestamp untuk sort "terbaru dulu".
+ * - Tanggal ISO / YYYY-MM-DD dari field date
+ * - X status snowflake (lebih presisi dari tanggal hari saja)
+ * - Medium: guid tidak berisi waktu; andalkan pubDate/date
+ */
+function articleSortTime(a) {
+    if (!a) return 0;
+    // Prefer explicit full datetime if present
+    const raw = a.date || a.pubDate || a.created_at || '';
+    const parsed = Date.parse(raw);
+    let t = isNaN(parsed) ? 0 : parsed;
+
+    // X snowflake → ms since epoch (Twitter epoch)
+    const sid = a.xStatusId || (a.id && String(a.id).startsWith('x-') ? String(a.id).slice(2) : '');
+    if (sid && /^\d{15,}$/.test(String(sid))) {
+        try {
+            const snowMs = Number((BigInt(String(sid)) >> 22n) + 1288834974657n);
+            // Pakai snowflake jika lebih baru / date cuma ke-hari (midnight)
+            if (snowMs > t) t = snowMs;
+        } catch (e) { /* ignore */ }
+    }
+    return t;
+}
+
+/**
+ * Lead story di hero + posisi teratas journal:
+ * SELALU artikel paling baru dari X / Medium / Dispatches lokal.
+ * Flag `featured` cuma tie-breaker (bukan pin permanen yang mengalahkan post baru).
+ */
+function pickLeadArticle(articles) {
+    const list = (articles || []).filter(a => a && (a.title || a.id));
+    if (!list.length) return null;
+    return list.slice().sort((a, b) => {
+        const dt = articleSortTime(b) - articleSortTime(a);
+        if (dt !== 0) return dt;
+        if (a.featured && !b.featured) return -1;
+        if (!a.featured && b.featured) return 1;
+        return String(b.id || '').localeCompare(String(a.id || ''));
+    })[0];
+}
+
+function leadSourceLabel(article) {
+    if (!article) return { name: 'Dispatch', accent: 'brass' };
+    if (article.source === 'x') {
+        return { name: 'X Articles · Terbaru', accent: 'slate' };
+    }
+    if (article.source === 'medium') {
+        return { name: 'Medium · Terbaru', accent: 'moss' };
+    }
+    const cat = (state.data.categories || []).find(c => c.id === article.category);
+    if (cat) return { name: `${cat.name} · Terbaru`, accent: cat.accent || 'brass' };
+    return { name: 'Build Log · Terbaru', accent: 'brass' };
+}
+
 function renderHero(articles) {
     const wrap = $('heroFeature');
     if (!wrap) return;
-    const list = articles || [];
-    // Prefer local featured for journal hero; fall back to any featured, then first local, then any
-    const local = list.filter(a => a.source !== 'x');
-    const featured =
-        local.find(a => a.featured) ||
-        list.find(a => a.featured) ||
-        local[0] ||
-        list[0];
+    const list = articles || (state.data && state.data.articles) || [];
+    // Auto: post terbaru (X / Medium / Dispatches) di posisi paling atas (hero)
+    const featured = pickLeadArticle(list);
     if (!featured) {
         wrap.innerHTML = `<div class="section-surface mx-6 text-center font-ui" style="color:var(--muted-on-ink)">Belum ada dispatch. Mulai tulis yang pertama lewat tombol admin di pojok kanan bawah.</div>`;
         wrap.className = 'hero-slot';
         return;
     }
-    const cat = (state.data.categories || []).find(c => c.id === featured.category) || { name: 'Dispatch', accent: 'brass' };
+    const cat = leadSourceLabel(featured);
+    const ctaLabel = featured.source === 'x'
+        ? 'Baca X Article'
+        : (featured.source === 'medium' ? 'Baca di Medium' : 'Baca Dispatch');
+    const ctaIcon = featured.source === 'x'
+        ? 'fab fa-x-twitter'
+        : (featured.source === 'medium' ? 'fab fa-medium' : 'fas fa-book-open');
     wrap.className = 'hero-slot accent-' + (cat.accent || 'brass');
     wrap.innerHTML = `
         <div class="hero-feature">
@@ -2037,11 +2098,12 @@ function renderHero(articles) {
                         <span>${featured.readTime || 5} min baca</span>
                     </div>
                     <div class="hero-cta-row">
-                        <a href="article.html?id=${encodeURIComponent(featured.id)}" class="btn-primary"><i class="fas fa-book-open"></i> Baca Dispatch</a>
+                        <a href="article.html?id=${encodeURIComponent(featured.id)}" class="btn-primary"><i class="${ctaIcon}"></i> ${ctaLabel}</a>
                     </div>
                 </div>
             </div>
         </div>`;
+    enhanceImages(wrap);
 }
 
 function renderPhotoOfDay(potd) {
@@ -2068,7 +2130,8 @@ function renderPhotoOfDay(potd) {
 function renderCategoryPills(categories, activeFilter) {
     const wrap = $('categoryPills');
     if (!wrap) return;
-    let html = `<button class="cat-pill ${activeFilter === 'all' ? 'active' : ''}" data-cat="all">All</button>`;
+    // "All" = feed terbaru (Build Log stream: local + X + Medium)
+    let html = `<button class="cat-pill ${activeFilter === 'all' ? 'active' : ''}" data-cat="all">Terbaru</button>`;
     (categories || []).forEach(c => {
         html += `<span class="inline-flex items-center gap-1">
             <button class="cat-pill ${activeFilter === c.id ? 'active' : ''}" data-cat="${c.id}">${escapeHtml(c.name)}</button>
@@ -2093,16 +2156,28 @@ function renderCategoryPills(categories, activeFilter) {
 }
 
 function getArticlesSorted() {
-    return (state.data.articles || []).slice().sort((a, b) => new Date(b.date) - new Date(a.date));
+    return (state.data.articles || []).slice().sort((a, b) => {
+        const dt = articleSortTime(b) - articleSortTime(a);
+        if (dt !== 0) return dt;
+        if (a.featured && !b.featured) return -1;
+        if (!a.featured && b.featured) return 1;
+        return 0;
+    });
 }
 
-/** Grid dispatches: saat "all", X Articles & Medium Articles ditampilkan di rail terpisah — grid fokus local journal. */
+/**
+ * Grid Dispatches (Build Log stream):
+ * - "all": gabungan lokal + X + Medium, TERBARU di paling atas (kartu besar pertama)
+ * - filter kategori: hanya kategori itu, tetap sort terbaru dulu
+ * Rail X/Medium tetap ada sebagai pintasan; grid "all" jadi feed unified.
+ */
 function getDispatchArticles() {
     const all = getArticlesSorted();
     const filter = state.dispatchFilter || 'all';
-    if (filter === 'all') return all.filter(a => a.source !== 'x' && a.source !== 'medium');
+    if (filter === 'all') return all;
     if (filter === 'x-articles') return all.filter(a => a.source === 'x' || a.category === 'x-articles');
     if (filter === 'medium-articles') return all.filter(a => a.source === 'medium' || a.category === 'medium-articles');
+    // Build Log / Deep Dive / … — local category; juga sertakan import yang di-tag category itu
     return all.filter(a => a.category === filter);
 }
 
