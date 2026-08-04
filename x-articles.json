@@ -4,7 +4,7 @@
   "displayName": "Noob Sensei",
   "categoryId": "x-articles",
   "apiBase": "https://api.fxtwitter.com",
-  "cacheMinutes": 30,
+  "cacheMinutes": 10,
   "statusIds": [
     "2084516281261388041",
     "2080914975363666184",

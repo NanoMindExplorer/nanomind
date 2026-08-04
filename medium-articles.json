@@ -4,8 +4,8 @@
   "displayName": "nanomind",
   "categoryId": "medium-articles",
   "feedUrl": "https://medium.com/feed/@0wlsky",
-  "cacheMinutes": 30,
-  "lastSync": "2026-08-04T11:04:47Z",
+  "cacheMinutes": 10,
+  "lastSync": "2026-08-04T13:18:37Z",
   "articles": [
     {
       "guid": "https://medium.com/p/53c3b511c543",

@@ -386,25 +386,72 @@ def discover_via_guest_api(username: str) -> Set[str]:
     return ids
 
 
-def verify_article(username: str, status_id: str) -> Optional[dict]:
-    raw = curl_get(f"https://api.fxtwitter.com/{username}/status/{status_id}", timeout=25)
-    if not raw:
-        return None
+def discover_via_telegram_registry(telegram_path: Optional[Path] = None) -> Set[str]:
+    """
+    Pull status IDs from telegram-posts.json (already synced every ~15 min).
+    If the author shares X Article links on Telegram, we pick them up even
+    when jina/twstalker are blocked by Cloudflare.
+    """
+    ids: Set[str] = set()
+    path = telegram_path or (ROOT / "telegram-posts.json")
+    if not path.exists():
+        log("  telegram registry: missing")
+        return ids
     try:
-        data = json.loads(raw)
-    except json.JSONDecodeError:
-        return None
-    tweet = data.get("tweet") or data
-    art = tweet.get("article") if isinstance(tweet, dict) else None
-    if not art:
-        return None
-    if not (art.get("title") or art.get("id")):
-        return None
-    return {
-        "statusId": str(status_id),
-        "title": art.get("title") or "",
-        "articleId": str(art.get("id") or ""),
-    }
+        data = json.loads(path.read_text(encoding="utf-8"))
+    except Exception as e:
+        log(f"  telegram registry: read fail ({e})")
+        return ids
+    posts = data.get("posts") or []
+    for p in posts:
+        if not isinstance(p, dict):
+            continue
+        blob_parts = [
+            p.get("textPlain") or "",
+            p.get("textHtml") or "",
+            p.get("url") or "",
+        ]
+        for link in p.get("links") or []:
+            if isinstance(link, str):
+                blob_parts.append(link)
+            elif isinstance(link, dict):
+                blob_parts.append(link.get("href") or link.get("url") or "")
+                blob_parts.append(link.get("text") or "")
+        blob = "\n".join(blob_parts)
+        ids |= extract_status_ids(blob)
+    log(f"  telegram registry: {len(ids)} x-status candidates from {len(posts)} posts")
+    return ids
+
+
+def verify_article(username: str, status_id: str) -> Optional[dict]:
+    # Prefer FixTweet; fall back to vxtwitter (same CORS-friendly mirrors family)
+    for base in (
+        f"https://api.fxtwitter.com/{username}/status/{status_id}",
+        f"https://api.vxtwitter.com/{username}/status/{status_id}",
+    ):
+        raw = curl_get(base, timeout=25)
+        if not raw:
+            continue
+        try:
+            data = json.loads(raw)
+        except json.JSONDecodeError:
+            continue
+        # fxtwitter shape
+        tweet = data.get("tweet") or data
+        art = tweet.get("article") if isinstance(tweet, dict) else None
+        # vxtwitter sometimes nests differently
+        if not art and isinstance(data, dict):
+            art = data.get("article")
+        if not art:
+            continue
+        if not (art.get("title") or art.get("id")):
+            continue
+        return {
+            "statusId": str(status_id),
+            "title": art.get("title") or "",
+            "articleId": str(art.get("id") or ""),
+        }
+    return None
 
 
 def verify_many(
@@ -417,12 +464,13 @@ def verify_many(
     cand_list = sorted({str(c) for c in candidates if str(c).isdigit()}, key=lambda x: int(x), reverse=True)
     existing = {str(e) for e in existing}
 
-    # Always re-verify existing so we don't drop them if discovery misses them
-    to_check: List[str] = list(existing)
-    # Prefer newest unknown IDs (new articles are almost always recent posts)
+    # NEW candidates FIRST (so brand-new articles surface before we re-check
+    # the whole existing list — previously existing-first delayed discovery).
     new_ids = [c for c in cand_list if c not in existing]
     limit_new = 400 if deep else 120
-    to_check.extend(new_ids[:limit_new])
+    to_check: List[str] = list(new_ids[:limit_new])
+    # Then re-verify existing so we don't drop them if a single FixTweet flake happens
+    to_check.extend(list(existing))
 
     # de-dupe preserve order
     seen: Set[str] = set()
@@ -484,14 +532,19 @@ def main() -> int:
             log(f"Strategy: EXTRA_STATUS_IDS (+{len(extra_ids)})")
             candidates |= extra_ids
 
-    # Jina FIRST — often the only free source that shows brand-new X Articles.
+    # Telegram bridge FIRST (local file, always available in CI after checkout)
+    # — catches articles the author shares on @nanojournal even when X scrapers fail.
+    log("Strategy: telegram-posts.json bridge")
+    candidates |= discover_via_telegram_registry()
+
+    # Jina — free profile scrape; often the only way to see brand-new X Articles.
     log("Strategy: jina reader (profile + media + mobile)")
     candidates |= discover_via_jina(username)
 
     log("Strategy: X guest API (profile / pinned)")
     candidates |= discover_via_guest_api(username)
 
-    pages = args.pages or (40 if args.deep else 15)
+    pages = args.pages or (40 if args.deep else 12)
     log(f"Strategy: twstalker ({pages} pages)")
     try:
         candidates |= discover_via_twstalker(username, max_pages=pages)

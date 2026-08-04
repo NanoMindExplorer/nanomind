@@ -14,7 +14,7 @@ const CONFIG = {
         displayName: 'Noob Sensei',
         categoryId: 'x-articles',
         apiBase: 'https://api.fxtwitter.com',
-        cacheMinutes: 30,
+        cacheMinutes: 10,
         statusIds: [
             '2084516281261388041',
             '2080914975363666184',
@@ -36,7 +36,7 @@ const CONFIG = {
         username: '0wlsky',
         displayName: 'nanomind',
         categoryId: 'medium-articles',
-        cacheMinutes: 30
+        cacheMinutes: 10
     },
     TELEGRAM_POSTS_FILE: 'telegram-posts.json',
     TELEGRAM: {
@@ -593,13 +593,19 @@ function githubRawUrl(file) {
     return `https://raw.githubusercontent.com/${CONFIG.GITHUB_USERNAME}/${CONFIG.REPO_NAME}/${CONFIG.BRANCH}/${file}`;
 }
 
-/** Coba file lokal dulu (dev server), lalu fallback ke raw GitHub. */
+/** Coba file lokal dulu (dev server), lalu fallback ke raw GitHub.
+ *  Cache-bust query supaya SW/CDN tidak menyajikan registry JSON usang
+ *  (x-articles / medium-articles berubah tiap auto-sync). */
 async function fetchJsonPreferLocal(file) {
+    const bust = (url) => {
+        const sep = url.includes('?') ? '&' : '?';
+        return `${url}${sep}_=${Date.now()}`;
+    };
     try {
-        const local = await fetch(file, { cache: 'no-store' });
+        const local = await fetch(bust(file), { cache: 'no-store' });
         if (local.ok) return await local.json();
     } catch (e) { /* ignore */ }
-    const remote = await fetch(githubRawUrl(file), { cache: 'no-store' });
+    const remote = await fetch(bust(githubRawUrl(file)), { cache: 'no-store' });
     if (!remote.ok) throw new Error(`Failed to load ${file}`);
     return await remote.json();
 }
@@ -797,13 +803,19 @@ function refreshArticleSurfaces(opts = {}) {
 function startRegistryAutoRefresh() {
     if (state.registryPollStarted) return;
     state.registryPollStarted = true;
-    const INTERVAL_MS = 4 * 60 * 1000;
+    // Poll sering: GHA sync X/Medium ~15 menit; client tarik JSON biar artikel
+    // baru tampil tanpa hard reload (juga coba live Medium RSS via jina).
+    const INTERVAL_MS = 2 * 60 * 1000;
 
     const tick = () => {
         if (document.visibilityState === 'hidden') return;
         refreshRegistriesFromNetwork().catch(err => console.warn('Registry refresh failed', err));
+        // Live Medium: coba RSS langsung (bypass jeda GHA) bila CORS/jina memungkinkan
+        livePullMediumFromRss().catch(() => {});
     };
 
+    // First refresh ~90s after load (beri waktu bootstrap X selesai)
+    setTimeout(tick, 90 * 1000);
     setInterval(tick, INTERVAL_MS);
     document.addEventListener('visibilitychange', () => {
         if (document.visibilityState === 'visible') tick();
@@ -812,6 +824,132 @@ function startRegistryAutoRefresh() {
     window.addEventListener('online', () => {
         setTimeout(tick, 800);
     });
+}
+
+/**
+ * Live Medium pull: tarik feed RSS @0wlsky lewat jina reader (CORS * sering
+ * tersedia) lalu merge post baru ke state. Fallback diam-diam kalau gagal —
+ * GHA sync medium-articles.json tetap jadi sumber utama.
+ */
+async function livePullMediumFromRss() {
+    if (!state.data) return;
+    const username = (state.mediumArticlesConfig && state.mediumArticlesConfig.username)
+        || (CONFIG.MEDIUM_ARTICLES && CONFIG.MEDIUM_ARTICLES.username)
+        || '0wlsky';
+    const feedUrl = `https://medium.com/feed/@${encodeURIComponent(username)}`;
+    // Coba jina dulu (markdown/XML text), lalu raw feed langsung
+    const sources = [
+        `https://r.jina.ai/${feedUrl}`,
+        feedUrl
+    ];
+    let xmlText = '';
+    for (const url of sources) {
+        try {
+            const res = await fetch(url, { cache: 'no-store', mode: 'cors' });
+            if (!res.ok) continue;
+            const text = await res.text();
+            if (text && text.includes('<item') && text.includes('<title')) {
+                xmlText = text;
+                break;
+            }
+            // jina kadang bungkus XML di markdown code fence
+            if (text && text.includes('<item')) {
+                xmlText = text;
+                break;
+            }
+        } catch (e) { /* try next */ }
+    }
+    if (!xmlText) return;
+
+    let items = [];
+    try {
+        const doc = new DOMParser().parseFromString(xmlText, 'text/xml');
+        const nodes = Array.from(doc.querySelectorAll('item'));
+        items = nodes.map(item => {
+            const get = (tag) => {
+                const el = item.getElementsByTagName(tag)[0]
+                    || item.getElementsByTagNameNS('http://purl.org/dc/elements/1.1/', tag)[0]
+                    || item.getElementsByTagNameNS('http://purl.org/rss/1.0/modules/content/', tag)[0];
+                return el ? (el.textContent || '').trim() : '';
+            };
+            // content:encoded
+            let contentHtml = '';
+            const encoded = item.getElementsByTagNameNS('http://purl.org/rss/1.0/modules/content/', 'encoded')[0]
+                || item.getElementsByTagName('content:encoded')[0]
+                || item.querySelector('encoded');
+            if (encoded) contentHtml = encoded.textContent || '';
+            if (!contentHtml) contentHtml = get('description');
+            const title = get('title');
+            const link = get('link');
+            const guid = get('guid') || link;
+            const pubDate = get('pubDate');
+            const creator = get('creator') || username;
+            if (!title || !link) return null;
+            // cover from first img
+            let coverImage = '';
+            const imgM = contentHtml.match(/<img[^>]+src=["']([^"']+)["']/i);
+            if (imgM) coverImage = imgM[1];
+            const excerpt = (contentHtml.replace(/<[^>]+>/g, ' ').replace(/\s+/g, ' ').trim()).slice(0, 220);
+            return {
+                guid, title, link, pubDate, creator,
+                categories: Array.from(item.getElementsByTagName('category')).map(c => (c.textContent || '').trim()).filter(Boolean),
+                excerpt,
+                coverImage,
+                contentHtml
+            };
+        }).filter(Boolean);
+    } catch (e) {
+        return;
+    }
+    if (!items.length) return;
+
+    // Pastikan registry config ada
+    if (!state.mediumArticlesConfig) {
+        try { await loadMediumArticlesRegistry(); } catch (e) { /* ignore */ }
+    }
+    const cfg = state.mediumArticlesConfig || {
+        enabled: true, username, displayName: username, categoryId: 'medium-articles', posts: []
+    };
+    // Merge posts by guid/link
+    const byKey = new Map((cfg.posts || []).map(p => [p.guid || p.link, p]));
+    let added = 0;
+    items.forEach(p => {
+        const k = p.guid || p.link;
+        if (!byKey.has(k)) added += 1;
+        byKey.set(k, p);
+    });
+    cfg.posts = Array.from(byKey.values());
+    cfg.lastSync = new Date().toISOString();
+    state.mediumArticlesConfig = cfg;
+
+    if (added === 0 && (state.data.articles || []).some(a => a.source === 'medium')) {
+        // Tidak ada post baru di feed — biarkan state
+        return;
+    }
+
+    try {
+        sessionStorage.removeItem(mediumArticlesCacheKey(username));
+    } catch (e) { /* ignore */ }
+
+    const medArts = items.map(p => {
+        try { return convertMediumPostToArticle(p, cfg); } catch (e) { return null; }
+    }).filter(Boolean);
+    // Also convert any older registry posts not in this batch
+    if (cfg.posts.length > items.length) {
+        cfg.posts.forEach(p => {
+            try {
+                const a = convertMediumPostToArticle(p, cfg);
+                if (a && !medArts.some(x => x.id === a.id)) medArts.push(a);
+            } catch (e) { /* ignore */ }
+        });
+    }
+    if (medArts.length) {
+        mergeMediumArticlesIntoState(medArts);
+        refreshArticleSurfaces({ medium: true, x: false });
+        if (added > 0) {
+            console.log(`[Medium live] +${added} post dari RSS`);
+        }
+    }
 }
 
 async function refreshRegistriesFromNetwork() {

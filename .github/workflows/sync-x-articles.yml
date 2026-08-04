@@ -2,9 +2,9 @@ name: Sync X Articles
 
 on:
   schedule:
-    # Every 30 minutes — new X Articles must land in x-articles.json quickly;
-    # the site polls this file and loads content via FixTweet.
-    - cron: "5,35 * * * *"
+    # Every 15 minutes — keep x-articles.json close to live posts.
+    # (GitHub may delay cron a few minutes; client also polls the JSON.)
+    - cron: "3,18,33,48 * * * *"
   workflow_dispatch:
     inputs:
       deep:
@@ -20,6 +20,8 @@ on:
         required: false
         default: ""
         type: string
+  repository_dispatch:
+    types: [sync-x-articles]
 
 permissions:
   contents: write

@@ -2,9 +2,11 @@ name: Sync Medium Articles
 
 on:
   schedule:
-    # Every hour (offset from the X Articles sync job)
-    - cron: "35 * * * *"
+    # Every 15 minutes (offset from X) — Medium RSS is reliable; keep site fresh.
+    - cron: "8,23,38,53 * * * *"
   workflow_dispatch: {}
+  repository_dispatch:
+    types: [sync-medium-articles]
 
 permissions:
   contents: write
