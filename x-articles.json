@@ -19,12 +19,11 @@
     "2076175759325237529"
   ],
   "notes": "Auto-updated by tools/sync-x-articles.py (GitHub Actions). statusIds = X post IDs that carry published X Articles. Website fetches full content live via FixTweet.",
-  "lastSync": "2026-08-04T13:08:24Z",
+  "lastSync": "2026-08-04T17:59:11Z",
   "lastSyncStats": {
-    "candidates": 11,
+    "candidates": 30,
     "verified": 11,
-    "added": ["2084516281261388041"],
-    "total": 11,
-    "latestTitle": "KEAJAIBAN EKONOMI SEPANJANG SEJARAH"
+    "added": [],
+    "total": 11
   }
 }
