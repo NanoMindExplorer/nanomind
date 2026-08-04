@@ -16,6 +16,7 @@ const CONFIG = {
         apiBase: 'https://api.fxtwitter.com',
         cacheMinutes: 30,
         statusIds: [
+            '2080914975363666184',
             '2080309949025136833',
             '2079807062414946724',
             '2079487993669148749',
@@ -57,7 +58,11 @@ let state = {
     mediumArticlesConfig: null,
     telegramConfig: null,
     telegramFilter: 'all',
-    telegramPage: 1
+    telegramPage: 1,
+    // Loading flags — cegah render kosong yang wipe placeholder sebelum fetch selesai
+    xArticlesLoading: false,
+    mediumArticlesLoading: false,
+    registryPollStarted: false
 };
 let articleBlocks = [];
 const $ = (id) => document.getElementById(id);
@@ -637,58 +642,272 @@ async function loadData() {
         ensureXArticlesCategory();
         ensureMediumArticlesCategory();
 
-        // === Pre-render rail dengan PLACEHOLDER cards dari registry ===
-        // Registry (x-articles.json / medium-articles.json) berisi status IDs
-        // dan (untuk Medium) full content. Render placeholder cards SEGERA
-        // supaya user lihat rail terisi — bukan kosong/blank selama 10-20 detik
-        // tunggu fxtwitter fetch.
-        if ($('xArticlesRail')) {
+        // === Pre-load registries + Medium (konten penuh di JSON) ===
+        // X: placeholder dulu (perlu FixTweet live). Medium: convert & merge
+        // SEBELUM renderPageContent supaya rail tidak sempat kosong.
+        state.xArticlesLoading = true;
+        state.mediumArticlesLoading = true;
+
+        if ($('xArticlesRail') || $('articleContent')) {
             const xCfg = await loadXArticlesRegistry();
-            renderXArticlesRailPlaceholder(xCfg);
+            if ($('xArticlesRail')) renderXArticlesRailPlaceholder(xCfg);
         }
-        if ($('mediumArticlesRail')) {
-            const medCfg = await loadMediumArticlesRegistry();
-            // Medium registry sudah ada full content — render lengkap SEGERA
-            // (tidak perlu placeholder, konversi langsung jadi cards).
+        try {
             const medArts = await loadMediumArticles();
-            if (medArts && medArts.length) {
-                mergeMediumArticlesIntoState(medArts);
-            }
+            if (medArts && medArts.length) mergeMediumArticlesIntoState(medArts);
+        } catch (medErr) {
+            console.warn('Medium Articles initial load failed', medErr);
+        } finally {
+            state.mediumArticlesLoading = false;
         }
 
-        // === Render page SEGERA setelah db.json + registries load ===
+        // === Render page — X masih loading → rail pakai placeholder, tidak di-wipe ===
         renderPageContent();
 
-        // === Background load: X Articles (live via fxtwitter) ===
-        // Ganti placeholder dengan cards berisi content asli setelah fetch selesai.
-        loadXArticlesWithTimeout(20000)
-            .then(xArts => {
-                if (xArts && xArts.length) {
-                    mergeXArticlesIntoState(xArts);
-                    if ($('xArticlesRail')) renderXArticlesRail(state.data.articles);
-                }
-            })
-            .catch(xErr => console.warn('X Articles background load failed', xErr));
+        // === Background: X Articles via FixTweet (progressive + auto-retry) ===
+        bootstrapXArticlesLoad().catch(xErr => console.warn('X Articles bootstrap failed', xErr));
 
-        // === Background load: Medium Articles (sudah di-render di atas, 
-        //     tapi re-render untuk pastikan state konsisten) ===
+        // Medium sudah di state; re-fetch registry di background bila cache stale
+        // (loadMediumArticles hormati sessionStorage + lastSync).
         loadMediumArticles()
             .then(medArts => {
                 if (medArts && medArts.length) {
                     mergeMediumArticlesIntoState(medArts);
-                    if ($('mediumArticlesRail')) renderMediumArticlesRail(state.data.articles);
+                    refreshArticleSurfaces({ medium: true });
                 }
             })
             .catch(medErr => console.warn('Medium Articles background load failed', medErr));
 
+        // Poll registry tiap beberapa menit + saat tab kembali visible
+        // supaya artikel baru dari GHA auto-sync tampil tanpa hard reload.
+        startRegistryAutoRefresh();
+
     } catch (err) {
         console.error('Load failed', err);
+        state.xArticlesLoading = false;
+        state.mediumArticlesLoading = false;
         state.data = { profile: { name: 'Failed to Load', bio: 'Cek konfigurasi script.js' }, site: {}, categories: [], articles: [], projects: [], links: [], videos: [] };
         renderPageContent();
         showToast('Gagal memuat data. Cek koneksi internet.', 'error');
     } finally {
         hideHomepageSkeletons();
         hideLoader();
+    }
+}
+
+/**
+ * Load X articles di background: progressive render tiap batch, lalu
+ * auto-retry ID yang gagal/belum sempat (tanpa minta user klik "Coba lagi").
+ */
+async function bootstrapXArticlesLoad() {
+    state.xArticlesLoading = true;
+    try {
+        const apply = (xArts) => {
+            if (!xArts || !xArts.length || !state.data) return;
+            mergeXArticlesIntoState(xArts);
+            refreshArticleSurfaces({ x: true });
+        };
+
+        // Pass 1: deadline longgar + progress callback supaya card terisi bertahap
+        let xArts = await loadXArticles({
+            deadline: Date.now() + 45000,
+            onProgress: apply
+        });
+        apply(xArts);
+
+        // Pass 2–3: ambil sisa ID yang gagal (rate-limit / timeout) otomatis
+        for (let pass = 0; pass < 2; pass++) {
+            const cfg = state.xArticlesConfig || await loadXArticlesRegistry();
+            const have = new Set(
+                (state.data.articles || [])
+                    .filter(a => a.source === 'x' && a.xStatusId)
+                    .map(a => String(a.xStatusId))
+            );
+            const missing = (cfg.statusIds || []).filter(id => !have.has(String(id)));
+            if (!missing.length) break;
+            await new Promise(r => setTimeout(r, 1500 * (pass + 1)));
+            // Invalidate partial session cache supaya fetch ulang dijalankan
+            try {
+                sessionStorage.removeItem(xArticlesCacheKey(cfg.username));
+            } catch (e) { /* ignore */ }
+            const more = await loadXArticles({
+                deadline: Date.now() + 30000,
+                onlyIds: missing,
+                onProgress: (partial) => {
+                    // Gabung partial dengan yang sudah ada di state
+                    const existing = (state.data.articles || []).filter(a => a.source === 'x');
+                    const byId = new Map(existing.map(a => [a.id, a]));
+                    (partial || []).forEach(a => byId.set(a.id, a));
+                    apply(Array.from(byId.values()));
+                }
+            });
+            if (more && more.length) {
+                const existing = (state.data.articles || []).filter(a => a.source === 'x');
+                const byId = new Map(existing.map(a => [a.id, a]));
+                more.forEach(a => byId.set(a.id, a));
+                const all = Array.from(byId.values()).sort((a, b) => new Date(b.date) - new Date(a.date));
+                apply(all);
+                // Cache penuh hanya jika semua ID sukses
+                const cfg2 = state.xArticlesConfig;
+                if (cfg2 && all.length >= (cfg2.statusIds || []).length) {
+                    writeXArticlesCache(cfg2, all);
+                }
+            }
+        }
+    } finally {
+        state.xArticlesLoading = false;
+        // Final paint: kalau tetap 0, tampilkan empty state; kalau ada, pastikan rail final
+        refreshArticleSurfaces({ x: true });
+    }
+}
+
+/** Re-render rail + dispatch yang bergantung pada X/Medium tanpa full page rebuild. */
+function refreshArticleSurfaces(opts = {}) {
+    if (!state.data) return;
+    const arts = state.data.articles || [];
+    if (opts.x !== false && $('xArticlesRail')) renderXArticlesRail(arts);
+    if (opts.medium !== false && $('mediumArticlesRail')) renderMediumArticlesRail(arts);
+    if ($('dispatchGrid')) {
+        // Update category pills count + grid bila filter X/Medium/all
+        if ($('categoryPills') && state.data.categories) {
+            renderCategoryPills(state.data.categories, state.dispatchFilter);
+        }
+        renderDispatchGrid();
+    }
+    // Article page: kalau sedang buka id x-/medium- yang baru masuk state, render
+    if ($('articleContent') && opts.x !== false) {
+        const params = new URLSearchParams(location.search);
+        const id = params.get('id');
+        if (id && (id.startsWith('x-') || id.startsWith('medium-'))) {
+            const found = arts.find(a => a.id === id);
+            if (found && !document.querySelector('.article-body, .article-header')) {
+                renderArticleIntoContent(found);
+            }
+        }
+    }
+}
+
+/**
+ * Auto-refresh registry JSON (x-articles.json / medium-articles.json) tanpa hard reload.
+ * - Interval 4 menit
+ * - Saat tab kembali visible (user balik ke tab)
+ * Deteksi perubahan lastSync / statusIds / jumlah Medium posts → re-fetch konten.
+ */
+function startRegistryAutoRefresh() {
+    if (state.registryPollStarted) return;
+    state.registryPollStarted = true;
+    const INTERVAL_MS = 4 * 60 * 1000;
+
+    const tick = () => {
+        if (document.visibilityState === 'hidden') return;
+        refreshRegistriesFromNetwork().catch(err => console.warn('Registry refresh failed', err));
+    };
+
+    setInterval(tick, INTERVAL_MS);
+    document.addEventListener('visibilitychange', () => {
+        if (document.visibilityState === 'visible') tick();
+    });
+    // Online kembali → tarik registry segar
+    window.addEventListener('online', () => {
+        setTimeout(tick, 800);
+    });
+}
+
+async function refreshRegistriesFromNetwork() {
+    if (!state.data) return;
+
+    // --- X registry ---
+    const prevX = state.xArticlesConfig;
+    const prevXKey = prevX
+        ? `${prevX.lastSync || ''}|${(prevX.statusIds || []).join(',')}`
+        : '';
+    // Paksa network (cache: no-store sudah di fetchJsonPreferLocal)
+    let xCfg;
+    try {
+        xCfg = await loadXArticlesRegistry();
+    } catch (e) {
+        xCfg = null;
+    }
+    if (xCfg) {
+        const nextXKey = `${xCfg.lastSync || ''}|${(xCfg.statusIds || []).join(',')}`;
+        const have = new Set(
+            (state.data.articles || [])
+                .filter(a => a.source === 'x' && a.xStatusId)
+                .map(a => String(a.xStatusId))
+        );
+        const missing = (xCfg.statusIds || []).filter(id => !have.has(String(id)));
+        const registryChanged = nextXKey !== prevXKey;
+
+        // Tarik ID baru (registry berubah) ATAU recovery ID yang gagal di load awal
+        if ((registryChanged || missing.length) && missing.length && !state.xArticlesLoading) {
+            if (registryChanged) {
+                try {
+                    sessionStorage.removeItem(xArticlesCacheKey(xCfg.username));
+                } catch (e) { /* ignore */ }
+            }
+            state.xArticlesLoading = true;
+            try {
+                const more = await loadXArticles({
+                    deadline: Date.now() + 40000,
+                    onlyIds: missing,
+                    onProgress: (partial) => {
+                        const existing = (state.data.articles || []).filter(a => a.source === 'x');
+                        const byId = new Map(existing.map(a => [a.id, a]));
+                        (partial || []).forEach(a => byId.set(a.id, a));
+                        mergeXArticlesIntoState(Array.from(byId.values()));
+                        refreshArticleSurfaces({ x: true, medium: false });
+                    }
+                });
+                if (more && more.length) {
+                    const existing = (state.data.articles || []).filter(a => a.source === 'x');
+                    const byId = new Map(existing.map(a => [a.id, a]));
+                    more.forEach(a => byId.set(a.id, a));
+                    const all = Array.from(byId.values()).sort((a, b) => new Date(b.date) - new Date(a.date));
+                    mergeXArticlesIntoState(all);
+                    if (all.length >= (xCfg.statusIds || []).length) {
+                        writeXArticlesCache(xCfg, all);
+                    }
+                }
+            } finally {
+                state.xArticlesLoading = false;
+                refreshArticleSurfaces({ x: true, medium: false });
+            }
+        } else if ($('xArticlesRail') && (xCfg.statusIds || []).length) {
+            const countEl = $('xLiveCount');
+            const xCount = (state.data.articles || []).filter(a => a.source === 'x').length;
+            if (countEl && xCount) countEl.textContent = String(xCount);
+        }
+    }
+
+    // --- Medium registry ---
+    const prevM = state.mediumArticlesConfig;
+    const prevMKey = prevM
+        ? `${prevM.lastSync || ''}|${(prevM.posts || []).map(p => p.guid || p.link).join(',')}`
+        : '';
+    // Peek registry dulu (tanpa buang session cache) lewat loadMediumArticlesRegistry
+    let peeked = null;
+    try {
+        peeked = await loadMediumArticlesRegistry();
+    } catch (e) {
+        peeked = null;
+    }
+    if (peeked) {
+        const nextMKey = `${peeked.lastSync || ''}|${(peeked.posts || []).map(p => p.guid || p.link).join(',')}`;
+        const mediumMissing = !(state.data.articles || []).some(a => a.source === 'medium');
+        if (nextMKey !== prevMKey || mediumMissing) {
+            try {
+                sessionStorage.removeItem(mediumArticlesCacheKey(peeked.username));
+            } catch (e) { /* ignore */ }
+            try {
+                const medArts = await loadMediumArticles();
+                if (medArts && medArts.length) {
+                    mergeMediumArticlesIntoState(medArts);
+                    refreshArticleSurfaces({ medium: true, x: false });
+                }
+            } catch (e) {
+                console.warn('Medium registry refresh failed', e);
+            }
+        }
     }
 }
 
@@ -704,7 +923,7 @@ async function loadData() {
  * loadXArticles() menerima `deadline` dan SELALU mengembalikan apapun yang
  * berhasil dikumpulkan sejauh itu — gak pernah all-or-nothing lagi.
  */
-async function loadXArticlesWithTimeout(ms = 20000) {
+async function loadXArticlesWithTimeout(ms = 45000) {
     return loadXArticles({ deadline: Date.now() + ms });
 }
 
@@ -749,20 +968,22 @@ async function loadXArticlesRegistry() {
         if (state.data.xArticles.username) cfg.username = state.data.xArticles.username;
     }
     // Invalidate browser session cache if registry sync is newer than cache
+    // atau set statusId berubah (artikel baru dari auto-sync GHA).
     try {
         const cacheKey = xArticlesCacheKey(cfg.username);
         const raw = sessionStorage.getItem(cacheKey);
-        if (raw && cfg.lastSync) {
+        if (raw) {
             const parsed = JSON.parse(raw);
             const cacheTs = parsed && parsed.ts ? parsed.ts : 0;
-            const syncTs = Date.parse(cfg.lastSync) || 0;
+            const syncTs = cfg.lastSync ? (Date.parse(cfg.lastSync) || 0) : 0;
             if (syncTs && cacheTs && syncTs > cacheTs) {
                 sessionStorage.removeItem(cacheKey);
-            }
-            // also invalidate if status id set changed
-            const cachedIds = new Set((parsed.articles || []).map(a => a.xStatusId));
-            if (cfg.statusIds.some(id => !cachedIds.has(id)) || (parsed.articles || []).length !== cfg.statusIds.length) {
-                sessionStorage.removeItem(cacheKey);
+            } else {
+                const cachedIds = new Set((parsed.articles || []).map(a => String(a.xStatusId)));
+                if (cfg.statusIds.some(id => !cachedIds.has(String(id)))
+                    || (parsed.articles || []).length !== cfg.statusIds.length) {
+                    sessionStorage.removeItem(cacheKey);
+                }
             }
         }
     } catch (e) { /* ignore */ }
@@ -959,50 +1180,64 @@ async function loadXArticles(opts = {}) {
     const cfg = await loadXArticlesRegistry();
     if (!cfg.enabled || !cfg.statusIds.length) return [];
 
-    const cached = readXArticlesCache(cfg);
-    if (cached) return cached;
+    // onlyIds: fetch subset (auto-retry / registry poll ID baru)
+    const targetIds = (opts.onlyIds && opts.onlyIds.length)
+        ? opts.onlyIds.map(String)
+        : cfg.statusIds.slice();
+    if (!targetIds.length) return [];
+
+    // Cache penuh hanya dipakai kalau minta SEMUA id (bukan subset retry)
+    if (!opts.onlyIds) {
+        const cached = readXArticlesCache(cfg);
+        if (cached) {
+            if (typeof opts.onProgress === 'function') {
+                try { opts.onProgress(cached); } catch (e) { /* ignore */ }
+            }
+            return cached;
+        }
+    }
 
     // Fetch paralel terbatas + retry di fetchXStatus (hindari rate-limit FixTweet)
     const CONCURRENCY = 3;
     const results = [];
-    const ids = cfg.statusIds.slice();
-    // Deadline: default 20 detik dari sekarang kalau caller gak kasih (mis.
-    // dipanggil langsung tanpa lewat loadXArticlesWithTimeout).
-    const deadline = opts.deadline || (Date.now() + 20000);
+    const ids = targetIds.slice();
+    // Deadline: default 45 detik (lebih longgar dari 20s lama yang sering kepotong)
+    const deadline = opts.deadline || (Date.now() + 45000);
+    let progressTick = 0;
 
     async function worker() {
         while (ids.length) {
             const remaining = deadline - Date.now();
-            if (remaining <= 1000) break; // sisa waktu terlalu mepet, stop ambil ID baru
+            if (remaining <= 800) break; // sisa waktu terlalu mepet, stop ambil ID baru
             const statusId = ids.shift();
             try {
-                // Retry penuh (2x) kalau waktu masih longgar, retry minim/0 kalau mepet —
-                // biar gak kepotong di tengah percobaan terakhir.
-                const retries = remaining > 12000 ? 2 : (remaining > 6000 ? 1 : 0);
+                // Retry penuh (2x) kalau waktu masih longgar, retry minim/0 kalau mepet
+                const retries = remaining > 14000 ? 2 : (remaining > 7000 ? 1 : 0);
                 const tweet = await fetchXStatus(cfg, statusId, retries);
                 results.push(convertXTweetToArticle(tweet, cfg));
+                // Progressive UI: setiap artikel sukses → callback (throttle ringan)
+                progressTick += 1;
+                if (typeof opts.onProgress === 'function' && (progressTick === 1 || progressTick % 2 === 0 || !ids.length)) {
+                    const snapshot = results.slice().sort((a, b) => new Date(b.date) - new Date(a.date));
+                    try { opts.onProgress(snapshot); } catch (e) { /* ignore */ }
+                }
             } catch (err) {
                 console.warn('Gagal tarik X article', statusId, err);
             }
         }
     }
-    // Tunggu semua worker beres SECARA WAJAR, tapi jangan lebih dari sisa
-    // waktu + sedikit grace period — dan yang PALING PENTING: apapun yang
-    // terjadi (selesai normal ATAU grace period habis), `results` yang
-    // sudah terkumpul tetap dipakai. Beda dari implementasi lama yang pakai
-    // Promise.race + reject → buang SEMUA hasil kalau telat.
-    const graceMs = Math.max(500, deadline - Date.now() + 1000);
+    // Tunggu workers; grace period → results parsial tetap dikembalikan (bukan all-or-nothing)
+    const graceMs = Math.max(500, deadline - Date.now() + 1500);
     await Promise.race([
-        Promise.all(Array.from({ length: Math.min(CONCURRENCY, cfg.statusIds.length) }, () => worker())),
+        Promise.all(Array.from({ length: Math.min(CONCURRENCY, targetIds.length) }, () => worker())),
         new Promise(resolve => setTimeout(resolve, graceMs))
     ]);
 
-    // Urut terbaru dulu
     results.sort((a, b) => new Date(b.date) - new Date(a.date));
-    // Cache hasil HANYA kalau semua ID kebagian giliran (bukan kepotong deadline) —
-    // supaya hasil parsial gak "mengunci" sessionStorage dan bikin sisa artikel
-    // gak pernah dicoba lagi sampai cache expire.
-    if (results.length && !ids.length) writeXArticlesCache(cfg, results);
+    // Cache penuh HANYA jika minta semua ID registry DAN semuanya sukses
+    if (!opts.onlyIds && results.length && !ids.length && results.length >= cfg.statusIds.length) {
+        writeXArticlesCache(cfg, results);
+    }
     return results;
 }
 
@@ -1735,7 +1970,15 @@ function renderXArticlesRail(articles) {
         .sort((a, b) => new Date(b.date) - new Date(a.date));
 
     const countEl = $('xLiveCount');
-    if (countEl) countEl.textContent = String(xList.length);
+    const expected = (state.xArticlesConfig && state.xArticlesConfig.statusIds)
+        ? state.xArticlesConfig.statusIds.length
+        : xList.length;
+    // Saat loading: tampilkan progress "3/10", bukan 0 yang menyesatkan
+    if (countEl) {
+        countEl.textContent = state.xArticlesLoading && expected > xList.length
+            ? `${xList.length}/${expected}`
+            : String(xList.length || expected || 0);
+    }
     const pill = $('xLivePill');
     if (pill && state.xArticlesConfig && state.xArticlesConfig.lastSync) {
         const sync = state.xArticlesConfig.lastSync;
@@ -1743,6 +1986,19 @@ function renderXArticlesRail(articles) {
     }
 
     if (!xList.length) {
+        // FIX race: JANGAN wipe rail ke empty state selagi masih loading.
+        // renderPageContent() dulu memanggil ini sebelum FixTweet selesai →
+        // placeholder hilang & user harus reload manual. Pertahankan /
+        // render ulang placeholder sampai fetch beres (atau gagal total).
+        if (state.xArticlesLoading && state.xArticlesConfig && (state.xArticlesConfig.statusIds || []).length) {
+            // Hindari re-paint berulang kalau placeholder sudah ada
+            if (!rail.querySelector('.x-card-placeholder') && !rail.querySelector('.x-card')) {
+                renderXArticlesRailPlaceholder(state.xArticlesConfig);
+            }
+            if (empty) empty.classList.add('hidden');
+            if (section) section.classList.remove('is-empty');
+            return;
+        }
         rail.innerHTML = '';
         if (empty) empty.classList.remove('hidden');
         if (section) section.classList.add('is-empty');
@@ -1831,13 +2087,26 @@ function renderMediumArticlesRail(articles) {
         .sort((a, b) => new Date(b.date) - new Date(a.date));
 
     const countEl = $('mediumLiveCount');
-    if (countEl) countEl.textContent = String(list.length);
+    const expectedM = (state.mediumArticlesConfig && state.mediumArticlesConfig.posts)
+        ? state.mediumArticlesConfig.posts.length
+        : list.length;
+    if (countEl) {
+        countEl.textContent = state.mediumArticlesLoading && expectedM > list.length
+            ? `${list.length}/${expectedM}`
+            : String(list.length || expectedM || 0);
+    }
     const pill = $('mediumLivePill');
     if (pill && state.mediumArticlesConfig && state.mediumArticlesConfig.lastSync) {
         pill.title = `Auto-sync terakhir: ${state.mediumArticlesConfig.lastSync}`;
     }
 
     if (!list.length) {
+        // Jangan flash empty state saat Medium masih loading
+        if (state.mediumArticlesLoading) {
+            if (empty) empty.classList.add('hidden');
+            if (section) section.classList.remove('is-empty');
+            return;
+        }
         rail.innerHTML = '';
         if (empty) empty.classList.remove('hidden');
         if (section) section.classList.add('is-empty');
@@ -3155,18 +3424,15 @@ function setupXRetryButtons() {
         showToast('Memuat ulang X Articles…', 'info');
         try {
             sessionStorage.removeItem(xArticlesCacheKey((state.xArticlesConfig && state.xArticlesConfig.username) || CONFIG.X_ARTICLES.username));
-            const xArts = await loadXArticles();
-            if (xArts.length && state.data) {
-                mergeXArticlesIntoState(xArts);
-                renderXArticlesRail(state.data.articles);
-                renderDispatchGrid();
-                showToast(`${xArts.length} X Article dimuat.`, 'success');
-            } else {
-                showToast('Tidak ada X Article yang bisa ditarik.', 'error');
-                renderXArticlesRail(state.data ? state.data.articles : []);
-            }
+            // Pakai bootstrap (progressive + auto-retry) biar konsisten dengan load awal
+            await bootstrapXArticlesLoad();
+            const n = (state.data && state.data.articles || []).filter(a => a.source === 'x').length;
+            if (n) showToast(`${n} X Article dimuat.`, 'success');
+            else showToast('Tidak ada X Article yang bisa ditarik.', 'error');
         } catch (e) {
             showToast('Gagal memuat X Articles.', 'error');
+            state.xArticlesLoading = false;
+            refreshArticleSurfaces({ x: true });
         }
     };
     const a = $('xRetryBtn'); if (a) a.addEventListener('click', retry);

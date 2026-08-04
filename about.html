@@ -12,7 +12,7 @@
     // Naikkan angka di NANOMIND_SW_HEAL_FLAG kalau di masa depan perlu
     // heal ulang lagi.
     (function () {
-        var FLAG = 'nanomind_sw_heal_v1';
+        var FLAG = 'nanomind_sw_heal_v2';
         try { if (localStorage.getItem(FLAG) === '1') return; } catch (e) { return; }
         if (!('serviceWorker' in navigator)) {
             try { localStorage.setItem(FLAG, '1'); } catch (e) {}

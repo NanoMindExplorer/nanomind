@@ -2,8 +2,8 @@ name: Sync Medium Articles
 
 on:
   schedule:
-    # Every 2 hours (offset from the X Articles sync job)
-    - cron: "35 */2 * * *"
+    # Every hour (offset from the X Articles sync job)
+    - cron: "35 * * * *"
   workflow_dispatch: {}
 
 permissions:

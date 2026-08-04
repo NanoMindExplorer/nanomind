@@ -2,8 +2,9 @@ name: Sync X Articles
 
 on:
   schedule:
-    # Every 2 hours
-    - cron: "20 */2 * * *"
+    # Every hour — discover new X Articles faster so the site picks them up
+    # without waiting for a manual reload (client also polls registry ~4 min).
+    - cron: "20 * * * *"
   workflow_dispatch:
     inputs:
       deep:
