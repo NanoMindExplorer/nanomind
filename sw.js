@@ -9,7 +9,7 @@
 // Auto-update: SW cek update setiap jam (lewat updateViaCache: 'none' +
 // manual check di 'controllerchange'). Saat SW baru terdeteksi,
 // skipWaiting() + message semua clients untuk reload.
-const CACHE_NAME = 'nanomind-journal-cache-v30';
+const CACHE_NAME = 'nanomind-journal-cache-v31';
 const SHELL_ASSETS = [
     './',
     './index.html',
@@ -25,11 +25,13 @@ const SHELL_ASSETS = [
     './x-articles.json',
     './medium-articles.json',
     './telegram-posts.json',
+    './instagram-potd.json',
     './sitemap.xml',
     './favicon.svg',
     './manifest.json',
     './bg-ghibli-poster.webp',
     './media/bg-ghibli-poster.webp',
+    './media/potd-instagram.jpg',
     './icons/icon-192.png',
     './icons/icon-512.png',
     './fonts/inter-400.woff2',

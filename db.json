@@ -43,10 +43,15 @@
     }
   ],
   "photoOfDay": {
-    "image": "media/Screenshot_20260630_224816.webp",
-    "caption": "Panel kontrol NanomindOS, tengah malam. Bukan untuk dirilis — hanya untuk dipakai sendiri.",
-    "credit": "Iman Firmansyah",
-    "date": "2026-07-10"
+    "image": "media/potd-instagram.jpg",
+    "video": "",
+    "isVideo": false,
+    "caption": "last time. . .",
+    "credit": "@extensions.ig · Instagram",
+    "date": "2026-03-22",
+    "permalink": "https://www.instagram.com/p/DWNFsHAEqlD/",
+    "source": "instagram",
+    "shortcode": "DWNFsHAEqlD"
   },
   "videos": [
     {
@@ -688,7 +693,7 @@
     {
       "id": "mqyzythiqmyh8s1yu2r",
       "title": "Instagram",
-      "url": "https://www.instagram.com/low_and.high?igsh=dXUyMjN1anp5Ymc5",
+      "url": "https://www.instagram.com/extensions.ig/",
       "icon": "fab fa-instagram"
     },
     {

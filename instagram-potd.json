@@ -1,0 +1,30 @@
+{
+  "enabled": true,
+  "username": "extensions.ig",
+  "profileUrl": "https://www.instagram.com/extensions.ig/",
+  "cacheMinutes": 30,
+  "post": {
+    "shortcode": "DWNFsHAEqlD",
+    "permalink": "https://www.instagram.com/p/DWNFsHAEqlD/",
+    "caption": "last time. . .",
+    "isVideo": false,
+    "image": "media/potd-instagram.jpg",
+    "imageRemote": "https://instagram.fbdo1-1.fna.fbcdn.net/v/t51.82787-15/656509039_17926324248250939_9132128062048352967_n.webp?stp=dst-jpg_e35_s1080x1080_sh2.08_tt6&_nc_ht=instagram.fbdo1-1.fna.fbcdn.net&_nc_cat=107&_nc_oc=Q6cZ2gHo5wnBKnEUJB5AwSvmOM4hiJ12Xt9P5yQqzv0ymqLGZugjH8TbsWWWJLVHC7mJK5E&_nc_ohc=jrtjpAhtdxsQ7kNvwGPl-3r&_nc_gid=EUtOIK_WRjglLo3YmZtIkA&edm=AOQ1c0wBAAAA&ccb=7-5&oh=00_AQGaHLqggmsb8cuXvcmhhzscNT2I1j0vZb4FRJG2g9cuoQ&oe=6A77BC76&_nc_sid=8b3546",
+    "video": null,
+    "videoRemote": null,
+    "takenAt": "2026-03-22T23:05:15Z",
+    "date": "2026-03-22",
+    "author": "Iman Firmansyah",
+    "username": "extensions.ig"
+  },
+  "lastSync": "2026-08-04T15:05:41Z",
+  "lastSyncStats": {
+    "shortcode": "DWNFsHAEqlD",
+    "isVideo": false,
+    "stillDownloaded": true,
+    "videoDownloaded": false,
+    "changed": true,
+    "candidates": 12
+  },
+  "notes": "Auto-updated by tools/sync-instagram-potd.py (GitHub Actions). Latest public post from the configured Instagram profile drives Photo of the Day."
+}

@@ -1,0 +1,53 @@
+name: Sync Instagram Photo of the Day
+
+on:
+  schedule:
+    # Every 2 hours — keep POTD close to the latest IG post
+    - cron: "12 */2 * * *"
+  workflow_dispatch: {}
+  repository_dispatch:
+    types: [sync-instagram-potd]
+
+permissions:
+  contents: write
+
+concurrency:
+  group: sync-instagram-potd
+  cancel-in-progress: false
+
+jobs:
+  sync:
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+
+      - name: Sync latest Instagram post → potd
+        run: |
+          set -euo pipefail
+          chmod +x tools/sync-instagram-potd.py
+          python3 tools/sync-instagram-potd.py --username extensions.ig
+
+      - name: Commit if changed
+        run: |
+          set -euo pipefail
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add instagram-potd.json db.json media/potd-instagram.jpg media/potd-instagram.mp4 2>/dev/null || true
+          # media files may be new
+          git add -f media/potd-instagram.jpg 2>/dev/null || true
+          git add -f media/potd-instagram.mp4 2>/dev/null || true
+          git add instagram-potd.json db.json
+          if git diff --staged --quiet; then
+            echo "No changes to commit"
+          else
+            git commit -m "chore: auto-sync Instagram Photo of the Day ($(date -u +%Y-%m-%dT%H:%MZ))"
+            git push
+            echo "Pushed Instagram POTD update"
+          fi

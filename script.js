@@ -46,6 +46,14 @@ const CONFIG = {
         previewUrl: 'https://t.me/s/nanojournal',
         categoryId: 'telegram',
         cacheMinutes: 5
+    },
+    // Photo of the Day — auto from Instagram (tools/sync-instagram-potd.py)
+    INSTAGRAM_POTD_FILE: 'instagram-potd.json',
+    INSTAGRAM_POTD: {
+        enabled: true,
+        username: 'extensions.ig',
+        profileUrl: 'https://www.instagram.com/extensions.ig/',
+        cacheMinutes: 30
     }
 };
 const DISPATCH_PAGE_SIZE = 7;
@@ -649,6 +657,13 @@ async function loadData() {
         ensureXArticlesCategory();
         ensureMediumArticlesCategory();
 
+        // Photo of the Day: prefer auto Instagram registry (jika ada)
+        try {
+            await loadInstagramPotdIntoState();
+        } catch (e) {
+            console.warn('Instagram POTD load skipped', e);
+        }
+
         // === Pre-load registries + Medium (konten penuh di JSON) ===
         // X: placeholder dulu (perlu FixTweet live). Medium: convert & merge
         // SEBELUM renderPageContent supaya rail tidak sempat kosong.
@@ -1051,6 +1066,19 @@ async function refreshRegistriesFromNetwork() {
                 console.warn('Medium registry refresh failed', e);
             }
         }
+    }
+
+    // --- Instagram Photo of the Day ---
+    try {
+        const prevCode = (state.data.photoOfDay && state.data.photoOfDay.shortcode) || '';
+        const potd = await loadInstagramPotdIntoState();
+        if (potd && potd.shortcode && potd.shortcode !== prevCode && $('potdSection')) {
+            renderPhotoOfDay(potd);
+        } else if (potd && $('potdSection') && !document.querySelector('.potd')) {
+            renderPhotoOfDay(potd);
+        }
+    } catch (e) {
+        console.warn('Instagram POTD refresh failed', e);
     }
 }
 
@@ -2149,22 +2177,78 @@ function renderHero(articles) {
     enhanceImages(wrap);
 }
 
+/**
+ * Tarik instagram-potd.json (hasil GHA sync) dan mirror ke state.data.photoOfDay.
+ * Dipanggil di loadData + registry auto-refresh.
+ */
+async function loadInstagramPotdIntoState() {
+    let reg = null;
+    try {
+        reg = await fetchJsonPreferLocal(CONFIG.INSTAGRAM_POTD_FILE);
+    } catch (e) {
+        reg = null;
+    }
+    if (!reg || reg.enabled === false || !reg.post) return null;
+    const p = reg.post;
+    if (!p.image && !p.video) return null;
+    const potd = {
+        image: p.image || p.imageRemote || '',
+        video: p.video || p.videoRemote || '',
+        isVideo: !!(p.isVideo && (p.video || p.videoRemote)),
+        caption: p.caption || `Latest from @${reg.username || 'instagram'}`,
+        credit: p.author
+            ? `${p.author} · @${reg.username || 'instagram'}`
+            : `@${reg.username || 'instagram'} · Instagram`,
+        date: p.date || (p.takenAt || '').slice(0, 10),
+        permalink: p.permalink || reg.profileUrl || '',
+        source: 'instagram',
+        shortcode: p.shortcode || '',
+        username: reg.username || CONFIG.INSTAGRAM_POTD.username
+    };
+    if (state.data) state.data.photoOfDay = potd;
+    state.instagramPotd = reg;
+    return potd;
+}
+
 function renderPhotoOfDay(potd) {
     const wrap = $('potdSection');
     if (!wrap) return;
-    if (!potd || !potd.image) {
+    if (!potd || (!potd.image && !potd.video)) {
         wrap.innerHTML = state.isAdmin ? `<button class="btn-ghost admin-only" id="editPotdBtn"><i class="fas fa-camera-retro"></i> Set Photo of the Day</button>` : '';
         const btn = $('editPotdBtn'); if (btn) btn.addEventListener('click', openPotdModal);
         return;
     }
+    const isVideo = !!(potd.isVideo && potd.video);
+    const mediaHtml = isVideo
+        ? `<div class="potd-image potd-video-wrap">
+                <video class="potd-video" controls playsinline preload="metadata" poster="${escapeHtml(mediaUrl(potd.image) || potd.image || '')}" ${potd.image ? '' : ''}>
+                    <source src="${escapeHtml(mediaUrl(potd.video) || potd.video)}" type="video/mp4">
+                </video>
+                <span class="potd-media-badge" title="Video dari Instagram"><i class="fas fa-play"></i> Video</span>
+           </div>`
+        : `<div class="potd-image">
+                ${imgTag(potd.image, potd.caption || 'Photo of the day', 'loading="lazy" decoding="async"')}
+                ${potd.source === 'instagram' ? `<span class="potd-media-badge" title="Dari Instagram"><i class="fab fa-instagram"></i> IG</span>` : ''}
+           </div>`;
+    const igLink = potd.permalink
+        ? `<a class="potd-ig-link" href="${escapeHtml(potd.permalink)}" target="_blank" rel="noopener noreferrer"><i class="fab fa-instagram"></i> Lihat di Instagram</a>`
+        : '';
+    const label = potd.source === 'instagram'
+        ? `<span class="potd-label"><i class="fab fa-instagram"></i> From Instagram · Photo of the Day</span>`
+        : `<span class="potd-label"><i class="fas fa-camera-retro"></i> Photo of the Day</span>`;
+
     wrap.innerHTML = `
-        <div class="potd">
-            <div class="potd-image">${imgTag(potd.image, 'Photo of the day', 'loading="lazy" decoding="async"')}</div>
+        <div class="potd${isVideo ? ' potd--video' : ''}${potd.source === 'instagram' ? ' potd--ig' : ''}">
+            ${mediaHtml}
             <div class="potd-text">
-                <span class="potd-label"><i class="fas fa-camera-retro"></i> Photo of the Day</span>
+                ${label}
                 <p class="potd-caption">${escapeHtml(potd.caption || '')}</p>
                 ${potd.credit ? `<p class="potd-credit">— ${escapeHtml(potd.credit)}</p>` : ''}
-                <button class="btn-ghost mt-6 admin-only" id="editPotdBtn" style="align-self:flex-start;"><i class="fas fa-pen"></i> Edit</button>
+                ${potd.date ? `<p class="potd-credit potd-date">${escapeHtml(String(potd.date).slice(0, 10))}</p>` : ''}
+                <div class="potd-actions">
+                    ${igLink}
+                    <button class="btn-ghost admin-only" id="editPotdBtn" style="align-self:flex-start;"><i class="fas fa-pen"></i> Edit</button>
+                </div>
             </div>
         </div>`;
     const btn = $('editPotdBtn'); if (btn) btn.addEventListener('click', openPotdModal);

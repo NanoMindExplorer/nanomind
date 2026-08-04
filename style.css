@@ -966,8 +966,45 @@ a:focus-visible, button:focus-visible, [tabindex]:focus-visible, input:focus-vis
 .potd .potd-text { padding: 40px 40px 40px 44px; border-left: 3px solid var(--brass); display: flex; flex-direction: column; justify-content: center; }
 @media (max-width: 860px) { .potd .potd-text { border-left: none; border-top: 3px solid var(--brass); padding: 32px 28px; } }
 .potd .potd-label { font-family: 'Inter', sans-serif; font-size: 11px; font-weight: 700; letter-spacing: 0.14em; text-transform: uppercase; color: var(--brass); margin-bottom: 16px; }
-.potd .potd-caption { font-family: 'Fraunces', serif; font-size: 22px; line-height: 1.4; color: var(--parchment-text); font-weight: 500; }
-.potd .potd-credit { font-family: 'Inter', sans-serif; font-size: 12px; color: var(--muted-on-ink); margin-top: 18px; }
+.potd .potd-caption { font-family: 'Fraunces', serif; font-size: 22px; line-height: 1.4; color: var(--parchment-text); font-weight: 500; white-space: pre-wrap; word-break: break-word; }
+.potd .potd-credit { font-family: 'Inter', sans-serif; font-size: 12px; color: var(--muted-on-ink); margin-top: 12px; }
+.potd .potd-date { margin-top: 6px !important; opacity: 0.85; }
+/* Instagram auto POTD — video + badges */
+.potd-video-wrap { position: relative; aspect-ratio: 4/3; overflow: hidden; background: #000; }
+.potd-video {
+    width: 100%; height: 100%; object-fit: cover; display: block;
+    background: #0c0d0b;
+}
+.potd-media-badge {
+    position: absolute; top: 12px; left: 12px; z-index: 2;
+    display: inline-flex; align-items: center; gap: 6px;
+    font-family: 'Inter', sans-serif; font-size: 10.5px; font-weight: 700;
+    letter-spacing: 0.06em; text-transform: uppercase;
+    padding: 5px 10px; border-radius: 100px;
+    background: rgba(20, 20, 15, 0.82); color: #EDE8DA;
+    border: 1px solid rgba(237, 232, 218, 0.18);
+    backdrop-filter: blur(8px);
+}
+.potd-media-badge i { color: var(--brass); font-size: 11px; }
+.potd-actions {
+    display: flex; flex-wrap: wrap; align-items: center; gap: 12px;
+    margin-top: 20px;
+}
+.potd-ig-link {
+    display: inline-flex; align-items: center; gap: 8px;
+    font-family: 'Inter', sans-serif; font-size: 13px; font-weight: 600;
+    color: var(--brass); text-decoration: none;
+    padding: 10px 14px; border-radius: 8px;
+    border: 1px solid rgba(201, 151, 74, 0.35);
+    background: rgba(201, 151, 74, 0.08);
+    transition: background 0.2s, border-color 0.2s, transform 0.2s;
+}
+.potd-ig-link:hover {
+    background: rgba(201, 151, 74, 0.16);
+    border-color: var(--brass);
+    transform: translateY(-1px);
+}
+.potd--ig { border-color: rgba(201, 151, 74, 0.22); }
 
 /* ===== Article Reader Page ===== */
 .article-hero { position: relative; height: 72vh; min-height: 420px; display: flex; align-items: flex-end; isolation: isolate; }
