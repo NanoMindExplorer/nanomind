@@ -2,9 +2,9 @@ name: Sync X Articles
 
 on:
   schedule:
-    # Every hour — discover new X Articles faster so the site picks them up
-    # without waiting for a manual reload (client also polls registry ~4 min).
-    - cron: "20 * * * *"
+    # Every 30 minutes — new X Articles must land in x-articles.json quickly;
+    # the site polls this file and loads content via FixTweet.
+    - cron: "5,35 * * * *"
   workflow_dispatch:
     inputs:
       deep:
@@ -15,6 +15,11 @@ on:
         options:
           - "false"
           - "true"
+      extra_status_ids:
+        description: "Optional comma-separated status IDs to force-include (e.g. brand-new article)"
+        required: false
+        default: ""
+        type: string
 
 permissions:
   contents: write
@@ -39,6 +44,7 @@ jobs:
       - name: Discover & update x-articles.json
         env:
           X_BEARER_TOKEN: ${{ secrets.X_BEARER_TOKEN }}
+          EXTRA_STATUS_IDS: ${{ github.event.inputs.extra_status_ids || '' }}
         run: |
           set -euo pipefail
           chmod +x tools/sync-x-articles.py

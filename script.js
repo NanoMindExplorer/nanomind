@@ -16,6 +16,7 @@ const CONFIG = {
         apiBase: 'https://api.fxtwitter.com',
         cacheMinutes: 30,
         statusIds: [
+            '2084516281261388041',
             '2080914975363666184',
             '2080309949025136833',
             '2079807062414946724',

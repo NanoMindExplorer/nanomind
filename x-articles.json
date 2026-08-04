@@ -6,6 +6,7 @@
   "apiBase": "https://api.fxtwitter.com",
   "cacheMinutes": 30,
   "statusIds": [
+    "2084516281261388041",
     "2080914975363666184",
     "2080309949025136833",
     "2079807062414946724",
@@ -18,11 +19,12 @@
     "2076175759325237529"
   ],
   "notes": "Auto-updated by tools/sync-x-articles.py (GitHub Actions). statusIds = X post IDs that carry published X Articles. Website fetches full content live via FixTweet.",
-  "lastSync": "2026-08-04T10:58:40Z",
+  "lastSync": "2026-08-04T13:08:24Z",
   "lastSyncStats": {
-    "candidates": 10,
-    "verified": 10,
-    "added": [],
-    "total": 10
+    "candidates": 11,
+    "verified": 11,
+    "added": ["2084516281261388041"],
+    "total": 11,
+    "latestTitle": "KEAJAIBAN EKONOMI SEPANJANG SEJARAH"
   }
 }

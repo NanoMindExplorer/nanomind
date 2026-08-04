@@ -44,16 +44,28 @@ def log(msg: str) -> None:
     print(msg, flush=True)
 
 
-def curl_get(url: str, timeout: int = 35) -> str:
+def curl_get(url: str, timeout: int = 35, extra_headers: Optional[List[str]] = None) -> str:
+    cmd = ["curl", "-sL", "-A", UA, "--max-time", str(timeout)]
+    if extra_headers:
+        for h in extra_headers:
+            cmd.extend(["-H", h])
+    cmd.append(url)
     try:
-        return subprocess.check_output(
-            ["curl", "-sL", "-A", UA, "--max-time", str(timeout), url],
-            text=True,
-            errors="ignore",
-        )
+        return subprocess.check_output(cmd, text=True, errors="ignore")
     except subprocess.CalledProcessError as e:
         log(f"  get fail {url}: {e}")
         return ""
+
+
+def extract_status_ids(text: str) -> Set[str]:
+    """Pull X status / article IDs from arbitrary HTML/markdown/JSON text."""
+    if not text:
+        return set()
+    ids: Set[str] = set()
+    # URL-shaped references only (avoid bare media/profile asset snowflakes)
+    ids.update(re.findall(r"(?:status|i/article|statuses)/(\d{15,})", text))
+    ids.update(re.findall(r"x\.com/[^/\s\"'<>]+/status/(\d{15,})", text, flags=re.I))
+    return {i for i in ids if i.isdigit()}
 
 
 def curl_post(url: str, data: dict, referer: str = "", timeout: int = 35) -> str:
@@ -227,14 +239,150 @@ def discover_via_twstalker(username: str, max_pages: int = 25) -> Set[str]:
     return ids
 
 
+def _looks_like_bot_wall(text: str) -> bool:
+    t = (text or "").lower()
+    return any(
+        s in t
+        for s in (
+            "challenges.cloudflare.com",
+            "cf-browser-verification",
+            "attention required",
+            "just a moment",
+            "making sure you're not a bot",
+            "enable javascript and cookies",
+        )
+    )
+
+
 def discover_via_jina(username: str) -> Set[str]:
+    """
+    Jina AI reader on public X profile — often the only free path that
+    surfaces brand-new posts / X Article cards (i/article links).
+
+    X/Jina intermittently return Cloudflare challenge pages; detect that and
+    fail fast instead of burning 9× retries on empty shells (which previously
+    made the whole job miss new articles for hours).
+    """
     ids: Set[str] = set()
-    for path in ("", "/with_replies"):
-        md = curl_get(f"https://r.jina.ai/https://x.com/{username}{path}")
-        ids.update(re.findall(r"status/(\d{15,})", md))
-        ids.update(re.findall(r"i/article/(\d{15,})", md))
-        time.sleep(0.2)
+    paths = ("", "/with_replies", "/media")
+    headers = [
+        "Accept: text/markdown, text/plain, */*",
+        "X-Return-Format: markdown",
+        "X-Timeout: 45",
+    ]
+    for path in paths:
+        got_signal = False
+        for attempt in range(1, 3):
+            url = f"https://r.jina.ai/https://x.com/{username}{path}"
+            md = curl_get(url, timeout=50, extra_headers=headers)
+            if _looks_like_bot_wall(md):
+                log(f"  jina {path or '/'}: bot-wall (html={len(md)}) attempt={attempt}")
+                time.sleep(0.5)
+                continue
+            found = extract_status_ids(md)
+            if found:
+                ids |= found
+                log(f"  jina {path or '/'}: +{len(found)} (html={len(md)})")
+                got_signal = True
+                break
+            log(f"  jina {path or '/'}: no ids (html={len(md)}) attempt={attempt}")
+            time.sleep(0.6 * attempt)
+        if not got_signal and path == "":
+            # one mobile fallback only for root profile
+            md = curl_get(
+                f"https://r.jina.ai/https://mobile.twitter.com/{username}",
+                timeout=50,
+                extra_headers=headers,
+            )
+            if not _looks_like_bot_wall(md):
+                found = extract_status_ids(md)
+                if found:
+                    ids |= found
+                    log(f"  jina mobile: +{len(found)} (html={len(md)})")
+        time.sleep(0.25)
+
     log(f"  jina candidates: {len(ids)}")
+    return ids
+
+
+def discover_via_guest_api(username: str) -> Set[str]:
+    """
+    Best-effort: activate a public X guest token and resolve the user.
+    UserTweets is often empty for pure guests, but UserByScreenName can still
+    yield pinned tweet ids / profile snowflakes when present.
+    """
+    ids: Set[str] = set()
+    # Public web client bearer (well-known; used by many open tools)
+    bearer = (
+        "AAAAAAAAAAAAAAAAAAAAANRILgAAAAAAnNwIzUejRCOuH5E6I8xnZz4puTs"
+        "%3D1Zv7ttfk8LF81IUq16cHjhLTvJu4FA33AGWWjCpTnA"
+    )
+    try:
+        raw = subprocess.check_output(
+            [
+                "curl", "-sL", "--max-time", "20",
+                "-X", "POST", "https://api.twitter.com/1.1/guest/activate.json",
+                "-H", f"Authorization: Bearer {bearer}",
+            ],
+            text=True, errors="ignore",
+        )
+        gt = (json.loads(raw) or {}).get("guest_token")
+    except Exception as e:
+        log(f"  guest activate fail: {e}")
+        return ids
+    if not gt:
+        log("  guest activate: no token")
+        return ids
+
+    variables = urllib.parse.quote(
+        json.dumps({"screen_name": username, "withSafetyModeUserFields": True})
+    )
+    features = urllib.parse.quote(
+        json.dumps(
+            {
+                "hidden_profile_subscriptions_enabled": True,
+                "rweb_tipjar_consumption_enabled": True,
+                "responsive_web_graphql_exclude_directive_enabled": True,
+                "verified_phone_label_enabled": False,
+                "subscriptions_verification_info_is_identity_verified_enabled": True,
+                "subscriptions_verification_info_verified_since_enabled": True,
+                "highlights_tweets_tab_ui_enabled": True,
+                "responsive_web_twitter_article_notes_tab_enabled": True,
+                "subscriptions_feature_can_gift_premium": True,
+                "creator_subscriptions_tweet_preview_api_enabled": True,
+                "responsive_web_graphql_skip_user_profile_image_extensions_enabled": False,
+                "responsive_web_graphql_timeline_navigation_enabled": True,
+            }
+        )
+    )
+    # queryId known-working for UserByScreenName (2026)
+    url = (
+        f"https://api.x.com/graphql/G3KGOASz96M-Qu0nwmGXNg/UserByScreenName"
+        f"?variables={variables}&features={features}"
+    )
+    try:
+        raw = subprocess.check_output(
+            [
+                "curl", "-sL", "--max-time", "25",
+                "-H", f"Authorization: Bearer {bearer}",
+                "-H", f"x-guest-token: {gt}",
+                "-H", "x-twitter-active-user: yes",
+                url,
+            ],
+            text=True, errors="ignore",
+        )
+        data = json.loads(raw)
+        user = (((data.get("data") or {}).get("user") or {}).get("result")) or {}
+        leg = user.get("legacy") or {}
+        for pid in leg.get("pinned_tweet_ids_str") or []:
+            if pid:
+                ids.add(str(pid))
+        # Any status-like ids in payload
+        ids |= extract_status_ids(raw)
+        # Drop pure profile-image snowflake noise if only one asset-like id
+        log(f"  guest UserByScreenName: {len(ids)} ids (pinned={leg.get('pinned_tweet_ids_str')})")
+    except Exception as e:
+        log(f"  guest user lookup fail: {e}")
     return ids
 
 
@@ -328,12 +476,33 @@ def main() -> int:
     else:
         log("Strategy: X API skipped (no X_BEARER_TOKEN)")
 
-    pages = args.pages or (40 if args.deep else 25)
-    log(f"Strategy: twstalker ({pages} pages)")
-    candidates |= discover_via_twstalker(username, max_pages=pages)
+    # Optional manual inject (workflow_dispatch / secrets): EXTRA_STATUS_IDS=id1,id2
+    extra = os.environ.get("EXTRA_STATUS_IDS") or ""
+    if extra.strip():
+        extra_ids = {x.strip() for x in re.split(r"[\s,;]+", extra) if x.strip().isdigit()}
+        if extra_ids:
+            log(f"Strategy: EXTRA_STATUS_IDS (+{len(extra_ids)})")
+            candidates |= extra_ids
 
-    log("Strategy: jina reader")
+    # Jina FIRST — often the only free source that shows brand-new X Articles.
+    log("Strategy: jina reader (profile + media + mobile)")
     candidates |= discover_via_jina(username)
+
+    log("Strategy: X guest API (profile / pinned)")
+    candidates |= discover_via_guest_api(username)
+
+    pages = args.pages or (40 if args.deep else 15)
+    log(f"Strategy: twstalker ({pages} pages)")
+    try:
+        candidates |= discover_via_twstalker(username, max_pages=pages)
+    except Exception as e:
+        log(f"  twstalker error: {e}")
+
+    # One more jina pass if we still only know pre-existing IDs
+    if len(candidates - existing_set) == 0:
+        log("Strategy: jina retry (no new candidates yet)")
+        time.sleep(1.5)
+        candidates |= discover_via_jina(username)
 
     log(f"Total unique candidates: {len(candidates)}")
     found_ids, meta = verify_many(username, candidates, existing_set, deep=args.deep)
