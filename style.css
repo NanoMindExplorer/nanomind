@@ -1842,7 +1842,7 @@ body {
     .x-live-meta { justify-content: space-between; width: 100%; }
 
     .hero-feature {
-        min-height: min(72vh, 560px);
+        min-height: min(76vh, 600px);
         border-radius: 0 0 16px 16px;
     }
     .hero-feature-content {
@@ -1850,30 +1850,27 @@ body {
         top: 0 !important;
         bottom: 0 !important;
         height: 100% !important;
-        padding: 10px 6px 14px 6px !important;
-        max-width: min(88vw, 100%) !important;
+        max-width: min(90vw, 100%) !important;
     }
     .hero-content-glass {
         width: 100% !important;
         min-height: 100% !important;
         height: 100% !important;
         margin: 0 !important;
-        padding: 16px 14px 16px !important;
         border-radius: 0 12px 12px 0;
     }
     .hero-feature h1 {
-        font-size: clamp(1.5rem, 7vw, 2rem);
-        line-height: 1.08;
+        font-size: clamp(1.55rem, 7vw, 2.05rem);
+        line-height: 1.06;
     }
     .hero-feature .dek {
-        font-size: 0.9rem;
-        margin-top: 10px;
+        font-size: 0.92rem;
+        max-width: 100%;
         display: -webkit-box;
         -webkit-line-clamp: 4;
         -webkit-box-orient: vertical;
         overflow: hidden;
     }
-    .hero-cta-row { margin-top: 12px; gap: 10px; }
     .hero-cta-row .btn-primary {
         width: auto;
         justify-content: center;
@@ -2042,27 +2039,51 @@ body {
     }
 }
 
-/* Desktop: tetap ujung kiri — jangan center-align ke journal column */
+/* Desktop: panel full-height cover, ujung kiri, lebih ke atas */
 @media (min-width: 861px) {
+    .hero-slot { --hero-under-nav: 68px; }
     .hero-feature-content {
         left: 0 !important;
-        padding: 28px 16px 36px 16px !important;
-        max-width: min(34rem, 48vw) !important;
+        top: 0 !important;
+        bottom: 0 !important;
+        height: 100% !important;
+        max-width: min(38rem, 44vw) !important;
     }
     .hero-content-glass {
-        max-width: 100%;
-        padding: 18px 20px 20px;
+        width: 100% !important;
+        min-height: 100% !important;
+        height: 100% !important;
+        border-radius: 0 22px 22px 0;
     }
     .hero-feature h1 {
-        font-size: clamp(1.9rem, 3.2vw, 3rem);
+        font-size: clamp(2rem, 3.4vw, 3.25rem);
     }
 }
 @media (min-width: 1280px) {
+    .hero-slot { --hero-under-nav: 72px; }
+    .hero-feature {
+        min-height: min(90vh, 900px);
+    }
     .hero-feature-content {
         left: 0 !important;
-        /* Hanya padding kecil dari tepi layar — BUKAN offset ke tengah */
-        padding: 32px 20px 40px 16px !important;
-        max-width: min(36rem, 40vw) !important;
+        top: 0 !important;
+        bottom: 0 !important;
+        height: 100% !important;
+        max-width: min(40rem, 40vw) !important;
+    }
+    .hero-content-glass {
+        padding:
+            calc(var(--hero-under-nav, 72px) + 22px)
+            30px
+            36px
+            20px !important;
+    }
+    .hero-feature h1 {
+        font-size: clamp(2.15rem, 3.2vw, 3.45rem);
+    }
+    .hero-feature .dek {
+        font-size: 1.15rem;
+        max-width: 36ch;
     }
 }
 .article-hero-content {

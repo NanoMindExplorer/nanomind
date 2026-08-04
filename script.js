@@ -2089,16 +2089,20 @@ function renderHero(articles) {
             <svg class="route-line" viewBox="0 0 200 400" style="left:12px; top:4%; width:80px; height:50%;" aria-hidden="true"><path d="M20,10 C60,80 10,160 90,220 S140,340 100,380" /></svg>
             <div class="hero-feature-content" style="left:0;top:0;bottom:0;right:auto;margin:0;height:100%;">
                 <div class="hero-content-glass">
-                    <span class="eyebrow" style="color:#fff;">${escapeHtml(cat.name)}</span>
-                    <h1 class="mt-4">${escapeHtml(featured.title)}</h1>
-                    ${featured.dek ? `<p class="dek">${escapeHtml(featured.dek)}</p>` : ''}
-                    <div class="hero-meta-row">
-                        ${dateMetaHtml(featured.date)}
-                        <span aria-hidden="true">·</span>
-                        <span>${featured.readTime || 5} min baca</span>
+                    <div class="hero-glass-top">
+                        <span class="eyebrow">${escapeHtml(cat.name)}</span>
                     </div>
-                    <div class="hero-cta-row">
-                        <a href="article.html?id=${encodeURIComponent(featured.id)}" class="btn-primary"><i class="${ctaIcon}"></i> ${ctaLabel}</a>
+                    <div class="hero-glass-body">
+                        <h1>${escapeHtml(featured.title)}</h1>
+                        ${featured.dek ? `<p class="dek">${escapeHtml(featured.dek)}</p>` : ''}
+                        <div class="hero-meta-row">
+                            ${dateMetaHtml(featured.date)}
+                            <span aria-hidden="true">·</span>
+                            <span>${featured.readTime || 5} min baca</span>
+                        </div>
+                        <div class="hero-cta-row">
+                            <a href="article.html?id=${encodeURIComponent(featured.id)}" class="btn-primary"><i class="${ctaIcon}"></i> ${ctaLabel}</a>
+                        </div>
                     </div>
                 </div>
             </div>
