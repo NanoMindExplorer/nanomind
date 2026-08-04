@@ -700,41 +700,46 @@ a:focus-visible, button:focus-visible, [tabindex]:focus-visible, input:focus-vis
 }
 
 /* ===== Hero (homepage lead story) =====
-   Kotak judul MENTOK ujung kiri layar (absolute left:0). */
-.hero-slot { margin-bottom: 28px; }
+   Panel kiri full-height cover, ditarik ke atas di bawah nav sticky. */
+.hero-slot {
+    margin-bottom: 28px;
+    /* Naikkan hero di bawah sticky nav supaya panel lebih ke atas */
+    margin-top: calc(-1 * var(--hero-under-nav, 64px));
+    --hero-under-nav: 64px;
+}
 .hero-feature {
     position: relative;
-    min-height: min(82vh, 780px);
-    display: block; /* content positioned absolute — jangan flex-center */
+    min-height: min(88vh, 860px);
+    display: block;
     overflow: hidden;
     border-radius: 0 0 16px 16px;
     isolation: isolate;
 }
 @media (max-width: 720px) {
-    .hero-feature { min-height: min(68vh, 520px); border-radius: 0 0 14px 14px; }
-    .skeleton-hero, .skeleton-hero-inner { min-height: min(68vh, 520px); }
+    .hero-slot { --hero-under-nav: 56px; }
+    .hero-feature { min-height: min(74vh, 580px); border-radius: 0 0 14px 14px; }
+    .skeleton-hero, .skeleton-hero-inner { min-height: min(74vh, 580px); }
 }
 .hero-feature picture { position: absolute; inset: 0; z-index: 0; display: block; }
 .hero-feature img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; z-index: 0; }
-/* Fade — kuat di kiri bawah agar teks kebaca */
+/* Fade — kuat di kiri penuh (panel tinggi) */
 .hero-feature::after {
     content: '';
     position: absolute;
     inset: 0;
     background:
         linear-gradient(to right,
-            rgba(11,13,11,0.82) 0%,
-            rgba(11,13,11,0.48) 36%,
-            rgba(11,13,11,0.12) 62%,
+            rgba(11,13,11,0.88) 0%,
+            rgba(11,13,11,0.55) 34%,
+            rgba(11,13,11,0.18) 58%,
             transparent 100%),
         linear-gradient(to top,
-            rgba(11,13,11,0.97) 0%,
-            rgba(11,13,11,0.55) 40%,
-            rgba(11,13,11,0.16) 75%,
-            rgba(11,13,11,0.06) 100%);
+            rgba(11,13,11,0.94) 0%,
+            rgba(11,13,11,0.4) 45%,
+            rgba(11,13,11,0.18) 100%);
     z-index: 1;
 }
-/* Panel kiri: memanjang dari atas cover (bawah nav) sampai bawah hero */
+/* Panel kiri: full height cover termasuk zona under-nav */
 .hero-feature-content {
     position: absolute !important;
     left: 0 !important;
@@ -743,84 +748,128 @@ a:focus-visible, button:focus-visible, [tabindex]:focus-visible, input:focus-vis
     bottom: 0 !important;
     z-index: 2;
     width: auto !important;
-    max-width: min(36rem, 46vw) !important;
+    max-width: min(38rem, 48vw) !important;
     height: 100% !important;
     min-height: 100% !important;
     margin: 0 !important;
-    padding: 20px 14px 24px 12px !important;
+    padding: 0 !important;
     display: flex !important;
     flex-direction: column !important;
-    justify-content: flex-end !important; /* isi di bawah panel, panel sendiri full height */
+    justify-content: stretch !important;
     align-items: stretch !important;
     box-sizing: border-box;
     text-align: left;
 }
-/* Kotak glass = tinggi penuh cover header */
+/* Kotak glass full height cover */
 .hero-content-glass {
     display: flex !important;
     flex-direction: column !important;
-    justify-content: flex-end !important;
+    justify-content: space-between !important;
     flex: 1 1 auto !important;
     width: 100% !important;
     max-width: 100% !important;
     min-height: 100% !important;
     height: 100% !important;
     margin: 0 !important;
-    margin-left: 0 !important;
-    padding: 28px 22px 28px !important;
-    border-radius: 0 18px 18px 0; /* mentok kiri, sudut kanan membulat */
+    /* Padding atas ekstra = area under-nav + napas */
+    padding:
+        calc(var(--hero-under-nav, 64px) + 18px)
+        24px
+        28px
+        16px !important;
+    border-radius: 0 20px 20px 0;
     background:
         linear-gradient(180deg,
-            rgba(8, 8, 6, 0.55) 0%,
-            rgba(10, 10, 8, 0.72) 38%,
-            rgba(12, 12, 10, 0.88) 100%);
+            rgba(8, 8, 6, 0.62) 0%,
+            rgba(10, 10, 8, 0.74) 32%,
+            rgba(12, 12, 10, 0.9) 100%);
     border: 1px solid rgba(255, 255, 255, 0.10);
     border-left: none;
     box-shadow:
-        8px 0 40px -12px rgba(0, 0, 0, 0.65),
+        10px 0 44px -14px rgba(0, 0, 0, 0.7),
         inset 0 1px 0 rgba(255, 255, 255, 0.05);
     backdrop-filter: blur(14px) saturate(1.12);
     -webkit-backdrop-filter: blur(14px) saturate(1.12);
     text-align: left;
 }
-/* Spacer di atas supaya judul/dek/CTA tetap di zona bawah panel yang panjang */
-.hero-content-glass::before {
-    content: '';
-    display: block;
-    flex: 1 1 auto;
-    min-height: 2rem;
+/* Blok atas: eyebrow di puncak panel */
+.hero-glass-top {
+    flex: 0 0 auto;
+    padding-top: 4px;
 }
+/* Blok bawah: judul + dek + meta + CTA */
+.hero-glass-body {
+    flex: 0 0 auto;
+    display: flex;
+    flex-direction: column;
+    gap: 0;
+    max-width: 100%;
+}
+/* Hapus spacer lama jika masih ada di cache CSS path */
+.hero-content-glass::before { content: none; display: none; }
 @media (max-width: 720px) {
     .hero-feature-content {
-        max-width: min(92vw, 100%) !important;
-        padding: 12px 8px 16px 8px !important;
+        max-width: min(94vw, 100%) !important;
     }
     .hero-content-glass {
         border-radius: 0 14px 14px 0;
-        padding: 18px 14px 18px !important;
+        padding:
+            calc(var(--hero-under-nav, 56px) + 12px)
+            14px
+            18px
+            12px !important;
     }
+}
+/* —— Tipografi hero (disesuaikan panel tinggi) —— */
+.hero-feature .eyebrow {
+    color: #fff !important;
+    font-size: 11px;
+    letter-spacing: 0.16em;
+    opacity: 0.92;
+}
+.hero-feature .eyebrow::before {
+    background: #fff;
+    opacity: 0.85;
+    width: 22px;
 }
 .hero-feature h1 {
     font-family: 'Fraunces', serif;
     font-weight: 600;
-    font-size: clamp(1.75rem, 4.2vw, 3.1rem);
-    line-height: 1.08;
+    font-size: clamp(1.85rem, 4.4vw, 3.35rem);
+    line-height: 1.05;
     color: #fff;
-    letter-spacing: -0.02em;
-    margin: 0;
+    letter-spacing: -0.025em;
+    margin: 0 0 0.35em 0;
     text-wrap: balance;
-    text-shadow: 0 8px 32px rgba(0,0,0,0.45);
+    text-shadow: 0 10px 36px rgba(0,0,0,0.5);
     flex-shrink: 0;
 }
 .hero-feature .dek {
     font-family: 'Source Serif 4', serif;
     font-style: italic;
-    font-size: clamp(0.95rem, 1.5vw, 1.12rem);
-    color: rgba(255,255,255,0.86);
-    margin-top: 12px;
-    max-width: 100%;
-    line-height: 1.5;
+    font-size: clamp(0.98rem, 1.55vw, 1.18rem);
+    color: rgba(255,255,255,0.88);
+    margin: 0 0 0.85em 0;
+    max-width: 34ch;
+    line-height: 1.52;
     flex-shrink: 0;
+}
+.hero-feature .hero-meta-row {
+    margin-top: 0;
+    margin-bottom: 1.1rem;
+    font-size: 12px;
+    letter-spacing: 0.02em;
+    color: rgba(255, 255, 255, 0.68);
+    gap: 8px;
+}
+.hero-feature .hero-cta-row {
+    margin-top: 0;
+    gap: 10px;
+}
+.hero-feature .hero-cta-row .btn-primary {
+    padding: 12px 22px;
+    font-size: 13.5px;
+    border-radius: 10px;
 }
 .hero-feature .eyebrow,
 .hero-feature .hero-meta-row,
@@ -1581,9 +1630,9 @@ body {
 }
 
 /* Hero polish — tinggi + CTA (posisi kiri sudah di rule base di atas) */
-.hero-slot { margin-bottom: 10px; }
+.hero-slot { margin-bottom: 10px; /* keep --hero-under-nav + negative margin from base */ }
 .hero-feature {
-    min-height: min(86vh, 820px);
+    min-height: min(88vh, 860px);
     border-radius: 0 0 22px 22px;
     box-shadow: 0 28px 70px -40px rgba(0, 0, 0, 0.85);
 }
