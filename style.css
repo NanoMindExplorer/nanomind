@@ -773,9 +773,9 @@ a:focus-visible, button:focus-visible, [tabindex]:focus-visible, input:focus-vis
     margin: 0 !important;
     /* Padding atas ekstra = area under-nav + napas */
     padding:
-        calc(var(--hero-under-nav, 64px) + 18px)
+        calc(var(--hero-under-nav, 64px) + 16px)
+        20px
         24px
-        28px
         16px !important;
     border-radius: 0 20px 20px 0;
     background:
@@ -795,17 +795,22 @@ a:focus-visible, button:focus-visible, [tabindex]:focus-visible, input:focus-vis
 /* Blok atas: eyebrow di puncak panel */
 .hero-glass-top {
     flex: 0 0 auto;
-    padding-top: 4px;
+    width: 100%;
+    max-width: 100%;
+    padding-top: 2px;
 }
-/* Blok bawah: judul + dek + meta + CTA */
+/* Blok bawah: judul + dek + meta + CTA — full lebar kotak */
 .hero-glass-body {
     flex: 0 0 auto;
     display: flex;
     flex-direction: column;
-    gap: 0;
+    align-items: flex-start;
+    gap: 0.55rem;
+    width: 100%;
     max-width: 100%;
+    box-sizing: border-box;
 }
-/* Hapus spacer lama jika masih ada di cache CSS path */
+/* Hapus spacer lama */
 .hero-content-glass::before { content: none; display: none; }
 @media (max-width: 720px) {
     .hero-feature-content {
@@ -816,66 +821,105 @@ a:focus-visible, button:focus-visible, [tabindex]:focus-visible, input:focus-vis
         padding:
             calc(var(--hero-under-nav, 56px) + 12px)
             14px
-            18px
+            16px
             12px !important;
     }
+    .hero-glass-body { gap: 0.45rem; }
 }
-/* —— Tipografi hero (disesuaikan panel tinggi) —— */
+/* —— Tipografi hero: skala & wrap pas di dalam kotak —— */
 .hero-feature .eyebrow {
     color: #fff !important;
-    font-size: 11px;
-    letter-spacing: 0.16em;
-    opacity: 0.92;
+    font-size: clamp(10px, 1.1vw, 11.5px);
+    letter-spacing: 0.14em;
+    opacity: 0.9;
+    line-height: 1.3;
+    max-width: 100%;
 }
 .hero-feature .eyebrow::before {
     background: #fff;
-    opacity: 0.85;
-    width: 22px;
+    opacity: 0.8;
+    width: 18px;
+    flex-shrink: 0;
 }
+/* Judul: fluid ke lebar panel (~40–48vw), jangan overflow kotak */
 .hero-feature h1 {
     font-family: 'Fraunces', serif;
     font-weight: 600;
-    font-size: clamp(1.85rem, 4.4vw, 3.35rem);
-    line-height: 1.05;
+    /* ~0.055 * panel width: panel ~min(38rem,48vw) → judul muat 3–5 baris */
+    font-size: clamp(1.45rem, 2.6vw + 0.55rem, 2.65rem);
+    line-height: 1.12;
     color: #fff;
-    letter-spacing: -0.025em;
-    margin: 0 0 0.35em 0;
-    text-wrap: balance;
-    text-shadow: 0 10px 36px rgba(0,0,0,0.5);
+    letter-spacing: -0.02em;
+    margin: 0;
+    padding: 0;
+    width: 100%;
+    max-width: 100%;
+    box-sizing: border-box;
+    overflow-wrap: anywhere;
+    word-break: normal;
+    hyphens: manual;
+    text-wrap: pretty;
+    text-shadow: 0 8px 28px rgba(0,0,0,0.48);
     flex-shrink: 0;
 }
+/* Dek: full lebar kotak, clamp biar tidak meluber vertikal */
 .hero-feature .dek {
     font-family: 'Source Serif 4', serif;
     font-style: italic;
-    font-size: clamp(0.98rem, 1.55vw, 1.18rem);
-    color: rgba(255,255,255,0.88);
-    margin: 0 0 0.85em 0;
-    max-width: 34ch;
-    line-height: 1.52;
+    font-size: clamp(0.88rem, 0.85vw + 0.55rem, 1.05rem);
+    color: rgba(255,255,255,0.86);
+    margin: 0;
+    padding: 0;
+    width: 100%;
+    max-width: 100%;
+    line-height: 1.48;
+    box-sizing: border-box;
+    display: -webkit-box;
+    -webkit-box-orient: vertical;
+    -webkit-line-clamp: 4;
+    overflow: hidden;
     flex-shrink: 0;
 }
 .hero-feature .hero-meta-row {
-    margin-top: 0;
-    margin-bottom: 1.1rem;
-    font-size: 12px;
-    letter-spacing: 0.02em;
-    color: rgba(255, 255, 255, 0.68);
-    gap: 8px;
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 6px 8px;
+    margin: 0.15rem 0 0.35rem 0;
+    padding: 0;
+    width: 100%;
+    max-width: 100%;
+    font-family: 'Inter', sans-serif;
+    font-size: clamp(11px, 0.7vw + 8px, 12.5px);
+    letter-spacing: 0.015em;
+    color: rgba(255, 255, 255, 0.66);
+    line-height: 1.35;
+    box-sizing: border-box;
 }
 .hero-feature .hero-cta-row {
-    margin-top: 0;
-    gap: 10px;
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 8px;
+    margin: 0.15rem 0 0 0;
+    padding: 0;
+    width: 100%;
+    max-width: 100%;
+    box-sizing: border-box;
 }
 .hero-feature .hero-cta-row .btn-primary {
-    padding: 12px 22px;
-    font-size: 13.5px;
+    padding: 11px 18px;
+    font-size: clamp(12.5px, 0.6vw + 10px, 13.5px);
     border-radius: 10px;
+    max-width: 100%;
+    white-space: nowrap;
 }
 .hero-feature .eyebrow,
 .hero-feature .hero-meta-row,
 .hero-feature .hero-cta-row {
     flex-shrink: 0;
 }
+
 .route-line { position: absolute; z-index: 2; pointer-events: none; left: 4% !important; }
 .route-line path { fill: none; stroke: var(--brass); stroke-width: 2; stroke-dasharray: 400; stroke-dashoffset: 400; animation: drawRoute 2.2s cubic-bezier(0.65,0,0.35,1) 0.3s forwards; }
 @media (prefers-reduced-motion: reduce) { .route-line path { stroke-dashoffset: 0; animation: none; } }
@@ -1909,16 +1953,13 @@ body {
         border-radius: 0 12px 12px 0;
     }
     .hero-feature h1 {
-        font-size: clamp(1.55rem, 7vw, 2.05rem);
-        line-height: 1.06;
+        font-size: clamp(1.35rem, 5.8vw, 1.85rem);
+        line-height: 1.12;
     }
     .hero-feature .dek {
-        font-size: 0.92rem;
+        font-size: 0.88rem;
         max-width: 100%;
-        display: -webkit-box;
-        -webkit-line-clamp: 4;
-        -webkit-box-orient: vertical;
-        overflow: hidden;
+        -webkit-line-clamp: 3;
     }
     .hero-cta-row .btn-primary {
         width: auto;
@@ -2105,7 +2146,11 @@ body {
         border-radius: 0 22px 22px 0;
     }
     .hero-feature h1 {
-        font-size: clamp(2rem, 3.4vw, 3.25rem);
+        font-size: clamp(1.55rem, 2.4vw + 0.4rem, 2.55rem);
+    }
+    .hero-feature .dek {
+        font-size: clamp(0.9rem, 0.7vw + 0.55rem, 1.05rem);
+        max-width: 100%;
     }
 }
 @media (min-width: 1280px) {
@@ -2118,21 +2163,22 @@ body {
         top: 0 !important;
         bottom: 0 !important;
         height: 100% !important;
-        max-width: min(40rem, 40vw) !important;
+        max-width: min(36rem, 38vw) !important;
     }
     .hero-content-glass {
         padding:
-            calc(var(--hero-under-nav, 72px) + 22px)
-            30px
-            36px
-            20px !important;
+            calc(var(--hero-under-nav, 72px) + 20px)
+            26px
+            32px
+            18px !important;
     }
     .hero-feature h1 {
-        font-size: clamp(2.15rem, 3.2vw, 3.45rem);
+        font-size: clamp(1.7rem, 2.1vw + 0.45rem, 2.75rem);
     }
     .hero-feature .dek {
-        font-size: 1.15rem;
-        max-width: 36ch;
+        font-size: 1.02rem;
+        max-width: 100%;
+        -webkit-line-clamp: 5;
     }
 }
 .article-hero-content {
