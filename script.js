@@ -2086,8 +2086,8 @@ function renderHero(articles) {
     wrap.innerHTML = `
         <div class="hero-feature">
             ${imgTag(featured.coverImage, featured.title, 'fetchpriority="high"')}
-            <svg class="route-line" viewBox="0 0 200 400" style="left:6%; top:4%; width:100px; height:60%;" aria-hidden="true"><path d="M20,10 C60,80 10,160 90,220 S140,340 100,380" /></svg>
-            <div class="hero-feature-content">
+            <svg class="route-line" viewBox="0 0 200 400" style="left:12px; top:4%; width:80px; height:50%;" aria-hidden="true"><path d="M20,10 C60,80 10,160 90,220 S140,340 100,380" /></svg>
+            <div class="hero-feature-content" style="left:0;right:auto;margin:0;">
                 <div class="hero-content-glass">
                     <span class="eyebrow" style="color:#fff;">${escapeHtml(cat.name)}</span>
                     <h1 class="mt-4">${escapeHtml(featured.title)}</h1>
