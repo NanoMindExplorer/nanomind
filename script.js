@@ -2064,6 +2064,35 @@ function leadSourceLabel(article) {
     return { name: 'Build Log · Terbaru', accent: 'brass' };
 }
 
+/**
+ * Teks lead panjang untuk mengisi panel hero.
+ * Gabungan dek + paragraf body (X/Medium/Dispatch) sampai ~1200 karakter.
+ */
+function heroLeadParagraphs(article) {
+    const chunks = [];
+    const push = (t) => {
+        const s = String(t || '').replace(/\s+/g, ' ').trim();
+        if (!s) return;
+        // Hindari duplikat dengan potongan sebelumnya
+        if (chunks.some(c => c === s || c.includes(s) || s.includes(c.slice(0, 80)))) return;
+        chunks.push(s);
+    };
+    push(article.dek);
+    const body = article.body || [];
+    for (const b of body) {
+        if (!b) continue;
+        if (b.type === 'paragraph' || b.type === 'quote' || b.type === 'heading') {
+            push(b.text);
+        } else if (b.type === 'list' && Array.isArray(b.items)) {
+            push(b.items.join(' · '));
+        }
+        // Cukup untuk mengisi panel penuh
+        if (chunks.join(' ').length > 1400) break;
+    }
+    // Kalau body masih tipis, ulangi dek sebagai fallback sudah ada
+    return chunks;
+}
+
 function renderHero(articles) {
     const wrap = $('heroFeature');
     if (!wrap) return;
@@ -2082,6 +2111,13 @@ function renderHero(articles) {
     const ctaIcon = featured.source === 'x'
         ? 'fab fa-x-twitter'
         : (featured.source === 'medium' ? 'fab fa-medium' : 'fas fa-book-open');
+    const leads = heroLeadParagraphs(featured);
+    // Paragraf pertama = dek ringkas; sisanya = isi panel penuh
+    const leadHtml = leads.length
+        ? leads.map((p, i) =>
+            `<p class="hero-lead-p${i === 0 ? ' is-dek' : ''}">${escapeHtml(p)}</p>`
+          ).join('')
+        : '';
     wrap.className = 'hero-slot accent-' + (cat.accent || 'brass');
     wrap.innerHTML = `
         <div class="hero-feature">
@@ -2091,15 +2127,18 @@ function renderHero(articles) {
                 <div class="hero-content-glass">
                     <div class="hero-glass-top">
                         <span class="eyebrow">${escapeHtml(cat.name)}</span>
-                    </div>
-                    <div class="hero-glass-body">
                         <h1>${escapeHtml(featured.title)}</h1>
-                        ${featured.dek ? `<p class="dek">${escapeHtml(featured.dek)}</p>` : ''}
                         <div class="hero-meta-row">
                             ${dateMetaHtml(featured.date)}
                             <span aria-hidden="true">·</span>
                             <span>${featured.readTime || 5} min baca</span>
+                            ${featured.author ? `<span aria-hidden="true">·</span><span>${escapeHtml(featured.author)}</span>` : ''}
                         </div>
+                    </div>
+                    <div class="hero-glass-fill">
+                        ${leadHtml}
+                    </div>
+                    <div class="hero-glass-foot">
                         <div class="hero-cta-row">
                             <a href="article.html?id=${encodeURIComponent(featured.id)}" class="btn-primary"><i class="${ctaIcon}"></i> ${ctaLabel}</a>
                         </div>

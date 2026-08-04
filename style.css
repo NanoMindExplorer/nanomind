@@ -760,11 +760,11 @@ a:focus-visible, button:focus-visible, [tabindex]:focus-visible, input:focus-vis
     box-sizing: border-box;
     text-align: left;
 }
-/* Kotak glass full height cover — teks menumpuk dari atas (tepat di bawah label) */
+/* Kotak glass full height — label + judul di atas, isi mengisi sisa, CTA di kaki */
 .hero-content-glass {
     display: flex !important;
     flex-direction: column !important;
-    justify-content: flex-start !important; /* JANGAN space-between: judul langsung di bawah label */
+    justify-content: flex-start !important;
     align-items: stretch !important;
     flex: 1 1 auto !important;
     width: 100% !important;
@@ -772,11 +772,10 @@ a:focus-visible, button:focus-visible, [tabindex]:focus-visible, input:focus-vis
     min-height: 100% !important;
     height: 100% !important;
     margin: 0 !important;
-    /* Padding atas = di bawah nav sticky */
     padding:
         calc(var(--hero-under-nav, 64px) + 14px)
         20px
-        24px
+        22px
         16px !important;
     border-radius: 0 20px 20px 0;
     background:
@@ -792,31 +791,51 @@ a:focus-visible, button:focus-visible, [tabindex]:focus-visible, input:focus-vis
     backdrop-filter: blur(14px) saturate(1.12);
     -webkit-backdrop-filter: blur(14px) saturate(1.12);
     text-align: left;
-    gap: 0.65rem; /* jarak label → judul */
+    gap: 0.7rem;
+    overflow: hidden;
 }
-/* Label "X Articles · Terbaru" */
+/* Atas: label + judul + meta (langsung bertumpuk) */
 .hero-glass-top {
     flex: 0 0 auto;
     width: 100%;
     max-width: 100%;
-    padding: 0;
-    margin: 0;
-}
-/* Judul + dek + meta + CTA: langsung di bawah label, tidak ke dasar kotak */
-.hero-glass-body {
-    flex: 0 0 auto;
     display: flex;
     flex-direction: column;
     align-items: flex-start;
     gap: 0.55rem;
-    width: 100%;
-    max-width: 100%;
     margin: 0;
     padding: 0;
-    box-sizing: border-box;
 }
-/* Hapus spacer lama */
+/* Tengah: paragraf lead mengisi sisa tinggi kotak */
+.hero-glass-fill {
+    flex: 1 1 auto;
+    min-height: 0;
+    width: 100%;
+    max-width: 100%;
+    overflow: hidden;
+    display: flex;
+    flex-direction: column;
+    gap: 0.65rem;
+    mask-image: linear-gradient(to bottom, #000 0%, #000 88%, transparent 100%);
+    -webkit-mask-image: linear-gradient(to bottom, #000 0%, #000 88%, transparent 100%);
+}
+/* Kaki: tombol CTA menempel bawah panel */
+.hero-glass-foot {
+    flex: 0 0 auto;
+    width: 100%;
+    margin-top: auto;
+    padding-top: 0.5rem;
+}
 .hero-content-glass::before { content: none; display: none; }
+/* Legacy class (jika masih ada di cache HTML lama) */
+.hero-glass-body {
+    flex: 1 1 auto;
+    display: flex;
+    flex-direction: column;
+    gap: 0.55rem;
+    width: 100%;
+    min-height: 0;
+}
 @media (max-width: 720px) {
     .hero-feature-content {
         max-width: min(94vw, 100%) !important;
@@ -828,10 +847,12 @@ a:focus-visible, button:focus-visible, [tabindex]:focus-visible, input:focus-vis
             14px
             16px
             12px !important;
+        gap: 0.5rem;
     }
-    .hero-glass-body { gap: 0.45rem; }
+    .hero-glass-top { gap: 0.4rem; }
+    .hero-glass-fill { gap: 0.45rem; }
 }
-/* —— Tipografi hero: skala & wrap pas di dalam kotak —— */
+/* —— Tipografi hero —— */
 .hero-feature .eyebrow {
     color: #fff !important;
     font-size: clamp(10px, 1.1vw, 11.5px);
@@ -846,51 +867,57 @@ a:focus-visible, button:focus-visible, [tabindex]:focus-visible, input:focus-vis
     width: 18px;
     flex-shrink: 0;
 }
-/* Judul: fluid ke lebar panel (~40–48vw), jangan overflow kotak */
 .hero-feature h1 {
     font-family: 'Fraunces', serif;
     font-weight: 600;
-    /* Proporsional ke lebar panel; langsung di bawah eyebrow */
     font-size: clamp(1.45rem, 2.6vw + 0.55rem, 2.65rem);
     line-height: 1.12;
     color: #fff;
     letter-spacing: -0.02em;
-    margin: 0; /* gap parent mengurus jarak dari label */
+    margin: 0;
     padding: 0;
     width: 100%;
     max-width: 100%;
     box-sizing: border-box;
     overflow-wrap: anywhere;
     word-break: normal;
-    hyphens: manual;
     text-wrap: pretty;
     text-shadow: 0 8px 28px rgba(0,0,0,0.48);
     flex-shrink: 0;
 }
-/* Dek: full lebar kotak, clamp biar tidak meluber vertikal */
-.hero-feature .dek {
+/* Paragraf isi panel — mengisi kotak penuh */
+.hero-feature .hero-lead-p {
     font-family: 'Source Serif 4', serif;
-    font-style: italic;
-    font-size: clamp(0.88rem, 0.85vw + 0.55rem, 1.05rem);
-    color: rgba(255,255,255,0.86);
+    font-size: clamp(0.9rem, 0.7vw + 0.55rem, 1.08rem);
+    line-height: 1.55;
+    color: rgba(255, 255, 255, 0.86);
     margin: 0;
     padding: 0;
     width: 100%;
     max-width: 100%;
-    line-height: 1.48;
     box-sizing: border-box;
-    display: -webkit-box;
-    -webkit-box-orient: vertical;
-    -webkit-line-clamp: 4;
-    overflow: hidden;
-    flex-shrink: 0;
+}
+.hero-feature .hero-lead-p.is-dek {
+    font-style: italic;
+    color: rgba(255, 255, 255, 0.9);
+    font-size: clamp(0.95rem, 0.75vw + 0.55rem, 1.12rem);
+}
+/* Fallback class lama */
+.hero-feature .dek {
+    font-family: 'Source Serif 4', serif;
+    font-style: italic;
+    font-size: clamp(0.9rem, 0.75vw + 0.55rem, 1.08rem);
+    color: rgba(255,255,255,0.88);
+    margin: 0;
+    width: 100%;
+    line-height: 1.5;
 }
 .hero-feature .hero-meta-row {
     display: flex;
     flex-wrap: wrap;
     align-items: center;
     gap: 6px 8px;
-    margin: 0.15rem 0 0.35rem 0;
+    margin: 0;
     padding: 0;
     width: 100%;
     max-width: 100%;
@@ -906,7 +933,7 @@ a:focus-visible, button:focus-visible, [tabindex]:focus-visible, input:focus-vis
     flex-wrap: wrap;
     align-items: center;
     gap: 8px;
-    margin: 0.15rem 0 0 0;
+    margin: 0;
     padding: 0;
     width: 100%;
     max-width: 100%;
