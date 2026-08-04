@@ -760,20 +760,21 @@ a:focus-visible, button:focus-visible, [tabindex]:focus-visible, input:focus-vis
     box-sizing: border-box;
     text-align: left;
 }
-/* Kotak glass full height cover */
+/* Kotak glass full height cover — teks menumpuk dari atas (tepat di bawah label) */
 .hero-content-glass {
     display: flex !important;
     flex-direction: column !important;
-    justify-content: space-between !important;
+    justify-content: flex-start !important; /* JANGAN space-between: judul langsung di bawah label */
+    align-items: stretch !important;
     flex: 1 1 auto !important;
     width: 100% !important;
     max-width: 100% !important;
     min-height: 100% !important;
     height: 100% !important;
     margin: 0 !important;
-    /* Padding atas ekstra = area under-nav + napas */
+    /* Padding atas = di bawah nav sticky */
     padding:
-        calc(var(--hero-under-nav, 64px) + 16px)
+        calc(var(--hero-under-nav, 64px) + 14px)
         20px
         24px
         16px !important;
@@ -791,15 +792,17 @@ a:focus-visible, button:focus-visible, [tabindex]:focus-visible, input:focus-vis
     backdrop-filter: blur(14px) saturate(1.12);
     -webkit-backdrop-filter: blur(14px) saturate(1.12);
     text-align: left;
+    gap: 0.65rem; /* jarak label → judul */
 }
-/* Blok atas: eyebrow di puncak panel */
+/* Label "X Articles · Terbaru" */
 .hero-glass-top {
     flex: 0 0 auto;
     width: 100%;
     max-width: 100%;
-    padding-top: 2px;
+    padding: 0;
+    margin: 0;
 }
-/* Blok bawah: judul + dek + meta + CTA — full lebar kotak */
+/* Judul + dek + meta + CTA: langsung di bawah label, tidak ke dasar kotak */
 .hero-glass-body {
     flex: 0 0 auto;
     display: flex;
@@ -808,6 +811,8 @@ a:focus-visible, button:focus-visible, [tabindex]:focus-visible, input:focus-vis
     gap: 0.55rem;
     width: 100%;
     max-width: 100%;
+    margin: 0;
+    padding: 0;
     box-sizing: border-box;
 }
 /* Hapus spacer lama */
@@ -845,12 +850,12 @@ a:focus-visible, button:focus-visible, [tabindex]:focus-visible, input:focus-vis
 .hero-feature h1 {
     font-family: 'Fraunces', serif;
     font-weight: 600;
-    /* ~0.055 * panel width: panel ~min(38rem,48vw) → judul muat 3–5 baris */
+    /* Proporsional ke lebar panel; langsung di bawah eyebrow */
     font-size: clamp(1.45rem, 2.6vw + 0.55rem, 2.65rem);
     line-height: 1.12;
     color: #fff;
     letter-spacing: -0.02em;
-    margin: 0;
+    margin: 0; /* gap parent mengurus jarak dari label */
     padding: 0;
     width: 100%;
     max-width: 100%;
