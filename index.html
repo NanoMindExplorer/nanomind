@@ -2,7 +2,7 @@
 <html lang="id">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
     <script>
     // SELF-HEAL, sekali per browser: paksa bersihkan Service Worker LAMA +
     // seluruh Cache Storage, TANPA bergantung ke siklus update SW normal
@@ -57,7 +57,7 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <link rel="preload" href="fonts/inter-400.woff2" as="font" type="font/woff2" crossorigin>
     <link rel="preload" href="fonts/fraunces-600.woff2" as="font" type="font/woff2" crossorigin>
-    <link rel="stylesheet" href="style.css?v=20">
+    <link rel="stylesheet" href="style.css?v=21">
     <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
     <meta http-equiv="Pragma" content="no-cache">
     <meta http-equiv="Expires" content="0">
@@ -114,7 +114,7 @@
                         <p class="section-sub">Long-form live dari <a href="https://x.com/Deadmouse_jpeg" target="_blank" rel="noopener noreferrer" class="text-brass">@Deadmouse_jpeg</a></p>
                     </div>
                     <div class="x-live-meta">
-                        <span class="live-pill" id="xLivePill" title="Daftar artikel di-sync otomatis tiap ~2 jam; konten ditarik live"><span class="live-dot" aria-hidden="true"></span> Auto · <span id="xLiveCount">…</span></span>
+                        <span class="live-pill" id="xLivePill" title="Daftar artikel di-sync otomatis tiap ~15 menit; konten ditarik live"><span class="live-dot" aria-hidden="true"></span> Auto · <span id="xLiveCount">…</span></span>
                         <button type="button" class="btn-ghost btn-sm" id="xRetryBtn" aria-label="Muat ulang X Articles"><i class="fas fa-rotate"></i> Muat ulang</button>
                     </div>
                 </div>
@@ -143,7 +143,7 @@
                         <p class="section-sub">Tulisan long-form dari <a href="https://medium.com/@0wlsky" target="_blank" rel="noopener noreferrer" class="text-brass">@0wlsky</a></p>
                     </div>
                     <div class="x-live-meta">
-                        <span class="live-pill" id="mediumLivePill" title="Daftar artikel di-sync otomatis tiap ~2 jam dari RSS resmi Medium"><span class="live-dot" aria-hidden="true"></span> Auto · <span id="mediumLiveCount">…</span></span>
+                        <span class="live-pill" id="mediumLivePill" title="Daftar artikel di-sync otomatis tiap ~15 menit dari RSS resmi Medium"><span class="live-dot" aria-hidden="true"></span> Auto · <span id="mediumLiveCount">…</span></span>
                         <button type="button" class="btn-ghost btn-sm" id="mediumRetryBtn" aria-label="Muat ulang Medium Articles"><i class="fas fa-rotate"></i> Muat ulang</button>
                     </div>
                 </div>
@@ -204,6 +204,6 @@
 
     <div id="modalsPlaceholder"></div>
 
-    <script src="script.js?v=20"></script>
+    <script src="script.js?v=21"></script>
 </body>
 </html>

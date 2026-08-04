@@ -2027,11 +2027,19 @@ function renderHero(articles) {
             ${imgTag(featured.coverImage, featured.title, 'fetchpriority="high"')}
             <svg class="route-line" viewBox="0 0 200 400" style="left:6%; top:4%; width:100px; height:60%;" aria-hidden="true"><path d="M20,10 C60,80 10,160 90,220 S140,340 100,380" /></svg>
             <div class="hero-feature-content">
-                <span class="eyebrow" style="color:#fff;">${escapeHtml(cat.name)}</span>
-                <h1 class="mt-5">${escapeHtml(featured.title)}</h1>
-                ${featured.dek ? `<p class="dek">${escapeHtml(featured.dek)}</p>` : ''}
-                <p class="t-meta mt-3" style="color:rgba(255,255,255,0.7);">${dateMetaHtml(featured.date)} · ${featured.readTime || 5} min baca</p>
-                <a href="article.html?id=${encodeURIComponent(featured.id)}" class="btn-primary mt-8"><i class="fas fa-book-open"></i> Baca Dispatch</a>
+                <div class="hero-content-glass">
+                    <span class="eyebrow" style="color:#fff;">${escapeHtml(cat.name)}</span>
+                    <h1 class="mt-4">${escapeHtml(featured.title)}</h1>
+                    ${featured.dek ? `<p class="dek">${escapeHtml(featured.dek)}</p>` : ''}
+                    <div class="hero-meta-row">
+                        ${dateMetaHtml(featured.date)}
+                        <span aria-hidden="true">·</span>
+                        <span>${featured.readTime || 5} min baca</span>
+                    </div>
+                    <div class="hero-cta-row">
+                        <a href="article.html?id=${encodeURIComponent(featured.id)}" class="btn-primary"><i class="fas fa-book-open"></i> Baca Dispatch</a>
+                    </div>
+                </div>
             </div>
         </div>`;
 }
@@ -2147,7 +2155,7 @@ function renderXArticlesRail(articles) {
     if (section) section.classList.remove('is-empty');
 
     rail.innerHTML = xList.map(a => `
-        <a href="article.html?id=${encodeURIComponent(a.id)}" class="x-card reveal">
+        <a href="article.html?id=${encodeURIComponent(a.id)}" class="x-card from-x reveal">
             <div class="x-thumb">
                 ${imgTag(a.coverImage, a.title, 'loading="lazy" decoding="async"')}
                 <span class="x-source-badge" title="X Articles"><i class="fab fa-x-twitter"></i> X</span>
@@ -2157,7 +2165,7 @@ function renderXArticlesRail(articles) {
                 ${a.dek ? `<p class="x-dek">${escapeHtml(a.dek)}</p>` : ''}
                 <div class="x-meta">
                     ${dateMetaHtml(a.date)}
-                    <span>·</span>
+                    <span aria-hidden="true">·</span>
                     <span>${a.readTime || 5} min</span>
                 </div>
             </div>
@@ -2255,7 +2263,7 @@ function renderMediumArticlesRail(articles) {
     if (section) section.classList.remove('is-empty');
 
     rail.innerHTML = list.map(a => `
-        <a href="article.html?id=${encodeURIComponent(a.id)}" class="x-card reveal">
+        <a href="article.html?id=${encodeURIComponent(a.id)}" class="x-card from-medium reveal">
             <div class="x-thumb">
                 ${imgTag(a.coverImage, a.title, 'loading="lazy" decoding="async"')}
                 <span class="x-source-badge" title="Medium"><i class="fab fa-medium"></i> Medium</span>
@@ -2265,7 +2273,7 @@ function renderMediumArticlesRail(articles) {
                 ${a.dek ? `<p class="x-dek">${escapeHtml(a.dek)}</p>` : ''}
                 <div class="x-meta">
                     ${dateMetaHtml(a.date)}
-                    <span>·</span>
+                    <span aria-hidden="true">·</span>
                     <span>${a.readTime || 5} min</span>
                 </div>
             </div>
@@ -2661,12 +2669,11 @@ function renderArticleIntoContent(article) {
                 <h1 class="mt-4">${escapeHtml(article.title)}</h1>
                 ${article.dek ? `<p class="dek">${escapeHtml(article.dek)}</p>` : ''}
                 <div class="byline-row">
-                    <span>${escapeHtml(article.author || '')}</span>
-                    <span class="sep"></span>
+                    ${article.author ? `<span>${escapeHtml(article.author)}</span><span class="sep" aria-hidden="true"></span>` : ''}
                     <span>${formatDate(article.date)}</span>
                     <span class="byline-extra">(${formatRelativeDate(article.date)})</span>
-                    <span class="sep"></span>
-                    <span>${rt} min baca · selesai ± ${rt} menit</span>
+                    <span class="sep" aria-hidden="true"></span>
+                    <span>${rt} min baca</span>
                 </div>
             </div>
         </div>
