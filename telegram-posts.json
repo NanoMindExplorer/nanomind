@@ -5,8 +5,22 @@
   "previewUrl": "https://t.me/s/nanojournal",
   "categoryId": "telegram",
   "cacheMinutes": 5,
-  "lastSync": "2026-08-08T04:40:19Z",
+  "lastSync": "2026-08-08T05:26:54Z",
   "posts": [
+    {
+      "postId": "1199",
+      "channel": "nanojournal",
+      "url": "https://t.me/nanojournal/1199",
+      "textHtml": "8 agustus GameMapperMind sudah rilis di Huawei App Gallery",
+      "textPlain": "8 agustus GameMapperMind sudah rilis di Huawei App Gallery",
+      "links": [],
+      "photos": [
+        "https://cdn5.telesco.pe/file/TzOj7-gkwXZMLBuYthKvjuoeV83xNjsdpgfPqqeiQtl3bWCZiiPakFWdGc_NaV7zC5-QS6DPmuV1zwob5z1-rDgJdcTSjNmh8WIbCTMpjfor3opiLmmB1gWEnZG9zMmvyzLD_bRKUoLC-Ar5v-tuNLNveItaB8q6gGdQ87SnvHHc-389Sz1IiQvsJ6TdFmmAoz2bq9V57_Snd5qPv2Nftq3tg1NAwj-EpJ5c2OKKMCEaxR6BJU2hcmAFkgm9UwituM99t5G7KEWjDxVU-BD_uvaU2FvgEVChsNUiayswYzIysNMe2SRo8bhxsU7oISvbncU3Y8lI-hFgact1a6Gi8Q.jpg"
+      ],
+      "datetime": "2026-08-08T04:53:04Z",
+      "views": "1",
+      "replyTo": null
+    },
     {
       "postId": "1198",
       "channel": "nanojournal",
@@ -6379,9 +6393,9 @@
     }
   ],
   "lastSyncStats": {
-    "pagesFetched": 1,
-    "newPosts": 0,
-    "total": 379
+    "pagesFetched": 2,
+    "newPosts": 1,
+    "total": 380
   },
   "notes": "Auto-updated by tools/sync-telegram-channel.py (GitHub Actions). Posts ditarik dari t.me/s/<channel> (web preview resmi, no auth). Run tiap 15 menit — post baru akan muncul di website dalam <=15 menit."
 }
