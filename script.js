@@ -3724,6 +3724,10 @@ function dateMetaHtml(dateStr) {
 /**
  * Rewrite only local / nanomind-repo asset paths to optimized media/*.webp.
  * Never touch external hosts (pbs.twimg.com, etc.) — that broke X article covers.
+ *
+ * BLACKLIST: file hasil download dari Instagram (potd-instagram.jpg, ig-*.jpg)
+ * tidak punya versi .webp lokal — sync script cuma download .jpg dari IG CDN.
+ * Kalau di-rewrite ke .webp, <picture> source 404 → image broken.
  */
 function mediaUrl(url) {
     if (!url) return '';
@@ -3750,7 +3754,16 @@ function mediaUrl(url) {
 
     // Relative local paths: media/foo.jpg or foo.jpg → media/foo.webp
     const m = s.match(/^(?:\.\/)?(?:media\/)?([a-zA-Z0-9_-]+)\.(webp|jpg|jpeg|png)$/i);
-    if (m) return `media/${m[1]}.webp`;
+    if (m) {
+        const stem = m[1];
+        // BLACKLIST: Instagram downloads (no .webp version exists)
+        // potd-instagram.jpg = Photo of the Day
+        // ig-*.jpg = gallery thumbnails
+        if (stem === 'potd-instagram' || stem.startsWith('ig-')) {
+            return `media/${stem}.jpg`;
+        }
+        return `media/${stem}.webp`;
+    }
     return s;
 }
 
