@@ -2276,3 +2276,438 @@ body {
         text-rendering: optimizeLegibility;
     }
 }
+
+/* ============================================================
+   MOBILE PREMIUM OVERHAUL (patch-9, Aug 2026)
+   Target: ≤860px. Principles:
+   1. Touch-first: semua interactive min 44×44px
+   2. Dense but breathable: 16px gutter, 8px internal rhythm
+   3. Typography scale: clamp() fluid, larger body, smaller display
+   4. Consistent radius 16px, subtle dividers antar section
+   5. Safe-area-aware (notch, home indicator)
+   ============================================================ */
+@media (max-width: 860px) {
+    /* ===== Navbar: taller, bigger touch targets ===== */
+    .nav-inner {
+        padding: 10px 14px;
+        min-height: 56px;
+        gap: 10px;
+    }
+    .brand-mark { width: 30px; height: 30px; }
+    .brand-name { font-size: 16.5px; }
+    .brand { gap: 9px; }
+    .nav-icon-btn {
+        width: 44px; height: 44px;
+        border-radius: 12px;
+        font-size: 15px;
+    }
+    .mobile-menu-btn { width: 44px; height: 44px; }
+
+    /* ===== Mobile nav panel: full-height, bigger links ===== */
+    .mobile-nav-panel {
+        width: min(82vw, 320px);
+        padding: 96px 18px calc(28px + env(safe-area-inset-bottom, 0px));
+        gap: 4px;
+    }
+    .mobile-nav-panel .nav-link {
+        font-size: 16px;
+        padding: 16px 18px;
+        border-radius: 12px;
+        min-height: 52px;
+        display: flex;
+        align-items: center;
+        gap: 12px;
+    }
+    .mobile-nav-panel .nav-link i { font-size: 17px; width: 22px; text-align: center; }
+    .mobile-nav-panel .nav-link.active {
+        background: linear-gradient(135deg, rgba(201,151,74,0.18), rgba(201,151,74,0.06));
+        border: 1px solid rgba(201,151,74,0.3);
+        color: var(--brass);
+    }
+
+    /* ===== Journal stack: tighter gutter, consistent rhythm ===== */
+    .journal-stack {
+        padding: 0 12px 96px;
+        gap: 16px;
+    }
+
+    /* ===== Section surface: consistent 16px radius, better padding ===== */
+    .section-surface {
+        border-radius: 16px;
+        padding: 20px 14px 22px;
+    }
+
+    /* ===== Section titles: slightly smaller, tighter ===== */
+    .section-title {
+        font-size: clamp(1.4rem, 5.5vw, 1.6rem);
+        margin-top: 6px;
+        line-height: 1.15;
+    }
+    .section-sub {
+        font-size: 13px;
+        line-height: 1.5;
+        margin-top: 6px;
+    }
+
+    /* ===== Eyebrow: slightly larger for readability ===== */
+    .eyebrow { font-size: 11.5px; }
+
+    /* ===== Hero feature: taller, better text hierarchy ===== */
+    .hero-feature {
+        min-height: min(72vh, 560px);
+        border-radius: 0 0 16px 16px;
+    }
+    .hero-content-glass {
+        padding: calc(56px + env(safe-area-inset-top, 0px) + 16px) 18px 28px !important;
+    }
+    .hero-feature h1 {
+        font-size: clamp(1.5rem, 6.5vw, 2rem);
+        line-height: 1.1;
+        letter-spacing: -0.015em;
+    }
+    .hero-feature .dek {
+        font-size: 0.92rem;
+        line-height: 1.5;
+        -webkit-line-clamp: 3;
+    }
+    .hero-cta-row {
+        flex-wrap: wrap;
+        gap: 10px;
+    }
+    .hero-cta-row .btn-primary {
+        padding: 12px 18px;
+        font-size: 13.5px;
+        min-height: 44px;
+    }
+
+    /* ===== X/Medium rail cards: peek next card, better touch ===== */
+    .x-rail {
+        gap: 12px;
+        margin: 0 -6px;
+        padding: 4px 6px 14px;
+    }
+    .x-card {
+        flex: 0 0 min(76vw, 280px);
+        border-radius: 14px;
+    }
+    .x-card .x-thumb { aspect-ratio: 16 / 10; }
+    .x-card .x-body { padding: 14px 14px 16px; gap: 8px; }
+    .x-card .x-body h3 {
+        font-size: 15.5px;
+        line-height: 1.3;
+        -webkit-line-clamp: 3;
+    }
+    .x-card .x-dek {
+        font-size: 12.5px;
+        line-height: 1.45;
+        -webkit-line-clamp: 2;
+    }
+    .x-card .x-meta { font-size: 11.5px; }
+
+    /* ===== Dispatch grid: 1-col with bigger cards ===== */
+    .dispatch-grid {
+        grid-template-columns: 1fr;
+        gap: 16px;
+    }
+    .dispatch-card {
+        border-radius: 14px;
+        overflow: hidden;
+    }
+    .dispatch-card .thumb { aspect-ratio: 16 / 10; }
+    .dispatch-card .card-body { padding: 14px 14px 16px; }
+    .dispatch-card h3 {
+        font-size: 1.1rem;
+        line-height: 1.3;
+    }
+    .dispatch-card .card-dek {
+        font-size: 13px;
+        line-height: 1.5;
+        -webkit-line-clamp: 2;
+    }
+    .dispatch-card .card-meta { font-size: 11.5px; }
+
+    /* ===== Filter bar: scrollable pills, bigger touch ===== */
+    .filter-bar {
+        gap: 8px;
+        padding-bottom: 10px;
+        margin-bottom: 14px;
+    }
+    .cat-pill {
+        padding: 10px 16px;
+        font-size: 13px;
+        min-height: 40px;
+        border-radius: 100px;
+        white-space: nowrap;
+    }
+
+    /* ===== Photo of the Day: stack vertical, bigger image ===== */
+    .potd { grid-template-columns: 1fr; }
+    .potd .potd-image { aspect-ratio: 4 / 3; }
+    .potd .potd-text {
+        padding: 20px 16px;
+        border-left: none;
+        border-top: 3px solid var(--brass);
+    }
+    .potd .potd-caption {
+        font-size: 1.1rem;
+        line-height: 1.4;
+    }
+
+    /* ===== Article page: better reading surface ===== */
+    .article-hero {
+        min-height: 50vh;
+        max-height: 60vh;
+        border-radius: 0;
+    }
+    .article-hero-content {
+        padding: 32px 16px 36px;
+    }
+    .article-hero h1 {
+        font-size: clamp(1.6rem, 7vw, 2.1rem);
+        line-height: 1.15;
+    }
+    .article-hero .dek {
+        font-size: 0.95rem;
+        line-height: 1.5;
+    }
+    .byline-row {
+        gap: 8px 12px;
+        font-size: 12px;
+        margin-top: 16px;
+        flex-wrap: wrap;
+    }
+    .reading-surface {
+        margin: -32px 10px 0;
+        border-radius: 16px;
+        padding: 28px 18px 44px;
+    }
+    .reading-surface p {
+        font-size: 16.5px;
+        line-height: 1.75;
+        margin-bottom: 18px;
+    }
+    .reading-surface h2 {
+        font-size: 1.3rem;
+        margin: 28px 0 12px;
+    }
+    .reading-surface blockquote {
+        font-size: 1.1rem;
+        padding-left: 16px;
+        margin: 24px 0;
+    }
+
+    /* ===== Buttons: min 44px touch target ===== */
+    .btn-primary, .btn-ghost {
+        min-height: 44px;
+        padding: 11px 18px;
+        font-size: 13.5px;
+    }
+    .btn-sm {
+        min-height: 36px;
+        padding: 8px 14px;
+        font-size: 12.5px;
+    }
+
+    /* ===== Footer: stack, bigger links ===== */
+    .footer-inner {
+        grid-template-columns: 1fr;
+        gap: 24px;
+        padding: 32px 16px 24px;
+    }
+    .footer-brand .footer-name { font-size: 16px; }
+    .footer-brand .footer-tagline { font-size: 13px; }
+    .footer-col-title {
+        font-size: 11px;
+        margin-bottom: 12px;
+    }
+    .footer-nav, .footer-social { gap: 12px; }
+    .footer-nav a, .footer-social a {
+        font-size: 14px;
+        padding: 6px 0;
+        min-height: 36px;
+        display: flex;
+        align-items: center;
+    }
+    .footer-bottom {
+        padding: 16px 16px calc(24px + env(safe-area-inset-bottom, 0px));
+        font-size: 11.5px;
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 6px;
+    }
+
+    /* ===== FABs: bigger, safe-area aware ===== */
+    .search-fab, .back-to-top {
+        width: 50px; height: 50px;
+        font-size: 17px;
+        bottom: calc(20px + env(safe-area-inset-bottom, 0px));
+    }
+    .search-fab { left: calc(14px + env(safe-area-inset-left, 0px)); }
+    .back-to-top { right: calc(14px + env(safe-area-inset-right, 0px)); }
+
+    /* ===== Telegram feed: single column, better cards ===== */
+    .tg-feed { gap: 14px; }
+    .tg-card { border-radius: 14px; }
+    .tg-card-body { padding: 16px 16px 14px; gap: 10px; }
+    .tg-card-text {
+        font-size: 14.5px;
+        line-height: 1.55;
+        max-height: 12em;
+    }
+    .tg-card-meta {
+        font-size: 11px;
+        gap: 10px;
+    }
+    .tg-card-permalink {
+        width: 40px; height: 40px;
+        font-size: 17px;
+    }
+
+    /* ===== Video cards ===== */
+    .video-card { border-radius: 14px; }
+    .shorts-shelf { gap: 12px; }
+    .video-card.portrait { width: 160px; }
+
+    /* ===== Modal: full-screen on mobile ===== */
+    .modal-overlay { padding: 0; }
+    .modal-content {
+        max-width: 100%;
+        width: 100%;
+        height: 100vh;
+        max-height: 100vh;
+        border-radius: 0;
+        padding: 24px 18px;
+        overflow-y: auto;
+    }
+
+    /* ===== Toast: full-width bottom ===== */
+    .toast {
+        left: 12px;
+        right: 12px;
+        transform: translateY(120%);
+        max-width: none;
+        bottom: calc(20px + env(safe-area-inset-bottom, 0px));
+    }
+    .toast.show { transform: translateY(0); }
+
+    /* ===== Skeleton loading: smoother on mobile ===== */
+    .skeleton-dispatch-grid {
+        grid-template-columns: 1fr;
+        gap: 16px;
+    }
+    .skeleton-card.span-4, .skeleton-card.span-2 {
+        grid-column: span 1;
+        min-height: 220px;
+    }
+
+    /* ===== Empty state: better spacing ===== */
+    .empty-state {
+        padding: 32px 16px 24px;
+    }
+    .empty-title { font-size: 1.1rem; }
+    .empty-text { font-size: 13.5px; line-height: 1.5; }
+
+    /* ===== Live pill: bigger touch ===== */
+    .live-pill {
+        font-size: 11.5px;
+        padding: 7px 12px;
+        min-height: 32px;
+    }
+}
+
+/* ===== Small phones (≤480px): even tighter ===== */
+@media (max-width: 480px) {
+    .journal-stack {
+        padding: 0 10px 88px;
+        gap: 14px;
+    }
+    .section-surface {
+        padding: 18px 12px 20px;
+        border-radius: 14px;
+    }
+    .nav-inner { padding: 8px 12px; }
+    .brand-name { font-size: 15.5px; }
+    .brand-mark { width: 28px; height: 28px; }
+
+    .x-card {
+        flex: 0 0 86vw;
+        border-radius: 12px;
+    }
+    .x-card .x-body h3 { font-size: 15px; }
+
+    .hero-feature h1 {
+        font-size: clamp(1.35rem, 7vw, 1.7rem);
+    }
+    .hero-content-glass {
+        padding: calc(52px + env(safe-area-inset-top, 0px) + 12px) 14px 24px !important;
+    }
+
+    .reading-surface {
+        margin: -28px 8px 0;
+        padding: 24px 16px 36px;
+    }
+    .reading-surface p {
+        font-size: 16px;
+        line-height: 1.7;
+    }
+
+    .section-title {
+        font-size: clamp(1.3rem, 6vw, 1.5rem);
+    }
+
+    .tg-card-text {
+        font-size: 14px;
+        max-height: 11em;
+    }
+
+    .footer-nav a, .footer-social a {
+        font-size: 13.5px;
+        min-height: 40px;
+    }
+
+    /* Full-width buttons on small phones */
+    .hero-cta-row .btn-primary,
+    .hero-cta-row .btn-ghost {
+        width: 100%;
+        justify-content: center;
+    }
+}
+
+/* ===== Landscape mobile: adjust hero height ===== */
+@media (max-width: 860px) and (orientation: landscape) and (max-height: 500px) {
+    .hero-feature {
+        min-height: 100vh;
+    }
+    .hero-content-glass {
+        padding: calc(56px + 16px) 18px 20px !important;
+    }
+}
+
+/* ===== Touch hover disable (prevent sticky hover on touch) ===== */
+@media (hover: none) {
+    .x-card:hover,
+    .dispatch-card:hover,
+    .tg-card:hover,
+    .video-card:hover,
+    .workshop-card:hover,
+    .link-row:hover {
+        transform: none !important;
+    }
+    .x-card:hover .x-thumb img,
+    .dispatch-card:hover .thumb img,
+    .tg-card:hover .tg-card-photo img,
+    .video-card:hover .vthumb-wrap img {
+        transform: none !important;
+    }
+    .btn-primary:hover, .btn-ghost:hover {
+        transform: none !important;
+    }
+}
+
+/* ===== Smooth scrolling for rails on mobile ===== */
+@supports (scroll-behavior: smooth) and (scroll-snap-type: x proximity) {
+    .x-rail {
+        scroll-behavior: smooth;
+        -webkit-overflow-scrolling: touch;
+    }
+}
