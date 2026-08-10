@@ -1,8 +1,8 @@
-name: Sync Instagram Photo of the Day
+name: Sync Instagram (POTD + Gallery)
 
 on:
   schedule:
-    # Every 2 hours — keep POTD close to the latest IG post
+    # Every 2 hours — keep POTD close to the latest IG post + gallery fresh
     - cron: "12 */2 * * *"
   workflow_dispatch: {}
   repository_dispatch:
@@ -28,26 +28,29 @@ jobs:
         with:
           python-version: "3.12"
 
-      - name: Sync latest Instagram post → potd
+      - name: Sync Instagram posts → POTD + gallery
         run: |
           set -euo pipefail
           chmod +x tools/sync-instagram-potd.py
-          python3 tools/sync-instagram-potd.py --username extensions.ig
+          # --max-posts 12: ambil 12 post terbaru untuk gallery
+          python3 tools/sync-instagram-potd.py --username extensions.ig --max-posts 12
 
       - name: Commit if changed
         run: |
           set -euo pipefail
           git config user.name "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
-          git add instagram-potd.json db.json media/potd-instagram.jpg media/potd-instagram.mp4 2>/dev/null || true
-          # media files may be new
+          # POTD files
+          git add instagram-potd.json db.json 2>/dev/null || true
           git add -f media/potd-instagram.jpg 2>/dev/null || true
           git add -f media/potd-instagram.mp4 2>/dev/null || true
-          git add instagram-potd.json db.json
+          # Gallery files
+          git add instagram-posts.json 2>/dev/null || true
+          git add -f media/ig-*.jpg 2>/dev/null || true
           if git diff --staged --quiet; then
             echo "No changes to commit"
           else
-            git commit -m "chore: auto-sync Instagram Photo of the Day ($(date -u +%Y-%m-%dT%H:%MZ))"
+            git commit -m "chore: auto-sync Instagram (POTD + gallery) ($(date -u +%Y-%m-%dT%H:%MZ))"
             git push
-            echo "Pushed Instagram POTD update"
+            echo "Pushed Instagram update"
           fi

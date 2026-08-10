@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Instagram — Nanomind Explorer</title>
+    <meta name="description" content="Galeri post Instagram terbaru dari @extensions.ig — ditarik otomatis ke sini.">
+    <meta name="theme-color" content="#14140F">
+    <meta property="og:type" content="website">
+    <meta property="og:title" content="Instagram — Nanomind Explorer">
+    <meta property="og:description" content="Galeri post Instagram terbaru dari @extensions.ig.">
+    <meta property="og:image" content="https://raw.githubusercontent.com/NanoMindExplorer/nanomind/main/bg-ghibli-poster.jpg">
+    <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
+    <meta http-equiv="Pragma" content="no-cache">
+    <meta http-equiv="Expires" content="0">
+    <link rel="icon" type="image/svg+xml" href="favicon.svg">
+    <link rel="icon" type="image/png" sizes="32x32" href="icons/icon-32.png">
+    <link rel="apple-touch-icon" href="icons/apple-touch-icon.png">
+    <link rel="manifest" href="manifest.json">
+    <link rel="preconnect" href="https://www.instagram.com">
+    <link rel="preconnect" href="https://scontent.cdninstagram.com">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="preload" href="fonts/inter-400.woff2" as="font" type="font/woff2" crossorigin>
+    <link rel="preload" href="fonts/fraunces-600.woff2" as="font" type="font/woff2" crossorigin>
+    <link rel="stylesheet" href="style.css?v=33">
+</head>
+<body>
+    <a class="skip-link" href="#mainContent">Loncat ke konten</a>
+    <div id="offlineBanner" class="offline-banner hidden" role="status">Anda offline — menampilkan cache lokal bila ada.</div>
+    <noscript><div style="padding:60px 24px;text-align:center;font-family:sans-serif;background:#14140F;color:#EDE8DA;">Situs ini membutuhkan JavaScript untuk menampilkan konten. Mohon aktifkan JavaScript di browser Anda.</div></noscript>
+
+    <div id="pageLoader" aria-hidden="true">
+        <svg class="loader-mark" viewBox="0 0 100 100">
+            <circle cx="50" cy="50" r="38" fill="none" stroke="#C9974A" stroke-width="2.4"/>
+            <polygon points="50,13 59,50 41,50" fill="#C9974A"/>
+            <polygon points="50,87 59,50 41,50" fill="#5C5A48"/>
+            <circle cx="50" cy="50" r="6.5" fill="#14140F" stroke="#C9974A" stroke-width="2.2"/>
+        </svg>
+    </div>
+
+    <div id="navPlaceholder"></div>
+    <div class="mobile-nav-backdrop" id="mobileNavBackdrop"></div>
+    <div class="mobile-nav-panel" id="mobileNavPanel"></div>
+
+    <main id="mainContent" class="journal-main">
+        <div class="journal-stack">
+            <section class="section-surface reveal">
+                <div class="section-surface-head flex-wrap gap-4">
+                    <div>
+                        <span class="eyebrow"><i class="fab fa-instagram"></i> Live Gallery</span>
+                        <h1 class="section-title section-title--lg">Instagram</h1>
+                        <p class="section-sub">Galeri post terbaru dari <a href="https://www.instagram.com/extensions.ig/" target="_blank" rel="noopener noreferrer" class="text-brass">@extensions.ig</a> — di-sync otomatis tiap 2 jam.</p>
+                    </div>
+                    <div class="x-live-meta">
+                        <span class="live-pill" id="igLivePill" title="Di-sync otomatis tiap 2 jam dari Instagram"><span class="live-dot" aria-hidden="true"></span> Auto · <span id="igLiveCount">…</span></span>
+                        <a href="https://www.instagram.com/extensions.ig/" target="_blank" rel="noopener noreferrer" class="btn-ghost btn-sm"><i class="fab fa-instagram"></i> Follow</a>
+                    </div>
+                </div>
+
+                <div class="ig-filter-bar" id="igFilterBar" role="toolbar" aria-label="Filter post Instagram">
+                    <button class="cat-pill active" data-igfilter="all">Semua</button>
+                    <button class="cat-pill" data-igfilter="photo">Foto</button>
+                    <button class="cat-pill" data-igfilter="video">Video</button>
+                    <button class="cat-pill" data-igfilter="carousel">Carousel</button>
+                </div>
+            </section>
+
+            <section class="section-surface">
+                <div class="skeleton-x-rail" id="igSkeleton" aria-hidden="true" style="display:grid;grid-template-columns:repeat(3,1fr);gap:12px;">
+                    <div class="skeleton-block" style="aspect-ratio:1;border-radius:8px;"></div>
+                    <div class="skeleton-block" style="aspect-ratio:1;border-radius:8px;"></div>
+                    <div class="skeleton-block" style="aspect-ratio:1;border-radius:8px;"></div>
+                    <div class="skeleton-block" style="aspect-ratio:1;border-radius:8px;"></div>
+                    <div class="skeleton-block" style="aspect-ratio:1;border-radius:8px;"></div>
+                    <div class="skeleton-block" style="aspect-ratio:1;border-radius:8px;"></div>
+                </div>
+                <div class="ig-grid" id="igGrid" aria-label="Galeri Instagram" aria-live="polite"></div>
+                <div class="hidden empty-state" id="igEmpty">
+                    <div class="empty-icon" aria-hidden="true"><i class="fab fa-instagram"></i></div>
+                    <h3 class="empty-title">Belum ada post</h3>
+                    <p class="empty-text">Galeri belum ter-load atau akun belum memiliki post publik. Coba muat ulang.</p>
+                    <button type="button" class="btn-primary" id="igEmptyRetryBtn"><i class="fas fa-rotate"></i> Coba lagi</button>
+                </div>
+            </section>
+        </div>
+    </main>
+
+    <div id="footerPlaceholder"></div>
+
+    <button class="search-fab" id="searchFab" title="Search (Ctrl+K)" aria-label="Buka pencarian"><i class="fas fa-search"></i></button>
+    <button class="admin-fab hidden" id="adminFab" title="Admin"><i class="fas fa-compass-drafting"></i></button>
+    <button class="back-to-top" id="backToTopBtn" title="Kembali ke atas" aria-label="Kembali ke atas"><i class="fas fa-arrow-up"></i></button>
+
+    <!-- Lightbox modal -->
+    <div class="modal-overlay" id="igLightbox" role="dialog" aria-modal="true" aria-label="Post Instagram">
+        <button class="ig-lightbox-close" id="igLightboxClose" aria-label="Tutup"><i class="fas fa-times"></i></button>
+        <button class="ig-lightbox-nav ig-lightbox-prev" id="igLightboxPrev" aria-label="Sebelumnya"><i class="fas fa-chevron-left"></i></button>
+        <button class="ig-lightbox-nav ig-lightbox-next" id="igLightboxNext" aria-label="Berikutnya"><i class="fas fa-chevron-right"></i></button>
+        <div class="ig-lightbox-content" id="igLightboxContent"></div>
+    </div>
+
+    <div id="modalsPlaceholder"></div>
+
+    <script src="script.js?v=33"></script>
+</body>
+</html>

@@ -1,19 +1,19 @@
 #!/usr/bin/env python3
 """
-Sync latest Instagram post (photo or video) into Photo of the Day.
+Sync Instagram posts untuk Nanomind Explorer.
 
-Source: public web profile API (same endpoint the Instagram website uses)
+Dua output:
+  1. instagram-potd.json + media/potd-instagram.jpg  (Photo of the Day — latest post)
+  2. instagram-posts.json + media/ig-*.jpg            (Gallery — multiple recent posts)
+
+Source: public web profile API (same endpoint the IG website uses)
   GET /api/v1/users/web_profile_info/?username=...
-
-Writes:
-  - instagram-potd.json  (metadata + URLs)
-  - media/potd-instagram.jpg  (downloaded still / poster for reliable static hosting)
-  - media/potd-instagram.mp4  (optional, only if video URL available and under size cap)
 
 Usage:
   python3 tools/sync-instagram-potd.py
   python3 tools/sync-instagram-potd.py --username extensions.ig
   python3 tools/sync-instagram-potd.py --dry-run
+  python3 tools/sync-instagram-potd.py --max-posts 12
 """
 
 from __future__ import annotations
@@ -30,6 +30,7 @@ from typing import Any, Dict, List, Optional
 
 ROOT = Path(__file__).resolve().parents[1]
 DEFAULT_REGISTRY = ROOT / "instagram-potd.json"
+DEFAULT_GALLERY = ROOT / "instagram-posts.json"
 DEFAULT_DB = ROOT / "db.json"
 MEDIA_DIR = ROOT / "media"
 STILL_PATH = MEDIA_DIR / "potd-instagram.jpg"
@@ -189,12 +190,15 @@ def load_registry(path: Path, username: str) -> dict:
 
 
 def main() -> int:
-    ap = argparse.ArgumentParser(description="Sync latest Instagram post into Photo of the Day")
+    ap = argparse.ArgumentParser(description="Sync Instagram posts → POTD + gallery")
     ap.add_argument("--username", default=None, help="Instagram username (default: extensions.ig)")
-    ap.add_argument("--registry", default=str(DEFAULT_REGISTRY))
-    ap.add_argument("--db", default=str(DEFAULT_DB), help="Optional db.json to mirror photoOfDay")
+    ap.add_argument("--registry", default=str(DEFAULT_REGISTRY), help="Path ke instagram-potd.json")
+    ap.add_argument("--gallery", default=str(DEFAULT_GALLERY), help="Path ke instagram-posts.json")
+    ap.add_argument("--db", default=str(DEFAULT_DB), help="db.json to mirror photoOfDay")
+    ap.add_argument("--max-posts", type=int, default=12, help="Max posts di gallery (default 12)")
     ap.add_argument("--dry-run", action="store_true")
     ap.add_argument("--no-download", action="store_true", help="Skip media download (metadata only)")
+    ap.add_argument("--no-gallery", action="store_true", help="Skip gallery sync (POTD only)")
     args = ap.parse_args()
 
     reg_path = Path(args.registry)
@@ -331,8 +335,149 @@ def main() -> int:
         except Exception as e:
             log(f"WARNING: could not update db.json: {e}")
 
-    log(f"Result: @{username} /p/{media['shortcode']}/ video={post['isVideo']}")
+    log(f"Result POTD: @{username} /p/{media['shortcode']}/ video={post['isVideo']}")
+
+    # === Gallery sync: ambil multiple recent posts → instagram-posts.json ===
+    if not args.no_gallery:
+        try:
+            sync_gallery(
+                gallery_path=Path(args.gallery),
+                user=user,
+                username=username,
+                max_posts=args.max_posts,
+                dry_run=args.dry_run,
+                no_download=args.no_download,
+                potd_shortcode=media["shortcode"],
+            )
+        except Exception as e:
+            log(f"WARNING: gallery sync failed: {e}")
+
     return 0
+
+
+def sync_gallery(
+    gallery_path: Path,
+    user: dict,
+    username: str,
+    max_posts: int,
+    dry_run: bool,
+    no_download: bool,
+    potd_shortcode: str,
+) -> None:
+    """Sinkronkan multiple recent posts ke instagram-posts.json + download thumbnails."""
+    edges = ((user.get("edge_owner_to_timeline_media") or {}).get("edges")) or []
+    if not edges:
+        log("  gallery: no timeline media")
+        return
+
+    # Load existing gallery (untuk merge — jangan overwrite post lama yang mungkin
+    # sudah gak ada di timeline IG)
+    existing: Dict[str, dict] = {}
+    if gallery_path.exists():
+        try:
+            old = json.loads(gallery_path.read_text(encoding="utf-8"))
+            for p in (old.get("posts") or []):
+                sc = p.get("shortcode")
+                if sc:
+                    existing[sc] = p
+        except Exception:
+            pass
+
+    posts: List[dict] = []
+    downloaded = 0
+    skipped = 0
+    for edge in edges[:max_posts]:
+        node = (edge.get("node") or {})
+        m = pick_media(node)
+        sc = m["shortcode"]
+        if not sc:
+            continue
+
+        taken = m.get("takenAt")
+        try:
+            dt = datetime.fromtimestamp(int(taken), tz=timezone.utc)
+            taken_iso = dt.strftime("%Y-%m-%dT%H:%M:%SZ")
+            date_day = taken_iso[:10]
+        except Exception:
+            taken_iso = datetime.now(timezone.utc).strftime("%Y-%m-%dT%H:%M:%SZ")
+            date_day = taken_iso[:10]
+
+        # Local thumbnail path: media/ig-<shortcode>.jpg
+        thumb_path = MEDIA_DIR / f"ig-{sc}.jpg"
+        local_thumb = f"media/ig-{sc}.jpg"
+
+        if not no_download and not dry_run:
+            if not thumb_path.exists() or thumb_path.stat().st_size < 800:
+                if download_still(m["imageUrl"], thumb_path):
+                    downloaded += 1
+                else:
+                    # Fallback ke remote URL kalau download gagal
+                    local_thumb = m["imageUrl"]
+                    skipped += 1
+            else:
+                # Already downloaded — keep
+                pass
+        elif dry_run:
+            local_thumb = local_thumb if thumb_path.exists() else m["imageUrl"]
+        else:
+            # no_download mode — pakai remote URL
+            local_thumb = m["imageUrl"]
+
+        post = {
+            "shortcode": sc,
+            "permalink": m["permalink"],
+            "caption": m["caption"],
+            "isVideo": bool(m["isVideo"]),
+            "typename": m["typename"],
+            "image": local_thumb,
+            "imageRemote": m["imageUrl"],
+            "video": m.get("videoUrl") or None,
+            "takenAt": taken_iso,
+            "date": date_day,
+            "username": username,
+            "author": (user.get("full_name") or username or "").strip(),
+            "isPotd": sc == potd_shortcode,
+        }
+        posts.append(post)
+
+    # Sort by takenAt DESC (newest first)
+    posts.sort(key=lambda p: p.get("takenAt", ""), reverse=True)
+
+    # Cleanup: hapus thumbnail local yang gak ada di posts list lagi (orphaned)
+    if not no_download and not dry_run:
+        keep_shortcodes = {p["shortcode"] for p in posts}
+        for f in MEDIA_DIR.glob("ig-*.jpg"):
+            sc = f.stem.replace("ig-", "")
+            if sc not in keep_shortcodes:
+                try:
+                    f.unlink()
+                    log(f"  gallery: removed orphaned {f.name}")
+                except Exception:
+                    pass
+
+    gallery = {
+        "enabled": True,
+        "username": username,
+        "profileUrl": f"https://www.instagram.com/{username}/",
+        "cacheMinutes": 30,
+        "lastSync": datetime.now(timezone.utc).strftime("%Y-%m-%dT%H:%M:%SZ"),
+        "lastSyncStats": {
+            "postsInFeed": len(edges),
+            "postsKept": len(posts),
+            "thumbnailsDownloaded": downloaded,
+            "thumbnailsSkipped": skipped,
+        },
+        "posts": posts,
+        "notes": "Auto-updated by tools/sync-instagram-potd.py (GitHub Actions). Gallery of recent public posts.",
+    }
+
+    if dry_run:
+        log("  gallery dry-run — not writing")
+        log(f"  gallery: {len(posts)} posts, +{downloaded} new thumbnails")
+        return
+
+    gallery_path.write_text(json.dumps(gallery, indent=2, ensure_ascii=False) + "\n", encoding="utf-8")
+    log(f"  gallery: wrote {len(posts)} posts → {gallery_path.relative_to(ROOT)} (+{downloaded} thumbs)")
 
 
 if __name__ == "__main__":

@@ -49,6 +49,7 @@ const CONFIG = {
     },
     // Photo of the Day — auto from Instagram (tools/sync-instagram-potd.py)
     INSTAGRAM_POTD_FILE: 'instagram-potd.json',
+    INSTAGRAM_POSTS_FILE: 'instagram-posts.json',
     INSTAGRAM_POTD: {
         enabled: true,
         username: 'extensions.ig',
@@ -68,6 +69,10 @@ let state = {
     telegramConfig: null,
     telegramFilter: 'all',
     telegramPage: 1,
+    instagramConfig: null,
+    instagramPosts: [],
+    instagramFilter: 'all',
+    instagramLightboxIndex: -1,
     // Loading flags — cegah render kosong yang wipe placeholder sebelum fetch selesai
     xArticlesLoading: false,
     mediumArticlesLoading: false,
@@ -89,6 +94,7 @@ document.addEventListener('DOMContentLoaded', () => {
     setupRailDragScroll();
     setupTelegramRetryButtons();
     setupTelegramCardClicks();
+    setupInstagramPage();
     setupCardClickFeedback();
     registerServiceWorker();
     checkAdminSession();
@@ -147,6 +153,7 @@ function injectSharedChrome() {
                 <div class="nav-links">
                     <a href="index.html" class="nav-link" data-nav="home">Dispatches</a>
                     <a href="telegram.html" class="nav-link" data-nav="telegram"><i class="fab fa-telegram" style="font-size:0.92em;margin-right:4px;"></i>Telegram</a>
+                    <a href="instagram.html" class="nav-link" data-nav="instagram"><i class="fab fa-instagram" style="font-size:0.92em;margin-right:4px;"></i>Instagram</a>
                     <a href="watch.html" class="nav-link" data-nav="watch">Watch</a>
                     <a href="about.html" class="nav-link" data-nav="about">About</a>
                 </div>
@@ -163,6 +170,7 @@ function injectSharedChrome() {
         mobilePanel.innerHTML = `
             <a href="index.html" class="nav-link" data-nav="home">Dispatches</a>
             <a href="telegram.html" class="nav-link" data-nav="telegram"><i class="fab fa-telegram" style="font-size:0.92em;margin-right:4px;"></i>Telegram</a>
+            <a href="instagram.html" class="nav-link" data-nav="instagram"><i class="fab fa-instagram" style="font-size:0.92em;margin-right:4px;"></i>Instagram</a>
             <a href="watch.html" class="nav-link" data-nav="watch">Watch</a>
             <a href="about.html" class="nav-link" data-nav="about">About</a>`;
     }
@@ -188,6 +196,7 @@ function injectSharedChrome() {
                     <ul class="footer-nav">
                         <li><a href="index.html">Dispatches</a></li>
                         <li><a href="telegram.html">Telegram</a></li>
+                        <li><a href="instagram.html">Instagram</a></li>
                         <li><a href="watch.html">Watch</a></li>
                         <li><a href="about.html">About</a></li>
                     </ul>
@@ -264,7 +273,8 @@ function markActiveNav() {
     const current = (path === '' || path === 'index.html' || path === 'article.html') ? 'home'
         : (path === 'about.html' ? 'about'
         : (path === 'watch.html' ? 'watch'
-        : (path === 'telegram.html' ? 'telegram' : '')));
+        : (path === 'telegram.html' ? 'telegram'
+        : (path === 'instagram.html' ? 'instagram' : ''))));
     document.querySelectorAll('.nav-link').forEach(a => a.classList.toggle('active', a.dataset.nav === current));
 }
 
@@ -2003,6 +2013,9 @@ function renderPageContent() {
     }
     if ($('tgFeed')) {
         renderTelegramPage();
+    }
+    if ($('igGrid')) {
+        renderInstagramGalleryPage();
     }
 
     setTimeout(() => {
@@ -4023,6 +4036,299 @@ function setupScrollObserver() {
         entries.forEach(e => { if (e.isIntersecting) e.target.classList.add('visible'); });
     }, { threshold: 0.1 });
     document.querySelectorAll('.reveal:not(.visible)').forEach(el => obs.observe(el));
+}
+
+// ==========================================
+// INSTAGRAM GALLERY — dari instagram-posts.json (sync via GitHub Actions)
+// ==========================================
+async function loadInstagramGalleryRegistry() {
+    let registry = null;
+    try {
+        registry = await fetchJsonPreferLocal(CONFIG.INSTAGRAM_POSTS_FILE);
+    } catch (e) {
+        registry = null;
+    }
+    const fallback = CONFIG.INSTAGRAM_POTD || {};
+    const cfg = {
+        enabled: (registry && registry.enabled !== undefined) ? registry.enabled : (fallback.enabled !== false),
+        username: (registry && registry.username) || fallback.username || 'extensions.ig',
+        profileUrl: (registry && registry.profileUrl) || fallback.profileUrl || `https://www.instagram.com/${fallback.username || 'extensions.ig'}/`,
+        cacheMinutes: (registry && registry.cacheMinutes) || fallback.cacheMinutes || 30,
+        lastSync: (registry && registry.lastSync) || null,
+        posts: (registry && Array.isArray(registry.posts)) ? registry.posts : []
+    };
+    state.instagramConfig = cfg;
+    return cfg;
+}
+
+function instagramGalleryCacheKey(username) {
+    return `nanomind_instagram_gallery_v1_${username}`;
+}
+
+function readInstagramGalleryCache(cfg) {
+    try {
+        const raw = sessionStorage.getItem(instagramGalleryCacheKey(cfg.username));
+        if (!raw) return null;
+        const parsed = JSON.parse(raw);
+        if (!parsed || !parsed.ts || !Array.isArray(parsed.posts)) return null;
+        const maxAge = (cfg.cacheMinutes || 30) * 60 * 1000;
+        if (Date.now() - parsed.ts > maxAge) return null;
+        if (cfg.lastSync && parsed.lastSync !== cfg.lastSync) return null;
+        return parsed.posts;
+    } catch (e) {
+        return null;
+    }
+}
+
+function writeInstagramGalleryCache(cfg, posts) {
+    try {
+        sessionStorage.setItem(instagramGalleryCacheKey(cfg.username), JSON.stringify({
+            ts: Date.now(), count: posts.length, lastSync: cfg.lastSync, posts
+        }));
+    } catch (e) { /* quota / private mode */ }
+}
+
+/** Normalize satu post Instagram → shape untuk render. */
+function normalizeInstagramPost(p, cfg) {
+    const sc = String(p.shortcode || '');
+    const image = p.image || p.imageRemote || '';
+    return {
+        shortcode: sc,
+        permalink: p.permalink || (sc ? `https://www.instagram.com/p/${sc}/` : cfg.profileUrl),
+        caption: (p.caption || '').trim(),
+        isVideo: !!p.isVideo,
+        typename: p.typename || '',
+        image: image,
+        imageRemote: p.imageRemote || image,
+        video: p.video || null,
+        takenAt: p.takenAt || '',
+        date: p.date || (p.takenAt || '').slice(0, 10),
+        username: p.username || cfg.username,
+        author: p.author || cfg.username,
+        isPotd: !!p.isPotd,
+        isCarousel: (p.typename || '').includes('Sidecar') || (p.typename || '') === 'GraphSidecar'
+    };
+}
+
+async function loadInstagramGalleryPosts() {
+    const cfg = await loadInstagramGalleryRegistry();
+    if (!cfg.enabled) return { cfg, posts: [] };
+    const cached = readInstagramGalleryCache(cfg);
+    if (cached) return { cfg, posts: cached };
+    const posts = (cfg.posts || [])
+        .map(p => { try { return normalizeInstagramPost(p, cfg); } catch (e) { return null; } })
+        .filter(Boolean)
+        .sort((a, b) => (b.takenAt || '').localeCompare(a.takenAt || ''));
+    writeInstagramGalleryCache(cfg, posts);
+    return { cfg, posts };
+}
+
+function instagramTileHtml(p, index) {
+    const isVideo = p.isVideo;
+    const isCarousel = p.isCarousel;
+    const isPotd = p.isPotd;
+    const badge = isPotd
+        ? `<span class="ig-tile-badge ig-tile-badge--potd" title="Photo of the Day"><i class="fas fa-star"></i></span>`
+        : isVideo
+            ? `<span class="ig-tile-badge" title="Video"><i class="fas fa-play"></i></span>`
+            : isCarousel
+                ? `<span class="ig-tile-badge" title="Carousel"><i class="fas fa-images"></i></span>`
+                : '';
+    const caption = escapeHtml(p.caption || '');
+    const captionShort = caption.length > 100 ? caption.slice(0, 99) + '…' : caption;
+    const date = escapeHtml(formatDate(p.date) || p.date);
+    const img = `<img src="${escapeHtml(p.image)}" alt="${escapeHtml(p.caption || 'Instagram post')}" loading="lazy" decoding="async" onerror="this.style.opacity=0.3;this.alt='⚠ image gagal dimuat'">`;
+    return `
+        <div class="ig-tile" data-ig-index="${index}" role="button" tabindex="0" aria-label="Buka post Instagram ${escapeHtml(date)}">
+            ${img}
+            ${badge}
+            <div class="ig-tile-overlay">
+                ${captionShort ? `<p class="ig-tile-caption">${captionShort}</p>` : ''}
+                <div class="ig-tile-meta">
+                    <span><i class="far fa-clock"></i> ${date}</span>
+                </div>
+            </div>
+        </div>`;
+}
+
+function applyInstagramFilter(posts) {
+    const f = state.instagramFilter || 'all';
+    if (f === 'photo') return posts.filter(p => !p.isVideo && !p.isCarousel);
+    if (f === 'video') return posts.filter(p => p.isVideo);
+    if (f === 'carousel') return posts.filter(p => p.isCarousel);
+    return posts;
+}
+
+function renderInstagramGallery(posts) {
+    const wrap = $('igGrid');
+    const empty = $('igEmpty');
+    const skeleton = $('igSkeleton');
+    if (skeleton) skeleton.style.display = 'none';
+    if (!wrap) return;
+
+    const filtered = applyInstagramFilter(posts);
+    if (!filtered.length) {
+        wrap.innerHTML = '';
+        if (empty) empty.classList.remove('hidden');
+        return;
+    }
+    if (empty) empty.classList.add('hidden');
+
+    wrap.innerHTML = filtered.map((p, i) => instagramTileHtml(p, i)).join('');
+
+    // Bind click + keyboard
+    wrap.querySelectorAll('.ig-tile').forEach(tile => {
+        const idx = parseInt(tile.dataset.igIndex, 10);
+        tile.addEventListener('click', () => openInstagramLightbox(idx, filtered));
+        tile.addEventListener('keydown', (e) => {
+            if (e.key === 'Enter' || e.key === ' ') {
+                e.preventDefault();
+                openInstagramLightbox(idx, filtered);
+            }
+        });
+    });
+}
+
+function setupInstagramFilterTabs(posts) {
+    const wrap = $('igFilterBar');
+    if (!wrap) return;
+    wrap.querySelectorAll('[data-igfilter]').forEach(btn => {
+        btn.classList.toggle('active', btn.dataset.igfilter === state.instagramFilter);
+        btn.onclick = () => {
+            state.instagramFilter = btn.dataset.igfilter;
+            setupInstagramFilterTabs(posts);
+            renderInstagramGallery(posts);
+        };
+    });
+}
+
+async function renderInstagramGalleryPage() {
+    const countEl = $('igLiveCount');
+    const pill = $('igLivePill');
+    const empty = $('igEmpty');
+    try {
+        const { cfg, posts } = await loadInstagramGalleryPosts();
+        state.instagramPosts = posts;
+        if (pill && cfg.lastSync) pill.title = `Auto-sync terakhir: ${cfg.lastSync}`;
+        if (countEl) countEl.textContent = String(posts.length);
+        setupInstagramFilterTabs(posts);
+        renderInstagramGallery(posts);
+    } catch (err) {
+        console.warn('Instagram gallery load failed', err);
+        if (countEl) countEl.textContent = '0';
+        if (empty) {
+            empty.classList.remove('hidden');
+            const sk = $('igSkeleton'); if (sk) sk.style.display = 'none';
+        }
+    }
+}
+
+function setupInstagramPage() {
+    // Retry button
+    const retry = async () => {
+        try {
+            if (state.instagramConfig && state.instagramConfig.username) {
+                sessionStorage.removeItem(instagramGalleryCacheKey(state.instagramConfig.username));
+            }
+        } catch (e) { /* ignore */ }
+        const sk = $('igSkeleton'); if (sk) sk.style.display = 'grid';
+        const empty = $('igEmpty'); if (empty) empty.classList.add('hidden');
+        await renderInstagramGalleryPage();
+    };
+    const b = $('igEmptyRetryBtn'); if (b) b.addEventListener('click', retry);
+
+    // Lightbox controls
+    const closeBtn = $('igLightboxClose');
+    const prevBtn = $('igLightboxPrev');
+    const nextBtn = $('igLightboxNext');
+    if (closeBtn) closeBtn.addEventListener('click', closeInstagramLightbox);
+    if (prevBtn) prevBtn.addEventListener('click', () => navigateInstagramLightbox(-1));
+    if (nextBtn) nextBtn.addEventListener('click', () => navigateInstagramLightbox(1));
+
+    // Click backdrop to close
+    const lb = $('igLightbox');
+    if (lb) {
+        lb.addEventListener('click', (e) => {
+            if (e.target === lb) closeInstagramLightbox();
+        });
+    }
+
+    // Keyboard navigation
+    document.addEventListener('keydown', (e) => {
+        if (!$('igLightbox') || !$('igLightbox').classList.contains('active')) return;
+        if (e.key === 'Escape') closeInstagramLightbox();
+        else if (e.key === 'ArrowLeft') navigateInstagramLightbox(-1);
+        else if (e.key === 'ArrowRight') navigateInstagramLightbox(1);
+    });
+}
+
+function openInstagramLightbox(index, posts) {
+    const lb = $('igLightbox');
+    const content = $('igLightboxContent');
+    if (!lb || !content || !posts || !posts.length) return;
+    state.instagramLightboxIndex = index;
+    state.instagramLightboxPosts = posts;
+    renderInstagramLightboxContent(posts[index], index, posts.length);
+    lb.classList.add('active');
+    document.body.style.overflow = 'hidden';
+}
+
+function renderInstagramLightboxContent(p, index, total) {
+    const content = $('igLightboxContent');
+    if (!content || !p) return;
+    const media = p.isVideo && p.video
+        ? `<div class="ig-lightbox-media"><video controls playsinline preload="metadata" poster="${escapeHtml(p.image)}"><source src="${escapeHtml(p.video)}" type="video/mp4"></video></div>`
+        : `<div class="ig-lightbox-media"><img src="${escapeHtml(p.image)}" alt="${escapeHtml(p.caption || 'Instagram post')}" decoding="async"></div>`;
+    const initial = (p.username || 'i').charAt(0).toUpperCase();
+    const date = formatDate(p.date) || p.date;
+    const caption = escapeHtml(p.caption || '');
+    const permalink = escapeHtml(p.permalink || '#');
+    const username = escapeHtml(p.username || 'instagram');
+    const author = escapeHtml(p.author || p.username || '');
+    const counter = `${index + 1} / ${total}`;
+    content.innerHTML = `
+        ${media}
+        <div class="ig-lightbox-info">
+            <div class="ig-lightbox-header">
+                <div class="ig-lightbox-avatar">${escapeHtml(initial)}</div>
+                <div class="ig-lightbox-user">
+                    <span class="ig-lightbox-username">@${username}</span>
+                    <span class="ig-lightbox-date">${escapeHtml(date)} · ${escapeHtml(counter)}</span>
+                </div>
+            </div>
+            ${caption ? `<div class="ig-lightbox-caption">${caption}</div>` : ''}
+            <div class="ig-lightbox-actions">
+                <a class="btn-primary" href="${permalink}" target="_blank" rel="noopener noreferrer"><i class="fab fa-instagram"></i> Buka di Instagram</a>
+                ${author ? `<span class="t-meta"> oleh ${author}</span>` : ''}
+            </div>
+        </div>`;
+    // Show/hide nav buttons
+    const prevBtn = $('igLightboxPrev');
+    const nextBtn = $('igLightboxNext');
+    if (prevBtn) prevBtn.style.display = index > 0 ? 'flex' : 'none';
+    if (nextBtn) nextBtn.style.display = index < total - 1 ? 'flex' : 'none';
+}
+
+function navigateInstagramLightbox(direction) {
+    const posts = state.instagramLightboxPosts;
+    if (!posts || !posts.length) return;
+    let next = state.instagramLightboxIndex + direction;
+    if (next < 0) next = 0;
+    if (next >= posts.length) next = posts.length - 1;
+    if (next === state.instagramLightboxIndex) return;
+    state.instagramLightboxIndex = next;
+    renderInstagramLightboxContent(posts[next], next, posts.length);
+}
+
+function closeInstagramLightbox() {
+    const lb = $('igLightbox');
+    if (!lb) return;
+    lb.classList.remove('active');
+    document.body.style.overflow = '';
+    // Stop video kalau sedang play
+    const video = lb.querySelector('video');
+    if (video) { try { video.pause(); } catch (e) {} }
+    state.instagramLightboxIndex = -1;
 }
 
 window.openProjectModal = openProjectModal;
