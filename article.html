@@ -12,7 +12,7 @@
     // Naikkan angka di NANOMIND_SW_HEAL_FLAG kalau di masa depan perlu
     // heal ulang lagi.
     (function () {
-        var FLAG = 'nanomind_sw_heal_v4';
+        var FLAG = 'nanomind_sw_heal_v5';
         try { if (localStorage.getItem(FLAG) === '1') return; } catch (e) { return; }
         if (!('serviceWorker' in navigator)) {
             try { localStorage.setItem(FLAG, '1'); } catch (e) {}
@@ -48,7 +48,7 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <link rel="preload" href="fonts/inter-400.woff2" as="font" type="font/woff2" crossorigin>
     <link rel="preload" href="fonts/fraunces-600.woff2" as="font" type="font/woff2" crossorigin>
-    <link rel="stylesheet" href="style.css?v=33">
+    <link rel="stylesheet" href="style.css?v=34">
     <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
     <meta http-equiv="Pragma" content="no-cache">
     <meta http-equiv="Expires" content="0">
@@ -99,6 +99,6 @@
 
     <div id="modalsPlaceholder"></div>
 
-    <script src="script.js?v=33"></script>
+    <script src="script.js?v=34"></script>
 </body>
 </html>

@@ -3860,13 +3860,42 @@ function setupXRetryButtons() {
     const retry = async () => {
         showToast('Memuat ulang X Articles…', 'info');
         try {
-            sessionStorage.removeItem(xArticlesCacheKey((state.xArticlesConfig && state.xArticlesConfig.username) || CONFIG.X_ARTICLES.username));
-            // Pakai bootstrap (progressive + auto-retry) biar konsisten dengan load awal
+            // Clear ALL local X caches so reload re-reads registry + content file
+            const uname = (state.xArticlesConfig && state.xArticlesConfig.username)
+                || CONFIG.X_ARTICLES.username;
+            try {
+                sessionStorage.removeItem(xArticlesCacheKey(uname));
+                // also purge any legacy key variants
+                Object.keys(sessionStorage).forEach(k => {
+                    if (k.startsWith('nanomind_x_articles')) sessionStorage.removeItem(k);
+                });
+            } catch (e) { /* ignore */ }
+
+            // Re-fetch registry (may have new statusIds from GHA) + content cache
+            await loadXArticlesRegistry();
+            const fromFile = await loadXArticlesFromContentFile();
+            if (fromFile.length && state.data) {
+                mergeXArticlesIntoState(fromFile);
+                refreshArticleSurfaces({ x: true });
+            }
+
+            // Live backfill for any IDs still missing
             await bootstrapXArticlesLoad();
             const n = (state.data && state.data.articles || []).filter(a => a.source === 'x').length;
-            if (n) showToast(`${n} X Article dimuat.`, 'success');
-            else showToast('Tidak ada X Article yang bisa ditarik.', 'error');
+            const cfg = state.xArticlesConfig;
+            const expected = (cfg && cfg.statusIds && cfg.statusIds.length) || n;
+            if (n) {
+                showToast(
+                    n >= expected
+                        ? `${n} X Article dimuat.`
+                        : `${n}/${expected} X Article dimuat (sebagian masih gagal).`,
+                    n >= expected ? 'success' : 'info'
+                );
+            } else {
+                showToast('Tidak ada X Article yang bisa ditarik. Coba lagi sebentar.', 'error');
+            }
         } catch (e) {
+            console.warn('X retry failed', e);
             showToast('Gagal memuat X Articles.', 'error');
             state.xArticlesLoading = false;
             refreshArticleSurfaces({ x: true });

@@ -387,6 +387,86 @@ def discover_via_guest_api(username: str) -> Set[str]:
     return ids
 
 
+def discover_via_x_profile_html(username: str) -> Set[str]:
+    """
+    Most reliable free discovery (2026): guest_token + public x.com profile HTML.
+
+    The logged-out profile HTML embeds recent status IDs in meta/markup even when
+    jina/twstalker/UserTweets GraphQL are blocked. We then verify which IDs are
+    X Articles via FixTweet.
+    """
+    ids: Set[str] = set()
+    bearer = (
+        "AAAAAAAAAAAAAAAAAAAAANRILgAAAAAAnNwIzUejRCOuH5E6I8xnZz4puTs"
+        "%3D1Zv7ttfk8LF81IUq16cHjhLTvJu4FA33AGWWjCpTnA"
+    )
+    cookie_jar = str(ROOT / ".x_guest_cookies.txt")
+    try:
+        raw = subprocess.check_output(
+            [
+                "curl", "-sL", "-A", UA, "--max-time", "25",
+                "-c", cookie_jar, "-b", cookie_jar,
+                "-X", "POST",
+                "https://api.twitter.com/1.1/guest/activate.json",
+                "-H", f"Authorization: Bearer {bearer}",
+            ],
+            text=True, errors="ignore",
+        )
+        gt = (json.loads(raw) or {}).get("guest_token")
+    except Exception as e:
+        log(f"  profile-html guest activate fail: {e}")
+        return ids
+    if not gt:
+        log("  profile-html: no guest token")
+        return ids
+
+    def _scrape(url: str, label: str, extra_headers: Optional[List[str]] = None) -> Set[str]:
+        hdrs = [
+            f"x-guest-token: {gt}",
+            "x-twitter-active-user: yes",
+            "x-twitter-client-language: en",
+            "Accept: text/html,application/xhtml+xml",
+        ]
+        if extra_headers:
+            hdrs.extend(extra_headers)
+        cmd = [
+            "curl", "-sL", "-A", UA, "--max-time", "40",
+            "-c", cookie_jar, "-b", cookie_jar,
+        ]
+        for h in hdrs:
+            cmd.extend(["-H", h])
+        cmd.append(url)
+        try:
+            html = subprocess.check_output(cmd, text=True, errors="ignore")
+        except Exception as e:
+            log(f"  profile-html {label}: fail {e}")
+            return set()
+        found = extract_status_ids(html)
+        found |= set(re.findall(r'"rest_id"\s*:\s*"(\d{15,})"', html or ""))
+        found |= set(re.findall(r'"id_str"\s*:\s*"(\d{15,})"', html or ""))
+        found = {i for i in found if i.isdigit() and len(i) >= 15}
+        if found:
+            log(f"  profile-html {label}: +{len(found)} (html={len(html or '')})")
+        else:
+            log(f"  profile-html {label}: 0 ids (html={len(html or '')})")
+        return found
+
+    # Mobile first — consistently returns recent status IDs when desktop is empty
+    for host, label in (
+        (f"https://mobile.twitter.com/{username}", "mobile"),
+        (f"https://mobile.x.com/{username}", "mobile.x"),
+        (f"https://x.com/{username}", "desktop /"),
+        (f"https://x.com/{username}/with_replies", "desktop /with_replies"),
+        (f"https://x.com/{username}/media", "desktop /media"),
+        (f"https://x.com/{username}/highlights", "desktop /highlights"),
+    ):
+        ids |= _scrape(host, label)
+        time.sleep(0.3)
+
+    log(f"  profile-html candidates: {len(ids)}")
+    return ids
+
+
 def discover_via_telegram_registry(telegram_path: Optional[Path] = None) -> Set[str]:
     """
     Pull status IDs from telegram-posts.json (already synced every ~15 min).
@@ -724,12 +804,19 @@ def main() -> int:
             log(f"Strategy: EXTRA_STATUS_IDS (+{len(extra_ids)})")
             candidates |= extra_ids
 
-    # Telegram bridge FIRST (local file, always available in CI after checkout)
-    # — catches articles the author shares on @nanojournal even when X scrapers fail.
+    # 1) x.com profile HTML via guest token — currently the most reliable free
+    #    way to see brand-new posts when jina/twstalker are Cloudflare-blocked.
+    log("Strategy: x.com profile HTML (guest token)")
+    try:
+        candidates |= discover_via_x_profile_html(username)
+    except Exception as e:
+        log(f"  profile-html error: {e}")
+
+    # 2) Telegram bridge — articles shared to @nanojournal
     log("Strategy: telegram-posts.json bridge")
     candidates |= discover_via_telegram_registry()
 
-    # Jina — free profile scrape; often the only way to see brand-new X Articles.
+    # 3) Jina (often bot-walled, kept as best-effort)
     log("Strategy: jina reader (profile + media + mobile)")
     candidates |= discover_via_jina(username)
 
@@ -743,11 +830,14 @@ def main() -> int:
     except Exception as e:
         log(f"  twstalker error: {e}")
 
-    # One more jina pass if we still only know pre-existing IDs
+    # Retry profile HTML if still no NEW candidates beyond existing list
     if len(candidates - existing_set) == 0:
-        log("Strategy: jina retry (no new candidates yet)")
-        time.sleep(1.5)
-        candidates |= discover_via_jina(username)
+        log("Strategy: profile-html retry (no new candidates yet)")
+        time.sleep(1.2)
+        try:
+            candidates |= discover_via_x_profile_html(username)
+        except Exception as e:
+            log(f"  profile-html retry error: {e}")
 
     log(f"Total unique candidates: {len(candidates)}")
     found_ids, meta = verify_many(username, candidates, existing_set, deep=args.deep)
