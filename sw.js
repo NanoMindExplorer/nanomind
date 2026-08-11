@@ -9,7 +9,7 @@
 // Auto-update: SW cek update setiap jam (lewat updateViaCache: 'none' +
 // manual check di 'controllerchange'). Saat SW baru terdeteksi,
 // skipWaiting() + message semua clients untuk reload.
-const CACHE_NAME = 'nanomind-journal-cache-v32';
+const CACHE_NAME = 'nanomind-journal-cache-v33';
 const SHELL_ASSETS = [
     './',
     './index.html',
@@ -24,6 +24,7 @@ const SHELL_ASSETS = [
     './sw.js',
     './db.json',
     './x-articles.json',
+    './x-articles-content.json',
     './medium-articles.json',
     './telegram-posts.json',
     './instagram-potd.json',
@@ -99,18 +100,28 @@ self.addEventListener('fetch', (event) => {
     if (req.method !== 'GET') return;
     const url = new URL(req.url);
 
+    // FixTweet / vxTwitter — NETWORK ONLY (jangan cache error/rate-limit).
+    // Cache lama bisa "mengunci" rail X kosong meski API sudah pulih.
+    if (url.hostname.includes('fxtwitter.com') || url.hostname.includes('vxtwitter.com')) {
+        event.respondWith(
+            fetch(req).catch(() => caches.match(req).then(c => c || Response.error()))
+        );
+        return;
+    }
+
     // External APIs / raw github / CDN — network with cache fallback
     if (url.hostname.includes('githubusercontent.com') ||
         url.hostname.includes('api.github.com') ||
-        url.hostname.includes('fxtwitter.com') ||
         url.hostname.includes('cdnjs.cloudflare.com') ||
         url.hostname.includes('telesco.pe') ||
         url.hostname.includes('t.me') ||
         url.hostname.includes('pbs.twimg.com')) {
         event.respondWith(
             fetch(req).then((res) => {
-                const resClone = res.clone();
-                caches.open(CACHE_NAME).then((cache) => cache.put(req, resClone));
+                if (res && res.ok) {
+                    const resClone = res.clone();
+                    caches.open(CACHE_NAME).then((cache) => cache.put(req, resClone));
+                }
                 return res;
             }).catch(() => caches.match(req))
         );

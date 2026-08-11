@@ -7,15 +7,24 @@ const CONFIG = {
     BRANCH: 'main',
     DB_FILE: 'db.json',
     X_ARTICLES_FILE: 'x-articles.json',
+    // Full bodies prebuilt by GHA (same-origin) — preferred over live FixTweet
+    X_ARTICLES_CONTENT_FILE: 'x-articles-content.json',
     // Fallback bila x-articles.json belum tersedia (mis. cache lama)
     X_ARTICLES: {
         enabled: true,
         username: 'Deadmouse_jpeg',
         displayName: 'Noob Sensei',
         categoryId: 'x-articles',
+        // fxtwitter has full article content; vxtwitter is a CORS-friendly fallback
         apiBase: 'https://api.fxtwitter.com',
+        apiBases: [
+            'https://api.fxtwitter.com',
+            'https://api.vxtwitter.com'
+        ],
         cacheMinutes: 10,
         statusIds: [
+            '2086330042863472918',
+            '2085977873538564128',
             '2084516281261388041',
             '2080914975363666184',
             '2080309949025136833',
@@ -740,55 +749,83 @@ async function bootstrapXArticlesLoad() {
             refreshArticleSurfaces({ x: true });
         };
 
-        // Pass 1: deadline longgar + progress callback supaya card terisi bertahap
-        let xArts = await loadXArticles({
-            deadline: Date.now() + 45000,
-            onProgress: apply
-        });
-        apply(xArts);
-
-        // Pass 2–3: ambil sisa ID yang gagal (rate-limit / timeout) otomatis
-        for (let pass = 0; pass < 2; pass++) {
-            const cfg = state.xArticlesConfig || await loadXArticlesRegistry();
-            const have = new Set(
-                (state.data.articles || [])
-                    .filter(a => a.source === 'x' && a.xStatusId)
-                    .map(a => String(a.xStatusId))
-            );
-            const missing = (cfg.statusIds || []).filter(id => !have.has(String(id)));
-            if (!missing.length) break;
-            await new Promise(r => setTimeout(r, 1500 * (pass + 1)));
-            // Invalidate partial session cache supaya fetch ulang dijalankan
+        // 1) Same-origin content cache (reliable — filled by GHA, no CORS)
+        const cachedFile = await loadXArticlesFromContentFile();
+        if (cachedFile.length) {
+            apply(cachedFile);
             try {
-                sessionStorage.removeItem(xArticlesCacheKey(cfg.username));
+                const cfg0 = state.xArticlesConfig || await loadXArticlesRegistry();
+                writeXArticlesCache(cfg0, cachedFile);
             } catch (e) { /* ignore */ }
-            const more = await loadXArticles({
-                deadline: Date.now() + 30000,
-                onlyIds: missing,
+        }
+
+        // 2) Live FixTweet for any statusIds missing from the content file
+        //    (or full fetch if content file empty)
+        const cfg = state.xArticlesConfig || await loadXArticlesRegistry();
+        const have = new Set(
+            (state.data.articles || [])
+                .filter(a => a.source === 'x' && a.xStatusId)
+                .map(a => String(a.xStatusId))
+        );
+        const missing = (cfg.statusIds || []).filter(id => !have.has(String(id)));
+
+        if (missing.length || !cachedFile.length) {
+            const opts = {
+                deadline: Date.now() + 45000,
                 onProgress: (partial) => {
-                    // Gabung partial dengan yang sudah ada di state
                     const existing = (state.data.articles || []).filter(a => a.source === 'x');
                     const byId = new Map(existing.map(a => [a.id, a]));
                     (partial || []).forEach(a => byId.set(a.id, a));
                     apply(Array.from(byId.values()));
                 }
-            });
-            if (more && more.length) {
+            };
+            if (missing.length && cachedFile.length) opts.onlyIds = missing;
+            let xArts = await loadXArticles(opts);
+            if (xArts && xArts.length) {
                 const existing = (state.data.articles || []).filter(a => a.source === 'x');
                 const byId = new Map(existing.map(a => [a.id, a]));
-                more.forEach(a => byId.set(a.id, a));
-                const all = Array.from(byId.values()).sort((a, b) => new Date(b.date) - new Date(a.date));
-                apply(all);
-                // Cache penuh hanya jika semua ID sukses
-                const cfg2 = state.xArticlesConfig;
-                if (cfg2 && all.length >= (cfg2.statusIds || []).length) {
-                    writeXArticlesCache(cfg2, all);
+                xArts.forEach(a => byId.set(a.id, a));
+                apply(Array.from(byId.values()));
+            }
+
+            // 3) Auto-retry remaining IDs (rate-limit / timeout)
+            for (let pass = 0; pass < 2; pass++) {
+                const cfg2 = state.xArticlesConfig || await loadXArticlesRegistry();
+                const have2 = new Set(
+                    (state.data.articles || [])
+                        .filter(a => a.source === 'x' && a.xStatusId)
+                        .map(a => String(a.xStatusId))
+                );
+                const miss2 = (cfg2.statusIds || []).filter(id => !have2.has(String(id)));
+                if (!miss2.length) break;
+                await new Promise(r => setTimeout(r, 1500 * (pass + 1)));
+                try {
+                    sessionStorage.removeItem(xArticlesCacheKey(cfg2.username));
+                } catch (e) { /* ignore */ }
+                const more = await loadXArticles({
+                    deadline: Date.now() + 30000,
+                    onlyIds: miss2,
+                    onProgress: (partial) => {
+                        const existing = (state.data.articles || []).filter(a => a.source === 'x');
+                        const byId = new Map(existing.map(a => [a.id, a]));
+                        (partial || []).forEach(a => byId.set(a.id, a));
+                        apply(Array.from(byId.values()));
+                    }
+                });
+                if (more && more.length) {
+                    const existing = (state.data.articles || []).filter(a => a.source === 'x');
+                    const byId = new Map(existing.map(a => [a.id, a]));
+                    more.forEach(a => byId.set(a.id, a));
+                    const all = Array.from(byId.values()).sort((a, b) => articleSortTime(b) - articleSortTime(a));
+                    apply(all);
+                    if (all.length >= (cfg2.statusIds || []).length) {
+                        writeXArticlesCache(cfg2, all);
+                    }
                 }
             }
         }
     } finally {
         state.xArticlesLoading = false;
-        // Final paint: kalau tetap 0, tampilkan empty state; kalau ada, pastikan rail final
         refreshArticleSurfaces({ x: true });
     }
 }
@@ -1211,22 +1248,48 @@ async function fetchWithTimeout(url, ms = 18000) {
 }
 
 async function fetchXStatus(cfg, statusId, retries = 2) {
-    const url = `${cfg.apiBase}/${encodeURIComponent(cfg.username)}/status/${encodeURIComponent(statusId)}`;
+    const bases = (cfg.apiBases && cfg.apiBases.length)
+        ? cfg.apiBases
+        : [cfg.apiBase || 'https://api.vxtwitter.com', 'https://api.fxtwitter.com'];
     let lastErr;
     for (let attempt = 0; attempt <= retries; attempt++) {
-        try {
-            if (attempt > 0) await new Promise(r => setTimeout(r, 600 * attempt));
-            const res = await fetchWithTimeout(url, 18000);
-            if (!res.ok) throw new Error(`HTTP ${res.status} for ${statusId}`);
-            const data = await res.json();
-            const tweet = data.tweet || data;
-            if (!tweet || !tweet.article) throw new Error(`No article on status ${statusId}`);
-            return tweet;
-        } catch (err) {
-            lastErr = err;
+        if (attempt > 0) await new Promise(r => setTimeout(r, 600 * attempt));
+        for (const base of bases) {
+            const root = String(base || '').replace(/\/$/, '');
+            if (!root) continue;
+            const url = `${root}/${encodeURIComponent(cfg.username)}/status/${encodeURIComponent(statusId)}`;
+            try {
+                const res = await fetchWithTimeout(url, 18000);
+                if (!res.ok) throw new Error(`HTTP ${res.status} for ${statusId} @ ${root}`);
+                const data = await res.json();
+                const tweet = data.tweet || data;
+                const art = (tweet && tweet.article) || data.article;
+                if (!tweet || !art) throw new Error(`No article on status ${statusId}`);
+                if (!tweet.article) tweet.article = art;
+                return tweet;
+            } catch (err) {
+                lastErr = err;
+            }
         }
     }
     throw lastErr || new Error(`Failed ${statusId}`);
+}
+
+/**
+ * Load prebuilt X article bodies from same-origin x-articles-content.json.
+ * This is the reliable path: GHA fills the file via FixTweet server-side,
+ * so the browser never depends on third-party CORS to show the rail.
+ */
+async function loadXArticlesFromContentFile() {
+    try {
+        const data = await fetchJsonPreferLocal(CONFIG.X_ARTICLES_CONTENT_FILE);
+        if (!data || data.enabled === false) return [];
+        const list = Array.isArray(data.articles) ? data.articles : [];
+        return list.filter(a => a && a.id && a.source === 'x');
+    } catch (e) {
+        console.warn('x-articles-content.json not available', e);
+        return [];
+    }
 }
 
 function estimateReadTimeFromBlocks(blocks) {

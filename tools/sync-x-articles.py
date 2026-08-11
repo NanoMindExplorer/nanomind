@@ -34,6 +34,7 @@ from typing import Dict, Iterable, List, Optional, Set, Tuple
 
 ROOT = Path(__file__).resolve().parents[1]
 DEFAULT_REGISTRY = ROOT / "x-articles.json"
+DEFAULT_CONTENT = ROOT / "x-articles-content.json"
 UA = (
     "Mozilla/5.0 (Windows NT 10.0; Win64; x64) "
     "AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36"
@@ -423,35 +424,226 @@ def discover_via_telegram_registry(telegram_path: Optional[Path] = None) -> Set[
     return ids
 
 
-def verify_article(username: str, status_id: str) -> Optional[dict]:
-    # Prefer FixTweet; fall back to vxtwitter (same CORS-friendly mirrors family)
+def fetch_tweet_payload(username: str, status_id: str) -> Optional[dict]:
+    """
+    Full tweet payload that includes X Article body.
+    Prefer api.fxtwitter.com — it returns Draft.js content.blocks.
+    api.vxtwitter.com only has title/preview/image (no body) so use it only
+    as a last-resort existence check, not for content cache.
+    """
+    best = None
     for base in (
         f"https://api.fxtwitter.com/{username}/status/{status_id}",
         f"https://api.vxtwitter.com/{username}/status/{status_id}",
     ):
-        raw = curl_get(base, timeout=25)
+        raw = curl_get(base, timeout=30)
         if not raw:
             continue
         try:
             data = json.loads(raw)
         except json.JSONDecodeError:
             continue
-        # fxtwitter shape
         tweet = data.get("tweet") or data
-        art = tweet.get("article") if isinstance(tweet, dict) else None
-        # vxtwitter sometimes nests differently
+        if not isinstance(tweet, dict):
+            continue
+        art = tweet.get("article")
         if not art and isinstance(data, dict):
             art = data.get("article")
-        if not art:
+            if art:
+                tweet = dict(tweet)
+                tweet["article"] = art
+        if not art or not (art.get("title") or art.get("id")):
             continue
-        if not (art.get("title") or art.get("id")):
+        # Prefer payload that actually includes body blocks
+        content = art.get("content") if isinstance(art, dict) else None
+        blocks = (content or {}).get("blocks") if isinstance(content, dict) else None
+        if blocks:
+            return tweet
+        if best is None:
+            best = tweet
+    return best
+
+
+def verify_article(username: str, status_id: str) -> Optional[dict]:
+    tweet = fetch_tweet_payload(username, status_id)
+    if not tweet:
+        return None
+    art = tweet.get("article") or {}
+    return {
+        "statusId": str(status_id),
+        "title": art.get("title") or "",
+        "articleId": str(art.get("id") or ""),
+        "tweet": tweet,
+    }
+
+
+def _blocks_from_article_content(content: Optional[dict]) -> List[dict]:
+    """Draft.js-style blocks → nanomind body blocks (mirrors script.js)."""
+    raw_blocks = (content or {}).get("blocks") or []
+    out: List[dict] = []
+    list_buf: Optional[dict] = None
+
+    def flush_list() -> None:
+        nonlocal list_buf
+        if list_buf and list_buf.get("items"):
+            out.append(list_buf)
+        list_buf = None
+
+    for b in raw_blocks:
+        btype = b.get("type") or "unstyled"
+        text = (b.get("text") or "").strip()
+        if btype in ("unordered-list-item", "ordered-list-item"):
+            ordered = btype == "ordered-list-item"
+            if not list_buf or list_buf.get("ordered") != ordered:
+                flush_list()
+                list_buf = {"type": "list", "ordered": ordered, "items": []}
+            if text:
+                list_buf["items"].append(text)
             continue
-        return {
-            "statusId": str(status_id),
-            "title": art.get("title") or "",
-            "articleId": str(art.get("id") or ""),
-        }
-    return None
+        flush_list()
+        if btype in ("header-one", "header-two", "header-three"):
+            if text:
+                out.append({"type": "heading", "text": text})
+        elif btype == "blockquote":
+            if text:
+                out.append({"type": "quote", "text": text})
+        elif btype == "atomic":
+            continue
+        else:
+            if text:
+                out.append({"type": "paragraph", "text": text})
+    flush_list()
+    return out
+
+
+def _parse_twitter_date(s: str) -> str:
+    if not s:
+        return datetime.now(timezone.utc).strftime("%Y-%m-%d")
+    # ISO
+    try:
+        if "T" in s or s.endswith("Z"):
+            return datetime.fromisoformat(s.replace("Z", "+00:00")).strftime("%Y-%m-%d")
+    except Exception:
+        pass
+    # "Sun Aug 09 05:53:39 +0000 2026"
+    for fmt in ("%a %b %d %H:%M:%S %z %Y", "%a %b %d %H:%M:%S +0000 %Y"):
+        try:
+            return datetime.strptime(s.replace("+0000", "+0000"), fmt).strftime("%Y-%m-%d")
+        except Exception:
+            continue
+    try:
+        # loose
+        return datetime.strptime(s[4:19] + " " + s[-4:], "%b %d %H:%M:%S %Y").strftime("%Y-%m-%d")
+    except Exception:
+        return datetime.now(timezone.utc).strftime("%Y-%m-%d")
+
+
+def _estimate_read_time(blocks: List[dict]) -> int:
+    words = 0
+    for b in blocks:
+        if b.get("type") == "list":
+            words += len(" ".join(b.get("items") or []).split())
+        else:
+            words += len((b.get("text") or "").split())
+    return max(1, (words + 199) // 200)
+
+
+def _cover_from_tweet(tweet: dict, art: dict) -> str:
+    mi = ((art.get("cover_media") or {}).get("media_info")) or {}
+    cover = mi.get("original_img_url") or mi.get("url") or mi.get("preview_image_url") or ""
+    if not cover:
+        cover = art.get("cover_image") or ""
+    if not cover:
+        photos = ((tweet.get("media") or {}).get("photos")) or []
+        if photos:
+            cover = photos[0].get("url") or photos[0].get("original_img_url") or ""
+    if cover.startswith("//"):
+        cover = "https:" + cover
+    if "pbs.twimg.com/media/" in cover and "name=" not in cover:
+        cover += ("&" if "?" in cover else "?") + "name=large"
+    return cover
+
+
+def tweet_to_site_article(tweet: dict, username: str, display_name: str = "") -> dict:
+    art = tweet.get("article") or {}
+    body = _blocks_from_article_content(art.get("content"))
+    status_id = str(tweet.get("id") or tweet.get("tweetID") or "")
+    article_id = str(art.get("id") or status_id)
+    preview = re.sub(r"\s+", " ", (art.get("preview_text") or "").replace("\n", " ")).strip()
+    author = (
+        ((tweet.get("author") or {}).get("name"))
+        or ((tweet.get("author") or {}).get("screen_name"))
+        or display_name
+        or username
+    )
+    date = _parse_twitter_date(art.get("created_at") or tweet.get("created_at") or "")
+    cover = _cover_from_tweet(tweet, art)
+    if not cover:
+        cover = ((tweet.get("author") or {}).get("avatar_url")
+                 or (tweet.get("author") or {}).get("avatarUrl") or "")
+    x_url = f"https://x.com/{username}/status/{status_id}"
+    article_url = f"https://x.com/i/article/{article_id}" if art.get("id") else x_url
+    return {
+        "id": f"x-{status_id or article_id}",
+        "title": art.get("title") or "Untitled X Article",
+        "dek": preview,
+        "category": "x-articles",
+        "coverImage": cover,
+        "author": author,
+        "date": date,
+        "readTime": _estimate_read_time(body),
+        "featured": False,
+        "tags": ["x-articles", f"@{username}"],
+        "body": body,
+        "source": "x",
+        "xStatusId": status_id,
+        "xArticleId": article_id,
+        "xUrl": x_url,
+        "articleUrl": article_url,
+        "likes": tweet.get("likes") or 0,
+        "views": tweet.get("views") or 0,
+    }
+
+
+def build_content_cache(
+    username: str,
+    status_ids: List[str],
+    display_name: str = "",
+    content_path: Path = DEFAULT_CONTENT,
+) -> int:
+    """
+    Fetch full article bodies via FixTweet and write x-articles-content.json.
+    Website loads this first (same-origin) so display no longer depends on
+    browser→FixTweet (CORS / adblock / rate-limit).
+    """
+    log(f"Building content cache for {len(status_ids)} status IDs…")
+    articles: List[dict] = []
+    for i, sid in enumerate(status_ids, 1):
+        tweet = fetch_tweet_payload(username, sid)
+        if not tweet:
+            log(f"  [{i}/{len(status_ids)}] miss {sid}")
+            time.sleep(0.2)
+            continue
+        art = tweet_to_site_article(tweet, username, display_name)
+        articles.append(art)
+        log(f"  [{i}/{len(status_ids)}] ok {sid} — {art['title'][:55]}")
+        time.sleep(0.22)
+    articles.sort(key=lambda a: int(a.get("xStatusId") or 0), reverse=True)
+    payload = {
+        "enabled": True,
+        "username": username,
+        "displayName": display_name or username,
+        "lastSync": datetime.now(timezone.utc).strftime("%Y-%m-%dT%H:%M:%SZ"),
+        "count": len(articles),
+        "articles": articles,
+        "notes": (
+            "Full X Article bodies for the website. Built by tools/sync-x-articles.py. "
+            "Client prefers this file over live FixTweet so articles always render."
+        ),
+    }
+    content_path.write_text(json.dumps(payload, indent=2, ensure_ascii=False) + "\n", encoding="utf-8")
+    log(f"Wrote content cache → {content_path} ({len(articles)} articles)")
+    return len(articles)
 
 
 def verify_many(
@@ -590,7 +782,8 @@ def main() -> int:
     reg["notes"] = (
         "Auto-updated by tools/sync-x-articles.py (GitHub Actions). "
         "statusIds = X post IDs that carry published X Articles. "
-        "Website fetches full content live via FixTweet."
+        "Full bodies are written to x-articles-content.json for the website "
+        "(so the browser does not depend on FixTweet CORS)."
     )
 
     if args.dry_run:
@@ -598,16 +791,17 @@ def main() -> int:
         log(json.dumps(reg, indent=2)[:1500])
         return 0
 
-    if merged == existing and reg_path.exists():
-        # still update lastSync timestamp for observability
-        old = load_registry(reg_path)
-        if old.get("statusIds") == merged:
-            reg_path.write_text(json.dumps(reg, indent=2, ensure_ascii=False) + "\n", encoding="utf-8")
-            log(f"Updated lastSync only → {reg_path}")
-            return 0
-
     save_registry(reg_path, reg)
     log(f"Wrote {reg_path}")
+
+    # ALWAYS rebuild content cache so the live site has same-origin article bodies.
+    # (Previously we returned early on "lastSync only" and never refreshed content.)
+    display_name = reg.get("displayName") or "Noob Sensei"
+    try:
+        build_content_cache(username, merged, display_name=display_name)
+    except Exception as e:
+        log(f"WARNING: content cache build failed: {e}")
+
     return 0
 
 

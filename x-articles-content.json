@@ -1,0 +1,3110 @@
+{
+  "enabled": true,
+  "username": "Deadmouse_jpeg",
+  "displayName": "Noob Sensei",
+  "lastSync": "2026-08-11T02:40:38Z",
+  "count": 13,
+  "articles": [
+    {
+      "id": "x-2086330042863472918",
+      "title": "Migrasi Uang: Kenapa Dunia Masih Memilih X",
+      "dek": "Cara Mengenali Kreator yang Hanya Ada Demi Uang X masih bertahan lebih baik dari yang hampir semua orang prediksi sejak 2022. Format reply real-time-nya sampai sekarang belum berhasil ditiru",
+      "category": "x-articles",
+      "coverImage": "https://pbs.twimg.com/media/HPQeFTwbwAEmwOu.jpg?name=large",
+      "author": "Noob Sensei",
+      "date": "2026-08-09",
+      "readTime": 8,
+      "featured": false,
+      "tags": [
+        "x-articles",
+        "@Deadmouse_jpeg"
+      ],
+      "body": [
+        {
+          "type": "heading",
+          "text": "Cara Mengenali Kreator yang Hanya Ada Demi Uang"
+        },
+        {
+          "type": "paragraph",
+          "text": "X masih bertahan lebih baik dari yang hampir semua orang prediksi sejak 2022. Format reply real-time-nya sampai sekarang belum berhasil ditiru Instagram, TikTok, atau Threads. Sekarang gelombang pengguna baru membanjiri platform ini bukan karena percakapan, tapi karena uang."
+        },
+        {
+          "type": "paragraph",
+          "text": "Pada 7 Agustus 2026, X merobohkan sistem payout kreator yang sudah berusia tiga tahun dan membangunnya ulang dari nol. Mereka secara terbuka mengakui bahwa insentif lama sudah salah arah. Ini gambaran lengkapnya: kenapa orang benar-benar memakai X, bagaimana mesin uangnya bekerja, siapa saja yang pindah dari TikTok dan Instagram demi cuan, serta cara membedakan pengguna lama yang asli dengan orang yang hanya farming algoritma demi gaji."
+        },
+        {
+          "type": "heading",
+          "text": "Kenapa Orang Masih Memilih X"
+        },
+        {
+          "type": "paragraph",
+          "text": "X masih memiliki sekitar 560–611 juta pengguna aktif bulanan di seluruh dunia (Backlinko, DemandSage, SearchLab, 2026) lebih besar dari Snapchat, Pinterest, atau LinkedIn. Survei Pew Research November 2025 menunjukkan X tidak kehilangan pangsa berarti ke Threads atau Bluesky di kalangan orang dewasa Amerika."
+        },
+        {
+          "type": "paragraph",
+          "text": "Alasan utama orang memakai X, berurutan:"
+        },
+        {
+          "type": "list",
+          "ordered": false,
+          "items": [
+            "Berita real-time dan peristiwa terkini"
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "Masih jadi alasan nomor satu. Sekitar 50–60% pengguna menyebut ini sebagai motivasi utama (SocialBu, SocialPilot, DataReportal 2025–2026). Pew juga menegaskan X jauh lebih banyak dipakai untuk mengikuti politik dibanding Facebook, TikTok, atau Instagram."
+        },
+        {
+          "type": "list",
+          "ordered": false,
+          "items": [
+            "Discovery lewat reply"
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "Tidak seperti feed Instagram/TikTok yang dikunci algoritma, membalas akun besar bisa langsung menempatkan kreator kecil di depan ribuan orang  tidak perlu \"menunggu discovery\". Inilah keunggulan struktural X: kreator tidak melawan algoritma, tapi bekerja dengan reply graph yang terbuka."
+        },
+        {
+          "type": "list",
+          "ordered": false,
+          "items": [
+            "Komunitas niche"
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "FinTwit, komunitas developer, olahraga, dan komentar politik panas semuanya berkumpul di X dengan cara yang belum berhasil ditiru pesaing. Platform ini lebih banyak dihuni audiens profesional, berpenghasilan lebih tinggi, dan lebih laki-laki dibanding Instagram atau TikTok."
+        },
+        {
+          "type": "list",
+          "ordered": false,
+          "items": [
+            "Dan sekarang semakin kuat: penghasilan langsung"
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "X adalah satu-satunya platform mainstream yang membayar akun biasa secara otomatis dari iklan yang muncul di postingan mereka tanpa brand deal, tanpa program bonus terpisah."
+        },
+        {
+          "type": "paragraph",
+          "text": "Catatan penting: marketing X sering bilang \"aplikasi berita nomor satu di dunia\". Riset independen lebih rumit dari itu. Reuters Institute (survei ~100.000 orang di 48 negara setiap tahun) menemukan selama lebih dari satu dekade hanya sebagian kecil publik yang benar-benar memakai X/Twitter sebagai sumber berita rutin. X lebih terkonsentrasi di kalangan orang yang memang sudah aktif mencari politik dan berita, bukan populasi umum."
+        },
+        {
+          "type": "heading",
+          "text": "Skala per Negara"
+        },
+        {
+          "type": "paragraph",
+          "text": "Pertumbuhan X sudah bukan lagi cerita Amerika Serikat saja:"
+        },
+        {
+          "type": "list",
+          "ordered": false,
+          "items": [
+            "AS : pasar terbesar (~95–111 juta). Basis pengguna semakin laki-laki dan untuk pertama kalinya sedikit lebih condong Republican sejak 2023.",
+            "Jepang : kedua terbesar (~67–73 juta) dan penetrasi per kapita tertinggi. Sudah dominan secara budaya sejak awal 2010-an, relatif independen dari gelombang monetisasi.",
+            "India : tumbuh cepat (~24–38 juta) dan menjadi pusat beberapa kasus misinformasi yang terkait monetisasi.",
+            "Indonesia : salah satu pasar dengan pertumbuhan tercepat (~23–27 juta). Sangat tumpang tindih dengan komunitas crypto/airdrop, plus industri \"buzzer\" politik berbayar yang sudah berjalan lama.",
+            "Brasil : ~16–25 juta, dilaporkan memiliki engagement per pengguna tertinggi di antara audiens besar.",
+            "Inggris : ~21–26 juta, konsentrasi jurnalis dan profesional kebijakan yang sangat tinggi (\"policy Twitter\").",
+            "Turki, Meksiko, Arab Saudi : masing-masing konsisten di top 10 global (~15–20 juta)."
+          ]
+        },
+        {
+          "type": "heading",
+          "text": "Mesin Monetisasi: Bagaimana X Mengubah Posting Menjadi Gaji"
+        },
+        {
+          "type": "paragraph",
+          "text": "X adalah satu-satunya platform besar di mana akun biasa bisa dapat transfer langsung hanya karena postingannya dibaca. Mekanisme ini menjelaskan gelombang masuk kreator sejak 2023 dan kenapa kolom reply semakin sengit."
+        },
+        {
+          "type": "paragraph",
+          "text": "Sejarah singkat:"
+        },
+        {
+          "type": "list",
+          "ordered": false,
+          "items": [
+            "Juli 2023 : Ads Revenue Sharing diluncurkan (awalnya butuh 15 juta impresi dalam 3 bulan).",
+            "Agustus 2023 : threshold diturunkan ke 5 juta impresi, minimum penarikan jadi $10.",
+            "2023–2025 : program menyebar global. Total payout melewati ~$1 miliar pada Mei 2026.",
+            "Oktober 2024 : formula bergeser: lebih menghargai engagement dari Premium subscribers.",
+            "7 Agustus 2026 : Revenue Sharing dihentikan total, diganti Original Content Rewards."
+          ]
+        },
+        {
+          "type": "heading",
+          "text": "Overhaul Agustus 2026: X Mengakui Insentifnya Sudah Rusak"
+        },
+        {
+          "type": "paragraph",
+          "text": "Dalam pengumuman resmi, akun @XCreators secara terang-terangan menyatakan bahwa Revenue Sharing sudah membuat kreator mengoptimalkan payout, bukan konten orisinal. Platform mengakui masalahnya cukup serius sampai harus merobohkan sistem yang sudah berjalan tiga tahun."
+        },
+        {
+          "type": "paragraph",
+          "text": "Perbandingan program lama vs baru:"
+        },
+        {
+          "type": "list",
+          "ordered": false,
+          "items": [
+            "Formula \nLama : iklan di thread reply, lalu dibobot Premium. \n\nBaru : \"qualified impressions\" dari Premium di Home Timeline, dengan minimal setengah post terlihat di layar.",
+            "Ambang impresi"
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "Lama : 5 juta impresi dalam 90 hari."
+        },
+        {
+          "type": "paragraph",
+          "text": "Baru : 500.000 verified impressions dalam 90 hari, angka lebih rendah tapi definisinya jauh lebih ketat."
+        },
+        {
+          "type": "list",
+          "ordered": false,
+          "items": [
+            "Syarat \nLama : 500 followers verified + Premium. \nBaru  sama, tapi impresi harus berasal dari konten orisinal akun sendiri.",
+            "Konten yang didiskualifikasi"
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "Lama : hampir hanya soal volume impresi."
+        },
+        {
+          "type": "paragraph",
+          "text": "Baru : secara eksplisit mengeksklusi repost, edit minor (crop, filter, watermark, teks overlay), konten copy, auto-posting, misinformasi, dan konten AI yang tidak diungkap, pelanggaran berulang bisa berarti dikeluarkan permanen dari program."
+        },
+        {
+          "type": "paragraph",
+          "text": "Program lama ditutup untuk pendaftar baru per 7 Agustus. Peserta lama masih dapat bayaran sampai 7 September 2026. Pendaftaran program baru dibuka 8 September."
+        },
+        {
+          "type": "heading",
+          "text": "Gelombang Migrasi: Kenapa Kreator Pindah"
+        },
+        {
+          "type": "paragraph",
+          "text": "Riset akademik memakai kerangka push-pull-mooring untuk menjelaskan kenapa orang pindah platform."
+        },
+        {
+          "type": "paragraph",
+          "text": "Push factors (pendorong keluar):"
+        },
+        {
+          "type": "list",
+          "ordered": false,
+          "items": [
+            "Ketidakpastian regulasi TikTok (larangan AS awal 2025).",
+            "Program bonus Instagram yang tidak konsisten (Reels Play Bonus berkali-kali di-pause).",
+            "Opacity algoritma Instagram/TikTok \"melawan algoritma\" versus reply graph X yang lebih transparan."
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "Pull factors (penarik masuk):"
+        },
+        {
+          "type": "list",
+          "ordered": false,
+          "items": [
+            "Formula payout yang bisa dihitung di muka.",
+            "Creator Subscription sampai 97% untuk kreator (sampai $50.000 lifetime).",
+            "Biaya reach lebih rendah lewat reply.",
+            "Infrastruktur commerce baru (Shop Spotlight, Ticketed Spaces, X Money)."
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "Mooring (yang menahan): Sebagian besar pengguna biasa tetap tinggal di platform lama. Yang pindah ke X biasanya kreator yang sudah profesional dan memang fokus monetisasi."
+        },
+        {
+          "type": "heading",
+          "text": "Dua Suku: Pengguna Asli vs Pendatang Demi Uang"
+        },
+        {
+          "type": "paragraph",
+          "text": "Ini bukan kategori resmi X, tapi pola yang konsisten di banyak negara dan cukup nyata sampai X membangun fitur khusus untuk mengatasinya."
+        },
+        {
+          "type": "paragraph",
+          "text": "Pengguna native:"
+        },
+        {
+          "type": "list",
+          "ordered": false,
+          "items": [
+            "Motivasi: percakapan, reputasi, komunitas.",
+            "Konten: komentar orisinal yang terikat konteks yang bisa dicek, humor kering, niche.",
+            "Pola posting: tidak teratur, mengikuti peristiwa nyata.",
+            "Reply: membahas substansi post induk.",
+            "Reaksi komunitas: diterima sebagai bagian dari tekstur platform."
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "Pendatang money-driven:"
+        },
+        {
+          "type": "list",
+          "ordered": false,
+          "items": [
+            "Motivasi: verified impressions → payout.",
+            "Konten: hook emosional universal, provokasi, rage-bait.",
+            "Pola posting: sangat teratur, sering mengelompok di sekitar window payout.",
+            "Reply: sering generik atau tangensial (\"Impression Zombie\").",
+            "Reaksi: sering dikeluhkan, termasuk oleh sesama kreator di negara yang sama, lihat surat terbuka Nigeria yang meminta X menghentikan sementara monetisasi di negara mereka."
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "Di Indonesia, industri buzzer politik berbayar sudah ada lebih dari satu dekade sebelum sistem payout X. Diperkirakan minimal 10.000 orang mengendalikan sekitar 2,5 juta akun, dengan tarif Rp100.000–Rp2.000.000 per post. Strukturnya berbeda (dibayar kampanye/PR, bukan X), tapi signature-nya sama: posting terkoordinasi demi uang yang meniru sentimen organik."
+        },
+        {
+          "type": "heading",
+          "text": "Cara Membedakan Mereka: Kerangka Praktis"
+        },
+        {
+          "type": "paragraph",
+          "text": "Tidak ada tes tunggal yang sempurna. Yang andal adalah kombinasi sinyal:"
+        },
+        {
+          "type": "list",
+          "ordered": true,
+          "items": [
+            "Data \"About This Account\" (fitur Oktober 2025)  negara, tanggal pembuatan, riwayat ganti username, apakah diunduh dari app store domestik/internasional. Ketidaksesuaian lokasi adalah red flag berarti.",
+            "Rasio follower : following  mengikuti ribuan orang tapi diikuti sedikit sering jadi tanda otomasi.",
+            "Kesenjangan engagement vs reach view tinggi tapi reply generik (\"bagus!\", emoji saja).",
+            "Keteraturan waktu posting jam yang hampir sama setiap hari, atau mengelompok di sekitar tanggal payout.",
+            "Relevansi reply , reply yang tidak menyentuh isi post induk, tersebar di banyak thread viral yang tak terkait.",
+            "Format konten ketergantungan berat pada hook emosional universal yang terlepas dari niche yang diklaim.",
+            "Reaksi terhadap berita monetisasi perubahan topik/frekuensi/nada yang sangat cepat setelah pengumuman formula baru."
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "Tidak ada satu sinyal yang cukup sendirian. Keandalan muncul dari kombinasi beberapa sinyal sekaligus."
+        },
+        {
+          "type": "heading",
+          "text": "Rekomendasi Penggunaan X"
+        },
+        {
+          "type": "paragraph",
+          "text": "Untuk pengguna sehari-hari: Perlakukan virality dan kemarahan sebagai hal terpisah dari kebenaran. Rage-bait dirancang untuk dibagikan dalam keadaan marah bahkan membagikannya untuk mengkritik tetap memberi impresi yang dibayar ke posternya. Pakai Community Notes sebagai titik awal, bukan putusan akhir. Selalu cek \"About This Account\" pada klaim yang mengejutkan, terutama saat berita sedang panas."
+        },
+        {
+          "type": "paragraph",
+          "text": "Untuk kreator: Baca aturan Original Content Rewards langsung dari sumbernya. Program baru mengeksklusi repost, edit minor, dan konten AI konflik yang tidak diungkap. Prioritaskan engagement reply yang berkelanjutan di dalam niche yang konsisten itu yang sekarang dihargai ranking X dan yang membangun audiens tahan lama. Diversifikasi pendapatan, karena setiap sistem yang dibahas di sini sudah berubah drastis dalam tiga tahun terakhir."
+        },
+        {
+          "type": "paragraph",
+          "text": "Untuk platform: Terus prioritaskan sinyal kedalaman engagement daripada volume impresi mentah. Perluas akurasi transparansi lokasi. Dan pertimbangkan ketegangan antara menjadi \"town square global\" dengan melindungi komunitas kreator lokal dari digempur spam reply dari pasar iklan bernilai tinggi."
+        },
+        {
+          "type": "heading",
+          "text": "Kesimpulan"
+        },
+        {
+          "type": "paragraph",
+          "text": "Ketahanan X sampai 2026 itu nyata. Format reply drivennya masih unik. Tapi ketahanan itu sekarang berdiri di atas sistem monetisasi yang platformnya sendiri akui sudah merusak insentif cukup parah sampai harus dirobohkan dan dibangun ulang."
+        },
+        {
+          "type": "paragraph",
+          "text": "Pemisahan antara pengguna lama yang memperlakukan X sebagai percakapan dan kohort baru yang memperlakukannya sebagai input bisnis tidak merata di seluruh dunia. Paling tajam di tempat di mana kesenjangan antara biaya hidup lokal dengan pendapatan iklan berdenominasi dolar paling besar dan di mana insentif untuk berisik lebih kuat daripada akurat."
+        },
+        {
+          "type": "paragraph",
+          "text": "Apakah Original Content Rewards benar-benar memperbaiki ini, atau hanya mengatur ulang masalah yang sama di titik ekuilibrium baru, belum bisa dijawab oleh bukti yang ada. Program ini bahkan belum membayar satu kreator pun saat tulisan ini dibuat. Yang sudah jelas: perbedaan antara pengguna native dan pendatang bukan soal selera. Itu terukur, terdokumentasi, dan berkat alat X sendiri plus riset independen sekarang lebih mudah dikenali oleh pengguna biasa dibanding kapan pun dalam sejarah platform ini."
+        },
+        {
+          "type": "paragraph",
+          "text": "Sumber utama: X Help Center, @XCreators (7 Agustus 2026), pernyataan Nikita Bier, TechCrunch, Techpoint Africa, tech-ish, Legit.ng, The Quint, The Ken, Lowy Institute, Pew Research, Reuters Institute Digital News Report 2026, Statista/DataReportal, arXiv (\"Impression Zombies\", 2026), studi Nature Communications, PNAS, dan ACM tentang Community Notes."
+        },
+        {
+          "type": "paragraph",
+          "text": "#CreatorEconomy #MonetisasiX #KreatorDigital #XArticle #Indonesia"
+        }
+      ],
+      "source": "x",
+      "xStatusId": "2086330042863472918",
+      "xArticleId": "2086318973990346752",
+      "xUrl": "https://x.com/Deadmouse_jpeg/status/2086330042863472918",
+      "articleUrl": "https://x.com/i/article/2086318973990346752",
+      "likes": 8,
+      "views": 377
+    },
+    {
+      "id": "x-2085977873538564128",
+      "title": "X Resmi Bunuh Revenue Sharing Hari Ini",
+      "dek": "Kenalan Sama Original Content Rewards, Program Baru yang Bakal Nge-filter Reply Guy dan Akun Copas Gue lagi scroll TL pagi ini pas notif dari @XCreators muncul, dan isinya bikin gue langsung duduk",
+      "category": "x-articles",
+      "coverImage": "https://pbs.twimg.com/media/HPLfPZebYAA7fQO.jpg?name=large",
+      "author": "Noob Sensei",
+      "date": "2026-08-08",
+      "readTime": 9,
+      "featured": false,
+      "tags": [
+        "x-articles",
+        "@Deadmouse_jpeg"
+      ],
+      "body": [
+        {
+          "type": "heading",
+          "text": "Kenalan Sama Original Content Rewards, Program Baru yang Bakal Nge-filter Reply Guy dan Akun Copas"
+        },
+        {
+          "type": "paragraph",
+          "text": "Gue lagi scroll TL pagi ini pas notif dari @XCreators muncul, dan isinya bikin gue langsung duduk tegak. Revenue Sharing, program yang udah jadi sumber cuan ribuan kreator X sejak 2023, resmi ditutup buat pendaftar baru per 7 Agustus 2026. Kemarin. Gantinya udah siap dan namanya Original Content Rewards Program."
+        },
+        {
+          "type": "paragraph",
+          "text": "Kalau lo salah satu dari sekian banyak akun yang selama ini hidup dari repost berita, agregasi thread orang, atau reply template buat mancing engagement, lo wajib baca ini sampai habis, bree. Karena aturan mainnya berubah total, dan celah yang selama ini banyak dipakai buat \"farming\" bakal ditutup rapat."
+        },
+        {
+          "type": "heading",
+          "text": "Jadi Ceritanya Gini"
+        },
+        {
+          "type": "paragraph",
+          "text": "Revenue Sharing itu dulunya program bagi hasil iklan dari X ke kreator yang balesannya (reply) rame dilihat user terverifikasi. Skalanya gak main-main. Total pembayaran ke kreator dari semua program monetisasi X tembus sekitar $400 juta di tahun 2025 aja, dan awal Januari 2026 X sempat gandain pool pembagian hasilnya sambil ngasih iming-iming reward sampai $1 juta buat Article terbaik. Tapi ada masalah klasik: duitnya numpuk di segelintir orang. Top 1% kreator ambil lebih dari 80% total payout, sementara mayoritas cuma dapet rata-rata $130-an per bulan  kalau lolos threshold 5 juta impresi organik dalam 90 hari, yang buat akun kecil itu berat banget."
+        },
+        {
+          "type": "paragraph",
+          "text": "Nah, di postingan resminya kemarin, Product Lead X Allegra Jacchia ngomong blak-blakan: insentif Revenue Sharing udah gak sejalan sama tujuan awalnya. Orang-orang lebih fokus ngoprek cara maksimalin payout ketimbang bikin konten baru yang beneran bernilai. Daripada nambal sistem lama pakai aturan tambahan terus-terusan, X milih buat mulai dari nol dan bikin program yang dari awal didesain buat ngehargain orisinalitas."
+        },
+        {
+          "type": "heading",
+          "text": "Kenalan Sama Original Content Rewards"
+        },
+        {
+          "type": "paragraph",
+          "text": "Ini bukan sekadar ganti nama, bree. Fondasinya beda. Kalau Revenue Sharing itu ngitung dari total impresi organik (apapun sumbernya reply, repost, pencarian, timeline), Original Content Rewards cuma ngitung satu jenis views: qualified impressions."
+        },
+        {
+          "type": "paragraph",
+          "text": "Definisinya spesifik banget. Qualified impressions itu impresi unik dari pengguna X Premium (Basic, Premium, Premium+, atau Premium Business), yang muncul di Home Timeline mereka, dan minimal 50% dari postingan lo kelihatan di layar. Yang gak dihitung:"
+        },
+        {
+          "type": "list",
+          "ordered": false,
+          "items": [
+            "View berulang dari akun yang sama di post yang sama",
+            "Impresi berbayar, promosi, atau yang digenjot secara artifisial",
+            "Impresi hasil kecurangan/fraud"
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "Jadi intinya, X sekarang cuma bayar lo kalau konten lo beneran nongol di linimasa orang yang bayar langganan, bukan cuma numpang lewat di kolom reply."
+        },
+        {
+          "type": "heading",
+          "text": "Angka yang Berubah: dari 5 Juta ke 500 Ribu — Tapi Jangan Buru-buru Seneng"
+        },
+        {
+          "type": "paragraph",
+          "text": "Ini bagian yang bikin gue mikir dua kali. Threshold impresi buat eligible sekarang turun 10 kali lipat dibanding Revenue Sharing lama."
+        },
+        {
+          "type": "paragraph",
+          "text": "Revenue Sharing (lama):"
+        },
+        {
+          "type": "list",
+          "ordered": false,
+          "items": [
+            "Punya subscription Premium/Premium Business/Premium Organizations aktif",
+            "Minimal 5.000.000 impresi organik dalam 3 bulan terakhir",
+            "Minimal 500 followers terverifikasi",
+            "Berada di negara yang didukung"
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "Original Content Rewards (baru):"
+        },
+        {
+          "type": "list",
+          "ordered": false,
+          "items": [
+            "Berumur 18 tahun ke atas",
+            "Akun Personal atau Business (akun organisasi politik/pemerintah gak eligible)",
+            "Punya subscription Premium, Premium+, atau Premium Business aktif",
+            "Minimal 500.000 impresi Home Timeline dari user terverifikasi dalam 90 hari terakhir (impresi dari kolom reply gak dihitung)",
+            "Minimal 500 followers terverifikasi",
+            "Aktif posting konten orisinal sesuai definisi program",
+            "Akun dalam status baik, gak ada riwayat pelanggaran berulang"
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "Angka 500 ribu jelas jauh lebih terjangkau buat akun menengah dibanding 5 juta. Tapi jangan salah, threshold turun bukan berarti makin gampang cuan. Justru kualitas kontennya yang disaring lebih ketat, dan itu yang bakal gue bahas di bagian selanjutnya. Kalau lo udah pernah verifikasi ID dan connect payout method sebelumnya di Revenue Sharing, lo gak perlu ulang proses itu lagi pas pindah ke program baru."
+        },
+        {
+          "type": "paragraph",
+          "text": "Oh iya, buat yang nanya-nanya: Indonesia ada di daftar negara yang eligible buat program ini. Jadi bukan cuma kreator US/Eropa doang yang kebagian."
+        },
+        {
+          "type": "heading",
+          "text": "Definisi \"Konten Original\" Versi X , Baca Baik-Baik Ini"
+        },
+        {
+          "type": "paragraph",
+          "text": "Nah ini inti masalahnya. X kasih definisi yang cukup detail soal apa yang dianggap orisinal dan apa yang enggak."
+        },
+        {
+          "type": "paragraph",
+          "text": "Yang dianggap original: konten yang lo buat sendiri ditulis, difilmkan, didesain, atau diproduksi sendiri yang nunjukkin suara, sudut pandang, atau keahlian lo. Komentar dan analisis tetap dihargai. Kalau lo bikin breakdown soal berita, ngasih opini soal isu yang lagi rame, atau nambahin konteks yang orang lain gak punya, itu masuk kategori original walaupun topiknya bukan ide asli lo."
+        },
+        {
+          "type": "paragraph",
+          "text": "Yang GAK dianggap original, dan bakal di-filter dari qualified impressions:"
+        },
+        {
+          "type": "list",
+          "ordered": true,
+          "items": [
+            "Konten copas : text, gambar, atau video yang diambil utuh dari kreator lain tanpa kontribusi apapun, termasuk yang di-download dari X atau platform lain terus di-upload ulang.",
+            "Modifikasi minim : ganti satu-dua kata di caption, tambahin filter, ubah kecepatan video, atau kasih text overlay doang. Ini gak dianggap transformasi yang berarti.",
+            "Konten agregasi : postingan yang isinya cuma kumpulan/compile konten orang lain tanpa perspektif baru.",
+            "Repost lintas platform : konten yang diambil dari platform lain terus diposting ulang oleh orang yang bukan pembuat aslinya."
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "Penting dicatat: lolos kriteria \"original\" di program ini bukan berarti otomatis aman secara hak cipta. Dua hal itu terpisah. Lo tetap tanggung jawab penuh mastiin punya izin atau lisensi buat konten yang lo pakai dari orang lain."
+        },
+        {
+          "type": "paragraph",
+          "text": "Selain itu, kontennya juga bakal di-diskualifikasi kalau isinya eksplisit/berbahaya, murni ngomongin cara maksimalin monetisasi, dibuat pakai automated tools, mengandung disinformasi, atau kena Community Note."
+        },
+        {
+          "type": "heading",
+          "text": "Kenapa X Ngelakuin Ini Sekarang"
+        },
+        {
+          "type": "paragraph",
+          "text": "Ini bukan keputusan dadakan. Dari beberapa laporan, gerakan ini digerakin sama Nikita Bier, Product Head X, yang emang udah lama pengen mangkas engagement farming taktik posting rage bait, meme daur ulang, atau debat kusir palsu cuma buat mancing reply dan komentar. Model baru ini ngiket payout lebih erat sama engagement yang genuine dari user yang bayar langganan, bukan sekadar angka mentah views."
+        },
+        {
+          "type": "paragraph",
+          "text": "Menariknya, TechCrunch nyoroti risiko dari sisi lain: kalau payout makin nempel sama engagement (terutama reply/komentar), ada kemungkinan malah dorong kreator bikin konten yang sengaja mancing emosi biar orang balas persis masalah \"rage bait\" yang lagi jadi PR besar Threads-nya Instagram sekarang. Adam Mosseri, bos Threads, bahkan udah ngaku terang-terangan kalau platformnya kewalahan sama komentar toxic yang muncul gara-gara sistem reward-nya kejebak nge-highlight reply. X sejauh ini belum ngasih detail spesifik soal gimana mereka bakal ngerem potensi masalah serupa selain lewat filter \"originalitas\" tadi."
+        },
+        {
+          "type": "heading",
+          "text": "Efeknya ke Akun Alpha Crypto dan Reply Guy di ID"
+        },
+        {
+          "type": "paragraph",
+          "text": "Ini bagian yang paling relevan buat kita-kita di lingkaran crypto-Twitter Indonesia, bree. Banyak akun \"alpha\" dan akun airdrop-hunter di sini yang model kontennya ya begitu: screenshot pengumuman project, translate thread orang luar, atau reply template di postingan gede biar numpang exposure. Kalau ngeliat definisi \"aggregated content\" dan \"minimally modified content\" di atas, model kayak gitu berisiko gak generate qualified impressions sama sekali di program baru ini."
+        },
+        {
+          "type": "paragraph",
+          "text": "Yang bakal diuntungkan justru akun yang emang nulis analisis sendiri, translasi plus insight tambahan (bukan translate doang), riset independen soal project atau airdrop, atau bikin format konten baru (thread breakdown, infografis, video penjelasan) dari sudut pandang sendiri. Intinya program ini kayak nyuruh kita naik level: dari sekadar \"cepat repost duluan\" ke \"punya perspektif yang orang lain gak punya.\""
+        },
+        {
+          "type": "paragraph",
+          "text": "Gue sendiri jujur ngerasa ini validasi buat cara kerja yang emang udah gue jalanin riset dulu, kasih konteks, baru posting. Tapi buat temen-temen yang model bisnisnya masih ngandelin volume repost, ini saatnya mikir ulang strategi sebelum September."
+        },
+        {
+          "type": "heading",
+          "text": "Timeline Lengkap yang Wajib Lo Catat"
+        },
+        {
+          "type": "paragraph",
+          "text": "Biar gak bingung, ini urutan tanggalnya:"
+        },
+        {
+          "type": "list",
+          "ordered": false,
+          "items": [
+            "7 Agustus 2026 : Pendaftaran baru Revenue Sharing ditutup. Original Content Rewards resmi diumumkan.",
+            "14 Agustus 2026 : Payout Revenue Sharing (jadwal reguler, salah satu dari 3 payout terakhir).",
+            "28 Agustus 2026 : Payout Revenue Sharing kedua dari sisa 3 payout terakhir.",
+            "7 September 2026 : Hari terakhir penghasilan dari Revenue Sharing dihitung. Program ini resmi pensiun.",
+            "8 September 2026 : X mulai buka akses buat member Revenue Sharing lama ngajuin aplikasi ke Original Content Rewards.",
+            "Sekitar 11 September 2026 : Payout terakhir Revenue Sharing, buat penghasilan yang kekumpul sampai 7 September.",
+            "25 September 2026 : Payout pertama Original Content Rewards buat kreator yang daftar lewat rollout 8 September (menurut laporan media, di luar tanggal resmi help center)."
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "Kalau aplikasi lo diproses, X janji ngasih hasil dalam 3 hari kerja. Ditolak? Lo masih punya satu kali kesempatan banding. Kalau bandingnya juga gagal, lo bisa apply ulang setelah 90 hari asal masih penuhi semua syarat."
+        },
+        {
+          "type": "heading",
+          "text": "Soal Duit: Gimana Cara Bayarnya"
+        },
+        {
+          "type": "paragraph",
+          "text": "Payout tetep jalan tiap dua minggu sekali, dengan minimum pencairan $30. Buat nerima duitnya, lo perlu:"
+        },
+        {
+          "type": "list",
+          "ordered": true,
+          "items": [
+            "Connect Stripe payout account atau X Money Account (kalau eligible)",
+            "Selesai verifikasi identitas lewat Stripe"
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "Kalau lo udah pernah ngelewatin proses ini di Revenue Sharing, gak perlu ulang. Soal berapa besar hasilnya per juta impresi, X gak pernah publish angka resmi, tapi dari beberapa laporan kreator, kisarannya sekitar $5–20 per juta impresi terverifikasi, tergantung tier subscription yang nonton (Premium+ biasanya dihargai lebih tinggi dari Basic)."
+        },
+        {
+          "type": "paragraph",
+          "text": "Satu hal yang perlu diwaspadai: ada aturan soal konten AI soal konflik bersenjata. Sejak 3 Maret 2026, kalau lo posting video hasil AI tentang konflik bersenjata tanpa nge-disclose bahwa itu dibuat pakai AI, akun lo bisa kena suspend dari program selama 90 hari buat pelanggaran pertama, dan permanen kalau ngulang lagi."
+        },
+        {
+          "type": "paragraph",
+          "text": "Terus soal aturan main lainnya yang wajib dijaga biar tetep eligible: jangan solicit engagement (minta-minta like/reply/bookmark/follow/repost berulang kali), jangan pakai bot atau tools buat genjot metrik artifisial, jangan tamper sama sistem payout atau algoritma rekomendasi, dan tetep jaga langganan Premium-nya aktif."
+        },
+        {
+          "type": "heading",
+          "text": "Yang Harus Lo Lakuin Sekarang"
+        },
+        {
+          "type": "paragraph",
+          "text": "Kalau lo lagi mikir \"terus gue harus ngapain\", ini langkah praktisnya:"
+        },
+        {
+          "type": "list",
+          "ordered": true,
+          "items": [
+            "Cek eligibility lo lewat Creator Studio → Original Content Rewards. Bisa dicek kapan aja, gak perlu nunggu 8 September.",
+            "Pastiin subscription Premium lo aktif : ini syarat mutlak, gak bisa ditawar.",
+            "Audit konten lo sendiri. Kalau mayoritas feed lo isinya repost/screenshot/translate tanpa insight tambahan, mulai geser ke format yang lebih personal: analisis, opini, breakdown data, atau konten yang lo produksi sendiri.",
+            "Simpen dulu duit dari Revenue Sharing lo. Ada 3 payout terakhir tanggal 14 & 28 Agustus, plus sekitar 11 September. Setelah itu program ini beneran mati.",
+            "Siap-siap apply pas 8 September kalau lo masih member Revenue Sharing lama, karena migrasinya gak otomatis : lo harus daftar ulang."
+          ]
+        },
+        {
+          "type": "heading",
+          "text": "Penutup"
+        },
+        {
+          "type": "paragraph",
+          "text": "Buat gue pribadi, ini bukan cuma soal duit kreator doang. Ini sinyal kalau X emang niat ngerapiin ekosistem yang tahun-tahun terakhir ini penuh sama akun spam, reply-bait, dan copas berjamaah demi cuan receh. Efeknya bakal kerasa banget di komunitas crypto-Twitter kita, yang selama ini emang rame banget sama model konten \"cepat-cepatan repost\"."
+        },
+        {
+          "type": "paragraph",
+          "text": "Pertanyaan gue balik ke lo: akun lo sekarang lebih condong ke tipe kreator yang bakal diuntungkan program ini, atau tipe yang harus mulai banting setir? Drop di reply, gue penasaran berapa banyak dari kita yang harus ganti strategi bulan ini. 👀"
+        },
+        {
+          "type": "paragraph",
+          "text": "Sumber: Original Content Rewards Program  X Help Center (help.x.com), Creator Revenue Sharing  X Help Center, laporan dari TechCrunch, Punch NG, News9live, KuCoin, dan postingan resmi @XCreators serta Allegra Jacchia (Product Lead, X) per 7–8 Agustus 2026."
+        }
+      ],
+      "source": "x",
+      "xStatusId": "2085977873538564128",
+      "xArticleId": "2085974840159387648",
+      "xUrl": "https://x.com/Deadmouse_jpeg/status/2085977873538564128",
+      "articleUrl": "https://x.com/i/article/2085974840159387648",
+      "likes": 9,
+      "views": 553
+    },
+    {
+      "id": "x-2084516281261388041",
+      "title": "KEAJAIBAN EKONOMI SEPANJANG SEJARAH",
+      "dek": "Bagaimana China benar-benar bangkit dari negara termiskin di dunia ? Titik Nol: Seberapa Miskin China di 1978? Angka yang sering dilupakan: pada 1978, GDP per kapita China ada di kisaran 156 dolar AS",
+      "category": "x-articles",
+      "coverImage": "https://pbs.twimg.com/media/HO2vrxta4AA_jAA.jpg?name=large",
+      "author": "Noob Sensei",
+      "date": "2026-08-04",
+      "readTime": 15,
+      "featured": false,
+      "tags": [
+        "x-articles",
+        "@Deadmouse_jpeg"
+      ],
+      "body": [
+        {
+          "type": "paragraph",
+          "text": "Bagaimana China benar-benar bangkit dari negara termiskin di dunia ?"
+        },
+        {
+          "type": "heading",
+          "text": "Titik Nol: Seberapa Miskin China di 1978?"
+        },
+        {
+          "type": "paragraph",
+          "text": "Angka yang sering dilupakan: pada 1978, GDP per kapita China ada di kisaran 156 dolar AS  di bawah rata-rata Afrika Sub-Sahara saat itu."
+        },
+        {
+          "type": "paragraph",
+          "text": "Untuk sampai ke titik itu saja, China sudah melalui hampir tiga dekade ekonomi komando ala Mao Zedong sejak Republik Rakyat China berdiri tahun 1949: Great Leap Forward (1958–1962) memicu kelaparan massal dengan estimasi kematian 15–45 juta jiwa (angka persisnya masih diperdebatkan sejarawan hingga sekarang), disusul Cultural Revolution (1966–1976) yang melumpuhkan institusi pendidikan, birokrasi, dan ekonomi selama satu dekade penuh semacam \"dekade yang hilang\" bagi seluruh generasi."
+        },
+        {
+          "type": "paragraph",
+          "text": "Ini bukan latar belakang kosmetik. Ini konteks yang menjelaskan kenapa elite Partai setelah Mao begitu putus asa untuk mencoba apa saja yang bisa berhasil termasuk hal-hal yang secara ideologis \"tidak nyaman\"."
+        },
+        {
+          "type": "paragraph",
+          "text": "Dari titik itu, sekitar 800 juta orang keluar dari kemiskinan ekstrem antara 1978 dan 2020. Ini bukan klaim propaganda ini angka yang dipakai luas oleh lembaga-lembaga pembangunan internasional. Tapi angka ini juga sering dipakai tanpa penjelasan bagaimana itu terjadi. Dan di situlah bagian paling menarik dari cerita ini biasanya dipotong."
+        },
+        {
+          "type": "heading",
+          "text": "Empat Mekanisme yang Jarang Dibedah Tuntas"
+        },
+        {
+          "type": "paragraph",
+          "text": "1. Kontrak rahasia 18 petani di Xiaogang"
+        },
+        {
+          "type": "paragraph",
+          "text": "Sebelum Deng Xiaoping mengubah kebijakan nasional, perubahan sebenarnya dimulai dari bawah dan secara ilegal. Akhir 1978, di sebuah desa bernama Xiaogang, Provinsi Anhui, 18 kepala keluarga petani diam-diam menandatangani kontrak untuk membagi lahan kolektif menjadi petak-petak individu, sesuatu yang saat itu masih dianggap \"kontra-revolusioner\"."
+        },
+        {
+          "type": "paragraph",
+          "text": "Mereka bahkan berjanji saling menjaga anak satu sama lain kalau ada yang ditangkap."
+        },
+        {
+          "type": "paragraph",
+          "text": "Hasil panen tahun berikutnya melonjak drastis dibanding hasil kolektif bertahun-tahun sebelumnya. Alih-alih dihukum, eksperimen ini justru menarik perhatian pejabat provinsi, lalu pusat dan menjadi cikal bakal Household Responsibility System yang diadopsi secara nasional pada awal 1980-an."
+        },
+        {
+          "type": "paragraph",
+          "text": "Pelajaran pentingnya: reformasi terbesar China tidak dimulai dari rencana lima tahun yang rapi, tapi dari eksperimen liar yang berhasil dan kemudian dilegalkan setelah faktanya terbukti."
+        },
+        {
+          "type": "paragraph",
+          "text": "2. Zona Ekonomi Khusus Shenzhen sebagai studi kasus, bukan sekadar anekdot"
+        },
+        {
+          "type": "paragraph",
+          "text": "Artikel asli menyebut Shenzhen \"dulunya desa nelayan\". Ini benar, tapi angka aslinya lebih gila dari yang biasa diceritakan: pada 1980, Shenzhen (waktu itu masih Kabupaten Bao'an) hanya berpenduduk sekitar 30.000 jiwa dengan GDP sekitar 270 juta yuan (kira-kira 40 juta dolar AS)."
+        },
+        {
+          "type": "paragraph",
+          "text": "Tidak ada universitas. Tidak ada infrastruktur industri berarti."
+        },
+        {
+          "type": "paragraph",
+          "text": "Empat puluh empat tahun kemudian, GDP Shenzhen mencapai sekitar 3,68 triliun yuan (2024) lonjakan lebih dari 10.000 kali lipat, dengan pertumbuhan tahunan rata-rata di atas 20% selama beberapa dekade."
+        },
+        {
+          "type": "paragraph",
+          "text": "Populasinya sekarang sekitar 17–18 juta orang, dan kota ini menjadi rumah bagi Huawei, Tencent, BYD, dan DJI."
+        },
+        {
+          "type": "paragraph",
+          "text": "Yang jarang dijelaskan: kenapa Shenzhen, bukan kota lain? Lokasinya persis di sebelah Hong Kong membuatnya jadi laboratorium ideal modal, teknologi, dan cara kerja pasar bisa \"bocor\" masuk dari Hong Kong tanpa harus membuka seluruh negara sekaligus."
+        },
+        {
+          "type": "paragraph",
+          "text": "Kalau eksperimen ini gagal, kerugiannya terbatas. Kalau berhasil (dan berhasil), formulanya bisa direplikasi ke Zhuhai, Shantou, Xiamen, lalu ke seluruh pesisir timur."
+        },
+        {
+          "type": "paragraph",
+          "text": "3. \"Turnamen GDP\" insentif karier yang jarang dibahas terus terang"
+        },
+        {
+          "type": "paragraph",
+          "text": "Ini bagian yang paling sering disebut sepintas tapi jarang dijelaskan mekanismenya."
+        },
+        {
+          "type": "paragraph",
+          "text": "Sejak era reformasi, promosi pejabat lokal China gubernur provinsi, wali kota, sekretaris partai kabupaten sangat dipengaruhi oleh kinerja ekonomi wilayah yang mereka pimpin, terutama pertumbuhan GDP dan realisasi investasi."
+        },
+        {
+          "type": "paragraph",
+          "text": "Sejumlah ekonom politik menyebut ini sebagai semacam \"turnamen\": ratusan pejabat di level yang sama berkompetisi secara implisit, dan yang berkinerja terbaik naik jenjang, sementara yang tertinggal tersingkir dari jalur karier."
+        },
+        {
+          "type": "paragraph",
+          "text": "Efeknya: kompetisi antar-daerah yang jauh lebih intens daripada yang biasa terjadi di negara demokrasi, di mana kepala daerah sering lebih fokus menjaga elektabilitas lokal ketimbang bersaing metrik ekonomi lintas provinsi."
+        },
+        {
+          "type": "paragraph",
+          "text": "Sistem ini punya biaya besar juga termasuk proyek infrastruktur berlebihan yang dibangun demi angka, bukan demi kebutuhan riil (lihat bagian utang daerah di bawah)."
+        },
+        {
+          "type": "paragraph",
+          "text": "Tapi sebagai mesin akselerasi pertumbuhan jangka pendek-menengah, efektivitasnya sulit dibantah."
+        },
+        {
+          "type": "paragraph",
+          "text": "4. Dual-track pricing, TVE, dan momentum WTO 2001"
+        },
+        {
+          "type": "paragraph",
+          "text": "Tiga elemen teknis yang sering hilang dari versi populer cerita ini:"
+        },
+        {
+          "type": "list",
+          "ordered": false,
+          "items": [
+            "Dual-track pricing: alih-alih membebaskan semua harga sekaligus (yang berisiko memicu inflasi dan gejolak sosial seperti yang terjadi di banyak negara bekas Uni Soviet), China membiarkan harga pasar dan harga terkontrol negara berjalan berdampingan untuk sementara, lalu perlahan menggeser bobotnya ke pasar. Transisi bertahap, bukan \"shock therapy\".",
+            "Township and Village Enterprises (TVE): perusahaan industri milik kolektif desa/kecamatan yang meledak jumlahnya di 1980–1990-an, menyerap puluhan juta tenaga kerja pedesaan tanpa harus menunggu privatisasi penuh BUMN.",
+            "Aksesi WTO Desember 2001: ini titik pembelokan (inflection point) yang sering diremehkan. Begitu masuk WTO, ekspor dan investasi asing langsung ke China melonjak tajam karena tarif dan hambatan dagang runtuh secara sistemik bertepatan persis dengan momen ketika rantai pasok global sedang direstrukturisasi besar-besaran. Timing ini penting untuk diingat di bagian akhir artikel ini."
+          ]
+        },
+        {
+          "type": "heading",
+          "text": "Empat Generasi Pemimpin: Konsistensi Arah di Balik Pergantian Gaya"
+        },
+        {
+          "type": "paragraph",
+          "text": "Artikel asli menyebut sekilas \"Deng → Jiang → Hu → Xi. Ada perubahan gaya, tapi arah besar tetap.\" Ini poin yang layak dibedah per generasi, karena justru dari perbedaan gaya masing-masing terlihat pola konsistensi yang sebenarnya."
+        },
+        {
+          "type": "paragraph",
+          "text": "Deng Xiaoping (1978–1992): pembuka pintu."
+        },
+        {
+          "type": "paragraph",
+          "text": "Semboyannya \"menyeberangi sungai dengan meraba batu\" meringkas seluruh filosofinya: tidak ada cetak biru besar di awal, hanya eksperimen kecil yang diperbesar begitu terbukti berhasil persis seperti yang terjadi di Xiaogang dan Shenzhen (lihat bagian mekanisme di atas)."
+        },
+        {
+          "type": "paragraph",
+          "text": "Yang penting dicatat: Deng secara sengaja menolak model \"big bang\" privatisasi sekaligus seperti yang kemudian dilakukan Rusia pasca-Uni Soviet. Kendali politik Partai dipertahankan penuh; yang dilepas hanya ekonominya, dan itu pun bertahap."
+        },
+        {
+          "type": "paragraph",
+          "text": "Jiang Zemin (1993–2003): integrasi ke sistem global."
+        },
+        {
+          "type": "paragraph",
+          "text": "Dua hal di era ini sering diremehkan pengaruhnya. Pertama, aksesi WTO Desember 2001 (sudah dibahas di bagian mekanisme) yang membuka banjir investasi asing dan ekspor."
+        },
+        {
+          "type": "paragraph",
+          "text": "Kedua dan ini yang jarang disebut dalam narasi \"keajaiban ekonomi\" pertumbuhan ekonomi tinggi era ini juga berfungsi sebagai alat stabilisasi politik pasca-krisis Tiananmen 1989, ketika legitimasi Partai sempat goyah keras di mata domestik maupun internasional."
+        },
+        {
+          "type": "paragraph",
+          "text": "Pembangunan infrastruktur besar-besaran (jalan tol, pelabuhan, jaringan listrik) di periode ini menjadi fondasi fisik yang membuat ledakan manufaktur dekade berikutnya mungkin terjadi."
+        },
+        {
+          "type": "paragraph",
+          "text": "Hu Jintao (2002–2012): dari kecepatan ke soal ketimpangan."
+        },
+        {
+          "type": "paragraph",
+          "text": "Setelah dua dekade fokus murni pada kecepatan pertumbuhan, era Hu mulai mengakui biaya sosialnya: konsep \"Scientific Outlook on Development\" dan \"Harmonious Society\" secara eksplisit mengangkat isu ketimpangan kota dan desa dan kerusakan lingkungan yang selama ini jadi korban sampingan pertumbuhan cepat."
+        },
+        {
+          "type": "paragraph",
+          "text": "Olimpiade Beijing 2008 menjadi simbol kebangkitan yang diakui dunia, bersamaan dengan pertumbuhan kelas menengah domestik yang pesat. Ini periode ketika China resmi menjadi \"pabrik dunia\" rantai pasok global mulai bergantung penuh pada kapasitas manufaktur China yang murah dan sangat skalabel."
+        },
+        {
+          "type": "paragraph",
+          "text": "Xi Jinping (2012–sekarang): dari mengejar ke memimpin."
+        },
+        {
+          "type": "paragraph",
+          "text": "Kalau Deng membuka pintu dan Jiang-Hu mengonsolidasikannya, Xi mencoba mengunci posisi China di puncak rantai nilai global."
+        },
+        {
+          "type": "paragraph",
+          "text": "Belt and Road Initiative (2013) memperluas pengaruh infrastruktur dan dagang ke lebih dari 150 negara. Made in China 2025 menargetkan penguasaan teknologi strategis semikonduktor, AI, robotika, kendaraan listrik, bioteknologi secara eksplisit, bukan lagi sekadar hasil sampingan dari keterbukaan pasar."
+        },
+        {
+          "type": "paragraph",
+          "text": "Kampanye antikorupsi besar-besaran sekaligus membersihkan birokrasi dan memperkuat kendali pusat."
+        },
+        {
+          "type": "paragraph",
+          "text": "Kemiskinan ekstrem resmi dinyatakan tuntas tahun 2020 (bagian dari ~800 juta orang yang disebut di awal artikel ini)."
+        },
+        {
+          "type": "paragraph",
+          "text": "Di sisi lain, penekanan pada \"common prosperity\" dan keamanan nasional menandai pergeseran dari pertumbuhan-di-atas-segalanya ke pertumbuhan-yang-dikontrol-ketat pergeseran yang sebagian pengamat kaitkan dengan melambatnya dinamisme sektor swasta belakangan ini."
+        },
+        {
+          "type": "paragraph",
+          "text": "Pola yang konsisten lintas empat generasi ini: setiap pemimpin mewarisi masalah dari pendahulunya dan menyesuaikan kebijakan tanpa mengubah arah dasar (keterbukaan ekonomi terkontrol + kendali politik terpusat)."
+        },
+        {
+          "type": "paragraph",
+          "text": "Sejumlah ekonom politik menyebut hasil dari pola ini sebagai authoritarian-developmental state bukan kapitalisme murni, bukan pula sosialisme klasik, tapi hibrida yang sangat adaptif dengan Partai sebagai institusi tunggal yang mengelola trade-off antara pertumbuhan, stabilitas, dan kontrol."
+        },
+        {
+          "type": "heading",
+          "text": "Data Terbaru: China di Semester I 2026 (Terverifikasi)"
+        },
+        {
+          "type": "paragraph",
+          "text": "Angka di artikel asli sudah cukup akurat, tapi ini versi yang sudah dicek silang dengan data resmi Biro Statistik Nasional (NBS) dan Bea Cukai China per Juli 2026:"
+        },
+        {
+          "type": "list",
+          "ordered": false,
+          "items": [
+            "GDP H1 2026 tumbuh 4,7% (Q1: 5,0%, Q2: 4,3%), mencapai sekitar 69,57 triliun yuan (~10,25 triliun dolar AS). Ini masih dalam target resmi 4,5–5% untuk tahun 2026.",
+            "Manufaktur teknologi tinggi tumbuh 13,3%, manufaktur peralatan (equipment manufacturing) tumbuh 9,3% jauh di atas rata-rata output industri (5,4%).",
+            "Pendorong pertumbuhan baru (manufaktur kelas atas, ekonomi digital, jasa modern) menyumbang lebih dari 40% dari total pertumbuhan ekonomi di semester ini.",
+            "Robot industri naik produksinya 28% tahun-ke-tahun; robot layanan naik 11,9%.",
+            "Ekspor teknologi tinggi melonjak 39% dalam H1 2026, dengan ekspor mobil naik 65,3% menjadi 5,096 juta unit, baterai litium naik 37,6%, dan turbin angin naik 35,6%.",
+            "Perdagangan total mencapai rekor 25,47 triliun yuan (~3,75 triliun dolar AS), naik 16,9%. Perdagangan dengan negara mitra Belt and Road Initiative tumbuh 14,8%, kini menyumbang lebih dari separuh (50,9%) total perdagangan luar negeri China untuk pertama kalinya.",
+            "Pendapatan per kapita naik 5,2%, sementara pengangguran perkotaan turun ke 5,0% pada Juni 2026.",
+            "China diperkirakan menyumbang sekitar 25–30% pertumbuhan ekonomi global tahun ini (angkanya bervariasi tergantung metodologi PPP vs nominal yang dipakai lembaga yang menghitung) tetap yang terbesar dari negara mana pun."
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "Sinyal paling segar dan paling perlu diperhatikan karena baru rilis akhir Juli 2026: PMI manufaktur resmi jatuh ke zona kontraksi, ke angka 49,2 dari 50,3 di bulan Juni, kontraksi pertama sejak Februari. PMI jasa dan konstruksi ikut terkontraksi, dengan PMI konstruksi anjlok ke titik terendah dalam sejarah pencatatan datanya."
+        },
+        {
+          "type": "paragraph",
+          "text": "Tapi detailnya penting untuk konteks: PMI manufaktur teknologi tinggi dan manufaktur peralatan justru masih ekspansif, masing-masing di 53,3 dan 51,4  jauh di atas rata-rata industri. Pelemahan ini terkonsentrasi di manufaktur tradisional dan permintaan domestik, bukan di sektor teknologi tinggi yang jadi andalan strategi baru China."
+        },
+        {
+          "type": "paragraph",
+          "text": "NBS sendiri mengaitkan sebagian penurunan ini dengan basis pembanding yang tinggi dari periode sebelumnya serta gangguan topan di sejumlah wilayah produksi."
+        },
+        {
+          "type": "paragraph",
+          "text": "Semua ini terjadi di tengah negosiasi ulang Rencana Lima Tahun ke-15 (2026–2030), yang secara eksplisit mengarahkan fokus ke \"new quality productive forces\": AI, semikonduktor, energi bersih, dan manufaktur canggih bukan lagi tenaga kerja murah."
+        },
+        {
+          "type": "heading",
+          "text": "Sisi Lain yang Jarang Diangkat"
+        },
+        {
+          "type": "paragraph",
+          "text": "Ini bagian yang bikin artikel model \"China vs dunia\" biasanya berhenti bercerita karena mengakuinya bikin narasinya kurang rapi. Tapi justru di sinilah kredibilitas sebuah analisis diuji."
+        },
+        {
+          "type": "paragraph",
+          "text": "Krisis properti belum selesai. Sektor properti dulu menyumbang sekitar sepertiga GDP China. Sejak gagal bayar Evergrande pada 2021 (utang sekitar 300 miliar dolar AS versus aset sekitar 240 miliar dolar AS pada 2025), krisis ini terus menjalar bahkan ke developer yang dulu dianggap paling aman, seperti China Vanke yang mengalami penundaan pembayaran obligasi pada 2025–2026. Drag sektor properti terhadap pertumbuhan GDP diperkirakan masih sekitar 1,5–2 poin persentase pada 2025–2026."
+        },
+        {
+          "type": "paragraph",
+          "text": "Utang pemerintah daerah menumpuk."
+        },
+        {
+          "type": "paragraph",
+          "text": "Local Government Financing Vehicles (LGFV) kendaraan pembiayaan di luar neraca yang dipakai pemerintah daerah untuk membangun infrastruktur punya utang yang melonjak hingga sekitar 9,2 triliun dolar AS pada 2024, dengan rasio utang terhadap kapasitas fiskal daerah mencapai sekitar 180%."
+        },
+        {
+          "type": "paragraph",
+          "text": "Pemerintah pusat sampai harus menerbitkan sekitar 644,7 miliar dolar AS obligasi daerah baru di tahun 2026 hanya untuk membiayai ulang dan menahan risiko sistemik ini. Ironisnya, sebagian utang ini adalah efek samping langsung dari \"turnamen GDP\" yang dibahas di atas pejabat daerah membangun proyek besar demi angka pertumbuhan, bukan selalu demi kebutuhan riil."
+        },
+        {
+          "type": "paragraph",
+          "text": "Demografi berbalik arah dengan cepat."
+        },
+        {
+          "type": "paragraph",
+          "text": "Populasi China turun untuk tahun keempat berturut-turut di 2025, berkurang 3,39 juta menjadi 1,405 miliar. Angka kelahiran anjlok ke titik terendah dalam sejarah modern (7,92 juta), sementara angka kematian naik ke 11,31 juta. Tingkat fertilitas kini mendekati 1,0 jauh di bawah angka penggantian populasi (2,1). Penduduk usia 60 tahun ke atas kini mencapai sekitar 23% dari total populasi. India sudah menyalip China sebagai negara berpenduduk terbanyak di dunia sejak 2023."
+        },
+        {
+          "type": "paragraph",
+          "text": "Ini bukan masalah kecil: tenaga kerja yang menyusut berarti mesin pertumbuhan yang selama ini ditopang bonus demografi mulai kehilangan bahan bakarnya."
+        },
+        {
+          "type": "paragraph",
+          "text": "Pengangguran muda masih tinggi meski membaik."
+        },
+        {
+          "type": "paragraph",
+          "text": "Angka resmi sempat menyentuh rekor 21,3% pada Juni 2023 sebelum publikasinya dihentikan sementara dan metodologinya diubah (mengeluarkan mahasiswa dari perhitungan). Setelah metodologi baru, angkanya berkisar 15–17% sepanjang 2025, dan turun ke 14,9% pada Juni 2026 level terendah dalam setahun, tapi masih jauh di atas level pra-2020."
+        },
+        {
+          "type": "paragraph",
+          "text": "Deflasi yang berkepanjangan."
+        },
+        {
+          "type": "paragraph",
+          "text": "China memasuki tahun keempat periode deflasi, dengan permintaan domestik yang masih lemah meski ekspor dan manufaktur bertumbuh kencang sinyal bahwa mesin pertumbuhan saat ini masih sangat bertumpu pada sisi produksi/ekspor, belum konsumsi domestik."
+        },
+        {
+          "type": "paragraph",
+          "text": "Produktivitas mulai melambat."
+        },
+        {
+          "type": "paragraph",
+          "text": "Di luar isu siklus seperti PMI dan properti, ada tren struktural yang lebih dalam: pertumbuhan produktivitas total faktor (total factor productivity/TFP) ukuran seberapa efisien modal dan tenaga kerja diubah jadi output melambat dibanding dekade 2000-an dan awal 2010-an. Ini pola umum yang dialami negara yang sudah lulus dari fase catch-up murni: semakin dekat ke batas teknologi dunia, semakin sulit mengejar lompatan produktivitas semudah dulu, dan semakin besar ketergantungan pada inovasi asli ketimbang adopsi teknologi orang lain."
+        },
+        {
+          "type": "paragraph",
+          "text": "Biaya politik yang jarang masuk hitungan ekonomi."
+        },
+        {
+          "type": "paragraph",
+          "text": "Model ini dibangun di atas sistem satu partai tanpa kompetisi politik terbuka, kontrol ketat atas informasi dan media, serta ruang yang sangat terbatas untuk oposisi atau kritik institusional. Para pengamat hak asasi dan sejumlah ekonom pembangunan berargumen bahwa efisiensi kebijakan ini datang dengan trade-off nyata terhadap kebebasan sipil dan akuntabilitas sebuah perdebatan normatif yang terpisah dari pertanyaan \"apakah modelnya bekerja secara ekonomi\", tapi tidak bisa dipisahkan kalau pertanyaannya \"apakah modelnya layak ditiru\"."
+        },
+        {
+          "type": "heading",
+          "text": "Perdebatan yang Sebenarnya: Model Institusional, atau Momentum Sejarah?"
+        },
+        {
+          "type": "paragraph",
+          "text": "Ini pertanyaan yang jarang diajukan tapi paling penting: seberapa besar keberhasilan China benar-benar disebabkan oleh desain institusional yang unik (turnamen GDP, SEZ, reformasi bertahap) dan seberapa besar disebabkan oleh faktor yang lebih generik dan sulit direplikasi kembali?"
+        },
+        {
+          "type": "paragraph",
+          "text": "Sejumlah ekonom pembangunan menunjuk ke tiga faktor non-institusional yang besar pengaruhnya:"
+        },
+        {
+          "type": "list",
+          "ordered": false,
+          "items": [
+            "Efek \"catch-up\" standar: negara miskin yang mengadopsi teknologi dan metode produksi dari negara maju secara alami tumbuh lebih cepat daripada negara yang sudah berada di batas teknologi dunia. Ini pola yang juga terlihat di Jepang pasca-perang dan Korea Selatan bukan eksklusif milik China.",
+            "Bonus demografi raksasa: China punya populasi usia kerja yang sangat besar dan terus tumbuh persis di dekade-dekade ketika reformasi dimulai. Jendela demografi itu sekarang sudah tertutup dan tidak bisa dibuka lagi dengan kebijakan apa pun, seperti yang terlihat dari data populasi di atas.",
+            "Timing globalisasi yang pas: aksesi WTO 2001 bertepatan dengan restrukturisasi rantai pasok global besar-besaran. Negara lain yang mencoba strategi serupa lebih belakangan sebagian negara Afrika dengan zona ekonomi khusus ala Etiopia, misalnya beroperasi di lanskap perdagangan global yang jauh lebih kompetitif dan proteksionis dibanding yang dihadapi China di awal 2000-an."
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "Ini bukan berarti institusi tidak penting desain SEZ dan turnamen GDP jelas mempercepat dan mengarahkan pertumbuhan itu ke tempat yang produktif, bukan hanya kebetulan. Tapi ini menjelaskan kenapa negara yang hanya meniru \"kulit\"-nya (bikin SEZ, bikin slogan industri 4.0) tanpa punya bonus demografi atau timing global yang sama, cenderung gagal bukan cuma karena mereka lupa fondasi institusionalnya, tapi karena sebagian faktor kuncinya memang tidak bisa didaur ulang oleh negara lain di 2026."
+        },
+        {
+          "type": "heading",
+          "text": "Pelajaran untuk Indonesia"
+        },
+        {
+          "type": "paragraph",
+          "text": "Ini bagian yang selalu muncul di kolom komentar setiap kali konten tentang China beredar di lini masa Indonesia: perbandingan dengan korupsi, inkonsistensi kebijakan lintas rezim, dan lemahnya disiplin implementasi di dalam negeri."
+        },
+        {
+          "type": "paragraph",
+          "text": "Godaannya adalah menyimpulkan \"Indonesia butuh sistem politik seperti China\". Itu kesimpulan yang salah arah dan mengabaikan seluruh bagian \"Sisi Lain\" di atas."
+        },
+        {
+          "type": "paragraph",
+          "text": "Yang sebenarnya bisa dipelajari bukan sistem politiknya, tapi elemen institusional spesifik yang secara teknis bisa berjalan di sistem demokrasi mana pun:"
+        },
+        {
+          "type": "list",
+          "ordered": false,
+          "items": [
+            "Konsistensi visi lintas rezim bukan berarti kebijakan tidak boleh berubah, tapi arah besar (hilirisasi, transisi energi, digitalisasi birokrasi) idealnya tidak di-reset total setiap pergantian pemerintahan lima tahunan.",
+            "Eksperimen kebijakan berskala kecil sebelum scale-up nasional persis logika SEZ: uji di satu kabupaten/kota dengan kerangka evaluasi yang jelas, baru direplikasi kalau terbukti berhasil, bukan langsung diberlakukan nasional lalu diperbaiki sambil jalan.",
+            "Insentif kinerja yang terukur untuk pejabat daerah bukan meniru \"turnamen GDP\" mentah-mentah (biayanya sudah dibahas di atas), tapi prinsip dasarnya: karier birokrat idealnya terkait pada indikator kinerja yang bisa diverifikasi, bukan semata loyalitas politik.",
+            "Investasi jangka panjang pada pendidikan teknis dan R&D hasilnya baru terlihat satu-dua dekade kemudian, sehingga sering dikorbankan demi proyek yang hasilnya terlihat sebelum pemilu berikutnya."
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "Poin yang justru paling penting datang dari bagian \"Sisi Lain\" di atas, bukan dari bagian kesuksesannya: China sendiri sekarang membayar ongkos dari resep yang sama yang membuatnya melesat insentif kinerja yang terlalu agresif menghasilkan utang daerah yang menumpuk, pertumbuhan yang terlalu bertumpu pada investasi dan ekspor menghasilkan sektor properti oversupply dan permintaan domestik yang lemah."
+        },
+        {
+          "type": "paragraph",
+          "text": "Kalau ada satu hal yang paling penting untuk ditiru, itu bukan resepnya secara statis, tapi cara mereka menyesuaikan arah begitu satu resep mulai menunjukkan efek samping."
+        },
+        {
+          "type": "heading",
+          "text": "Jadi, Apakah Modelnya Layak Ditiru?"
+        },
+        {
+          "type": "paragraph",
+          "text": "Kembali ke kerangka authoritarian-developmental state di bagian sebelumnya: pertanyaan aslinya masih relevan, hanya perlu dipecah jadi dua:"
+        },
+        {
+          "type": "paragraph",
+          "text": "Secara ekonomi murni mengangkat ratusan juta orang dari kemiskinan dalam waktu singkat buktinya sangat kuat bahwa kombinasi eksperimen terkontrol, kompetisi antar-daerah, dan keterbukaan bertahap ini bekerja secara luar biasa efektif, terlepas dari timing yang menguntungkan."
+        },
+        {
+          "type": "paragraph",
+          "text": "Secara institusional dan politik mereplikasinya berarti juga mereplikasi biayanya: kontrol politik yang ketat, akumulasi utang daerah yang masif karena tekanan mengejar angka, dan sekarang krisis properti serta demografi yang harus ditanggung generasi berikutnya. China 2026 sedang membayar sebagian tagihan dari resep yang sama yang membuatnya melesat di 1990-an dan 2000-an."
+        },
+        {
+          "type": "paragraph",
+          "text": "Pertanyaan untuk pembaca"
+        },
+        {
+          "type": "paragraph",
+          "text": "Kalau negara Anda cuma boleh meminjam satu hal dari China, tapi harus memilih antara \"mekanisme\"-nya (turnamen kinerja pejabat, SEZ terkontrol) atau \"kondisi\"-nya (bonus demografi, timing globalisasi) yang mana yang menurutmu sebenarnya lebih menentukan?"
+        },
+        {
+          "type": "paragraph",
+          "text": "Tulis di komentar. Yang paling menarik akan saya bahas di thread berikutnya."
+        },
+        {
+          "type": "paragraph",
+          "text": "Sumber data :"
+        },
+        {
+          "type": "paragraph",
+          "text": "NBS China (Biro Statistik Nasional), Bea Cukai China (GAC), Xinhua/SCIO, Global Times, CGTN, SCMP, AP, CNBC, RAND Corporation, Rhodium Group, Atlantic Council, Congressional Research Service (Congress.gov), World Economic Forum/IMF, TradingEconomics, Caixin Global seluruh data ekonomi H1 2026 dan PMI Juli 2026 per rilis resmi Juli–Agustus 2026. Memahami China dalam 40 MWorld Economic Forum/IMF, TradingEconomics, Caixin Global seluruh data ekonomi H1 2026 dan PMI Juli 2026 per rilis resmi Juli–Agustus 2026."
+        }
+      ],
+      "source": "x",
+      "xStatusId": "2084516281261388041",
+      "xArticleId": "2084504865146068992",
+      "xUrl": "https://x.com/Deadmouse_jpeg/status/2084516281261388041",
+      "articleUrl": "https://x.com/i/article/2084504865146068992",
+      "likes": 5,
+      "views": 262
+    },
+    {
+      "id": "x-2080914975363666184",
+      "title": "I Dissected the Official X Algorithm Source Code",
+      "dek": "Here’s Exactly How Ranking Works in 2026 The practical consequence is structural. Content shown to existing followers faces a lower effective quality bar. Content that needs to reach new people",
+      "category": "x-articles",
+      "coverImage": "https://pbs.twimg.com/media/HODdnGGawAAbWx8.jpg?name=large",
+      "author": "Noob Sensei",
+      "date": "2026-07-25",
+      "readTime": 7,
+      "featured": false,
+      "tags": [
+        "x-articles",
+        "@Deadmouse_jpeg"
+      ],
+      "body": [
+        {
+          "type": "heading",
+          "text": "Here’s Exactly How Ranking Works in 2026"
+        },
+        {
+          "type": "paragraph",
+          "text": "The practical consequence is structural. Content shown to existing followers faces a lower effective quality bar. Content that needs to reach new people must overcome both the retrieval threshold and the explicit out-of-network penalty. This is why consistent topical identity and high signal quality matter disproportionately for growth beyond one’s current audience."
+        },
+        {
+          "type": "paragraph",
+          "text": "Home Mixer: the orchestration layer"
+        },
+        {
+          "type": "paragraph",
+          "text": "The entire request is coordinated by Home Mixer. The pipeline runs in roughly this order:"
+        },
+        {
+          "type": "list",
+          "ordered": true,
+          "items": [
+            "Query hydration : load the user’s recent action sequence and social graph features",
+            "Candidate sourcing : pull from Thunder and Phoenix Retrieval",
+            "Candidate hydration : attach post text, media metadata, author information, video duration, engagement counts, language, and other features",
+            "Pre-scoring filters : remove posts that should never be ranked",
+            "Scoring : Phoenix predictions → weighted combination → author diversity adjustment → out-of-network adjustment",
+            "Selection : sort by final score and take the top K",
+            "Post-selection filters : final visibility and conversation deduplication checks"
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "The system is deliberately modular. New sources, hydrators, filters, and scorers can be added without rewriting the core loop. This composability is one reason the open-source release is useful: the architecture itself reveals the priorities of the production system."
+        },
+        {
+          "type": "paragraph",
+          "text": "Phoenix ranking: multi-action prediction with candidate isolation"
+        },
+        {
+          "type": "paragraph",
+          "text": "The heart of ranking is Phoenix, a transformer model adapted from Grok. Two design decisions are especially important."
+        },
+        {
+          "type": "paragraph",
+          "text": "Candidate isolation"
+        },
+        {
+          "type": "paragraph",
+          "text": "Candidate isolation During inference, candidates are prevented from attending to one another through a strict attention mask. Each post is scored solely against the user’s history and features. The score of one post does not depend on which other posts happen to be in the same batch. This makes scores stable and cacheable, and it removes a class of competitive artifacts that existed in earlier systems."
+        },
+        {
+          "type": "paragraph",
+          "text": "Multi-action prediction"
+        },
+        {
+          "type": "paragraph",
+          "text": "Phoenix does not output a single relevance score. It predicts the probability of 19 distinct actions for every candidate. The final ranking score is a weighted sum of those probabilities:"
+        },
+        {
+          "type": "paragraph",
+          "text": "Final Score = Σ (weightᵢ × P(actionᵢ))"
+        },
+        {
+          "type": "paragraph",
+          "text": "Positive actions increase the score. Negative actions decrease it. The model is trained to anticipate both."
+        },
+        {
+          "type": "paragraph",
+          "text": "The actions include (among others):"
+        },
+        {
+          "type": "list",
+          "ordered": false,
+          "items": [
+            "favorite (like)",
+            "reply",
+            "retweet / repost",
+            "quote and quoted click",
+            "click",
+            "photo expand",
+            "profile click",
+            "follow author",
+            "video view / video quality view (only if duration exceeds a minimum threshold)",
+            "share, share via DM, share via copy link",
+            "dwell (binary) and dwell time (continuous)",
+            "not interested",
+            "block author",
+            "mute author",
+            "report"
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "Because negative actions carry negative weights, a post that generates large volumes of replies but also large volumes of “Not Interested,” mutes, or reports can receive a net-negative contribution from the engagement it produces. This is a direct mathematical reason why certain styles of controversy underperform over time even when they appear to generate high raw engagement."
+        },
+        {
+          "type": "paragraph",
+          "text": "Author diversity decay"
+        },
+        {
+          "type": "paragraph",
+          "text": "The system applies an explicit decay to repeated authors within a single feed response. The multiplier for the n-th post from the same author follows a form roughly equivalent to:"
+        },
+        {
+          "type": "paragraph",
+          "text": "multiplier = (1 − floor) × decayⁿ + floor"
+        },
+        {
+          "type": "paragraph",
+          "text": "The first post from an author in a given batch receives full weight. Subsequent posts are progressively attenuated. The practical effect is that flooding a user’s feed with multiple posts in a short window actively reduces the ranking strength of the later posts."
+        },
+        {
+          "type": "paragraph",
+          "text": "Creators who post several times in rapid succession are structurally disadvantaged relative to those who space higher-quality posts across time."
+        },
+        {
+          "type": "paragraph",
+          "text": "The real discovery window is approximately 80 hours"
+        },
+        {
+          "type": "paragraph",
+          "text": "A widespread assumption among creators is that a post’s fate is sealed within the first hour or two. The code contradicts this."
+        },
+        {
+          "type": "paragraph",
+          "text": "The constant POST_AGE_MAX_MINUTES is set to 4800 — eighty hours. Within this window the system retains fine-grained recency signals. After the window, posts move into an overflow bucket. They remain eligible for retrieval and ranking, but they lose the precision of age-based differentiation."
+        },
+        {
+          "type": "paragraph",
+          "text": "High-quality posts therefore have a multi-day runway. Prematurely declaring a post “dead” after ninety minutes is one of the more common ways creators abandon content that still had distribution potential."
+        },
+        {
+          "type": "paragraph",
+          "text": "Grox: content understanding that runs in parallel"
+        },
+        {
+          "type": "paragraph",
+          "text": "Engagement prediction is only part of the system. A separate service called Grox handles content understanding. It performs several distinct jobs:"
+        },
+        {
+          "type": "list",
+          "ordered": false,
+          "items": [
+            "Quality scoring and explicit “slop” detection (low-effort or generic AI-generated content)",
+            "Multimodal embedding that incorporates text, images, and the automatic speech recognition transcript of videos",
+            "Spam detection with stricter scrutiny applied to replies from low-follower accounts",
+            "Reply quality scoring",
+            "Policy and safety enforcement (PTOS)"
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "Because the speech transcript is part of the content embedding, videos that rely solely on on-screen text without spoken narration lose a meaningful semantic signal. The model can “read” what is said aloud."
+        },
+        {
+          "type": "paragraph",
+          "text": "Grox therefore acts as both a quality gate and a semantic enricher before or alongside the main ranking model."
+        },
+        {
+          "type": "paragraph",
+          "text": "Cold-start and topic retrieval"
+        },
+        {
+          "type": "paragraph",
+          "text": "Users with short engagement histories are routed to specialized inference paths and can receive candidates via topic-based retrieval rather than pure behavioral similarity. This creates a structural advantage for accounts whose content is consistently and clearly categorizable. Vague or constantly shifting topical identities receive less benefit from this pathway."
+        },
+        {
+          "type": "paragraph",
+          "text": "Filters that can eliminate posts regardless of predicted engagement"
+        },
+        {
+          "type": "paragraph",
+          "text": "Even a high-scoring post can be removed by filters that run before or after scoring. Pre-scoring filters remove duplicates, posts that are too old, the viewer’s own posts, content from blocked or muted authors, posts containing muted keywords, previously served posts, and ineligible subscription content. Post-selection filters handle visibility (deleted, spam, violence, etc.) and conversation deduplication."
+        },
+        {
+          "type": "paragraph",
+          "text": "Identical or near-identical reposts are particularly vulnerable to hard deduplication. The system is designed to avoid showing the same content repeatedly."
+        },
+        {
+          "type": "paragraph",
+          "text": "What remains unknown"
+        },
+        {
+          "type": "paragraph",
+          "text": "The open-source release reveals architecture and logic, not production parameters. The exact numerical weights for each action, the precise value of the out-of-network factor, internal thresholds, and the prompts used by Grox for quality and slop detection are not published. Claims that assign specific multipliers to likes versus shares versus follows are not grounded in the public code."
+        },
+        {
+          "type": "paragraph",
+          "text": "Implications that actually align with the system"
+        },
+        {
+          "type": "paragraph",
+          "text": "The durable strategies follow directly from the mechanics:"
+        },
+        {
+          "type": "list",
+          "ordered": false,
+          "items": [
+            "Content that produces genuine dwell time and shares is structurally preferred over content that produces only low-effort likes.",
+            "Patterns that reliably generate Not Interested, mute, or report signals are actively penalized.",
+            "Clear, consistent topical identity improves both retrieval for new users and long-term model understanding of the account.",
+            "Visuals should carry information; decorative or generic images risk lower quality scores from Grox.",
+            "Video should contain spoken substance because the transcript is part of the embedding.",
+            "Spacing posts avoids author-diversity decay within individual feed sessions.",
+            "Identical reposts are filtered; the system does not reward simple duplication."
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "The model has observed the actions users take — positive and negative — and predicts the same actions for future candidates. The only sustainable advantage is producing content that reliably elicits the positive actions the model is measuring while avoiding the negative ones."
+        },
+        {
+          "type": "paragraph",
+          "text": "Closing"
+        },
+        {
+          "type": "paragraph",
+          "text": "The current X For You algorithm is more transparent than most large-scale recommendation systems because the core architecture is public. It is also less gameable than its predecessors because the heavy lifting is performed by a transformer that has been trained on real behavioral sequences rather than on a list of hand-written rules."
+        },
+        {
+          "type": "paragraph",
+          "text": "Understanding the dual candidate paths, the multi-action scoring formula, the active subtraction of negative signals, the author diversity decay, the eighty-hour discovery window, and the parallel content-understanding layer removes a large amount of mythology that still circulates among creators."
+        },
+        {
+          "type": "paragraph",
+          "text": "The system rewards content that people actually want to spend time with, share, and return to. Everything else is secondary."
+        },
+        {
+          "type": "paragraph",
+          "text": "Source: the official open-source repository at github.com/xai-org/x-algorithm."
+        }
+      ],
+      "source": "x",
+      "xStatusId": "2080914975363666184",
+      "xArticleId": "2080906589771538432",
+      "xUrl": "https://x.com/Deadmouse_jpeg/status/2080914975363666184",
+      "articleUrl": "https://x.com/i/article/2080906589771538432",
+      "likes": 4,
+      "views": 637
+    },
+    {
+      "id": "x-2080309949025136833",
+      "title": "Mulyono vs Penguasa Saat Ini di Konoha",
+      "dek": "Anatomi Pertarungan Bayang-Bayang Kekuasaan Di tanah Konoha, nama bukan sekadar identitas. Nama bisa menjadi senjata, kode rahasia, bahkan medan perang simbolik yang lebih tajam daripada kunai. Sejak",
+      "category": "x-articles",
+      "coverImage": "https://pbs.twimg.com/media/HN67WNGaEAAOyrm.jpg?name=large",
+      "author": "Noob Sensei",
+      "date": "2026-07-23",
+      "readTime": 5,
+      "featured": false,
+      "tags": [
+        "x-articles",
+        "@Deadmouse_jpeg"
+      ],
+      "body": [
+        {
+          "type": "heading",
+          "text": "Anatomi Pertarungan Bayang-Bayang Kekuasaan"
+        },
+        {
+          "type": "paragraph",
+          "text": "Di tanah Konoha, nama bukan sekadar identitas. Nama bisa menjadi senjata, kode rahasia, bahkan medan perang simbolik yang lebih tajam daripada kunai. Sejak gelombang gejolak besar di musim panas 2024, satu kata sederhana “Mulyono” berhasil menembus setiap sudut percakapan warga desa, meresap ke spanduk aksi, dan menjadi bahasa sehari-hari kritik di antara para shinobi biasa."
+        },
+        {
+          "type": "paragraph",
+          "text": "Nama itu milik seorang tokoh yang pernah memimpin desa selama satu dekade. Dan hari ini, di tengah pemerintahan Hokage Baru bersama Wakil Hokagenya, “Mulyono” bukan lagi sekadar kenangan masa kecil. Ia telah berubah menjadi metafora untuk bayang-bayang kekuasaan yang belum sepenuhnya pergi dari atap-atap Konoha."
+        },
+        {
+          "type": "paragraph",
+          "text": "Artikel ini membedah secara menyeluruh asal-usul nama tersebut, bagaimana ia berevolusi menjadi senjata politik di tengah desa, hingga dinamika nyata antara Mulyono dan para penguasa saat ini."
+        },
+        {
+          "type": "paragraph",
+          "text": "1. Asal-Usul Nama: Dari Mulyono ke Nama yang Lebih Ringan"
+        },
+        {
+          "type": "paragraph",
+          "text": "Sang tokoh yang kini dikenal luas sebagai Mulyono dilahirkan di sebuah desa kecil di wilayah tengah Konoha. Orang tuanya memberinya nama Mulyono yang dalam bahasa leluhur desa berarti “mulia”."
+        },
+        {
+          "type": "paragraph",
+          "text": "Namun, bayi itu sering sakit-sakitan. Dalam tradisi setempat, nama yang “terlalu berat” dianggap menjadi beban bagi tubuh yang masih lemah. Nama kemudian diganti menjadi sesuatu yang lebih ringan, yang diartikan sebagai “anak laki-laki yang selamat dan sejahtera”."
+        },
+        {
+          "type": "paragraph",
+          "text": "Sang tokoh sendiri telah berkali-kali membenarkan cerita ini di hadapan warga. Pergantian nama bukanlah skandal. Yang membuatnya meledak adalah konteks politik desa pada 2024. Saat gelombang aksi menolak perubahan aturan pemilihan kepala desa (yang dianggap membuka jalan bagi dinasti), nama “Mulyono” tiba-tiba menjadi topik di mana-mana. Ia dipakai sebagai bentuk sanksi sosial: cara menyebut tokoh tersebut tanpa menyebut nama resmi, sekaligus mengingatkan masa lalu yang dianggap “lemah” dan rentan.\n\n2. Dari Nama Kecil Menjadi Senjata di Tengah Desa"
+        },
+        {
+          "type": "paragraph",
+          "text": "Penggunaan “Mulyono” berkembang cepat di antara warga Konoha. Di kalangan kritis, ia menjadi kode untuk mengkritik politik dinasti, pelemahan lembaga desa, dan warisan akhir masa kepemimpinan sebelumnya. Bahkan dalam aksi besar yang disebut “Konoha Gelap” pada 2025, tuntutan untuk memproses tanggung jawab mantan pemimpin disuarakan dengan menyebut nama tersebut."
+        },
+        {
+          "type": "paragraph",
+          "text": "Di sisi lain, keluarga dekat sempat mencoba menetralkannya dengan memakai nama itu sebagai gimik. Tapi di ruang publik yang lebih luas, “Mulyono” tetap membawa konotasi kritis sebuah bayangan yang sulit dihilangkan."
+        },
+        {
+          "type": "paragraph",
+          "text": "3. Penguasa Saat Ini: Hokage Baru dan Wakil Hokage"
+        },
+        {
+          "type": "paragraph",
+          "text": "Sejak musim gugur 2024, Konoha dipimpin oleh Hokage Baru, dengan putra Mulyono sebagai Wakil Hokage. Dewan desa yang baru mempertahankan banyak tokoh lama dari era sebelumnya. Transisi awal terasa mulus. Hokage Baru bahkan menyebutnya sebagai salah satu peralihan paling lancar dalam sejarah desa."
+        },
+        {
+          "type": "paragraph",
+          "text": "Namun, dalam 18 bulan pertama, pola yang berbeda mulai terlihat jelas di setiap sudut Konoha."
+        },
+        {
+          "type": "paragraph",
+          "text": "4. Fase Honeymoon yang Cepat Berakhir"
+        },
+        {
+          "type": "paragraph",
+          "text": "Awal pemerintahan Hokage Baru penuh pujian kepada Mulyono. Pertemuan pribadi sering terjadi. Banyak program dilanjutkan: pembangunan infrastruktur desa, ketahanan pangan, dan hilirisasi hasil bumi. Wakil Hokage menjadi simbol kontinuitas."
+        },
+        {
+          "type": "paragraph",
+          "text": "Tanda pergeseran muncul bertahap:"
+        },
+        {
+          "type": "list",
+          "ordered": false,
+          "items": [
+            "Beberapa kebijakan era Mulyono dibatalkan atau dipangkas secara signifikan, termasuk rencana pajak tinggi dan anggaran ibu kota baru yang sempat menjadi mercusuar.",
+            "Program-program khas Hokage Baru diluncurkan: makan bergizi gratis untuk anak-anak desa, koperasi desa di setiap pelosok, dana abadi desa, panen raya serentak bersama pasukan keamanan, digitalisasi layanan publik terintegrasi, dan konsolidasi badan usaha desa (dari ribuan menjadi ratusan).",
+            "Hokage Baru berulang kali menegaskan bahwa ia tidak dikendalikan oleh bayang-bayang Mulyono. Ia membantah isu “Hokage boneka” di berbagai kesempatan resmi."
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "5. Pengurangan Bayang-Bayang dan Friksi yang Menguat"
+        },
+        {
+          "type": "paragraph",
+          "text": "Proses yang disebut warga sebagai “pengurangan pengaruh Mulyono” berjalan perlahan tapi pasti. Hokage Baru secara sistematis membangun poros kekuasaannya sendiri. Beberapa tokoh yang masih menganggap Mulyono sebagai “bos” mulai mendapat sorotan. Kelompok purnawirawan pasukan keamanan desa pada 2025 bahkan secara formal meminta agar Wakil Hokage diganti, dengan alasan proses pencalonannya cacat."
+        },
+        {
+          "type": "paragraph",
+          "text": "Hubungan personal juga menegang. Mulyono tidak selalu diundang ke acara resmi desa. Pertemuan publik semakin jarang. Di sidang dewan desa pertengahan 2026, posisi duduk Wakil Hokage sempat tidak sejajar dengan Hokage Baru meski pihak istana menyebutnya teknis, warga membacanya sebagai sinyal."
+        },
+        {
+          "type": "paragraph",
+          "text": "Sementara itu, Mulyono tidak pasif. Ia melakukan kunjungan keliling desa (termasuk ke wilayah selatan pada Juni 2026), mengawal kelompok pendukungnya, dan secara terbuka mendorong agar duet Hokage Baru–Wakil Hokage dilanjutkan dua periode. Langkah ini dibaca sebagai upaya menjaga posisi tawar putranya menuju pemilihan 2029.\n\n6. Implikasi Lebih Luas: Kekuasaan, Keamanan Desa, dan 2029"
+        },
+        {
+          "type": "paragraph",
+          "text": "Pertarungan ini bukan sekadar personal. Ia mencerminkan beberapa lapisan sekaligus di dalam Konoha:"
+        },
+        {
+          "type": "list",
+          "ordered": false,
+          "items": [
+            "Negosiasi elite: Relasi yang dibangun di atas kepentingan pragmatis (bukan ideologi) mudah retak ketika kepentingan suksesi muncul.",
+            "Gaya kepemimpinan: Era Mulyono lebih mengandalkan lingkungan yang memungkinkan lewat aturan-aturan. Era Hokage Baru lebih bersifat komando dan melibatkan unsur pasukan keamanan lebih kuat.",
+            "Demokrasi desa: Kedua era dikritik atas konsolidasi kekuasaan dan pelemahan suara oposisi. Era baru menambah dimensi yang lebih militeristik.",
+            "Kehidupan warga: Program makan bergizi dan koperasi desa mendapat kritik operasional, sementara warisan utang, infrastruktur, dan distorsi ekonomi tetap jadi beban sehari-hari."
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "Menuju pemilihan 2029, benturan hampir tak terhindarkan. Mulyono ingin mengunci duet yang ada. Hokage Baru ingin ruang lebih leluasa untuk membangun legasi sendiri di tanah Konoha."
+        },
+        {
+          "type": "paragraph",
+          "text": "7. Apa yang Bisa Dipelajari dari Bayang-Bayang Ini?"
+        },
+        {
+          "type": "paragraph",
+          "text": "Politik di Konoha jarang menghasilkan konflik terbuka seperti perang antar-desa. Yang lebih sering terjadi adalah pertarungan bayang-bayang: simbol, manuver, dan negosiasi elite yang berlangsung di belakang layar. “Mulyono” adalah salah satu simbol paling efektif dalam dekade terakhir cara menyebut masa lalu tanpa menyebut nama lengkap, sekaligus mengingatkan bahwa kekuasaan tidak pernah benar-benar hilang begitu saja dari atap-atap desa."
+        },
+        {
+          "type": "paragraph",
+          "text": "Apakah bayang-bayang itu akan pudar, atau justru semakin panjang menjelang 2029? Jawabannya masih ditulis hari ini di istana desa, di kampung asal Mulyono, di ruang-ruang elite, dan di setiap percakapan warga Konoha."
+        },
+        {
+          "type": "paragraph",
+          "text": "Catatan sumber (semua berbasis liputan media utama dan pernyataan publik yang dapat diverifikasi hingga Juli 2026): berbagai laporan dari media besar desa, pernyataan resmi tokoh terkait, serta perkembangan dewan desa dan aksi warga.\n\n#DinamikaKekuasaan #Konoha #Hokage #Naruto #AnalisisPolitik #BayangBayangKekuasaan #XArticle"
+        }
+      ],
+      "source": "x",
+      "xStatusId": "2080309949025136833",
+      "xArticleId": "2080305135063117825",
+      "xUrl": "https://x.com/Deadmouse_jpeg/status/2080309949025136833",
+      "articleUrl": "https://x.com/i/article/2080305135063117825",
+      "likes": 5,
+      "views": 675
+    },
+    {
+      "id": "x-2079807062414946724",
+      "title": "Rp286 Triliun dan Nyawa yang Hilang: Anatomi Kecanduan Judi Online di Indonesia",
+      "dek": "12,3 juta orang Indonesia main judi online. Sebagian dari mereka menjual bayinya, memutilasi ibunya sendiri, atau membunuh istrinya karena kalah judi. Ini bukan hiperbola ini rangkuman berita 18 bulan",
+      "category": "x-articles",
+      "coverImage": "https://pbs.twimg.com/media/HNz0jweaQAAq-SV.jpg?name=large",
+      "author": "Noob Sensei",
+      "date": "2026-07-22",
+      "readTime": 4,
+      "featured": false,
+      "tags": [
+        "x-articles",
+        "@Deadmouse_jpeg"
+      ],
+      "body": [
+        {
+          "type": "quote",
+          "text": "12,3 juta orang Indonesia main judi online. Sebagian dari mereka menjual bayinya, memutilasi ibunya sendiri, atau membunuh istrinya karena kalah judi. Ini bukan hiperbola ini rangkuman berita 18 bulan terakhir."
+        },
+        {
+          "type": "paragraph",
+          "text": "Desember 2024, di sebuah rumah sunyi di Ciputat Timur, tetangga curiga karena tidak ada tanda kehidupan seharian. Saat pintu dibuka: seorang ayah, istrinya, dan anaknya yang berusia 3 tahun, tak bernyawa. Forensik digital menemukan 15 aplikasi pinjaman online dan 4 situs judi di ponsel sang ayah. Riwayat pencariannya sehari sebelum kejadian: cara membunuh."
+        },
+        {
+          "type": "paragraph",
+          "text": "Ini bukan kasus tunggal. Ini adalah gejala dari sebuah krisis yang tumbuh diam-diam di balik layar HP jutaan orang Indonesia dan datanya jauh lebih mengerikan dari yang kebanyakan orang sadari."
+        },
+        {
+          "type": "heading",
+          "text": "Skalanya Sudah di Luar Kendali"
+        },
+        {
+          "type": "paragraph",
+          "text": "Angka pemain judi online di Indonesia naik-turun tergantung siapa yang menghitung dan kapan, tapi arahnya selalu satu: naik. Pasca-pandemi, prevalensinya baru 1,38% populasi (3,7 juta orang). Tahun 2024, melonjak 156% jadi 9,7 juta orang. Pemerintah sempat berhasil menekannya ke 3,1 juta lewat pemblokiran massal pertengahan 2025 tapi menjelang akhir tahun yang sama, angkanya melompat lagi ke 12,3 juta orang, setara 4,4% dari seluruh penduduk Indonesia."
+        },
+        {
+          "type": "paragraph",
+          "text": "Uang yang berputar? PPATK mencatat Rp286,84 triliun sepanjang 2025 lewat 422 juta transaksi. Sejak 2017, akumulasinya sudah tembus Rp1.032 triliun. Sebagai perbandingan, itu lebih besar dari anggaran banyak kementerian digabung."
+        },
+        {
+          "type": "paragraph",
+          "text": "Yang mengejutkan: ini bukan permainan orang kaya. 70,7% pemain berpenghasilan Rp0–5 juta per bulan. Hanya 0,4% yang berpenghasilan di atas Rp100 juta. Judi online di Indonesia adalah fenomena kelas pekerja dan 2% pemainnya bahkan berusia di bawah 10 tahun (sekitar 80.000 anak)."
+        },
+        {
+          "type": "paragraph",
+          "text": "Kabupaten Bogor jadi wilayah dengan pemain terbanyak se-Indonesia: 103.092 orang, deposit Rp414,4 miliar. Jakarta Barat menyusul dengan 89.320 pemain, terkonsentrasi di Cengkareng."
+        },
+        {
+          "type": "heading",
+          "text": "Kenapa Susah Berhenti Ini Bukan Soal \"Kurang Iman\""
+        },
+        {
+          "type": "paragraph",
+          "text": "Slot online dirancang oleh orang-orang yang paham persis cara kerja otak manusia. Hadiah diberikan secara acak dan tak terprediksi pola yang membuat otak terus berharap menang bahkan setelah berkali-kali kalah, karena mengaitkan euforia dengan kemungkinan hadiah berikutnya."
+        },
+        {
+          "type": "paragraph",
+          "text": "Simbol \"hampir menang\" (dua cherry, kurang satu lagi) memicu dopamin yang hampir sama besar dengan menang beneran, meski secara matematis tetap rugi. Psikiater RSCM bahkan mencatat kasus kecanduan yang bermain hingga 18 jam sehari pola perilaku yang secara klinis mirip penyalahgunaan narkoba, lengkap dengan \"ilusi kendali\" bahwa pemain punya skill, padahal murni algoritma."
+        },
+        {
+          "type": "heading",
+          "text": "Ketika Kalah Judi Berubah Jadi Tragedi"
+        },
+        {
+          "type": "paragraph",
+          "text": "Ini bagian yang paling sulit ditulis, tapi paling penting untuk dipahami — karena angka statistik sering terasa abstrak sampai kita lihat apa yang sebenarnya terjadi di baliknya."
+        },
+        {
+          "type": "paragraph",
+          "text": "Bunuh diri jadi pola berulang. Seorang pria di Bekasi ditemukan tewas Februari 2025; polisi menyimpulkan penyebabnya depresi akibat judi slot. Di Mataram, di Ogan Ilir, seorang ASN di Baubau semua kasus serupa: kalah judi, terlilit utang, lalu mengakhiri hidup. Bahkan institusi militer tak luput: seorang perwira TNI AL dengan utang Rp819 juta ditemukan tewas di pos komando di Papua, dan sekitar 4.000 prajurit TNI dijatuhi sanksi karena terlibat judi online sepanjang 2024."
+        },
+        {
+          "type": "paragraph",
+          "text": "Kekerasan terhadap keluarga sendiri. Di Sumedang, seorang suami membunuh istrinya ibu dari dua anak kecil karena menolak membayarkan utang judinya. Di Lahat, Sumatra Selatan, awal 2026, seorang anak membunuh dan memutilasi ibu kandungnya sendiri karena tidak diberi uang untuk berjudi. Di Jakarta, seorang ayah menjual bayinya yang berusia 11 bulan seharga Rp15 juta uangnya dipakai beli HP dan modal judi."
+        },
+        {
+          "type": "paragraph",
+          "text": "Uang orang lain pun digelapkan. Seorang mantan pegawai BRI berusia 30 tahun menghabiskan sekitar Rp15 miliar dana nasabah untuk judi online, dari total Rp17,2 miliar yang ia gelapkan dituntut 10,5 tahun penjara. Bahkan aparat negara terlibat: 24 tersangka kasus judi online melibatkan 9 pegawai Kementerian Komdigi, dengan penyitaan uang Rp49 miliar yang diduga bayaran \"jasa pengamanan\" agar situs judi tidak diblokir."
+        },
+        {
+          "type": "paragraph",
+          "text": "Bahkan bansos untuk rakyat miskin pun tersedot. PPATK menemukan lebih dari 600.000 penerima bantuan sosial yang terindikasi bermain judi online sebagian bahkan mengaku dokter dan pegawai BUMN saat mendaftar. Dana beasiswa mahasiswa pun terdeteksi mengalir ke situs judi."
+        },
+        {
+          "type": "heading",
+          "text": "Negara Sudah Bergerak Tapi Kalah Cepat"
+        },
+        {
+          "type": "paragraph",
+          "text": "Pemerintah membentuk Satgas Pemberantasan Judi Daring lewat Keppres 21/2024, memperberat sanksi lewat KUHP baru (denda hingga Rp2 miliar), dan memblokir jutaan konten judi. Tapi hasilnya rapuh: penurunan jumlah pemain di semester I 2025 langsung terbalik pada akhir tahun yang sama. Ini menandakan masalahnya bukan cuma soal penegakan hukum tapi soal desain platform, akses tanpa batas, dan tekanan ekonomi kelas bawah yang membuat judi online terasa seperti satu-satunya jalan pintas keluar dari kemiskinan."
+        },
+        {
+          "type": "paragraph",
+          "text": "Kalau kamu atau orang terdekatmu sedang bergumul dengan kecanduan judi online, ini bukan aib ini kondisi klinis yang bisa ditangani. RS jiwa di berbagai kota (RSCM, RSJ Marzoeki Mahdi Bogor, RSJ Menur Surabaya, dan lainnya) sudah membuka klinik adiksi perilaku khusus untuk ini."
+        },
+        {
+          "type": "paragraph",
+          "text": "Data: PPATK, BPS, Kemensos, Kemenkes, TNI AD/AL, dan pemberitaan Kompas, Tempo, Detik, CNBC Indonesia, Bisnis.com sepanjang 2024–2026.\n\n#JudiOnline #JudolIndonesia #PPATK #KrisisSosial #DataJournalism"
+        }
+      ],
+      "source": "x",
+      "xStatusId": "2079807062414946724",
+      "xArticleId": "2079805879768285184",
+      "xUrl": "https://x.com/Deadmouse_jpeg/status/2079807062414946724",
+      "articleUrl": "https://x.com/i/article/2079805879768285184",
+      "likes": 0,
+      "views": 448
+    },
+    {
+      "id": "x-2079487993669148749",
+      "title": "The Dark Side of Crypto Airdrops",
+      "dek": "How Projects Turned Testnet Farmers, Airdrop Hunters & Discord Grinders Into Free Labor For the last three years, an entire generation of crypto users believed they had cracked the code. Grind the",
+      "category": "x-articles",
+      "coverImage": "https://pbs.twimg.com/media/HNvTOlPaoAAcmU5.jpg?name=large",
+      "author": "Noob Sensei",
+      "date": "2026-07-21",
+      "readTime": 5,
+      "featured": false,
+      "tags": [
+        "x-articles",
+        "@Deadmouse_jpeg"
+      ],
+      "body": [
+        {
+          "type": "heading",
+          "text": "How Projects Turned Testnet Farmers, Airdrop Hunters & Discord Grinders Into Free Labor"
+        },
+        {
+          "type": "paragraph",
+          "text": "For the last three years, an entire generation of crypto users believed they had cracked the code."
+        },
+        {
+          "type": "paragraph",
+          "text": "Grind the testnet. Spam Discord for levels. Bridge, swap, mint worthless NFTs. Stay consistent for months."
+        },
+        {
+          "type": "paragraph",
+          "text": "Then wait for the airdrop that would finally change your life."
+        },
+        {
+          "type": "paragraph",
+          "text": "In 2025, that dream officially died."
+        },
+        {
+          "type": "paragraph",
+          "text": "What started as a mutual exchange between early users and new projects quietly transformed into one of the most efficient free-labor systems in the history of the internet. Projects extracted millions of hours of testing, data, and engagement then filtered most of the people who did the work out of the rewards."
+        },
+        {
+          "type": "paragraph",
+          "text": "This is the full story of how it happened, who got burned, and why the old playbook no longer works."
+        },
+        {
+          "type": "paragraph",
+          "text": "1. The Original Promise (And How It Was Broken)"
+        },
+        {
+          "type": "paragraph",
+          "text": "In the early days of Uniswap, ENS, Arbitrum, and Optimism, airdrops actually rewarded real early users. You used the product, you got tokens. Simple."
+        },
+        {
+          "type": "paragraph",
+          "text": "By 2023–2024 the model mutated."
+        },
+        {
+          "type": "paragraph",
+          "text": "Projects realized they could:"
+        },
+        {
+          "type": "list",
+          "ordered": false,
+          "items": [
+            "Generate fake metrics for VCs and CEX listings",
+            "Stress-test their networks for free",
+            "Create the illusion of a thriving community"
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "by dangling the possibility of an airdrop in front of tens of thousands of hungry farmers."
+        },
+        {
+          "type": "paragraph",
+          "text": "Users provided the labor. Projects kept the upside."
+        },
+        {
+          "type": "paragraph",
+          "text": "2. The Biggest Offenders"
+        },
+        {
+          "type": "paragraph",
+          "text": "Monad (Late 2025)  The Final Nail"
+        },
+        {
+          "type": "paragraph",
+          "text": "Over 300 million addresses interacted with the Monad testnet. Studios ran millions of wallets. When the airdrop finally dropped, every single testnet interaction address was excluded. Only ~5,000–5,500 people under a vague “Monad Community” category (mostly NFT holders, Discord roles, and mainnet-connected wallets) received anything meaningful. Community allocation sat at roughly 3.3%."
+        },
+        {
+          "type": "paragraph",
+          "text": "The message was clear: the people who actually tested the chain were no longer valuable."
+        },
+        {
+          "type": "paragraph",
+          "text": "LayerZero (ZRO)"
+        },
+        {
+          "type": "paragraph",
+          "text": "Users burned gas for 18 months bridging and messaging. Right before TGE the team launched one of the most aggressive Sybil hunts in history including a public “self-report” system. Over 800,000 wallets were removed. Many real multi-wallet users (people who simply practiced good security hygiene) were caught in the crossfire with zero appeal process."
+        },
+        {
+          "type": "paragraph",
+          "text": "zkSync, Linea, Starknet, Grass, Backpack"
+        },
+        {
+          "type": "list",
+          "ordered": false,
+          "items": [
+            "zkSync was widely called the most farmable airdrop ever — until the criteria quietly shifted and many long-term interactors got nothing.",
+            "Linea ran a nearly two-year Galxe Odyssey that felt like a full-time unpaid job.",
+            "Grass had people running nodes 24/7 for electricity and bandwidth, only to deliver “pennies” relative to the real costs.",
+            "Backpack spent two years farming trading volume points, then wiped accounts with sudden one-device-one-IP rules."
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "The pattern repeated so often it stopped being a coincidence."
+        },
+        {
+          "type": "paragraph",
+          "text": "3. What Farmers Are Actually Saying on X"
+        },
+        {
+          "type": "paragraph",
+          "text": "The backlash on X has been brutal and consistent:"
+        },
+        {
+          "type": "quote",
+          "text": "“After months of testing, grinding faucets and running thousands of txns, most testnet users found out they weren’t eligible… 2025 has truly been a bad year for testnet users.”"
+        },
+        {
+          "type": "quote",
+          "text": "“The last hope for testnet users was Monad and it failed us too. I spent unlimited hours and sleepless nights… Still not eligible.”"
+        },
+        {
+          "type": "paragraph",
+          "text": "One farmer documented grinding seven major projects (Starknet, zkSync, LayerZero, Monad, Somnia, Xion, Berachain). Almost every account received zero. No explanation. No appeal. Just a black-box decision labeled “Sybil.”"
+        },
+        {
+          "type": "paragraph",
+          "text": "The most common complaints:"
+        },
+        {
+          "type": "list",
+          "ordered": false,
+          "items": [
+            "Zero transparency",
+            "Criteria changed after the snapshot",
+            "No appeal process",
+            "Real users punished alongside actual Sybils",
+            "Time and money completely wasted"
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "4. Discord Grinding The Other Free Labor Machine"
+        },
+        {
+          "type": "paragraph",
+          "text": "While testnets extracted on-chain activity, Discord extracted social labor."
+        },
+        {
+          "type": "paragraph",
+          "text": "Projects installed leveling bots (MEE6, Arcane, etc.) and turned community participation into a points game:"
+        },
+        {
+          "type": "list",
+          "ordered": false,
+          "items": [
+            "Message every 45–60 seconds for text XP",
+            "Sit in voice channels for Voice XP",
+            "React, help newcomers, create content, invite friends"
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "Serious farmers ran 10–20 Discord accounts, used AI chatbots, AutoHotkey scripts, and even hired cheap grinders on Fiverr."
+        },
+        {
+          "type": "paragraph",
+          "text": "Reaching high roles (Contributor, OG, Inner Circle) often required hundreds of hours. Many of those same roles later counted for almost nothing in the final airdrop."
+        },
+        {
+          "type": "paragraph",
+          "text": "The result? Discord servers filled with “gm” spam, empty conversations, and mercenary energy  while projects got beautiful engagement metrics to show investors."
+        },
+        {
+          "type": "paragraph",
+          "text": "5. The Real Cost"
+        },
+        {
+          "type": "paragraph",
+          "text": "This system created three clear losers:"
+        },
+        {
+          "type": "list",
+          "ordered": true,
+          "items": [
+            "Retail farmers especially those from developing countries who treated airdrop hunting as a full-time job.",
+            "Genuine early believers who actually tested products and gave feedback.",
+            "The culture itself communities became extractive instead of collaborative."
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "Meanwhile the winners stayed the same: teams, VCs, and a small group of sophisticated multi-wallet operators who understood how to game the new anti-Sybil systems."
+        },
+        {
+          "type": "paragraph",
+          "text": "6. Where We Are Now (Mid-2026)"
+        },
+        {
+          "type": "paragraph",
+          "text": "The golden age of “just farm the testnet and get paid” is over."
+        },
+        {
+          "type": "paragraph",
+          "text": "Projects have learned that pure activity metrics are cheap to fake and expensive to reward. The new meta is shifting toward:"
+        },
+        {
+          "type": "list",
+          "ordered": false,
+          "items": [
+            "Quality contribution over quantity",
+            "On-chain + social + content signals",
+            "Stricter proof-of-humanity and clustering detection",
+            "Smaller, more targeted community allocations"
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "Most pure testnet and Discord grinders will continue to get filtered. The people who still win are those who combine real usage, genuine relationships, and content that actually moves the ecosystem."
+        },
+        {
+          "type": "paragraph",
+          "text": "Final Thought"
+        },
+        {
+          "type": "paragraph",
+          "text": "Airdrops were never free money. They were always a transfer of value  from the people doing the work to the people designing the rules."
+        },
+        {
+          "type": "paragraph",
+          "text": "The only question left is whether the next generation of farmers will keep playing the same game… or finally demand better terms."
+        },
+        {
+          "type": "paragraph",
+          "text": "What about you?"
+        },
+        {
+          "type": "paragraph",
+          "text": "Have you been burned by a testnet or Discord grind that ended in zero? Which project disappointed you the most?"
+        },
+        {
+          "type": "paragraph",
+          "text": "Drop your story below. The replies on this one are going to be gold."
+        }
+      ],
+      "source": "x",
+      "xStatusId": "2079487993669148749",
+      "xArticleId": "2079481836858925056",
+      "xUrl": "https://x.com/Deadmouse_jpeg/status/2079487993669148749",
+      "articleUrl": "https://x.com/i/article/2079481836858925056",
+      "likes": 0,
+      "views": 370
+    },
+    {
+      "id": "x-2078757179172278617",
+      "title": "Rahasia Gelap di Balik Feed X-mu: Ribuan Akun Creator “Wanita Cantik” Ternyata Pria!",
+      "dek": "Pernah scroll X dan ketemu akun cewek super hot yang selalu reply cepat, foto seksi, bio menggoda, lalu langsung kasih link OnlyFans atau “chat private”? Kamu pikir itu cewek asli yang lagi cari cuan?",
+      "category": "x-articles",
+      "coverImage": "https://pbs.twimg.com/media/HNky8UNbkAAP9dz.jpg?name=large",
+      "author": "Noob Sensei",
+      "date": "2026-07-19",
+      "readTime": 5,
+      "featured": false,
+      "tags": [
+        "x-articles",
+        "@Deadmouse_jpeg"
+      ],
+      "body": [
+        {
+          "type": "paragraph",
+          "text": "Pernah scroll X dan ketemu akun cewek super hot yang selalu reply cepat, foto seksi, bio menggoda, lalu langsung kasih link OnlyFans atau “chat private”? Kamu pikir itu cewek asli yang lagi cari cuan? Banyak yang salah tebak. \n\nFenomena ini bukan isu kecil. Ribuan akun creator di X berpura-pura jadi wanita/perempuan baik lewat foto curian, AI-generated, maupun “chatters” (pria yang dibayar rendah untuk pura-pura jadi cewek). Mereka mendominasi engagement di niche adult content, influencer, bahkan propaganda politik. \n\nKenapa ini penting? Karena ini memanipulasi algoritma X, menipu jutaan pengguna (terutama pria), dan menciptakan bisnis miliaran rupiah yang gelap. \n\nMari kita bedah secara mendalam, netral, dan lengkap berdasarkan pola nyata di platform, laporan investigasi, dan kebijakan resmi X.\n\nApa Sebenarnya yang Terjadi?\n1. Ini bukan sekadar “catfish biasa”. Ada dua kategori utama:\nAkun Individual/Scam Pria (sering dari Nigeria, India, Filipina, atau lokal) membuat profil wanita cantik menggunakan foto curian/AI. Tujuannya: sextortion (minta foto bugil lalu blackmail), romance scam, atau crypto scam.\n\n2. Creator Economy & Agency Model  Yang paling masif. Banyak “female creators” di OnlyFans, Fansly, atau promo di X sebenarnya dikelola pria atau chatters (tim pria yang chat sebagai cewek). Mereka pakai foto/video asli model (atau AI), tapi interaksi DM, sexting, dan sales handle oleh pria berbayar murah.\n\nStudi dan investigasi (termasuk dari media seperti The Sun, WIRED, StreetPress) menunjukkan:"
+        },
+        {
+          "type": "list",
+          "ordered": false,
+          "items": [
+            "Chatters sering dibayar hanya 75p per jam (~Rp15.000/jam) tapi menghasilkan ribuan dolar per hari untuk owner/agency.",
+            "Female profile secara statistik dapat 3x lebih banyak views dibanding male profile (data Cyabra).",
+            "AI-generated “hot conservative/MAGA girl” juga marak untuk farming engagement di niche tertentu."
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "Ini bukan teori konspirasi ini model bisnis yang sangat menguntungkan karena pria tahu apa yang disukai pria.\n\nMotif & Tujuan Utama (Semua Terungkap)"
+        },
+        {
+          "type": "paragraph",
+          "text": "1. Monetisasi Maksimal (Motif Terbesar)"
+        },
+        {
+          "type": "list",
+          "ordered": false,
+          "items": [
+            "Target utama: Pria kesepian, horny, atau mencari “girlfriend experience” (GFE).",
+            "Mereka ciptakan ilusi hubungan emosional + seksual → subscriber bayar subscription + tips + custom content + paid chat.",
+            "Chatters dilatih khusus: “Enslavement aspect” (manipulasi psikologis agar subscriber kecanduan), jual konten mahal, roleplay fetish (termasuk incest fantasy di beberapa kasus).",
+            "Kenapa pria yang handle? Karena mereka paham psikologi pria lebih baik, bisa multi-task (handle 5-10 akun sekaligus), dan biaya tenaga kerja murah di negara berkembang.\n\n2. Boost Engagement & Algoritma X\nFemale avatar + konten visual menarik = lebih banyak like, reply, repost, bookmark. Algoritma X suka konten yang bikin orang berhenti scroll dan interact. Hasilnya: reach organik meledak, follower naik cepat, lalu monetisasi lewat X Premium atau link eksternal."
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "3. Scam & Extortion"
+        },
+        {
+          "type": "list",
+          "ordered": false,
+          "items": [
+            "Sextortion klasik: Minta foto bugil → ancam sebarkan.",
+            "Romance scam jangka panjang.",
+            "Beberapa hacker bahkan ambil alih akun OnlyFans creator asli lalu isi dengan konten scam/crypto."
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "4. Motif Lain (Lebih Kecil tapi Ada)"
+        },
+        {
+          "type": "list",
+          "ordered": false,
+          "items": [
+            "Propaganda/influence operation (state actor atau individu pakai fake female untuk credibility lebih tinggi).",
+            "Fetish “catfish” (beberapa orang sengaja bayar untuk di-scam karena suka humiliation).",
+            "Trolling atau eksperimen sosial."
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "Apa yang Mereka Dapatkan? (Keuntungan Nyata)"
+        },
+        {
+          "type": "list",
+          "ordered": false,
+          "items": [
+            "Uang: Creator top bisa ratusan juta sampai miliaran rupiah/bulan. Agency/manager ambil 30-50% cut. Chatters dapat gaji kecil tapi volume tinggi.",
+            "Follower & Influence: Akun palsu bisa cepat ratusan ribu follower sebelum kena action.",
+            "Skalabilitas: Satu pria/agency bisa kelola puluhan akun sekaligus.",
+            "Risiko rendah (untuk sementara): Selama tidak impersonate orang spesifik terkenal atau jelas-jelas scam berat, banyak yang survive lama.",
+            "Tapi ada downside: Akun bisa kena suspend kapan saja kalau dilaporkan massal. Korban scam juga semakin aware dan report.\n\nBagaimana X Mengatur Pelanggaran Ini?\nX tidak punya aturan spesifik “dilarang pura-pura jadi wanita”. Tapi mereka punya Authenticity Policy dan Misleading and Deceptive Identities Policy yang sangat relevan:"
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "Kebijakan Utama X (Update 2025):"
+        },
+        {
+          "type": "list",
+          "ordered": false,
+          "items": [
+            "Fake Personas dilarang jika digunakan untuk deceptive/disruptive behavior. Termasuk: pakai foto stock/AI/stolen + bio misleading untuk menipu orang.",
+            "Impersonation (pura-pura jadi orang/group tertentu) → violation berat. Bisa langsung suspended atau dipaksa ubah profil.",
+            "Parody/Commentary/Fan (PCF) accounts diperbolehkan hanya jika jelas-jelas satire atau diskusi. Wajib tulis “parody”, “fake”, atau “fan” di AWAL nama akun + pakai avatar berbeda (aturan ketat mulai April 2025).",
+            "Platform manipulation & spam: Akun inauthentic, automation berlebih, atau coordinated fake behavior dilarang."
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "Cara X bertindak:"
+        },
+        {
+          "type": "list",
+          "ordered": false,
+          "items": [
+            "Kamu bisa report langsung dari profil → pilih “Impersonation” atau “Spam”.",
+            "Tim X investigasi. Kalau valid → akun di-suspend permanen atau dipaksa update profil (hapus foto/bio misleading).",
+            "Bukan semua akun fake langsung kena. Yang paling sering kena adalah yang jelas scam, sextortion, atau mass impersonation.",
+            "X sudah hapus miliaran akun fake sejak lama, dan enforcement semakin ketat di era Elon Musk (fokus authenticity & anti-spam)."
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "Catatan penting: Jika akun transparan (misalnya parody jelas atau AI art yang diakui), biasanya aman. Masalahnya adalah yang pura-pura jadi cewek asli untuk cuan tanpa disclosure.\n\nCara Mengenali Akun Palsu (Tips Praktis)"
+        },
+        {
+          "type": "list",
+          "ordered": false,
+          "items": [
+            "Foto terlalu sempurna / reverse image search ketemu sumber asli.",
+            "Bio generik + link OnlyFans/Fansly langsung.",
+            "Reply super cepat & konsisten (banyak akun pakai template/script).",
+            "Tidak pernah live/video call atau verifikasi wajah real-time.",
+            "Story tidak konsisten (umur, lokasi, pekerjaan berubah-ubah).",
+            "Heavy promo ke paid content sejak awal interaksi."
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "Kesimpulan: Ini Bukan Isu Gender, Tapi Isu Kejujuran & Ekonomi"
+        },
+        {
+          "type": "paragraph",
+          "text": "Fenomena ini lahir karena kombinasi:"
+        },
+        {
+          "type": "list",
+          "ordered": false,
+          "items": [
+            "Loneliness epidemic di kalangan pria",
+            "Creator economy yang sangat kompetitif",
+            "Teknologi (AI + cheap labor global)",
+            "Algoritma yang reward visual menarik"
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "Banyak creator wanita asli yang kerja keras dan jujur. Tapi sayangnya, model “fake female persona” terbukti sangat profitable sehingga banyak yang ikut-ikutan."
+        },
+        {
+          "type": "paragraph",
+          "text": "X sudah punya alat untuk melawan ini melalui report + policy authenticity. Tapi pada akhirnya, pengguna yang paling berkuasa. Semakin banyak yang report dan aware, semakin bersih platformnya.\n\nSekarang giliran kamu! 🔥"
+        },
+        {
+          "type": "list",
+          "ordered": false,
+          "items": [
+            "Pernah ketemu akun seperti ini di feed-mu? Ceritakan pengalamanmu di komentar (tanpa doxxing ya).",
+            "Menurutmu, apakah X sudah cukup tegas atau masih longgar?",
+            "Apa yang harus dilakukan creator asli untuk melawan akun fake ini?",
+            "Tag teman yang sering kena jebak akun “cewek cantik” ini!"
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "Like & repost kalau artikel ini bermanfaat.\nSumber & Referensi Utama (untuk transparansi):\nKebijakan resmi X (Authenticity & Impersonation), laporan investigasi The Sun, WIRED, StreetPress, data engagement analysis, dan pola yang konsisten dilaporkan pengguna sejak 2023-2026.Artikel ini dibuat untuk edukasi dan diskusi sehat — bukan untuk hate atau doxxing."
+        }
+      ],
+      "source": "x",
+      "xStatusId": "2078757179172278617",
+      "xArticleId": "2078748550796873728",
+      "xUrl": "https://x.com/Deadmouse_jpeg/status/2078757179172278617",
+      "articleUrl": "https://x.com/i/article/2078748550796873728",
+      "likes": 0,
+      "views": 988
+    },
+    {
+      "id": "x-2078444870843421031",
+      "title": "Rp400 per Komentar sampai Rp6 Miliar Setahun: Industri yang Mengatur Apa yang Kamu Percaya",
+      "dek": "Pernah nggak kamu lihat sebuah tagar tiba-tiba trending, terus mikir: \"wah, banyak banget ya orang yang peduli sama isu ini\"? Ada kemungkinan besar itu bukan keramaian beneran. Aku habis ngulik data,",
+      "category": "x-articles",
+      "coverImage": "https://pbs.twimg.com/media/HNgeiWeaIAAgg6k.jpg?name=large",
+      "author": "Noob Sensei",
+      "date": "2026-07-18",
+      "readTime": 4,
+      "featured": false,
+      "tags": [
+        "x-articles",
+        "@Deadmouse_jpeg"
+      ],
+      "body": [
+        {
+          "type": "paragraph",
+          "text": "Pernah nggak kamu lihat sebuah tagar tiba-tiba trending, terus mikir: \"wah, banyak banget ya orang yang peduli sama isu ini\"?"
+        },
+        {
+          "type": "paragraph",
+          "text": "Ada kemungkinan besar itu bukan keramaian beneran."
+        },
+        {
+          "type": "paragraph",
+          "text": "Aku habis ngulik data, riset akademik, dan investigasi jurnalistik soal industri buzzer di Indonesia dan angkanya jauh lebih gila dari yang aku kira."
+        },
+        {
+          "type": "heading",
+          "text": "Ini bukan cuma \"orang julid dibayar\""
+        },
+        {
+          "type": "paragraph",
+          "text": "Buzzer sering dianggap remeh: dikira cuma orang iseng yang dibayar recehan buat komentar. Faktanya, ini industri terstruktur dengan tim, SOP, dan rantai komando mirip agensi periklanan, cuma produknya adalah opini publik."
+        },
+        {
+          "type": "paragraph",
+          "text": "Istilahnya dari kata buzz  dengung lebah yang terus-menerus. Cocok banget, karena cara kerjanya memang: satu suara kecil, dikalikan ratusan akun, sampai kedengaran seperti gemuruh."
+        },
+        {
+          "type": "heading",
+          "text": "Perjalanannya dari 2009 sampai sekarang"
+        },
+        {
+          "type": "list",
+          "ordered": false,
+          "items": [
+            "2009  Muncul murni buat jualan produk di Twitter era awal.",
+            "2012 (Pilkada DKI Jakarta)  Mulai dipolitisasi. Dari promosi jadi senjata serang lawan.",
+            "2014 Jadi mesin kampanye hitam terselubung di Pemilu.",
+            "2019  Puncak polarisasi. Lahir tagar-tagar perang saudara digital.",
+            "2024  Naik level ke TikTok, konten video pendek, target pemilih muda."
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "Pola yang sama berulang tiap 5 tahun. Cuma platformnya yang ganti."
+        },
+        {
+          "type": "heading",
+          "text": "Anatomi sebuah operasi buzzer (ini yang bikin aku kaget)"
+        },
+        {
+          "type": "paragraph",
+          "text": "Kirain acak-acakan. Ternyata terorganisir kayak startup:"
+        },
+        {
+          "type": "paragraph",
+          "text": "1. Tim Narasi nentuin pesan inti yang mau didengungkan. \n2. Tim Kreatif bikin meme, infografis, video pendek. \n3. Tim Amplifikasi  puluhan sampai ratusan akun posting bareng, biar keliatan \"organik\". \n4. Tim Serangan Balik mass report akun lawan, bikin narasi tandingan, kadang nyerang personal."
+        },
+        {
+          "type": "paragraph",
+          "text": "Taktik favoritnya:"
+        },
+        {
+          "type": "list",
+          "ordered": false,
+          "items": [
+            "Ghost trending maksa tagar naik trending pakai volume posting yang dipaksakan.",
+            "Astroturfing bikin kesan dukungan akar rumput padahal direkayasa dari atas.",
+            "Debat palsu antarakun akun yang dikendalikan orang sama, \"berdebat\" sendiri biar keliatan hidup."
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "Kamu pernah lihat dua akun anonim yang \"berantem\" tapi somehow argumennya rapi banget kayak udah diskrip? Nah."
+        },
+        {
+          "type": "heading",
+          "text": "Angka yang bikin geleng kepala"
+        },
+        {
+          "type": "paragraph",
+          "text": "Ini bagian favoritku. Rentang tarifnya ekstrem banget:"
+        },
+        {
+          "type": "paragraph",
+          "text": "Level Tarif   Bot komentar otomatis Rp400 – Rp5.000 / komentar   Buzzer pemula Rp50rb – Rp300rb / postingan   Micro influencer Rp500rb – Rp2 juta / postingan   Macro influencer Rp30 juta – Rp75 juta / postingan   Buzzer papan atas hingga Rp6 miliar dalam setahun (investigasi Kompas, 2025)"
+        },
+        {
+          "type": "paragraph",
+          "text": "Sementara di sisi lain, riset ICW nemuin pemerintah pernah menggelontorkan puluhan miliar rupiah cuma buat jasa influencer/buzzer demi ngamanin opini soal kebijakan."
+        },
+        {
+          "type": "paragraph",
+          "text": "Jadi antara buzzer kelas bawah yang ngejar recehan Rp400 per komentar, sama yang duitnya masuk rekening miliaran itu industri yang sama."
+        },
+        {
+          "type": "heading",
+          "text": "Kenapa ini efektif banget? Karena algoritma ikut \"kemakan\""
+        },
+        {
+          "type": "paragraph",
+          "text": "Platform media sosial (termasuk yang lagi kamu pakai buat baca ini) meranking konten berdasarkan interaksi. Buzzer paham betul ini, jadi mereka:"
+        },
+        {
+          "type": "list",
+          "ordered": false,
+          "items": [
+            "Sengaja mancing emosi (marah, takut, bangga) karena konten begini lebih cepat viral.",
+            "Ngegas bareng dalam waktu sempit buat memicu sistem deteksi tren.",
+            "Nyebar narasi yang sama dalam format beda-beda di tiap platform."
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "Intinya: mereka nggak ngelawan algoritma. Mereka nunggangin algoritma."
+        },
+        {
+          "type": "paragraph",
+          "text": "Ironis emang, ngobrolin ini di platform yang algoritmanya juga bisa \"dimainin\" hal serupa. Tapi justru itu alasan kenapa penting buat paham cara kerjanya."
+        },
+        {
+          "type": "heading",
+          "text": "Apakah ini ilegal?"
+        },
+        {
+          "type": "paragraph",
+          "text": "Nggak ada UU yang literally bilang \"buzzer dilarang\". Tapi tindakannya bisa kena macam-macam pasal:"
+        },
+        {
+          "type": "list",
+          "ordered": false,
+          "items": [
+            "Pencemaran nama baik → penjara maks. 4 tahun / denda Rp750 juta",
+            "Ujaran kebencian SARA → penjara maks. 6 tahun / denda Rp1 miliar",
+            "Manipulasi akun/data elektronik → penjara maks. 12 tahun / denda Rp12 miliar",
+            "Pelanggaran privasi (UU PDP) → penjara maks. 5 tahun / denda Rp5 miliar"
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "Mei 2025 lalu, seorang \"bos buzzer\" bahkan dijerat pasal perintangan proses hukum oleh Kejagung karena pengerahan buzzernya terbukti bagian dari pemufakatan jahat yang direncanakan dari awal. Penegak hukum sekarang mulai nyasar dalangnya, bukan cuma akun eksekutornya."
+        },
+        {
+          "type": "heading",
+          "text": "Cara ngenalin akun buzzer (biar kamu nggak gampang digiring)"
+        },
+        {
+          "type": "paragraph",
+          "text": "Beberapa ciri yang paling gampang dicek:"
+        },
+        {
+          "type": "list",
+          "ordered": false,
+          "items": [
+            "Volume posting super tinggi dalam waktu singkat",
+            "Kalimat mirip banget, ditempel di banyak postingan berbeda",
+            "Hashtag & mention berlebihan yang nggak natural",
+            "Enggan diajak diskusi mendalam lempar komentar terus ilang"
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "Bedain bot vs buzzer manusia: bot biasanya cuma emoji atau kalimat generik (\"Nice post!\"), buzzer manusia bahasanya lebih \"manusiawi\" tapi pola kalimatnya berulang di banyak akun."
+        },
+        {
+          "type": "heading",
+          "text": "Jadi, gimana caranya nggak gampang digiring?"
+        },
+        {
+          "type": "list",
+          "ordered": true,
+          "items": [
+            "Cek klaim dari beberapa sumber sebelum percaya/share",
+            "Jeda dulu sebelum bereaksi ke konten yang emosional banget",
+            "Perhatikan pola akun sebelum anggap itu \"suara mayoritas\"",
+            "Laporkan akun yang jelas nyebar disinformasi"
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "Ruang digital yang sehat itu bukan tanggung jawab platform doang tapi juga tanggung jawab kita yang scroll tiap hari."
+        },
+        {
+          "type": "paragraph",
+          "text": "Pertanyaan buat kamu: pernah nggak kamu curiga suatu akun itu buzzer? Ciri apa yang bikin kamu langsung \"ini bukan orang beneran deh\"? Share di reply penasaran pola apa aja yang kalian tangkep."
+        },
+        {
+          "type": "paragraph",
+          "text": "Sumber: riset CIPG 2017, ISEAS-Yusof Ishak Institute, Oxford Internet Institute (laporan Cyber Troops), ICW, investigasi Kompas.id 2025, Hukumonline, BRIN."
+        }
+      ],
+      "source": "x",
+      "xStatusId": "2078444870843421031",
+      "xArticleId": "2078441751875092480",
+      "xUrl": "https://x.com/Deadmouse_jpeg/status/2078444870843421031",
+      "articleUrl": "https://x.com/i/article/2078441751875092480",
+      "likes": 1,
+      "views": 291
+    },
+    {
+      "id": "x-2078391497687269414",
+      "title": "Pencurian Konten & Engagement Farming di X: Ancaman Buat Creator Kecil & Cara X Melawannya",
+      "dek": "Pernah lo bikin video atau thread bagus, tiba-tiba akun besar copas tanpa credit, dapat jutaan view, terus dapat revenue? Atau lihat akun yang cuma posting “Say Hi kalau suka” / poll random / rage",
+      "category": "x-articles",
+      "coverImage": "https://pbs.twimg.com/media/HNfrTafaIAArwo0.jpg?name=large",
+      "author": "Noob Sensei",
+      "date": "2026-07-18",
+      "readTime": 4,
+      "featured": false,
+      "tags": [
+        "x-articles",
+        "@Deadmouse_jpeg"
+      ],
+      "body": [
+        {
+          "type": "paragraph",
+          "text": "Pernah lo bikin video atau thread bagus, tiba-tiba akun besar copas tanpa credit, dapat jutaan view, terus dapat revenue? Atau lihat akun yang cuma posting “Say Hi kalau suka” / poll random / rage bait tiap hari cuma buat farm like & reply?"
+        },
+        {
+          "type": "paragraph",
+          "text": "Itu namanya pencurian konten (content theft) & engagement farming."
+        },
+        {
+          "type": "paragraph",
+          "text": "Apa itu Pencurian Konten di X?"
+        },
+        {
+          "type": "paragraph",
+          "text": "Akun (biasanya besar) secara programmatic (otomatis) download & re-upload konten orang lain (video, foto, thread, meme) tanpa credit. Mereka ubah sedikit caption atau crop watermark supaya kelihatan “milik sendiri”."
+        },
+        {
+          "type": "paragraph",
+          "text": "Tujuannya? Game Creator Revenue Sharing Program X. Semakin banyak impression, semakin banyak uang. Akun kecil yang bikin konten asli kalah view, akun besar yang nyuri menang."
+        },
+        {
+          "type": "paragraph",
+          "text": "Contoh nyata:"
+        },
+        {
+          "type": "paragraph",
+          "text": "Mei 2026, Nikita Bier (Head of Product X) panggil akun besar seperti Mario Nawfal karena re-upload video ABC News tanpa credit. Revenue-nya dipotong 90%. Community Note juga muncul: “OP stole this video without providing credit.”"
+        },
+        {
+          "type": "paragraph",
+          "text": "Banyak kasus video viral dari tahun lalu atau bahkan 5 tahun lalu dicuri akun top."
+        },
+        {
+          "type": "paragraph",
+          "text": "Apa itu Engagement Farming?"
+        },
+        {
+          "type": "paragraph",
+          "text": "Posting konten low-effort / bait cuma buat maksimalkan like, reply, repost, & view secara artifisial."
+        },
+        {
+          "type": "paragraph",
+          "text": "Contoh taktik farming:"
+        },
+        {
+          "type": "list",
+          "ordered": false,
+          "items": [
+            "“Reply ‘Hi’ kalau follower < 2K”",
+            "Poll random / “Tag teman yang perlu lihat ini”",
+            "Rage bait / controversial take tanpa substansi",
+            "Copy paste thread atau konten berulang",
+            "“What do you think?” tanpa opini sendiri",
+            "Koordinasi bot / phone farm / engagement pod"
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "Ini melanggar Platform Manipulation & Spam Policy X karena inauthentic activity & engagement spam."
+        },
+        {
+          "type": "paragraph",
+          "text": "Dampaknya Buat Creator & Platform?"
+        },
+        {
+          "type": "list",
+          "ordered": false,
+          "items": [
+            "Creator kecil rugi: Konten asli kalah reach, revenue hilang.",
+            "Timeline penuh sampah → user experience jelek.",
+            "Algoritma X “tertipu” sementara, tapi sekarang makin pintar.",
+            "Uang creator revenue pool bocor ke akun-akun farming."
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "Bagaimana Tim & Pengembang X Menangani Ini? (Update Terbaru 2026)"
+        },
+        {
+          "type": "paragraph",
+          "text": "X tidak diam. Mereka pakai kombinasi AI (Grok) + algoritma + kebijakan ketat + enforcement manual."
+        },
+        {
+          "type": "paragraph",
+          "text": "Mei 2026 – Nikita Bier Umumkan Crackdown Besar"
+        },
+        {
+          "type": "paragraph",
+          "text": "“Kami identifikasi banyak akun besar yang programmatically reuploading konten dari akun kecil untuk game revenue share & hindari credit original author.”"
+        },
+        {
+          "type": "paragraph",
+          "text": "Solusi: X sekarang deteksi & alokasikan 100% impression ke creator asli (bukan ke pencuri). Revenue ikut pindah."
+        },
+        {
+          "type": "list",
+          "ordered": false,
+          "items": [
+            "Grok-Powered Duplicate Detection",
+            "Deteksi konten curian 3x lebih cepat dari sebelumnya."
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "Sudah flag 1,5 juta item re-posted dalam satu cycle & redirect lebih dari $1 juta revenue ke creator asli."
+        },
+        {
+          "type": "paragraph",
+          "text": "Cara kerja: Upload history + timestamp + image/video similarity (hashing). Bahkan kalau watermark dicrop atau caption diubah, tetap ketahuan."
+        },
+        {
+          "type": "paragraph",
+          "text": "Juli 2026 – Video Editor Baru di iOS"
+        },
+        {
+          "type": "paragraph",
+          "text": "Nikita Bier: “Banyak video di akun top adalah konten curian (bahkan dari 5 tahun lalu). Recycled content merusak UX & bisnis.”"
+        },
+        {
+          "type": "paragraph",
+          "text": "X kasih in-app video editor + recorder supaya creator lebih mudah bikin konten original."
+        },
+        {
+          "type": "paragraph",
+          "text": "Pesan jelas: “Kalau lo creator yang tidak recycle konten orang lain, ini kesempatan terbesar karir lo di X. Algoritma akan naikkan lo lebih cepat.”"
+        },
+        {
+          "type": "paragraph",
+          "text": "Algoritma X Di-update"
+        },
+        {
+          "type": "paragraph",
+          "text": "Prioritaskan original content & meaningful conversation (reply berbobot bobotnya sangat tinggi)."
+        },
+        {
+          "type": "paragraph",
+          "text": "Repost / recycled content di-deboost."
+        },
+        {
+          "type": "paragraph",
+          "text": "Boost post dari mutual followers (teman yang saling follow)."
+        },
+        {
+          "type": "paragraph",
+          "text": "Grok AI ranking post berdasarkan predicted engagement yang asli."
+        },
+        {
+          "type": "paragraph",
+          "text": "Payout aggregator & farming account dipotong drastis (bahkan sampai 0 atau dikeluarkan dari program)."
+        },
+        {
+          "type": "paragraph",
+          "text": "Policy Resmi X"
+        },
+        {
+          "type": "list",
+          "ordered": false,
+          "items": [
+            "Authenticity Policy (Platform Manipulation & Spam): Larang copypasta, duplicative content, inauthentic engagement, automation untuk farm, coordinated activity.",
+            "Copyright Policy (DMCA): Bisa lapor via form resmi X. Kalau valid, konten dihapus. Repeat infringer (6 strike) bisa permanent suspension.",
+            "Engagement farming (bait murahan, bot, pod) = violation → reach turun, monetization dipause, atau suspend."
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "Tim seperti Nikita Bier & Allegra Jacchia (Creators Product team) aktif pantau & ambil tindakan (contoh: akun yang ngajarin farming langsung kena)."
+        },
+        {
+          "type": "paragraph",
+          "text": "Tips Biar Lo Menang di X Sekarang (Bukan Farming!)"
+        },
+        {
+          "type": "list",
+          "ordered": false,
+          "items": [
+            "Buat original content** sebanyak mungkin (video native pakai editor baru X lebih bagus).",
+            "Kalau share konten orang lain → pakai Quote atau Share Video biar credit tetap ke original.",
+            "Hindari bait murahan. Fokus value: opini, thread mendalam, pengalaman pribadi, insight."
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "Kalau konten lo dicuri →"
+        },
+        {
+          "type": "list",
+          "ordered": false,
+          "items": [
+            "Report via fitur X.",
+            "File DMCA complaint resmi di help.x.com (form copyright).",
+            "Tag @nikitabier atau tim creator kalau perlu visibility.",
+            "Bangun komunitas mutual → algoritma sekarang suka ini."
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "Konsisten & sabar. Original content butuh waktu, tapi begitu naik, reach-nya lebih stabil & revenue lebih besar."
+        },
+        {
+          "type": "paragraph",
+          "text": "Kesimpulan"
+        },
+        {
+          "type": "paragraph",
+          "text": "X sedang berubah jadi platform yang lebih adil buat creator asli. Pencurian konten & farming engagement sedang dihajar keras pakai Grok + revenue reallocation + algoritma baru."
+        },
+        {
+          "type": "paragraph",
+          "text": "Yang menang sekarang adalah yang konsisten bikin konten original & bernilai."
+        },
+        {
+          "type": "paragraph",
+          "text": "Jangan farming. Jangan nyuri. Buat konten lo sendiri."
+        },
+        {
+          "type": "paragraph",
+          "text": "Original wins. Selalu."
+        },
+        {
+          "type": "paragraph",
+          "text": "Pernah konten lo dicuri? Atau lihat akun farming parah?"
+        },
+        {
+          "type": "paragraph",
+          "text": "Comment pengalaman lo di bawah! 👇"
+        },
+        {
+          "type": "paragraph",
+          "text": "Tag 3 creator yang wajib baca thread ini."
+        },
+        {
+          "type": "paragraph",
+          "text": "RT kalau setuju biar lebih banyak yang sadar & X makin bersih!"
+        },
+        {
+          "type": "paragraph",
+          "text": "#X #CreatorX #AlgoritmaX #PencurianKonten #EngagementFarming #OriginalContent #NikitaBier"
+        }
+      ],
+      "source": "x",
+      "xStatusId": "2078391497687269414",
+      "xArticleId": "2078388348398534656",
+      "xUrl": "https://x.com/Deadmouse_jpeg/status/2078391497687269414",
+      "articleUrl": "https://x.com/i/article/2078388348398534656",
+      "likes": 4,
+      "views": 1492
+    },
+    {
+      "id": "x-2078128754002739280",
+      "title": "Argentina vs Spain: Inside the Most Loaded World Cup Final in History (and Who I Think Wins)",
+      "dek": "In 60 years, Argentina and Spain have met exactly once at a World Cup. That was 1966, a forgettable 2-1 group-stage skirmish nobody remembers. On Sunday, July 19, they meet for everything. Two flags.",
+      "category": "x-articles",
+      "coverImage": "https://pbs.twimg.com/media/HNb7nI_awAA7lwm.jpg?name=large",
+      "author": "Noob Sensei",
+      "date": "2026-07-17",
+      "readTime": 9,
+      "featured": false,
+      "tags": [
+        "x-articles",
+        "@Deadmouse_jpeg"
+      ],
+      "body": [
+        {
+          "type": "paragraph",
+          "text": "In 60 years, Argentina and Spain have met exactly once at a World Cup. That was 1966, a forgettable 2-1 group-stage skirmish nobody remembers."
+        },
+        {
+          "type": "paragraph",
+          "text": "On Sunday, July 19, they meet for everything."
+        },
+        {
+          "type": "paragraph",
+          "text": "Two flags. Two footballing philosophies. Two generations of the sport's greatest player, standing on opposite sides of the same pitch. This is the final of the biggest World Cup ever assembled 48 teams, three host nations, a month and a half of football and it has boiled down to the two teams that were installed as pre tournament favorites before a ball was even kicked. That almost never happens. It happened here."
+        },
+        {
+          "type": "paragraph",
+          "text": "Kickoff is 3 p.m. ET at MetLife Stadium (rebranded \"New York New Jersey Stadium\" for the tournament) in East Rutherford, New Jersey. For the first time in World Cup history, the final will get a Super Bowl style halftime show, reportedly running around 11 minutes with performers including Madonna, Shakira, Justin Bieber, BTS, Burna Boy, and Coldplay, plus a closing ceremony 90 minutes before kickoff featuring Tom Cruise and Robbie Williams. Donald Trump is confirmed to attend and is expected to help present the trophy. Even the pageantry is unprecedented. But none of that is why this final matters."
+        },
+        {
+          "type": "paragraph",
+          "text": "Here's why it matters."
+        },
+        {
+          "type": "paragraph",
+          "text": "The Stakes Are Absurd"
+        },
+        {
+          "type": "paragraph",
+          "text": "Argentina is 90 minutes away from becoming the first nation since Brazil (1958, 1962) to win back to back men's World Cups. Win this, and Lionel Scaloni's side also completes an almost unthinkable run of four consecutive major international trophies Copa América 2021, World Cup 2022, Copa América 2024, and now this. That's a claim to being one of the greatest international sides ever assembled, full stop."
+        },
+        {
+          "type": "paragraph",
+          "text": "Spain is chasing only its second World Cup title, 16 years after 2010. Win this, and Luis de la Fuente's side extends an unbeaten run to 38 games, breaking Italy's Euro 2020 winning side's record for the longest unbeaten streak in senior men's football history. They'd also become just the fourth team ever to hold the European and World titles simultaneously."
+        },
+        {
+          "type": "paragraph",
+          "text": "Whichever way this goes, someone walks away from East Rutherford having done something that has never been done before."
+        },
+        {
+          "type": "paragraph",
+          "text": "How They Got Here: The Machine vs. The Magic"
+        },
+        {
+          "type": "paragraph",
+          "text": "This is the part of the story that should worry Argentina fans, and it's the part that should worry everyone betting against them."
+        },
+        {
+          "type": "paragraph",
+          "text": "Spain has been a machine.  After an oddly flat 0-0 draw with Cape Verde in the opener, La Roja have not trailed for a single minute of this tournament. They routed Austria 3-0 in the round of 32, shut out Portugal 1-0 in the round of 16 (ending Cristiano Ronaldo's World Cup career in the process), ground out a 2-1 win over Belgium in the quarterfinal thanks to a late Mikel Merino winner off the bench, and then dismantled a France side that had been the tournament's form team, winning 2-0 in Dallas without ever looking troubled. Across seven games, Spain has conceded exactly one goal the single strike Belgium got past them in the quarterfinal. Unai Simón has kept six clean sheets in seven matches."
+        },
+        {
+          "type": "paragraph",
+          "text": "Argentina has been something else entirely: a team that keeps finding the exit and then refusing to walk through it. They needed a hat trick from Messi just to blow past Algeria in the opener. They survived a two goal deficit against Egypt in the round of 16, with Messi missing a penalty before dragging his team level and Enzo Fernández snatching a stoppage time winner to make it 3-2. They needed extra time to break down 10 man Switzerland in the quarterfinal. And in the semifinal against England, they trailed 1-0 deep into the second half before Enzo Fernández equalized in the 85th minute and Lautaro Martínez won it two minutes into stoppage time both goals assisted by a 39 year old man who, by most footballing logic, shouldn't still be doing this."
+        },
+        {
+          "type": "paragraph",
+          "text": "Spain's story is control. Argentina's story is escape. Sunday decides which story wins."
+        },
+        {
+          "type": "paragraph",
+          "text": "The Numbers, If You Trust Numbers"
+        },
+        {
+          "type": "paragraph",
+          "text": "Opta's supercomputer, which correctly called all four semifinalists before the tournament even began, gives Spain a 56% chance to win the final. Betting markets tell a similar story: Spain are around +130 on the 90-minute moneyline with Argentina at +255 and the draw at +195, while for the outright trophy (including extra time and penalties) Spain sit at roughly -160 to Argentina's +125. Nearly every model and every sportsbook has this the same way: Spain, favored, but not by a landslide  and notably, \"under 2.5 total goals\" is the most popular market almost everywhere odds are offered, with several respected pundits also backing both teams to score. In other words: the smart money doesn't expect a blowout. It expects a knife fight."
+        },
+        {
+          "type": "paragraph",
+          "text": "The Subplot Nobody Saw Coming: A Baby Photo Became Prophecy"
+        },
+        {
+          "type": "paragraph",
+          "text": "Here's the story that's going to be everywhere on your timeline this weekend. Years ago, Lamine Yamal's family won a charity raffle and got a photo taken with a young Lionel Messi. Yamal was a baby. The photo resurfaced and went viral after the 2024 Euros, framed as a cute footnote to Spanish football history."
+        },
+        {
+          "type": "paragraph",
+          "text": "On Sunday, the baby from that photo takes the pitch against the man holding him in it for the first time in either of their international careers. Messi is 39. Yamal is 19. One is playing what may be his last World Cup; the other is playing what will almost certainly be the first of several. It's the cleanest passing of the torch narrative football could possibly script, except nobody's actually sure the torch is being passed yet. Messi still leads this tournament in goals."
+        },
+        {
+          "type": "paragraph",
+          "text": "The Golden Boot Race Inside the Final"
+        },
+        {
+          "type": "paragraph",
+          "text": "Messi currently leads the Golden Boot with 8 goals and 4 assists, a tiebreaker edge over Kylian Mbappé, who also has 8 goals but only 3 assists (France's tournament is over, so Mbappé's only remaining chance to add to his tally is Saturday's third-place game, which doesn't help him against a golden-goal tiebreak that already favors Messi). This means the World Cup's all time leading scorer Messi already holds that record outright, at 21 career goals to Mbappé's 20 could win his first ever Golden Boot on Sunday, regardless of who lifts the trophy. Spain's answer to that firepower is far less individually flashy but arguably just as important: Mikel Oyarzabal, a 29 year old journeyman by comparison, has quietly scored 5 goals this tournament, including the semifinal penalty against France, and also scored the Euro 2024 final winner. Spain don't have a Messi. They have a guy who keeps scoring when it matters, which might be scarier."
+        },
+        {
+          "type": "paragraph",
+          "text": "The Manager Who Has to Beat His Best Friend"
+        },
+        {
+          "type": "paragraph",
+          "text": "One more human wrinkle: Lionel Scaloni is married to a Spanish woman, lives in Spain, and is genuinely close with Luis de la Fuente. Asked about facing his friend for the sport's biggest prize, Scaloni got visibly tongue tied trying to separate his personal affection for Spain from his professional obligation to beat it, before landing on the obvious: he's going to try to win. It's a small moment, but it captures something true about this final there's very little needle between these two camps. This isn't a grudge match. It's mutual respect about to collide anyway."
+        },
+        {
+          "type": "paragraph",
+          "text": "Where the Game Gets Won"
+        },
+        {
+          "type": "paragraph",
+          "text": "Spain's entire approach depends on suffocating opposition rhythm with possession Rodri and Fabián Ruiz dictating tempo in midfield, full backs Pedro Porro and Marc Cucurella pushing high, Yamal and Oyarzabal stretching the width. Argentina's counter to that is expected to be defensively pragmatic: Julián Álvarez is likely to start ahead of Lautaro Martínez specifically because of his pressing intensity, a decision aimed at disrupting Spain's deep build up before it ever gets moving. If Argentina can deny Spain that first phase of possession, they open space in behind for Messi to do what he's done all tournament conjure something from nothing in the final third. If they can't, this could look like Spain's semifinal demolition of France: comfortable, controlled, and over as a contest by halftime."
+        },
+        {
+          "type": "paragraph",
+          "text": "Predicted Spain XI: Simón; Porro, Cubarsí, Laporte, Cucurella; Rodri, Fabián Ruiz; Yamal, Olmo, Baena; Oyarzabal."
+        },
+        {
+          "type": "paragraph",
+          "text": "Predicted Argentina XI: E. Martínez; Montiel, Romero, L. Martínez, Tagliafico; De Paul, Paredes, Fernández, Mac Allister; Messi, Álvarez."
+        },
+        {
+          "type": "paragraph",
+          "text": "So Who Wins?"
+        },
+        {
+          "type": "paragraph",
+          "text": "Here's the honest, data-respecting answer: this is close enough that either result would be entirely defensible on Monday morning. Spain's underlying numbers one goal conceded in seven games, never trailing, a midfield that dictates matches rather than reacts to them  are the best in the tournament by a clear margin. If football were decided by whoever has been statistically superior across 90 minutes for six weeks, Spain wins this comfortably."
+        },
+        {
+          "type": "paragraph",
+          "text": "But Argentina isn't here because they've been the best team for six weeks. They're here because they have the best player in a knockout moment, and knockout moments are exactly what a World Cup final is made of. Twice already this tournament, Argentina has looked finished and found a way out through Messi. Betting against that a third time, in the biggest game of his career, feels like betting against gravity working differently for one specific 39 year old man."
+        },
+        {
+          "type": "paragraph",
+          "text": "My prediction: Spain 2-1, after Argentina push it to the wire. I think Spain's control eventually tells, that Oyarzabal or Yamal breaks the deadlock in a tight first 60 minutes, and that Messi drags Argentina level or close to it late enough to seal his first career Golden Boot even in defeat, but not enough to stop the trophy going to Spain for the first time since 2010. If I'm wrong, it's because I underestimated one man again, which is a very easy mistake to make with Messi, and one plenty of \"experts\" have made before."
+        },
+        {
+          "type": "paragraph",
+          "text": "Either way: Sunday gives us a fitting final line to a World Cup this big. Control versus chaos. The favorite versus the ghost. A 19-year-old versus history itself."
+        },
+        {
+          "type": "paragraph",
+          "text": "What's your score prediction? Drop it below  and tell me: does Messi go out a champion, or does Spain finally close the book on this generation of Argentina?"
+        },
+        {
+          "type": "paragraph",
+          "text": "#WorldCup2026 #ArgentinaVsSpain #WorldCupFinal #Messi #LamineYamal #ARGvsESP"
+        }
+      ],
+      "source": "x",
+      "xStatusId": "2078128754002739280",
+      "xArticleId": "2078124752250761216",
+      "xUrl": "https://x.com/Deadmouse_jpeg/status/2078128754002739280",
+      "articleUrl": "https://x.com/i/article/2078124752250761216",
+      "likes": 7,
+      "views": 2261
+    },
+    {
+      "id": "x-2076342065613668432",
+      "title": "Top Crypto Airdrop Opportunities in 2026 ",
+      "dek": "In 2026, crypto airdrops remain one of the most actively discussed topics across X (formerly Twitter), driven by projects with substantial user bases, confirmed token plans, or strong ecosystem",
+      "category": "x-articles",
+      "coverImage": "https://pbs.twimg.com/media/HNCliqlbQAAFasm.jpg?name=large",
+      "author": "Noob Sensei",
+      "date": "2026-07-12",
+      "readTime": 5,
+      "featured": false,
+      "tags": [
+        "x-articles",
+        "@Deadmouse_jpeg"
+      ],
+      "body": [
+        {
+          "type": "paragraph",
+          "text": "In 2026, crypto airdrops remain one of the most actively discussed topics across X (formerly Twitter), driven by projects with substantial user bases, confirmed token plans, or strong ecosystem momentum. Based on real-time discussions on X, data from reputable analytics platforms (including CryptoRank and DropsTab), and announcements from established sources such as CoinGecko and DL News, four projects stand out for their combination of scale, confirmed signals, and community engagement: Polymarket, Base, OpenSea, and MetaMask."
+        },
+        {
+          "type": "paragraph",
+          "text": "These opportunities are distinguished by either explicit confirmations of upcoming tokens and distributions or clear exploration signals from major backers. This analysis provides an objective overview of their current status, qualification strategies, and relative potential, drawing from verified project communications and market observations as of July 2026."
+        },
+        {
+          "type": "paragraph",
+          "text": "1. Polymarket ($POLY)"
+        },
+        {
+          "type": "paragraph",
+          "text": "Overview\nPolymarket is the leading decentralized prediction market platform, recognized for its high trading volumes and mainstream adoption during major events."
+        },
+        {
+          "type": "paragraph",
+          "text": "Current Status (July 2026)\nThe platform’s Chief Marketing Officer publicly confirmed in late 2025 that a native token and associated airdrop will be launched. The token generation event (TGE) is expected to follow the completion of the U.S. platform relaunch, positioning 2026 as the most probable window. No official snapshot date or detailed tokenomics have been released."
+        },
+        {
+          "type": "paragraph",
+          "text": "Qualification Strategy\nEligibility is anticipated to be activity-based. Recommended actions include:"
+        },
+        {
+          "type": "list",
+          "ordered": false,
+          "items": [
+            "Creating an account and linking a Web3 wallet (e.g., MetaMask).",
+            "Depositing USDC and executing trades across diverse market categories.",
+            "Providing liquidity through limit orders.",
+            "Maintaining consistent, organic participation rather than sporadic high-volume activity.",
+            "Linking social accounts (particularly X) for potential additional weighting."
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "Potential and Community Sentiment\nPolymarket frequently ranks among the highest-upside opportunities in community discussions on X due to its proven product-market fit and precedent set by successful perps platforms. Its large trading volume provides a strong foundation for meaningful distributions."
+        },
+        {
+          "type": "paragraph",
+          "text": "2. Base (Coinbase Layer 2)"
+        },
+        {
+          "type": "paragraph",
+          "text": "Overview\nBase is Coinbase’s Ethereum Layer 2 network, designed to onboard mainstream users through seamless on-chain experiences."
+        },
+        {
+          "type": "paragraph",
+          "text": "Current Status (July 2026)\nIn September 2025, Base founder Jesse Pollak announced that the team is actively exploring a native network token, with a potential launch window between Q2 and Q4 2026. While no airdrop has been formally confirmed, the public exploration signals represent a significant shift from prior Coinbase guidance."
+        },
+        {
+          "type": "paragraph",
+          "text": "Qualification Strategy\nFocus on genuine, sustained ecosystem participation:"
+        },
+        {
+          "type": "list",
+          "ordered": false,
+          "items": [
+            "Bridging assets to Base.",
+            "Interacting with native decentralized applications (e.g., Aerodrome, Aave, and other DeFi protocols).",
+            "Maintaining consistent on-chain activity over extended periods.",
+            "Engaging with ecosystem features such as stablecoin usage and developer tools where applicable."
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "Potential and Community Sentiment\nBase consistently appears at the top of tier lists and discussions on X. Analysts have estimated a potential token market capitalization in the range of $12–34 billion, suggesting that a community allocation could represent one of the largest distributions in crypto history if realized."
+        },
+        {
+          "type": "paragraph",
+          "text": "3. OpenSea ($SEA)"
+        },
+        {
+          "type": "paragraph",
+          "text": "Overview\nOpenSea is the leading NFT marketplace that has expanded into broader digital asset trading."
+        },
+        {
+          "type": "paragraph",
+          "text": "Current Status (July 2026)\nOpenSea has confirmed a native $SEA token with 50% of total supply allocated to the community. The original Q1 2026 launch timeline was postponed in March 2026 due to prevailing market conditions. A rewards program featuring XP accumulation and Treasure Chests remains active to incentivize ongoing participation."
+        },
+        {
+          "type": "paragraph",
+          "text": "Qualification Strategy"
+        },
+        {
+          "type": "list",
+          "ordered": false,
+          "items": [
+            "Historical trading activity on the platform is considered alongside current engagement.",
+            "Participation in the ongoing rewards program (earning XP and progressing through reward tiers).",
+            "Regular trading and utilization of platform features."
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "Potential and Community Sentiment\nThe substantial community allocation keeps OpenSea relevant despite the delay. Community discussions on X continue to monitor rewards program developments closely."
+        },
+        {
+          "type": "paragraph",
+          "text": "4. MetaMask ($MASK)"
+        },
+        {
+          "type": "paragraph",
+          "text": "Overview\nMetaMask is the most widely used non-custodial Web3 wallet, serving hundreds of millions of users globally."
+        },
+        {
+          "type": "paragraph",
+          "text": "Current Status (July 2026)\nMetaMask operates an active Rewards program that includes points accumulation, trading challenges, and periodic airdrop distributions (such as prior Linea allocations). A native $MASK token is widely anticipated, with the most probable launch window in Q3–Q4 2026."
+        },
+        {
+          "type": "paragraph",
+          "text": "Qualification Strategy"
+        },
+        {
+          "type": "list",
+          "ordered": false,
+          "items": [
+            "Downloading and actively using the MetaMask mobile application.",
+            "Opting into the Rewards program.",
+            "Completing swaps, bridges, perpetual trades, and weekly challenges.",
+            "Maintaining consistent wallet usage for on-chain interactions."
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "Potential and Community Sentiment\nDue to MetaMask’s dominant market position, any token distribution carries significant reach. The existing rewards infrastructure provides a clear, low-friction pathway for participation.\n\nBest Practices and Risk Considerations"
+        },
+        {
+          "type": "paragraph",
+          "text": "To maximize positioning while mitigating risks:"
+        },
+        {
+          "type": "list",
+          "ordered": false,
+          "items": [
+            "Prioritize genuine activity over artificial volume. Most sophisticated projects implement Sybil-resistance measures.",
+            "Use dedicated wallets for farming activities when managing significant positions.",
+            "Monitor official channels exclusively: project Twitter accounts, official documentation, and established analytics platforms.",
+            "Account for costs: Factor in gas fees, bridging expenses, and opportunity costs.",
+            "Diversify efforts across multiple qualifying projects rather than concentrating on a single opportunity.",
+            "Exercise caution with third-party tools: Only use verified dashboards and avoid any service requesting seed phrases or private keys."
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "Important Disclaimer: Airdrop outcomes are never guaranteed. Token launches and distributions remain subject to regulatory, technical, and market developments. All participants should conduct independent due diligence."
+        },
+        {
+          "type": "paragraph",
+          "text": "Conclusion and Recommendations"
+        },
+        {
+          "type": "paragraph",
+          "text": "As of mid-July 2026, Polymarket and Base represent the most compelling combination of confirmed signals and community momentum, while OpenSea and MetaMask offer more accessible entry points through established rewards mechanisms."
+        },
+        {
+          "type": "paragraph",
+          "text": "Participants are advised to adopt a disciplined, long-term approach focused on sustainable on-chain engagement rather than short-term speculation. Regular monitoring of official project updates and reputable industry sources remains essential, as timelines and criteria can evolve rapidly."
+        },
+        {
+          "type": "paragraph",
+          "text": "This analysis is based on publicly available information and community sentiment as of July 12, 2026. Cryptocurrency activities involve significant risk; readers should proceed with appropriate caution and professional advice where necessary."
+        }
+      ],
+      "source": "x",
+      "xStatusId": "2076342065613668432",
+      "xArticleId": "2076341375252213760",
+      "xUrl": "https://x.com/Deadmouse_jpeg/status/2076342065613668432",
+      "articleUrl": "https://x.com/i/article/2076341375252213760",
+      "likes": 0,
+      "views": 303
+    },
+    {
+      "id": "x-2076175759325237529",
+      "title": "Crypto Market Deep Dive: July 12, 2026 – The Great Consolidation or Launchpad for the Next Bull Leg?",
+      "dek": "As of Sunday, July 12, 2026 (05:16 UTC), Bitcoin is trading at approximately $63,962 (+0.24% in the last 24 hours), Ethereum at $1,805 (+0.54%), and the total cryptocurrency market capitalization",
+      "category": "x-articles",
+      "coverImage": "https://pbs.twimg.com/media/HNAN1edbAAAqnS_.jpg?name=large",
+      "author": "Noob Sensei",
+      "date": "2026-07-12",
+      "readTime": 7,
+      "featured": false,
+      "tags": [
+        "x-articles",
+        "@Deadmouse_jpeg"
+      ],
+      "body": [
+        {
+          "type": "paragraph",
+          "text": "As of Sunday, July 12, 2026 (05:16 UTC), Bitcoin is trading at approximately $63,962 (+0.24% in the last 24 hours), Ethereum at $1,805 (+0.54%), and the total cryptocurrency market capitalization stands at $2.19 trillion (–0.18% daily). Bitcoin dominance remains elevated at 58.5%, while the Crypto Fear & Greed Index reads 31 (Fear)."
+        },
+        {
+          "type": "paragraph",
+          "text": "After a powerful early-July rally that added roughly $190 billion to the total market cap in just 10 days, the market has entered one of the most significant consolidation phases in recent history. Bitcoin has now spent 307 consecutive days trapped inside the $60,000–$70,000 range — the third-longest such consolidation within a $10,000 band in Bitcoin’s entire history."
+        },
+        {
+          "type": "paragraph",
+          "text": "This is not mere sideways action. It is a high-stakes accumulation battle between institutional capital and lingering bearish positioning. Below is a truly comprehensive, data-backed analysis covering real-time conditions, on-chain metrics, ETF flows, X sentiment, historical context, and forward-looking predictions."
+        },
+        {
+          "type": "paragraph",
+          "text": "1. Real-Time Market Snapshot"
+        },
+        {
+          "type": "paragraph",
+          "text": "AssetPrice24h ChangeMarket CapKey ContextBitcoin (BTC)$63,962+0.24%~$1.28T307-day consolidation rangeEthereum (ETH)$1,805+0.54%~$217.7BTesting $1,800–$1,820 zoneTotal Crypto--0.18%$2.19TBTC dominance 58.5%"
+        },
+        {
+          "type": "paragraph",
+          "text": "Fear & Greed Index: 31 (Fear) — historically a contrarian accumulation zone."
+        },
+        {
+          "type": "paragraph",
+          "text": "2. Primary Market Drivers Right Now"
+        },
+        {
+          "type": "paragraph",
+          "text": "Spot ETF Flows (The Dominant Force)\nAfter an eight-week outflow streak, inflows have resumed meaningfully. On July 10 alone:"
+        },
+        {
+          "type": "list",
+          "ordered": false,
+          "items": [
+            "Bitcoin ETFs: +$90.4 million net inflow",
+            "Ethereum ETFs: +$18.4 million net inflow"
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "Cumulative Bitcoin ETF inflows remain strongly positive historically (over +$51 billion). Institutions continue to absorb supply even while price chops sideways — classic “smart money” behavior during consolidation."
+        },
+        {
+          "type": "paragraph",
+          "text": "On-Chain Metrics"
+        },
+        {
+          "type": "list",
+          "ordered": false,
+          "items": [
+            "Long-term holders show reduced selling pressure.",
+            "Large wallet accumulation continues.",
+            "Ethereum L1 fee economics are improving with rising real usage (DEX volume, new chains settling on ETH).",
+            "Exchange balances remain relatively low, reducing immediate sell pressure."
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "Macro & Regulatory Backdrop\nMarkets are watching Fed policy, global liquidity trends, and U.S. regulatory progress (Clarity Act discussions, stablecoin frameworks). Any dovish signals or further clarity would act as strong tailwinds."
+        },
+        {
+          "type": "paragraph",
+          "text": "Narrative Rotation\nCapital is selective: AI + DePIN, Real World Assets (RWA), and high-beta memes are seeing rotation. Legacy altcoins continue to lag due to high BTC dominance."
+        },
+        {
+          "type": "paragraph",
+          "text": "3. Real-Time Sentiment from X (Crypto Twitter)"
+        },
+        {
+          "type": "paragraph",
+          "text": "Discussions across X reveal a split but increasingly constructive tone:"
+        },
+        {
+          "type": "list",
+          "ordered": false,
+          "items": [
+            "Bullish long-term voices highlight that Bitcoin remains tiny relative to global capital markets and point to resuming ETF inflows as proof of institutional conviction.",
+            "Technical traders emphasize the prolonged range and warn against premature FOMO.",
+            "On-chain analysts note accumulation signals and reduced long-term holder distribution.",
+            "Overall vibe: Cautious optimism. Many view the current range as healthy digestion rather than weakness."
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "4. Technical & On-Chain Structure"
+        },
+        {
+          "type": "paragraph",
+          "text": "Bitcoin is forming higher lows on lower timeframes while sitting below key daily/weekly moving averages. It is testing the upper boundary of its long-term falling channel / consolidation range."
+        },
+        {
+          "type": "paragraph",
+          "text": "Ethereum is battling the critical $1,800–$1,820 resistance zone — a level that has rejected price multiple times recently. A sustained break higher with volume would be a major bullish signal for altcoin rotation."
+        },
+        {
+          "type": "paragraph",
+          "text": "The market is in a clear tug-of-war between spot accumulation and futures positioning."
+        },
+        {
+          "type": "paragraph",
+          "text": "5. Historical Parallels & Context (The Most Important Section)"
+        },
+        {
+          "type": "paragraph",
+          "text": "Understanding history is crucial for interpreting the current setup."
+        },
+        {
+          "type": "paragraph",
+          "text": "A. Prolonged Consolidation Periods\nThe current 307-day range inside a $10k band is historically rare. Past long consolidations (especially those exceeding 200–300 days) have overwhelmingly resolved with powerful breakouts once selling pressure exhausted and new capital entered. These periods often mark the transition from mid-cycle digestion to the next major leg up."
+        },
+        {
+          "type": "paragraph",
+          "text": "B. July Seasonality\nJuly ranks among Bitcoin’s strongest months historically:"
+        },
+        {
+          "type": "list",
+          "ordered": false,
+          "items": [
+            "Positive in 7 out of the last 10 years",
+            "Average return: +7.6% to +9%",
+            "In midterm years (such as 2026), the average rises to +10.3%"
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "History strongly favors being long Bitcoin during July."
+        },
+        {
+          "type": "paragraph",
+          "text": "C. Fear & Greed Index Behavior\nReadings in the low 20s–30s (“Fear”) have repeatedly served as excellent contrarian buy zones. These periods often coincide with capitulation or strong accumulation before significant rallies."
+        },
+        {
+          "type": "paragraph",
+          "text": "D. Post-Halving Cycle Dynamics (April 2024 Halving)\nThis cycle has been structurally different due to massive institutional adoption via ETFs and corporate treasuries. Volatility is lower, and the market matured faster. However, historical patterns show the strongest moves frequently occur in the second half of the post-halving period. We are now roughly 26 months post-halving."
+        },
+        {
+          "type": "paragraph",
+          "text": "E. ETF Inflow Resumption Patterns\nEvery time spot Bitcoin ETF inflows resumed after outflows in 2024–2026, price action stabilized and ultimately broke higher within weeks to months. Institutional demand has consistently acted as both a floor and fuel for upside."
+        },
+        {
+          "type": "paragraph",
+          "text": "6. Data-Driven Predictions"
+        },
+        {
+          "type": "paragraph",
+          "text": "Short-Term Outlook (Next 2–6 Weeks – July to mid-August 2026)\nBias: Bullish (60–70% probability of upside resolution)\nHistorical July strength + resuming ETF inflows + Fear-zone sentiment create a favorable setup."
+        },
+        {
+          "type": "paragraph",
+          "text": "Base Case: Clean break above $65,000–$65,500 leads to $68,000 – $72,000 by mid-to-late August.\nBull Case: Strong volume confirmation pushes toward previous local highs near $75,000.\nBear Case: Extended chop or retest of $62,000–$63,000 if macro data disappoints (lower probability)."
+        },
+        {
+          "type": "paragraph",
+          "text": "Medium-Term Outlook (Q3 – Q4 2026)\nBias: Moderately Bullish\nIf ETF inflows remain consistently positive and Bitcoin dominance begins to decline, expect broader market participation and altcoin rotation. Historical post-consolidation dynamics combined with the maturing post-halving cycle suggest potential for new all-time highs before year-end, assuming supportive macro conditions."
+        },
+        {
+          "type": "paragraph",
+          "text": "Realistic Target Range by End of 2026: $80,000 – $95,000+ in a constructive scenario."
+        },
+        {
+          "type": "paragraph",
+          "text": "Longer-Term Cycle View (2027 and Beyond)\nThis cycle is evolving due to institutional infrastructure. The traditional sharp peak-and-crash model may be replaced by a more prolonged expansion phase. However, the core combination of supply shock dynamics and growing adoption remains intact. Significant further upside remains likely over the next 12–18 months if global liquidity improves."
+        },
+        {
+          "type": "paragraph",
+          "text": "7. Risks & Balanced Opportunities"
+        },
+        {
+          "type": "paragraph",
+          "text": "Key Risks:"
+        },
+        {
+          "type": "list",
+          "ordered": false,
+          "items": [
+            "Prolonged high Bitcoin dominance suppressing altcoins",
+            "Unexpected macro shock or stronger inflation data",
+            "Failure to decisively break the $65k–$67k zone, extending consolidation",
+            "Regulatory surprises"
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "Key Opportunities:"
+        },
+        {
+          "type": "list",
+          "ordered": false,
+          "items": [
+            "Institutional accumulation via ETFs providing a strong floor",
+            "Historical July strength and contrarian Fear readings",
+            "Potential for powerful breakout after one of the longest consolidations on record",
+            "Improving on-chain fundamentals and narrative rotation potential"
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "8. Actionable Levels to Watch"
+        },
+        {
+          "type": "paragraph",
+          "text": "Bitcoin:"
+        },
+        {
+          "type": "list",
+          "ordered": false,
+          "items": [
+            "Support: $63,000 – $63,800",
+            "Resistance: $65,000 – $65,500 → $67,250"
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "Ethereum:"
+        },
+        {
+          "type": "list",
+          "ordered": false,
+          "items": [
+            "Support: $1,750 – $1,780",
+            "Resistance: $1,820 – $1,850 → $2,000"
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "Key Catalysts: Daily/weekly ETF flow data + any decisive break of the 307-day range + macroeconomic releases."
+        },
+        {
+          "type": "paragraph",
+          "text": "Final Verdict"
+        },
+        {
+          "type": "paragraph",
+          "text": "The crypto market on July 12, 2026, is in a historically significant but fundamentally constructive consolidation. Long ranges of this duration have historically resolved upward when backed by institutional demand — precisely the condition we are witnessing with resuming ETF inflows."
+        },
+        {
+          "type": "paragraph",
+          "text": "Combined with strong seasonal tailwinds in July, a Fear & Greed reading in contrarian territory, and maturing post-halving dynamics, the setup leans bullish for the coming weeks and months."
+        },
+        {
+          "type": "paragraph",
+          "text": "This is classic smart-money accumulation while retail sentiment remains measured."
+        },
+        {
+          "type": "paragraph",
+          "text": "What is your view?"
+        },
+        {
+          "type": "list",
+          "ordered": false,
+          "items": [
+            "Do you expect Bitcoin to break $65k this month?",
+            "What is your realistic price target for BTC by the end of 2026?",
+            "Which narrative (AI, RWA, or others) are you most bullish on right now?"
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "Drop your thoughts in the comments below \nRT and bookmark if this comprehensive analysis provided real value!"
+        },
+        {
+          "type": "paragraph",
+          "text": "#Bitcoin #Crypto #Ethereum #BitcoinETF #CryptoMarket #MarketAnalysis #JulySeasonality #HalvingCycle"
+        },
+        {
+          "type": "paragraph",
+          "text": "This is not financial advice. Cryptocurrency markets are highly volatile. Past performance does not guarantee future results. Always conduct your own research and manage risk responsibly. All data aggregated from live sources as of July 12, 2026."
+        }
+      ],
+      "source": "x",
+      "xStatusId": "2076175759325237529",
+      "xArticleId": "2076174258087370752",
+      "xUrl": "https://x.com/Deadmouse_jpeg/status/2076175759325237529",
+      "articleUrl": "https://x.com/i/article/2076174258087370752",
+      "likes": 0,
+      "views": 214
+    }
+  ],
+  "notes": "Full X Article bodies for the website. Built by tools/sync-x-articles.py. Client prefers this file over live FixTweet so articles always render."
+}
