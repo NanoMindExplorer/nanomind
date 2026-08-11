@@ -3141,3 +3141,571 @@ body {
     }
 }
 
+
+/* ============================================================
+   MOBILE LAYOUT FIX v32 — Aug 2026
+   Hero bottom-sheet, anti horizontal overflow, denser chrome
+   ============================================================ */
+
+/* Prevent accidental page-wide horizontal scroll */
+html, body {
+    max-width: 100%;
+    overflow-x: hidden;
+}
+img, video, iframe, svg {
+    max-width: 100%;
+}
+
+@media (max-width: 860px) {
+    /* --- Nav --- */
+    .site-nav {
+        position: sticky;
+        top: 0;
+        z-index: 50;
+    }
+    .nav-inner {
+        padding: 10px 12px;
+        gap: 8px;
+        min-height: 52px;
+    }
+    .brand-name {
+        font-size: 15.5px;
+        max-width: 48vw;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        white-space: nowrap;
+    }
+    .brand-mark { width: 30px; height: 30px; }
+    .nav-icon-btn {
+        width: 40px;
+        height: 40px;
+        border-radius: 10px;
+    }
+    .mobile-nav-panel {
+        width: min(88vw, 320px);
+        padding-top: calc(72px + env(safe-area-inset-top, 0px));
+        padding-bottom: calc(28px + env(safe-area-inset-bottom, 0px));
+        height: 100dvh;
+        max-height: 100dvh;
+    }
+    .mobile-nav-panel a {
+        min-height: 48px;
+        display: flex;
+        align-items: center;
+        font-size: 16px;
+    }
+
+    /* --- Hero: bottom sheet (bukan panel kiri full-height) --- */
+    .hero-slot {
+        margin-top: 0 !important; /* jangan tarik di bawah nav di mobile */
+        margin-bottom: 12px;
+        --hero-under-nav: 0px;
+    }
+    .hero-feature {
+        min-height: min(72vh, 560px) !important;
+        max-height: none;
+        border-radius: 0 0 18px 18px !important;
+        display: flex !important;
+        align-items: flex-end !important;
+        justify-content: stretch !important;
+    }
+    .hero-feature::after {
+        /* Scrim dari bawah — cocok bottom sheet */
+        background:
+            linear-gradient(to top,
+                rgba(8, 8, 6, 0.97) 0%,
+                rgba(10, 10, 8, 0.78) 38%,
+                rgba(12, 12, 10, 0.28) 72%,
+                rgba(12, 12, 10, 0.08) 100%) !important;
+    }
+    .hero-feature-content {
+        position: relative !important;
+        left: auto !important;
+        right: auto !important;
+        top: auto !important;
+        bottom: auto !important;
+        width: 100% !important;
+        max-width: 100% !important;
+        height: auto !important;
+        min-height: 0 !important;
+        margin: 0 !important;
+        padding: 0 !important;
+        display: block !important;
+        z-index: 2;
+    }
+    .hero-content-glass {
+        position: relative !important;
+        width: 100% !important;
+        max-width: 100% !important;
+        height: auto !important;
+        min-height: 0 !important;
+        margin: 0 !important;
+        padding: 18px 16px 20px !important;
+        border-radius: 18px 18px 0 0 !important;
+        border: none !important;
+        border-top: 1px solid rgba(255, 255, 255, 0.1) !important;
+        box-shadow: 0 -12px 40px -18px rgba(0, 0, 0, 0.55) !important;
+        background:
+            linear-gradient(180deg,
+                rgba(12, 12, 10, 0.55) 0%,
+                rgba(10, 10, 8, 0.88) 45%,
+                rgba(8, 8, 6, 0.96) 100%) !important;
+        backdrop-filter: blur(16px) saturate(1.15) !important;
+        -webkit-backdrop-filter: blur(16px) saturate(1.15) !important;
+        gap: 0.55rem !important;
+        overflow: visible !important;
+        display: flex !important;
+        flex-direction: column !important;
+        justify-content: flex-start !important;
+    }
+    .hero-glass-top {
+        gap: 0.4rem !important;
+    }
+    .hero-glass-fill {
+        flex: 0 1 auto !important;
+        max-height: 28vh;
+        min-height: 0;
+        overflow: hidden;
+        mask-image: linear-gradient(to bottom, #000 0%, #000 78%, transparent 100%) !important;
+        -webkit-mask-image: linear-gradient(to bottom, #000 0%, #000 78%, transparent 100%) !important;
+    }
+    .hero-glass-foot {
+        margin-top: 0.35rem !important;
+        padding-top: 0.25rem !important;
+    }
+    .hero-feature h1 {
+        font-size: clamp(1.4rem, 6.2vw, 1.95rem) !important;
+        line-height: 1.12 !important;
+        letter-spacing: -0.02em !important;
+    }
+    .hero-feature .hero-lead-p {
+        font-size: 0.9rem !important;
+        line-height: 1.5 !important;
+    }
+    .hero-feature .hero-lead-p.is-dek {
+        font-size: 0.95rem !important;
+        /* 2–3 baris di mobile agar ringkas */
+        display: -webkit-box;
+        -webkit-box-orient: vertical;
+        -webkit-line-clamp: 3;
+        overflow: hidden;
+    }
+    .hero-feature .hero-cta-row .btn-primary {
+        width: 100%;
+        justify-content: center;
+        min-height: 46px;
+        padding: 12px 18px;
+        font-size: 14px;
+    }
+    .hero-feature .route-line { display: none; }
+    .skeleton-hero,
+    .skeleton-hero-inner {
+        min-height: min(72vh, 560px) !important;
+    }
+
+    /* --- Journal stack --- */
+    .journal-stack {
+        padding: 0 12px calc(96px + env(safe-area-inset-bottom, 0px)) !important;
+        gap: 14px !important;
+        width: 100%;
+        box-sizing: border-box;
+    }
+    .section-surface {
+        border-radius: 14px !important;
+        padding: 16px 12px 18px !important;
+        width: 100%;
+        box-sizing: border-box;
+        overflow: hidden;
+    }
+    .section-surface-head {
+        flex-direction: column !important;
+        align-items: stretch !important;
+        gap: 10px !important;
+        margin-bottom: 14px !important;
+    }
+    .section-title {
+        font-size: 1.4rem !important;
+        line-height: 1.2 !important;
+        margin-top: 6px !important;
+    }
+    .section-sub {
+        font-size: 12.5px !important;
+        line-height: 1.45 !important;
+        max-width: none !important;
+    }
+    .x-live-meta {
+        width: 100%;
+        justify-content: space-between;
+        gap: 8px;
+    }
+    .live-pill {
+        font-size: 10.5px;
+        padding: 6px 10px;
+    }
+    .btn-sm {
+        min-height: 36px;
+        padding: 8px 12px !important;
+        font-size: 12px !important;
+    }
+
+    /* --- Rails: peek cards, no page overflow --- */
+    .x-rail,
+    .ig-rail {
+        gap: 10px !important;
+        margin-left: -4px !important;
+        margin-right: -4px !important;
+        padding: 2px 8px 10px 4px !important;
+        max-width: calc(100% + 8px);
+        overscroll-behavior-x: contain;
+        -webkit-overflow-scrolling: touch;
+        scroll-snap-type: x mandatory;
+    }
+    .x-card {
+        flex: 0 0 min(76vw, 270px) !important;
+        scroll-snap-align: start;
+        border-radius: 12px !important;
+    }
+    .x-card .x-body {
+        padding: 12px !important;
+        gap: 6px !important;
+    }
+    .x-card .x-body h3 {
+        font-size: 15px !important;
+        line-height: 1.3 !important;
+        -webkit-line-clamp: 3;
+    }
+    .x-card .x-dek {
+        font-size: 11.5px !important;
+        -webkit-line-clamp: 2;
+    }
+    .ig-rail-card {
+        flex: 0 0 42vw !important;
+        max-width: 180px;
+        border-radius: 10px !important;
+    }
+
+    /* --- Photo of the Day --- */
+    .potd {
+        grid-template-columns: 1fr !important;
+        border-radius: 12px !important;
+    }
+    .potd .potd-image,
+    .potd-video-wrap {
+        aspect-ratio: 4 / 3 !important;
+    }
+    .potd .potd-text {
+        padding: 16px 14px 18px !important;
+        border-left: none !important;
+        border-top: 3px solid var(--brass) !important;
+    }
+    .potd .potd-caption {
+        font-size: 1.05rem !important;
+        line-height: 1.4 !important;
+    }
+    .potd-actions {
+        flex-direction: column;
+        align-items: stretch !important;
+        gap: 10px !important;
+        margin-top: 14px !important;
+    }
+    .potd-ig-link {
+        justify-content: center;
+        width: 100%;
+        min-height: 42px;
+    }
+
+    /* --- Dispatch grid --- */
+    .dispatch-grid {
+        grid-template-columns: 1fr !important;
+        gap: 14px !important;
+    }
+    .dispatch-grid .span-4,
+    .dispatch-grid .span-3,
+    .dispatch-grid .span-2 {
+        grid-column: 1 / -1 !important;
+    }
+    .dispatch-card {
+        border-radius: 12px !important;
+    }
+    .dispatch-card .thumb,
+    .dispatch-card.size-lg .thumb {
+        aspect-ratio: 16 / 10 !important;
+        border-radius: 12px 12px 0 0;
+    }
+    .dispatch-card .card-body {
+        padding: 12px 4px 4px !important;
+    }
+    .dispatch-card h3,
+    .dispatch-card.size-lg h3,
+    .dispatch-card.size-md h3,
+    .dispatch-card.size-sm h3 {
+        font-size: 1.08rem !important;
+        line-height: 1.3 !important;
+    }
+    .dispatch-card .card-dek {
+        display: -webkit-box !important;
+        -webkit-line-clamp: 2;
+        -webkit-box-orient: vertical;
+        overflow: hidden;
+        font-size: 12.5px !important;
+    }
+
+    /* --- Sticky category chips --- */
+    .filter-bar,
+    .sticky-filters {
+        top: 52px !important;
+        gap: 8px !important;
+        margin-left: -4px !important;
+        margin-right: -4px !important;
+        padding: 8px 4px 10px !important;
+        flex-wrap: nowrap !important;
+        overflow-x: auto !important;
+        -webkit-overflow-scrolling: touch;
+        scrollbar-width: none;
+        background: linear-gradient(180deg, rgba(16, 15, 12, 0.98) 70%, rgba(16, 15, 12, 0.88)) !important;
+    }
+    .filter-bar::-webkit-scrollbar,
+    .sticky-filters::-webkit-scrollbar { display: none; }
+    .cat-pill {
+        flex: 0 0 auto;
+        min-height: 36px;
+        padding: 8px 14px !important;
+        font-size: 12px !important;
+    }
+
+    /* --- Article reader --- */
+    .article-hero {
+        min-height: 48vh !important;
+        max-height: 58vh !important;
+        height: auto !important;
+        border-radius: 0 !important;
+    }
+    .article-hero-content {
+        padding: 28px 14px 36px !important;
+        max-width: 100% !important;
+    }
+    .article-hero h1 {
+        font-size: clamp(1.5rem, 7vw, 2.05rem) !important;
+        line-height: 1.12 !important;
+    }
+    .article-hero .dek {
+        font-size: 0.95rem !important;
+        line-height: 1.45 !important;
+    }
+    .byline-row {
+        font-size: 11.5px !important;
+        gap: 6px 8px !important;
+    }
+    .reading-surface {
+        margin: -28px 10px 0 !important;
+        border-radius: 14px !important;
+        padding: 22px 16px 36px !important;
+        max-width: none !important;
+        width: auto !important;
+    }
+    .reading-surface p {
+        font-size: 16.5px !important;
+        line-height: 1.7 !important;
+        margin-bottom: 18px !important;
+    }
+    .reading-surface h2 {
+        font-size: 1.28rem !important;
+        margin: 28px 0 12px !important;
+    }
+    .reading-surface figure {
+        margin: 22px 0 !important;
+    }
+    .reading-surface blockquote {
+        font-size: 1.08rem !important;
+        padding-left: 14px !important;
+        margin: 22px 0 !important;
+    }
+    .reading-surface .article-list li {
+        font-size: 16px !important;
+    }
+    .x-article-source-inner {
+        flex-direction: column !important;
+        align-items: stretch !important;
+        gap: 12px !important;
+    }
+    .x-article-source-inner .btn-primary {
+        width: 100% !important;
+        justify-content: center !important;
+    }
+    .article-share {
+        gap: 8px !important;
+    }
+    .article-share .share-btn {
+        flex: 1 1 calc(50% - 8px);
+        justify-content: center;
+        min-height: 42px;
+    }
+    .related-rail {
+        padding: 16px 12px !important;
+    }
+
+    /* --- Footer --- */
+    .footer-inner {
+        grid-template-columns: 1fr !important;
+        padding: 28px 14px 18px !important;
+        gap: 20px !important;
+    }
+    .footer-bottom {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 6px;
+        padding: 12px 14px calc(18px + env(safe-area-inset-bottom, 0px)) !important;
+    }
+
+    /* --- FABs: avoid overlapping content & each other --- */
+    .search-fab {
+        width: 46px !important;
+        height: 46px !important;
+        left: calc(12px + env(safe-area-inset-left, 0px)) !important;
+        bottom: calc(16px + env(safe-area-inset-bottom, 0px)) !important;
+    }
+    .back-to-top {
+        width: 46px !important;
+        height: 46px !important;
+        right: calc(12px + env(safe-area-inset-right, 0px)) !important;
+        bottom: calc(16px + env(safe-area-inset-bottom, 0px)) !important;
+    }
+    .admin-fab {
+        width: 44px !important;
+        height: 44px !important;
+        right: calc(12px + env(safe-area-inset-right, 0px)) !important;
+        bottom: calc(70px + env(safe-area-inset-bottom, 0px)) !important;
+    }
+
+    /* --- Telegram --- */
+    .tg-feed {
+        grid-template-columns: 1fr !important;
+        gap: 12px !important;
+    }
+    .tg-card-body { padding: 14px !important; }
+    .tg-card-text { font-size: 14px !important; max-height: 11em !important; }
+
+    /* --- Watch / videos --- */
+    .video-grid {
+        grid-template-columns: 1fr !important;
+        gap: 12px !important;
+    }
+    .video-card.portrait {
+        width: min(46vw, 170px) !important;
+    }
+    .shorts-shelf {
+        gap: 10px;
+        padding-bottom: 12px;
+    }
+
+    /* --- About --- */
+    .workshop-grid {
+        grid-template-columns: 1fr !important;
+        gap: 12px !important;
+    }
+    .about-hero { padding: 24px 8px !important; }
+    .avatar-ring img {
+        width: 112px !important;
+        height: 112px !important;
+    }
+    .link-row {
+        padding: 14px !important;
+    }
+
+    /* --- IG grid / lightbox --- */
+    .ig-grid {
+        grid-template-columns: repeat(2, 1fr) !important;
+        gap: 5px !important;
+    }
+    .ig-tile {
+        border-radius: 6px !important;
+    }
+    .ig-lightbox-content {
+        width: 100vw !important;
+        max-width: 100vw !important;
+        height: 100dvh !important;
+        max-height: 100dvh !important;
+        border-radius: 0 !important;
+    }
+    .ig-lightbox-media img,
+    .ig-lightbox-media video {
+        max-height: 55dvh !important;
+        width: 100% !important;
+        object-fit: contain;
+    }
+    .ig-lightbox-info {
+        flex: 1;
+        overflow-y: auto;
+        padding: 14px 14px calc(18px + env(safe-area-inset-bottom, 0px)) !important;
+    }
+
+    /* --- Modals --- */
+    .modal-overlay {
+        padding: 12px !important;
+        align-items: flex-end !important;
+    }
+    .modal-content {
+        max-width: 100% !important;
+        width: 100% !important;
+        max-height: min(92dvh, 100%) !important;
+        border-radius: 16px 16px 12px 12px !important;
+        padding: 20px 16px !important;
+    }
+    .input-field {
+        font-size: 16px !important; /* prevent iOS zoom */
+        min-height: 46px;
+    }
+
+    /* --- Toast --- */
+    .toast {
+        left: 12px;
+        right: 12px;
+        bottom: calc(72px + env(safe-area-inset-bottom, 0px));
+        transform: translateY(140%);
+        width: auto;
+        max-width: none;
+    }
+    .toast.show {
+        transform: translateY(0);
+    }
+}
+
+/* Very small phones */
+@media (max-width: 380px) {
+    .journal-stack {
+        padding-left: 8px !important;
+        padding-right: 8px !important;
+    }
+    .section-surface {
+        padding: 14px 10px 16px !important;
+    }
+    .hero-feature {
+        min-height: min(68vh, 480px) !important;
+    }
+    .hero-feature h1 {
+        font-size: 1.32rem !important;
+    }
+    .x-card {
+        flex: 0 0 82vw !important;
+    }
+    .brand-name {
+        max-width: 40vw;
+    }
+}
+
+/* Landscape phones: shorter hero so content is reachable */
+@media (max-width: 900px) and (orientation: landscape) and (max-height: 480px) {
+    .hero-feature {
+        min-height: min(100vh, 420px) !important;
+    }
+    .hero-content-glass {
+        padding: 12px 14px 14px !important;
+    }
+    .hero-glass-fill {
+        max-height: 20vh !important;
+    }
+    .hero-feature h1 {
+        font-size: 1.25rem !important;
+    }
+}
+
