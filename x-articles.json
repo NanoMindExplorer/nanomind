@@ -22,7 +22,7 @@
     "2076175759325237529"
   ],
   "notes": "Auto-updated by tools/sync-x-articles.py (GitHub Actions). statusIds = X post IDs that carry published X Articles. Full bodies are written to x-articles-content.json for the website (so the browser does not depend on FixTweet CORS).",
-  "lastSync": "2026-08-13T20:06:42Z",
+  "lastSync": "2026-08-13T21:06:21Z",
   "lastSyncStats": {
     "candidates": 39,
     "verified": 14,
