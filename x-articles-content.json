@@ -2,9 +2,413 @@
   "enabled": true,
   "username": "Deadmouse_jpeg",
   "displayName": "Noob Sensei",
-  "lastSync": "2026-08-14T16:27:17Z",
-  "count": 14,
+  "lastSync": "2026-08-14T17:32:14Z",
+  "count": 15,
   "articles": [
+    {
+      "id": "x-2088312186188038294",
+      "title": "Membangun Sirkuit Talenta",
+      "dek": "Pembelajaran Kritis dari Ekosistem SDM Tiongkok untuk Fondasi Indonesia yang Patah Persoalan sumber daya manusia Indonesia tidak dapat direduksi menjadi \"gaji guru kurang tinggi\", \"kuota LPDP terlalu",
+      "category": "x-articles",
+      "coverImage": "https://pbs.twimg.com/media/HPsRjS_boAAoC_f.jpg?name=large",
+      "author": "Noob Sensei",
+      "date": "2026-08-14",
+      "readTime": 13,
+      "featured": false,
+      "tags": [
+        "x-articles",
+        "@Deadmouse_jpeg"
+      ],
+      "body": [
+        {
+          "type": "paragraph",
+          "text": "Pembelajaran Kritis dari Ekosistem SDM Tiongkok untuk Fondasi Indonesia yang Patah\nPersoalan sumber daya manusia Indonesia tidak dapat direduksi menjadi \"gaji guru kurang tinggi\", \"kuota LPDP terlalu kecil\", atau \"jumlah lulusan STEM rendah\"."
+        },
+        {
+          "type": "paragraph",
+          "text": "Fondasi SDM Indonesia patah pada empat titik yang saling mengunci: rantai pasok guru, distribusi antar daerah, sinyal pasar STEM, dan daya serap talenta returnee. Di sisi lain, Tiongkok yang sering dijadikan rujukan tidak berhasil hanya karena gaji besar atau beasiswa masif, melainkan karena desain kebijakan yang saling mengunci: seleksi, pelatihan, distribusi, karier, riset, dan retensi membentuk satu sirkuit tertutup."
+        },
+        {
+          "type": "paragraph",
+          "text": "Artikel ini menyusun ulang dan memperdalam analisis dengan data hingga 14 Agustus 2026, mengeksplorasi sistem-sistem Tiongkok yang jarang dibahas, serta membandingkan struktur kompensasi dan fenomena profesor muda. Argumen utamanya: Indonesia harus bergerak dari kebijakan SDM yang transaksional menuju sirkulasi talenta membangun ekosistem terlebih dahulu sebelum menuntut pengabdian, dan meniru struktur sistemik Tiongkok, bukan sekadar nominalnya."
+        },
+        {
+          "type": "paragraph",
+          "text": "Indonesia dan Jebakan Kebijakan Linear"
+        },
+        {
+          "type": "paragraph",
+          "text": "Kebijakan SDM Indonesia selama ini cenderung direspons secara linear; hasil PISA rendah → naikkan tunjangan guru; kebutuhan peneliti meningkat → tambah beasiswa; industri kekurangan insinyur → tambah kuota teknik. Semua solusi itu berfokus pada input, tanpa memperbaiki proses dan penyerapan. Data 2025–2026 memperlihatkan kontradiksi yang tidak bisa dijelaskan oleh narasi kekurangan anggaran semata:"
+        },
+        {
+          "type": "list",
+          "ordered": false,
+          "items": [
+            "Indonesia kekurangan sekitar 596 ribu guru secara nasional, tetapi pada saat yang sama kelebihan sekitar 266 ribu guru di wilayah lain.",
+            "Lulusan perguruan tinggi dari rumpun STEM hanya 18,5–19%, jauh di bawah Malaysia (37–40%), Singapura (~34%), dan Tiongkok (~40%).",
+            "Pendaftar LPDP melonjak ke sekitar 78 ribu pada 2025, tetapi kuota penerima justru dipangkas ke 4.000–4.300, dari 8.592 pada 2024 dan 9.358 pada 2023.",
+            "Dari penelusuran lebih dari 600 awardee LPDP yang diduga bermasalah, 44 dijatuhi sanksi per awal 2026; 8 di antaranya diwajibkan mengembalikan dana plus bunga."
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "Angka-angka ini menunjukkan patahan struktural. Tiongkok sering dijadikan rujukan, tetapi pembelajaran sering disederhanakan menjadi \"gaji tinggi\" atau \"beasiswa besar\"."
+        },
+        {
+          "type": "paragraph",
+          "text": "Padahal inti keberhasilan Tiongkok adalah desain kebijakan yang saling mengunci: seleksi, pelatihan, penempatan, karier, retensi, dan evaluasi membentuk satu sirkuit tertutup. Indonesia sering memotong sirkuit itu di titik input tanpa menutup loop di titik penyerapan."
+        },
+        {
+          "type": "paragraph",
+          "text": "Artikel ini menyusun ulang analisis tersebut dalam empat bagian besar: pertama, memetakan empat patahan fondasi SDM Indonesia; kedua, menguraikan sistem-sistem Tiongkok yang lebih luas dan saling melengkapi; ketiga, membandingkan gaji dan fenomena profesor muda Tiongkok; dan keempat, merumuskan rekomendasi hibrida untuk Indonesia."
+        },
+        {
+          "type": "paragraph",
+          "text": "1. Empat Patahan dalam Fondasi SDM Indonesia"
+        },
+        {
+          "type": "paragraph",
+          "text": "1.1 Guru: Rantai Pasok yang Terputus"
+        },
+        {
+          "type": "paragraph",
+          "text": "Diagnosis sosiologis menempatkan guru sebagai \"pengganti figur panutan keluarga\" di banyak rumah tangga miskin, migran, atau berliterasi rendah. Beban peran ini membuat kebijakan menaikkan gaji secara flat berisiko menjadi solusi reaktif. Gaji penting, tetapi tidak menyelesaikan tiga hal: siapa yang masuk ke profesi guru, di mana mereka ditempatkan, dan bagaimana karier mereka berkembang."
+        },
+        {
+          "type": "paragraph",
+          "text": "Data 2025–2026 menegaskan kekurangan guru nasional sekitar 596 ribu, tetapi kelebihan 266 ribu di wilayah lain, masalah utamanya adalah distribusi dan kualitas input. LPTK masih menjadi \"pilihan cadangan\" karena jenjang karier tidak jelas dan kompensasi awal tidak kompetitif. Akibatnya, yang mendidik generasi penerus sering bukan yang terkuat secara akademik."
+        },
+        {
+          "type": "paragraph",
+          "text": "1.2 Ketimpangan Wilayah: Desentralisasi yang Membekukan"
+        },
+        {
+          "type": "paragraph",
+          "text": "Desentralisasi ekstrem membuat daerah kaya mampu menarik dan mempertahankan guru berkualitas, sementara Papua, NTT, dan wilayah 3T terjebak lingkaran setan: kapasitas fiskal terbatas + geografis sulit → kekurangan guru berkualitas → capaian belajar rendah → produktivitas rendah → tetap miskin. Data distribusi guru masih sangat timpang. Akar masalahnya bukan hanya uang, tetapi tidak adanya insentif bagi guru dan pejabat daerah untuk bergerak ke wilayah tertinggal."
+        },
+        {
+          "type": "paragraph",
+          "text": "1.3 Paradoks STEM: Sinyal Pasar yang Rusak"
+        },
+        {
+          "type": "paragraph",
+          "text": "Angka 18,5–19% lulusan STEM bukan karena anak Indonesia tidak suka sains, melainkan karena struktur ekonomi yang masih bertumpu pada komoditas dan jasa konsumsi mengirim sinyal bahwa STEM tidak menjanjikan. Lulusan teknik sering berakhir di perbankan atau pekerjaan di bawah spesifikasi. Kebijakan LPDP yang mengarahkan kuota membantu sisi suplai, tetapi tidak cukup jika sisi permintaan industri manufaktur bernilai tambah, R&D, green tech belum dibangun."
+        },
+        {
+          "type": "paragraph",
+          "text": "1.4 Returnee: Kewajiban Tanpa Ekosistem"
+        },
+        {
+          "type": "paragraph",
+          "text": "Data LPDP 2025 mencolok: 78 ribu pendaftar, kuota 4.000–4.300, 44 sanksi. Lebih dalam, banyak returnee mengalami reverse culture shock karena birokrasi kaku, lab kosong, dana riset minim, budaya senioritas. Negara menuntut kepulangan fisik ke ekosistem yang belum siap."
+        },
+        {
+          "type": "paragraph",
+          "text": "Pada 2026, bahkan muncul pengakuan bahwa alumni tidak harus pulang fisik jika pekerjaan sepadan tidak tersedia. Ini pengakuan jujur bahwa kewajiban return tanpa kapasitas penyerapan adalah kebijakan kontradiktif."
+        },
+        {
+          "type": "paragraph",
+          "text": "2. Sistem Tiongkok: Lapisan-Lapisan yang Saling Mengunci"
+        },
+        {
+          "type": "paragraph",
+          "text": "Tiongkok tidak membangun talenta secara sepotong-sepotong. Ada lapisan-lapisan yang saling melengkapi dan mengunci. Berikut sistem-sistem yang jarang dibahas namun krusial, dikelompokkan menurut titik patah yang relevan."
+        },
+        {
+          "type": "paragraph",
+          "text": "2.1 Rantai Pasok Guru: Lebih dari Sekadar Beasiswa"
+        },
+        {
+          "type": "list",
+          "ordered": false,
+          "items": [
+            "Free/Public-Funded Normal Education (2007): berhasil menarik siswa berprestasi, hampir 98% menjadi guru, berkorelasi positif dengan capaian belajar. Namun ada batasan: banyak mengajar di kota kabupaten, ikatan dinas dipangkas dari 10 ke 6 tahun. Kebijakan ini bekerja karena digabung jaminan karier lanjutan, narasi patriotisme, dan sistem politik hierarkis.",
+            "National Training Plan (2010): pelatihan guru berkelanjutan terbesar di dunia, dengan pendanaan pusat, pelatihan berjenjang, model cascade, platform digital nasional, dan pendampingan guru ahli. Indonesia belum memiliki sistem pelatihan berkelanjutan yang terstruktur dan masif.",
+            "Teacher Rotation Policy: kota besar mewajibkan guru dan kepala sekolah pindah setiap 3–6 tahun dalam satu distrik untuk mengurangi ketimpangan antar sekolah dan \"sekolah favorit\". Efektivitas jangka panjang masih diperdebatkan, tetapi menunjukkan distribusi bukan hanya soal wilayah terpencil, juga ketimpangan dalam kota.",
+            "County-Managed School-Employed: guru dimiliki kabupaten, bukan sekolah, sehingga bisa dipindahkan antar sekolah sesuai kebutuhan. Ini memecah kebuntuan distribusi mikro."
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "2.2 Pemerataan Wilayah dan Akses Pendidikan"
+        },
+        {
+          "type": "list",
+          "ordered": false,
+          "items": [
+            "East-West Pairing Assistance: bukan sekadar transfer dana, melainkan perpindahan manusia, kepala sekolah dan guru senior dikirim, lengkap dengan tim, infrastruktur digital, dan KPI pejabat daerah maju yang dikaitkan dengan kemajuan mitranya. Berhasil mengurangi kesenjangan relatif, tetapi bergantung pada kapasitas negara untuk memaksa.",
+            "National Special Plan for Enrolling Students from Rural and Poor Areas: kuota khusus di universitas elite untuk siswa pedesaan/miskin, dengan ambang batas sedikit lebih rendah, jalur verifikasi, dan beasiswa penuh.",
+            "Gaokao dan sistem kuota provinsi: seleksi terpusat yang memberikan sinyal meritokrasi jelas, tetapi juga menerapkan kuota provinsi untuk mengompensasi kualitas pendidikan dasar yang timpang, adil secara pembangunan, bukan sekadar nilai."
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "2.3 Ekosistem Riset dan STEM"
+        },
+        {
+          "type": "list",
+          "ordered": false,
+          "items": [
+            "Proyek 985/211 dan Double First-Class: pemusatan sumber daya besar ke universitas tertentu untuk menciptakan universitas riset kelas dunia, dengan fokus pada disiplin unggulan. Efeknya universitas top Tiongkok masuk peringkat dunia, tetapi memperlebar kesenjangan dengan universitas daerah.",
+            "Program Talenta Domestik Berjenjang: Ten Thousand Talents Plan, Hundred Talents Program, Changjiang Scholars, menciptakan tangga karier berbasis merit di dalam negeri, sehingga talenta tidak harus keluar untuk diakui.",
+            "National Key Laboratories dan National Natural Science Foundation: laboratorium kunci nasional dan dana kompetitif berbasis peer review sebagai tulang punggung riset strategis.",
+            "Made in China 2025 dan investasi besar di semikonduktor, EV, AI, bioteknologi menciptakan mesin penyerap lulusan STEM dan mengirim sinyal pasar yang kuat."
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "2.4 Talenta Global dan Regenerasi Akademik"
+        },
+        {
+          "type": "list",
+          "ordered": false,
+          "items": [
+            "Thousand Talents/Qiming: paket lengkap, bonus penempatan 3–5 juta yuan untuk prioritas, dana riset awal 3–5 juta yuan+, subsidi rumah, pekerjaan pasangan, sekolah anak. Tidak selalu memaksa kepulangan permanen, transfer pengetahuan diperbolehkan selama kontribusi ada. Butuh kapasitas fiskal dan kontrol negara besar.",
+            "Youth Thousand Talents dan Young Changjiang Scholars: jalur khusus peneliti muda di bawah 40 tahun dengan dana riset awal dan gaji kompetitif, membuat talenta muda lebih fleksibel dan berani mengambil risiko.",
+            "Modern Apprenticeship: sistem ganda pendidikan vokasi siswa menghabiskan 50–60% waktu di industri, terhubung langsung dengan kebutuhan manufaktur."
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "Semua sistem ini membentuk lapisan pengunci yang saling melengkapi: seleksi awal, pembinaan berkelanjutan, distribusi, infrastruktur riset-industri, penarikan talenta global, dan pendidikan vokasi. Indonesia tidak perlu mengadopsi semuanya sekaligus, tetapi perlu membangun sirkuit tertutup setiap input memiliki penyerap, setiap kewajiban memiliki insentif setara."
+        },
+        {
+          "type": "paragraph",
+          "text": "3. Perbandingan Gaji dan Lahirnya Profesor Muda: Pelajaran tentang Kompensasi dan Karier"
+        },
+        {
+          "type": "paragraph",
+          "text": "Per 14 Agustus 2026, perbandingan gaji dan karier akademik muda semakin relevan karena Indonesia sedang merevisi sistem karier ASN dan mendorong hilirisasi riset. Bagian ini mengupas dua hal yang menjadi obsesi publik: gaji dan profesor muda."
+        },
+        {
+          "type": "paragraph",
+          "text": "3.1 Kerangka Perbandingan: Nominal, PPP, dan Paket Total"
+        },
+        {
+          "type": "paragraph",
+          "text": "Membandingkan gaji antarnegara harus mempertimbangkan nominal dan paritas daya beli (PPP). Kurs acuan per pertengahan 2026: 1 RMB ≈ Rp2.200–2.300, tetapi daya beli lokal 1 yuan setara Rp1.000–Rp1.300. Jadi gaji 10.000 yuan bukan Rp22 juta riil, melainkan sekitar Rp10–13 juta dalam konteks harga lokal."
+        },
+        {
+          "type": "paragraph",
+          "text": "3.2 Gaji Guru: Selisih Struktural"
+        },
+        {
+          "type": "list",
+          "ordered": false,
+          "items": [
+            "Tiongkok: guru SD/SMP negeri kota besar 12.000–20.000 RMB/bulan (Rp26–44 juta) plus housing fund, bonus akhir tahun; kota menengah 7.000–12.000 RMB; wilayah barat 4.000–7.000 RMB. Paket total tahunan kota besar 150.000–250.000 RMB.",
+            "Indonesia: guru PNS bersertifikasi Rp5–8 juta/bulan; honorer Rp2–4 juta; daerah 3T dengan insentif Rp6–10 juta. Paket tahunan PNS Rp60–96 juta, honorer < Rp30 juta."
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "Secara nominal, guru Tiongkok kota besar 3–5 kali lipat, setelah PPP 1,5–2,5 kali lipat. Perbedaan penting bukan angka, tetapi struktur kompensasi: Tiongkok sudah mencakup jaminan perumahan, pensiun, dan bonus kinerja, sehingga guru fokus penuh; di Indonesia, guru (terutama honorer) harus mencari sampingan."
+        },
+        {
+          "type": "paragraph",
+          "text": "3.3 Gaji Dosen dan Peneliti: Kesenjangan Ekstrem"
+        },
+        {
+          "type": "list",
+          "ordered": false,
+          "items": [
+            "Tiongkok: dosen biasa 80.000–150.000 RMB/tahun (Rp176–330 juta); profesor penuh universitas top 300.000–800.000 RMB; profesor muda talenta nasional 400.000–1.200.000 RMB (Rp880 juta–2,64 miliar). Ditambah dana riset awal 1–10 juta RMB, subsidi rumah 300.000–2.000.000 RMB, jaminan pekerjaan untuk pasangan dan sekolah anak.",
+            "Indonesia: dosen asisten ahli Rp60–96 juta/tahun; guru besar Rp144–300 juta; peneliti BRIN muda Rp96–216 juta. Dana riset awal hampir tidak ada, fresh PhD mulai dari nol."
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "Pada jenjang dosen biasa, selisih nominal 2–4 kali, PPP 1,5–2,5 kali. Namun pada profesor muda talenta, paket Tiongkok >10 kali nominal dan >5 kali PPP. Indonesia tidak bersaing sama sekali."
+        },
+        {
+          "type": "paragraph",
+          "text": "3.4 Fenomena Profesor Muda: Mekanisme dan Skala"
+        },
+        {
+          "type": "paragraph",
+          "text": "\"Profesor muda\" di Tiongkok merujuk pada profesor penuh sebelum 40 tahun, banyak di bawah 35, bahkan beberapa doktor kelahiran 1990-an langsung diangkat profesor penuh jika rekam publikasi luar biasa. Batas usia diatur nasional:"
+        },
+        {
+          "type": "list",
+          "ordered": false,
+          "items": [
+            "Excellent Young Scientists Fund: usia ≤38 (pria) / ≤40 (wanita), dana 4 juta RMB.",
+            "Distinguished Young Scholars: ≤45 tahun, dana 4–8 juta RMB.",
+            "Young Changjiang Scholars: ≤38 tahun.",
+            "Young Thousand Talents: ≤40 tahun untuk returnee."
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "Sistem berjenjang: dari program universitas/provinsi (misal Zijin Young Scholars) hingga program nasional puncak. Tenure track ala Tiongkok: kontrak 3–6 tahun, evaluasi ketat tahun ketiga/kelima, jika lolos promosi langsung, jika gagal kontrak tidak diperpanjang. Ini memungkinkan profesor penuh pada usia 30–35 tahun."
+        },
+        {
+          "type": "paragraph",
+          "text": "Paket konkret seorang Young Thousand Talents (2024–2026): gaji tahunan 500.000–1.000.000 RMB; startup grant 3–10 juta RMB; subsidi rumah 1–3 juta RMB; pekerjaan pasangan dan sekolah anak; prioritas proyek nasional. Dengan ini, profesor muda bisa fokus penuh membangun laboratorium dan merekrut mahasiswa PhD."
+        },
+        {
+          "type": "paragraph",
+          "text": "Per Agustus 2026, tren profesor muda sudah arus utama. Hampir semua universitas riset top memiliki jalur young professor terpisah. Persaingan sangat ketat, publikasi di Nature/Science/Cell atau jurnal Q1 bereputasi tinggi menjadi syarat. Tekanan mental meningkat, muncul diskusi burnout dan budaya publish-or-perish. Namun secara sistemik, Tiongkok berhasil mempercepat regenerasi akademik; rata-rata usia profesor penuh turun signifikan dalam satu dekade."
+        },
+        {
+          "type": "paragraph",
+          "text": "3.5 Mengapa Tiongkok Berhasil Memproduksi Profesor Muda?"
+        },
+        {
+          "type": "paragraph",
+          "text": "Lima faktor saling mengunci:"
+        },
+        {
+          "type": "list",
+          "ordered": true,
+          "items": [
+            "Pendanaan riset besar tersedia untuk peneliti muda, tanpa mensyaratkan jabatan fungsional tinggi.",
+            "Batas usia formal menciptakan urgensi kelembagaan.",
+            "Kompensasi membuat fokus penuh mungkin tidak perlu pekerjaan sampingan.",
+            "Budaya meritokrasi berbasis publikasi dan pendanaan yang relatif transparan.",
+            "Dukungan institusional lengkap dengan lab, mahasiswa PhD, staf teknis."
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "Di Indonesia, kelimanya masih lemah sekaligus."
+        },
+        {
+          "type": "paragraph",
+          "text": "3.6 Kontras dengan Indonesia"
+        },
+        {
+          "type": "paragraph",
+          "text": "Banyak PhD muda berpotensi, tetapi saat pulang masuk sistem yang belum siap: gaji dosen muda Rp5–8 juta mendorong kerja sampingan; dana riset awal tidak ada; jabatan fungsional lambat; infrastruktur timpang; budaya senioritas kuat. Akibatnya, returnee berbakat memilih luar negeri, industri non-riset, atau lembaga internasional kebocoran otak yang dibiayai negara."
+        },
+        {
+          "type": "paragraph",
+          "text": "4. Implikasi dan Rekomendasi: Menuju Sirkulasi Talenta Indonesia"
+        },
+        {
+          "type": "paragraph",
+          "text": "Kebijakan SDM harus bergeser dari transaksi sekali jalan ke sirkulasi. Berikut rekomendasi operasional yang menggabungkan pembelajaran Tiongkok dengan konteks Indonesia."
+        },
+        {
+          "type": "paragraph",
+          "text": "4.1 Guru: Beasiswa Ikatan Dinas Progresif dan Pelatihan Berkelanjutan"
+        },
+        {
+          "type": "list",
+          "ordered": false,
+          "items": [
+            "Seleksi ketat masuk PPG dan LPTK dengan standar akademik minimal.",
+            "Beasiswa penuh untuk calon guru dari daerah 3T dan keluarga kurang mampu.",
+            "Ikatan dinas 5–7 tahun dengan pilihan wilayah dan insentif berjenjang.",
+            "Jenjang karier terukur: pemula → mahir → utama, dengan lonjakan kompensasi signifikan.",
+            "Digital teaching support untuk mengurangi isolasi profesional.",
+            "Bangun platform pelatihan guru nasional berkelanjutan (mirip National Training Plan) yang terhubung dengan PPG, dengan modul berbasis kompetensi dan pengakuan karier."
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "4.2 Wilayah: Kemitraan Wajib dan Digitalisasi"
+        },
+        {
+          "type": "list",
+          "ordered": false,
+          "items": [
+            "Kemitraan antar provinsi wajib lunak: provinsi maju (DKI, Jatim, Jabar) bermitra dengan Papua, NTT, Maluku.",
+            "Mobilitas manusia sebagai syarat DAK, bukan hanya transfer dana.",
+            "KPI lunak bagi pejabat daerah maju terkait evaluasi pembangunan.",
+            "Platform digital nasional untuk kelas jarak jauh dan repositori pembelajaran.",
+            "Pilot rotasi guru di kota besar dengan kewenangan kuat (DKI, Surabaya, Bandung) untuk mengurangi ketimpangan dalam kota.",
+            "Reformasi manajemen guru di tingkat kabupaten/kota agar guru dapat dipindahkan antar sekolah sesuai kebutuhan."
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "4.3 STEM: Demand Side First"
+        },
+        {
+          "type": "list",
+          "ordered": false,
+          "items": [
+            "Insentif industri untuk sektor penyerap STEM: EV, energi terbarukan, pangan, kesehatan, digital.",
+            "Magang wajib dan joint lab antara kampus dan industri.",
+            "LPDP diikat dengan peta penyerapan: beasiswa STEM diberikan jika ada proyeksi kebutuhan jelas.",
+            "Olimpiade sains sebagai jalur prestise sejak menengah pertama.",
+            "Afirmasi kuota universitas top untuk siswa daerah 3T dengan ikatan pengabdian daerah asal.",
+            "Perkuat tes seleksi nasional dengan bobot afirmasi wilayah."
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "4.4 Returnee dan Akademisi Muda: Bangun Ekosistem Dulu"
+        },
+        {
+          "type": "list",
+          "ordered": false,
+          "items": [
+            "Dana riset awal Rp1–3 miliar untuk STEM, Rp500 juta–1 miliar untuk sosial-humaniora, untuk 3–5 tahun pertama.",
+            "Gaji kompetitif minimal setara profesional swasta.",
+            "Subsidi perumahan atau hunian kampus.",
+            "Jaminan pekerjaan pasangan dan sekolah anak.",
+            "Sirkulasi pengetahuan: kontribusi jarak jauh dan kolaborasi internasional dihitung sebagai pengabdian.",
+            "Jangan menghukum kepulangan ke sistem yang belum siap; renegosiasi kewajiban fokus pada kontribusi, bukan lokasi fisik."
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "4.5 Reformasi Karier Akademik: Program \"Profesor Muda Indonesia\""
+        },
+        {
+          "type": "list",
+          "ordered": false,
+          "items": [
+            "Jalur fast track terlembaga: usia maksimal 40 tahun, kontrak 5 tahun dengan evaluasi tahun ketiga.",
+            "Dana riset awal Rp1–3 miliar (STEM), Rp500 juta–1 miliar (sosial-humaniora).",
+            "Gaji tahunan Rp200–400 juta (tergantung kota), paket total 300–500 juta termasuk tunjangan.",
+            "Akses langsung ke laboratorium nasional atau mitra industri.",
+            "Evaluasi berbasis publikasi, paten, atau dampak kebijakan, bukan angka kredit.",
+            "Didanai melalui LPDP, BRIN, konsorsium universitas, seleksi kompetitif transparan. Jika tersedia 100–200 posisi per tahun dengan biaya Rp500 miliar–1 triliun, dampak pada ekosistem riset jauh lebih besar daripada menyebar dana tipis.",
+            "Gaji tunggal ASN harus memasukkan tunjangan kinerja riset; jabatan fungsional dilonggarkan; universitas top diberi otonomi merekrut berbasis pasar."
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "4.6 Guru Sekolah: Naikkan Gaji Secara Bertahap dan Ikat dengan Distribusi"
+        },
+        {
+          "type": "list",
+          "ordered": false,
+          "items": [
+            "Gaji pokok guru PNS/PPPK naik menuju Rp7–10 juta/bulan untuk daerah 3T.",
+            "Tunjangan khusus daerah sulit dinaikkan dan dibayar tepat waktu.",
+            "Beasiswa ikatan dinas diperluas dengan jaminan karier, bukan sekadar hukuman.",
+            "Platform digital untuk pelatihan dan pendampingan mengurangi isolasi profesional."
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "Pertanyaan yang Lebih Mendesak"
+        },
+        {
+          "type": "paragraph",
+          "text": "Pertanyaan substantif bagi pembuat kebijakan bukan lagi \"berapa besar kenaikan gaji guru\" atau \"berapa kuota LPDP tahun ini\". Pertanyaan adalah: Maukah negara membangun sirkuit yang berputar, laboratorium, jenjang karier, insentif daerah tertinggal, permintaan industri, sebelum menuntut pengabdian? Atau akan terus mengulang pola lama di tengah tekanan demografi, kompetisi AI, dan target Indonesia Emas 2045?"
+        },
+        {
+          "type": "paragraph",
+          "text": "Per 14 Agustus 2026, jendela kesempatan Indonesia masih terbuka: bonus demografi, arus returnee, dan tekanan global untuk hilirisasi industri dapat dimanfaatkan. Namun tanpa reformasi yang membangun ekosistem secara utuh, bukan sekadar menaikkan input, fondasi SDM Indonesia akan tetap patah di banyak titik. Tiongkok menunjukkan bahwa kuncinya bukan sekadar uang, melainkan arsitektur yang saling mengunci. Indonesia harus meniru arsitekturnya, bukan hanya nominalnya."
+        },
+        {
+          "type": "paragraph",
+          "text": "Catatan data: Angka-angka dalam artikel ini merujuk pada data dan analisis publik hingga pertengahan 2026, termasuk publikasi Bappenas, LPDP, Kementerian Pendidikan, serta kajian kebijakan pendidikan dan ketenagakerjaan. Interpretasi dan sintesisnya merupakan perluasan analisis, bukan laporan resmi lembaga tertentu."
+        }
+      ],
+      "source": "x",
+      "xStatusId": "2088312186188038294",
+      "xArticleId": "2088277408113950720",
+      "xUrl": "https://x.com/Deadmouse_jpeg/status/2088312186188038294",
+      "articleUrl": "https://x.com/i/article/2088277408113950720",
+      "likes": 3,
+      "views": 30
+    },
     {
       "id": "x-2086802112001028513",
       "title": "China 2026 Dari Pabrik Dunia Ke Arsitek Tatanan Ekonomi Global Baru",
@@ -260,7 +664,7 @@
       "xUrl": "https://x.com/Deadmouse_jpeg/status/2086802112001028513",
       "articleUrl": "https://x.com/i/article/2086786292160028672",
       "likes": 4,
-      "views": 629
+      "views": 634
     },
     {
       "id": "x-2086330042863472918",
@@ -594,7 +998,7 @@
       "xUrl": "https://x.com/Deadmouse_jpeg/status/2086330042863472918",
       "articleUrl": "https://x.com/i/article/2086318973990346752",
       "likes": 8,
-      "views": 410
+      "views": 412
     },
     {
       "id": "x-2085977873538564128",
@@ -864,7 +1268,7 @@
       "xUrl": "https://x.com/Deadmouse_jpeg/status/2085977873538564128",
       "articleUrl": "https://x.com/i/article/2085974840159387648",
       "likes": 9,
-      "views": 573
+      "views": 575
     },
     {
       "id": "x-2084516281261388041",
@@ -1290,7 +1694,7 @@
       "xUrl": "https://x.com/Deadmouse_jpeg/status/2084516281261388041",
       "articleUrl": "https://x.com/i/article/2084504865146068992",
       "likes": 5,
-      "views": 273
+      "views": 275
     },
     {
       "id": "x-2080914975363666184",
@@ -1544,7 +1948,7 @@
       "xUrl": "https://x.com/Deadmouse_jpeg/status/2080914975363666184",
       "articleUrl": "https://x.com/i/article/2080906589771538432",
       "likes": 4,
-      "views": 648
+      "views": 649
     },
     {
       "id": "x-2080309949025136833",
@@ -1691,7 +2095,7 @@
       "xUrl": "https://x.com/Deadmouse_jpeg/status/2080309949025136833",
       "articleUrl": "https://x.com/i/article/2080305135063117825",
       "likes": 5,
-      "views": 928
+      "views": 929
     },
     {
       "id": "x-2079807062414946724",
