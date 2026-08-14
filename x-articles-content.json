@@ -2,7 +2,7 @@
   "enabled": true,
   "username": "Deadmouse_jpeg",
   "displayName": "Noob Sensei",
-  "lastSync": "2026-08-14T17:32:14Z",
+  "lastSync": "2026-08-14T18:29:10Z",
   "count": 15,
   "articles": [
     {
@@ -407,7 +407,7 @@
       "xUrl": "https://x.com/Deadmouse_jpeg/status/2088312186188038294",
       "articleUrl": "https://x.com/i/article/2088277408113950720",
       "likes": 3,
-      "views": 30
+      "views": 56
     },
     {
       "id": "x-2086802112001028513",
@@ -664,7 +664,7 @@
       "xUrl": "https://x.com/Deadmouse_jpeg/status/2086802112001028513",
       "articleUrl": "https://x.com/i/article/2086786292160028672",
       "likes": 4,
-      "views": 634
+      "views": 638
     },
     {
       "id": "x-2086330042863472918",
@@ -998,7 +998,7 @@
       "xUrl": "https://x.com/Deadmouse_jpeg/status/2086330042863472918",
       "articleUrl": "https://x.com/i/article/2086318973990346752",
       "likes": 8,
-      "views": 412
+      "views": 413
     },
     {
       "id": "x-2085977873538564128",
@@ -1268,7 +1268,7 @@
       "xUrl": "https://x.com/Deadmouse_jpeg/status/2085977873538564128",
       "articleUrl": "https://x.com/i/article/2085974840159387648",
       "likes": 9,
-      "views": 575
+      "views": 576
     },
     {
       "id": "x-2084516281261388041",
@@ -1694,7 +1694,7 @@
       "xUrl": "https://x.com/Deadmouse_jpeg/status/2084516281261388041",
       "articleUrl": "https://x.com/i/article/2084504865146068992",
       "likes": 5,
-      "views": 275
+      "views": 276
     },
     {
       "id": "x-2080914975363666184",
@@ -1948,7 +1948,7 @@
       "xUrl": "https://x.com/Deadmouse_jpeg/status/2080914975363666184",
       "articleUrl": "https://x.com/i/article/2080906589771538432",
       "likes": 4,
-      "views": 649
+      "views": 651
     },
     {
       "id": "x-2080309949025136833",
@@ -2095,7 +2095,7 @@
       "xUrl": "https://x.com/Deadmouse_jpeg/status/2080309949025136833",
       "articleUrl": "https://x.com/i/article/2080305135063117825",
       "likes": 5,
-      "views": 929
+      "views": 930
     },
     {
       "id": "x-2079807062414946724",
@@ -2203,7 +2203,7 @@
       "xUrl": "https://x.com/Deadmouse_jpeg/status/2079807062414946724",
       "articleUrl": "https://x.com/i/article/2079805879768285184",
       "likes": 0,
-      "views": 453
+      "views": 454
     },
     {
       "id": "x-2079487993669148749",
@@ -2469,7 +2469,7 @@
       "xUrl": "https://x.com/Deadmouse_jpeg/status/2079487993669148749",
       "articleUrl": "https://x.com/i/article/2079481836858925056",
       "likes": 0,
-      "views": 375
+      "views": 376
     },
     {
       "id": "x-2078757179172278617",
@@ -2649,7 +2649,7 @@
       "xUrl": "https://x.com/Deadmouse_jpeg/status/2078757179172278617",
       "articleUrl": "https://x.com/i/article/2078748550796873728",
       "likes": 0,
-      "views": 992
+      "views": 993
     },
     {
       "id": "x-2078444870843421031",
@@ -2860,7 +2860,7 @@
       "xUrl": "https://x.com/Deadmouse_jpeg/status/2078444870843421031",
       "articleUrl": "https://x.com/i/article/2078441751875092480",
       "likes": 1,
-      "views": 294
+      "views": 295
     },
     {
       "id": "x-2078391497687269414",
@@ -3122,7 +3122,7 @@
       "xUrl": "https://x.com/Deadmouse_jpeg/status/2078391497687269414",
       "articleUrl": "https://x.com/i/article/2078388348398534656",
       "likes": 4,
-      "views": 1513
+      "views": 1514
     },
     {
       "id": "x-2078128754002739280",
@@ -3282,7 +3282,7 @@
       "xUrl": "https://x.com/Deadmouse_jpeg/status/2078128754002739280",
       "articleUrl": "https://x.com/i/article/2078124752250761216",
       "likes": 7,
-      "views": 2264
+      "views": 2265
     },
     {
       "id": "x-2076342065613668432",
@@ -3470,7 +3470,7 @@
       "xUrl": "https://x.com/Deadmouse_jpeg/status/2076342065613668432",
       "articleUrl": "https://x.com/i/article/2076341375252213760",
       "likes": 0,
-      "views": 306
+      "views": 307
     },
     {
       "id": "x-2076175759325237529",
@@ -3764,7 +3764,7 @@
       "xUrl": "https://x.com/Deadmouse_jpeg/status/2076175759325237529",
       "articleUrl": "https://x.com/i/article/2076174258087370752",
       "likes": 0,
-      "views": 216
+      "views": 217
     }
   ],
   "notes": "Full X Article bodies for the website. Built by tools/sync-x-articles.py. Client prefers this file over live FixTweet so articles always render."
