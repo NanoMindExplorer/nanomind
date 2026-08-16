@@ -2,9 +2,245 @@
   "enabled": true,
   "username": "Deadmouse_jpeg",
   "displayName": "Noob Sensei",
-  "lastSync": "2026-08-16T06:16:01Z",
-  "count": 15,
+  "lastSync": "2026-08-16T07:05:02Z",
+  "count": 16,
   "articles": [
+    {
+      "id": "x-2088872725053944178",
+      "title": "Lima Lapis yang Menentukan Pemenang Perang AI",
+      "dek": "Membedah Stack Energi, Infrastruktur, Chip, Talent, dan Aplikasi Kenapa masa depan kecerdasan buatan lebih banyak ditentukan oleh trafo listrik dan tukang pipa daripada oleh model bahasa itu sendiri.",
+      "category": "x-articles",
+      "coverImage": "https://pbs.twimg.com/media/HP0hp1KaEAA5yW9.jpg?name=large",
+      "author": "Noob Sensei",
+      "date": "2026-08-16",
+      "readTime": 13,
+      "featured": false,
+      "tags": [
+        "x-articles",
+        "@Deadmouse_jpeg"
+      ],
+      "body": [
+        {
+          "type": "paragraph",
+          "text": "Membedah Stack Energi, Infrastruktur, Chip, Talent, dan Aplikasi"
+        },
+        {
+          "type": "paragraph",
+          "text": "Kenapa masa depan kecerdasan buatan lebih banyak ditentukan oleh trafo listrik dan tukang pipa daripada oleh model bahasa itu sendiri."
+        },
+        {
+          "type": "paragraph",
+          "text": "Ketika orang bicara soal \"perang AI\" di 2026, gambaran yang muncul biasanya soal model mana yang paling pintar GPT versus Gemini versus Claude versus yang lain. Tapi kalau kamu dengar cara Jensen Huang, CEO Nvidia, menjelaskan industri ini ke investor, gambarannya jauh lebih membumi. Ia menyebutnya \"kue lima lapis\": energi, chip, infrastruktur komputasi, model, dan aplikasi sebuah rantai industrial di mana tiap lapisan harus tumbuh bersamaan agar AI benar-benar berguna secara ekonomi. Nvidia untung dari cara pandang ini, karena makin AI dilihat sebagai infrastruktur berat ketimbang sekadar software, makin besar posisi Nvidia sebagai pemasok \"listrik yang diubah jadi kecerdasan.\""
+        },
+        {
+          "type": "paragraph",
+          "text": "Artikel ini membedah versi stack yang sedikit berbeda energi → infrastruktur → chips → talent → aplikasi di mana \"talent\" menggantikan posisi \"model\" sebagai lapisan tersendiri. Pergeseran kecil ini penting, karena ia mengingatkan bahwa di balik setiap model AI ada manusia: peneliti PhD yang gajinya tujuh digit, sampai tukang listrik yang mengkabel gedung data center seluas puluhan lapangan bola. Berikut bedahnya, lapis demi lapis, dengan data terupdate per Agustus 2026."
+        },
+        {
+          "type": "heading",
+          "text": "Layer 1: Energi, Fondasi yang Ternyata Jadi Titik Rawan"
+        },
+        {
+          "type": "paragraph",
+          "text": "Setiap token yang dihasilkan AI adalah hasil elektron yang bergerak dan panas yang harus dikelola. Tidak ada abstraksi di bawah energi, ia adalah hukum pertama dari infrastruktur AI, dan sejauh ini menjadi kendala paling nyata dari seluruh stack."
+        },
+        {
+          "type": "paragraph",
+          "text": "Skalanya sudah di luar nalar. Investasi swasta AI di Amerika Serikat menembus $285,9 miliar pada 2025, dengan kapasitas daya data center AI mencapai sekitar 29,6 gigawatt (GW) pada kuartal terakhir 2025, cukup untuk menyalakan seluruh negara bagian New York saat beban puncak (Bulletin of the Atomic Scientists). Saat ini 1 dari 10 data center butuh daya di atas 1 GW; proporsi itu diperkirakan berlipat ganda jadi 1 dari 5 pada 2030. Proyek Stargate di Abilene, Texas, sendirian menargetkan hingga 5 GW. Meta menyiapkan fasilitas 5 GW di Louisiana. Sebuah perusahaan energi bernama Pacifico bahkan baru saja mengantongi izin gas 7,65 GW, izin pembangkit terbesar yang pernah diberikan di AS."
+        },
+        {
+          "type": "paragraph",
+          "text": "Karena grid publik tidak sanggup mengejar kecepatan ini, hyperscaler beralih ke nuklir sebagai solusi baseload. Per Juli 2026, para raksasa teknologi sudah mengikat 9,8 GW kapasitas nuklir lewat 13 kesepakatan, gelombang pengadaan nuklir korporat terbesar dalam sejarah (Axis Intelligence). Alasannya sederhana: pembangkit nuklir beroperasi di atas 92% waktu, jauh mengalahkan gas (59,9%), angin (34,3%), dan surya (23,4%). Untuk beban training AI yang menyala 24 jam tanpa henti, hanya nuklir yang punya profil keandalan seperti itu. Goldman Sachs sendiri memproyeksikan dibutuhkan 85-90 GW kapasitas nuklir baru hanya untuk memenuhi pertumbuhan permintaan data center sampai 2030 (Goldman Sachs Research)."
+        },
+        {
+          "type": "paragraph",
+          "text": "Masalahnya, membangun pembangkit nuklir makan waktu bertahun-tahun, sementara antrean interkoneksi ke grid di AS sudah membengkak sampai 5-7 tahun, timeline yang mustahil untuk siklus deployment hardware AI yang berubah tiap 12-18 bulan (EnkiAI). Solusinya: operator data center kini membangun \"sistem energi paralel\" sendiri, turbin gas di lokasi, baterai penyimpan skala besar, bahkan generator portabel, apa pun untuk memotong jalur birokrasi grid. Rak server AI modern kini menyedot 50-100 kW per unit, naik drastis dari kurang dari 10 kW beberapa tahun lalu."
+        },
+        {
+          "type": "paragraph",
+          "text": "Dampaknya bukan cuma abstrak di neraca korporat. Di sejumlah wilayah dekat kluster data center, tagihan listrik rumah tangga naik tajam, ada kasus terdokumentasi kenaikan hingga 80% dalam tiga tahun untuk warga biasa yang tinggal satu jam dari fasilitas data center. IEA memproyeksikan konsumsi listrik data center global akan melonjak dari 415 TWh (2024) ke sekitar 945 TWh pada 2030, kenaikan 128%, didorong pertumbuhan chip akselerator AI sekitar 30% per tahun."
+        },
+        {
+          "type": "heading",
+          "text": "Layer 2: Infrastruktur, Perang Belanja Modal Terbesar dalam Sejarah Korporat"
+        },
+        {
+          "type": "paragraph",
+          "text": "Kalau energi adalah kendala fisik, infrastruktur adalah kendala finansial, meski \"kendala\" mungkin bukan kata yang tepat, karena empat raksasa teknologi ini punya kas nyaris tak terbatas untuk dibakar."
+        },
+        {
+          "type": "paragraph",
+          "text": "Amazon, Microsoft, Google, dan Meta berencana membelanjakan gabungan sekitar $725 miliar untuk belanja modal di 2026, naik 77% dari rekor $410 miliar tahun sebelumnya. Rinciannya: Amazon memimpin dengan sekitar $200 miliar, Microsoft mendekati $190 miliar, Google memandu hingga $205 miliar, dan Meta hingga $145 miliar setelah dua kali menaikkan proyeksinya (ValueAdd VC). Tambahkan Oracle sekitar $50 miliar dan ambisi proyek Stargate senilai $500 miliar yang melibatkan OpenAI, SoftBank, dan Oracle."
+        },
+        {
+          "type": "paragraph",
+          "text": "Goldman Sachs memproyeksikan belanja modal kumulatif empat hyperscaler terbesar bisa mencapai $5,3 triliun dari 2025 sampai 2030, dengan estimasi agregat $7,6 triliun mencakup compute, data center, dan power dari 2026 hingga 2031 (Yahoo Finance). Analis bahkan sudah memproyeksikan belanja modal gabungan bakal tembus $1 triliun pada 2027."
+        },
+        {
+          "type": "paragraph",
+          "text": "Yang menarik, sebagian kenaikan capex ini bukan murni ekspansi kapasitas, tapi inflasi biaya komponen. Harga memori (DRAM, HBM) melonjak tajam akibat permintaan chip AI, sampai-sampai memori kini menyerap 30% belanja data center hyperscaler, naik empat kali lipat dari proporsinya di 2023 (Tom's Hardware). Nvidia sendiri menikmati posisi ini: pendapatan data center-nya di kuartal terakhir mencapai $62,31 miliar, naik 75% year-over-year, dengan segmen networking melonjak 263%."
+        },
+        {
+          "type": "paragraph",
+          "text": "Tapi pasar mulai gelisah. Ketika Meta menaikkan panduan capex-nya untuk kedua kali, sahamnya langsung anjlok tajam dalam sehari, sinyal pertama bahwa investor mulai bertanya: kapan semua investasi triliunan dolar ini benar-benar terbayar?"
+        },
+        {
+          "type": "paragraph",
+          "text": "Bagaimana posisi Indonesia? Pasar data center domestik bernilai $2,81 miliar pada 2025 dan diproyeksikan mencapai $6,08 miliar pada 2031 (CAGR 13,73%), dengan 170 data center tercatat per April 2026 (Global Voices). Jumlah ini akan terus naik karena Singapura memperketat syarat investasi data center baru, mendorong limpahan investasi ke Batam dan Johor. Biaya konstruksi di Indonesia sekitar $8-9 juta per MW, jauh lebih murah dibanding Singapura, dan kapasitas dalam pipeline mencapai 1,3 GW dengan nilai investasi $15-20 miliar (Jakarta Globe). Ini keunggulan biaya nyata, tapi juga membawa risiko yang sama dengan hub lain: perebutan air dan listrik dengan warga sekitar."
+        },
+        {
+          "type": "heading",
+          "text": "Layer 3: Chips, Dominasi Nvidia dan Kebijakan Ekspor yang Plin-Plan"
+        },
+        {
+          "type": "paragraph",
+          "text": "Di atas energi berdiri chip, prosesor yang mengubah listrik jadi komputasi. Layer ini paling didominasi satu pemain (Nvidia) sekaligus paling bergejolak secara geopolitik dari seluruh lima lapis."
+        },
+        {
+          "type": "paragraph",
+          "text": "Sepanjang delapan bulan terakhir, kebijakan ekspor chip AI dari AS ke China berubah nyaris tiap bulan. Desember 2025, Presiden Trump mengumumkan chip H200 Nvidia boleh dijual ke China. Januari 2026, Departemen Perdagangan AS mengkodifikasi kebijakan itu dengan syarat-syarat yang oleh para ahli disebut kontradiktif, ditambah tarif 25% untuk chip AI kelas tertentu di bawah Section 232 (Semiconductors Insight). Lalu akhir Mei 2026, Biro Industri dan Keamanan AS (BIS) menutup celah yang selama ini memungkinkan perusahaan China membeli chip lewat anak usaha di luar negeri."
+        },
+        {
+          "type": "paragraph",
+          "text": "China membalas dengan caranya sendiri: Kementerian Perindustrian China memerintahkan perusahaan AI domestik memboikot H200 yang baru saja disetujui dan memprioritaskan silikon buatan sendiri. Sehari setelahnya, bea cukai China bahkan melarang H200 masuk meski sudah mengantongi lisensi ekspor AS (Model Diplomat). Hasilnya paradoks: meski chip Nvidia secara teknis diizinkan masuk, pangsa pasar AS di China untuk chip AI kelas atas praktis nol."
+        },
+        {
+          "type": "paragraph",
+          "text": "Ironisnya, tarik-menarik kebijakan ini mungkin tidak terlalu mengubah keseimbangan kekuatan riil. Analis memperkirakan AS tetap unggul 21 hingga 49 kali lipat dalam kapasitas komputasi AI dibanding China pada 2026, bukan karena China gagal membangun chip, tapi karena chip domestik China jauh lebih mahal dan kurang efisien untuk beban kerja training skala besar. China tidak sedang mengejar ketertinggalan; ia hanya bertahan dengan biaya jauh lebih tinggi."
+        },
+        {
+          "type": "paragraph",
+          "text": "Volatilitas ini bukan tanpa korban di kalangan chipmaker sendiri. Pada gelombang pembatasan sebelumnya, Nvidia harus mencatat kerugian $5,5 miliar dan AMD hingga $800 juta akibat pembatasan ekspor yang tiba-tiba (Yahoo Finance). Pasar gelap pun sempat marak, setidaknya $1 miliar chip Nvidia diselundupkan ke China hanya dalam tiga bulan setelah pengetatan awal, lewat kontrak penjualan yang disamarkan."
+        },
+        {
+          "type": "paragraph",
+          "text": "Ketidakpastian kebijakan inilah yang mendorong hyperscaler mempercepat strategi silikon sendiri: Google dengan TPU, Amazon dengan Trainium, Meta dengan MTIA, Microsoft dengan Maia (ValueAdd VC). Bukan cuma soal harga, ini soal kendali penuh atas rantai pasok yang terlalu penting untuk digantungkan pada satu vendor, apalagi satu kebijakan pemerintah yang bisa berubah dalam semalam."
+        },
+        {
+          "type": "heading",
+          "text": "Layer 4: Talent, Lapisan Paling Timpang di Seluruh Stack"
+        },
+        {
+          "type": "paragraph",
+          "text": "Kalau energi soal fisika dan chip soal geopolitik, talent adalah soal manusia, dan di sinilah ketimpangan stack ini paling telanjang terlihat."
+        },
+        {
+          "type": "paragraph",
+          "text": "Secara global, ada sekitar 1,6 juta posisi AI terbuka berbanding hanya 518 ribu kandidat yang benar-benar kualified, rasio 3,2 lowongan untuk satu kandidat, dengan rata-rata waktu rekrutmen 4,7 bulan (HeroHunt). Survei ManpowerGroup 2026 terhadap lebih dari 39 ribu pemberi kerja di 41 negara menemukan skill AI kini yang paling sulit dicari di dunia, mengalahkan engineering, IT, bahkan pekerjaan traders sekalipun."
+        },
+        {
+          "type": "paragraph",
+          "text": "Kompensasi di layer ini terpolarisasi ekstrem. Seorang \"Senior Machine Learning Engineer\" di lab frontier seperti OpenAI atau Anthropic bisa dibayar $600 ribu ke atas per tahun; posisi dengan titel persis sama di perusahaan enterprise biasa dibayar sekitar $220 ribu, beda 3 sampai 5 kali lipat untuk pekerjaan yang secara nominal identik (Jobs by Culture). Research scientist senior di level frontier kini dibayar $300-489 ribu gaji pokok saja, belum termasuk saham dan bonus yang bisa berlipat-lipat dari angka itu."
+        },
+        {
+          "type": "paragraph",
+          "text": "Geografi talent juga bergeser cepat. Kebijakan visa H-1B AS yang mewajibkan biaya $100 ribu sekali bayar sejak September 2025 membuat impor talent ke Amerika jauh lebih mahal, mendorong sebagian rekrutmen ke Eropa dan negara-negara Teluk. Sementara itu, pangsa peneliti AI top dunia yang berbasis di China naik dari 29% pada 2019 menjadi sekitar 47% sekarang, pergeseran pusat gravitasi yang signifikan dari narasi lama bahwa talent AI terpusat di Silicon Valley."
+        },
+        {
+          "type": "paragraph",
+          "text": "Paradoks paling mencolok: perang rebutan talent ini terjadi bersamaan dengan gelombang PHK massal. Sekitar 78.557 pekerja teknologi di PHK secara global hanya di kuartal pertama 2026, dengan hampir separuhnya (47,9%) dikaitkan langsung dengan AI dan otomasi (Pin). Meta sendiri perusahaan yang di saat bersamaan menawar lebih dari $1 miliar untuk merekrut satu peneliti individu, memberhentikan 8.000 karyawan untuk mendanai capex AI-nya. AI sedang mem-PHK sebagian pekerja sambil membayar mahal untuk pekerja lain yang bisa membangun AI itu sendiri."
+        },
+        {
+          "type": "paragraph",
+          "text": "Satu hal yang sering luput dari narasi \"perang talent AI\": kebutuhannya bukan cuma PhD machine learning. Membangun \"pabrik AI\" fisik ini butuh tenaga kerja terampil dalam skala masif, master electrician untuk mengkabel data center berkapasitas gigawatt, pipefitter dan tukang untuk memasang sistem pendingin cair canggih (Medium — Activated Thinker). Shortage-nya dua arah sekaligus: di ujung riset paling elit, dan di dasar tenaga kerja konstruksi terampil yang selama ini jarang dianggap bagian dari \"ekonomi AI.\""
+        },
+        {
+          "type": "heading",
+          "text": "Layer 5: Aplikasi, Lapisan Pembuktian, dan Paling Rapuh"
+        },
+        {
+          "type": "paragraph",
+          "text": "Semua yang dibangun di empat layer sebelumnya, triliunan dolar, gigawatt demi gigawatt, dan perang rebutan talent, pada akhirnya harus dibuktikan di satu tempat: apakah aplikasi yang dibangun di atasnya benar-benar menghasilkan nilai ekonomi nyata."
+        },
+        {
+          "type": "paragraph",
+          "text": "Belanja generative AI enterprise melonjak dari $11,5 miliar (2024) menjadi $37 miliar pada 2025 (SQ Magazine). Gartner memperkirakan 40% aplikasi enterprise akan menyematkan agen AI spesifik-tugas pada akhir 2026, naik dari kurang dari 5% di 2025, lompatan delapan kali lipat dalam setahun."
+        },
+        {
+          "type": "paragraph",
+          "text": "Tapi di balik angka adopsi yang mengesankan itu, ada gap besar antara \"mencoba\" dan \"benar-benar bernilai.\" Survei PwC 2026 terhadap 4.454 CEO di seluruh dunia menemukan hanya 12% yang melaporkan AI menghasilkan kenaikan pendapatan sekaligus penurunan biaya secara bersamaan; 56% mengaku belum melihat manfaat finansial signifikan sama sekali (GoGloby). Gartner sendiri memperkirakan lebih dari 40% proyek agentic AI akan dibatalkan sebelum 2027 karena ROI yang tidak jelas dan kontrol risiko yang lemah."
+        },
+        {
+          "type": "paragraph",
+          "text": "Bukan berarti tidak ada bukti nyata sama sekali. Agentforce milik Salesforce sudah mencatat sekitar $800 juta pendapatan berulang tahunan, naik 169% year-over-year. Pendapatan enterprise OpenAI kini melewati 40% dari total pendapatannya, mendekati paritas dengan segmen konsumen. Tapi ini masih pengecualian, bukan norma. Sebagian besar aplikasi AI yang bermunculan hari ini adalah \"wrapper\" tipis di atas model pihak ketiga, dan wrapper semacam ini paling cepat dikomoditisasi begitu raksasa teknologi memutuskan masuk ke ceruk yang sama. Dari lima lapis stack ini, aplikasi adalah lapisan paling gampang bikin headline bombastis, sekaligus paling sedikit menunjukkan bukti nilai finansial yang solid dibanding empat layer di bawahnya."
+        },
+        {
+          "type": "heading",
+          "text": "Efek Berantai: Kenapa Kelima Layer Ini Tak Bisa Dipisah"
+        },
+        {
+          "type": "paragraph",
+          "text": "Argumen inti Jensen Huang sebenarnya sederhana: aplikasi yang sukses (katakanlah, taksi otonom) butuh model yang lebih pintar. Model yang lebih pintar butuh \"pabrik\" komputasi yang lebih besar. Pabrik itu butuh chip yang lebih cepat dalam jumlah masif. Dan semua chip itu butuh energi dalam skala yang belum pernah dibutuhkan industri manapun sebelumnya. Lewatkan satu layer, dan seluruh stack di atasnya jadi tergantung pada pihak lain yang mengendalikan layer yang terlewat itu."
+        },
+        {
+          "type": "paragraph",
+          "text": "Melihat kelima layer secara bersamaan, polanya jadi jelas:"
+        },
+        {
+          "type": "list",
+          "ordered": false,
+          "items": [
+            "Energi dan interkoneksi grid adalah bottleneck fisik paling nyata saat ini, bukan soal kekurangan uang, tapi soal waktu. Pembangkit dan sambungan grid tidak bisa dipercepat semudah mencetak modal baru.",
+            "Chip bottleneck-nya bersifat geopolitik, bukan teknis. Kebijakan ekspor AS-China yang berubah tiap bulan menciptakan volatilitas besar untuk siapa pun yang bergantung pada rantai pasok ini, termasuk startup kecil yang tak punya kendali sama sekali atas kebijakan itu.",
+            "Infrastruktur/capex nyaris tanpa batas modal untuk saat ini, empat hyperscaler sanggup membakar $725 miliar dalam setahun, tapi mulai dipertanyakan investor soal kapan ROI-nya terbukti.",
+            "Talent timpang di dua ujung sekaligus: rebutan sengit di level peneliti frontier, sekaligus kelangkaan pekerja terampil di dasar yang membangun infrastruktur fisiknya.",
+            "Aplikasi adalah lapisan paling rapuh, paling mudah viral di headline, tapi paling tipis buktinya dibanding empat layer lain yang menopangnya."
+          ]
+        },
+        {
+          "type": "heading",
+          "text": "Posisi Indonesia dalam Stack Global Ini"
+        },
+        {
+          "type": "paragraph",
+          "text": "Dari kelima layer, posisi Indonesia paling jelas di infrastruktur, kapasitas data center domestik tumbuh dari 580 MW operasional menuju tambahan 1,3 GW dalam pipeline, dengan investasi $15-20 miliar dan biaya konstruksi yang kompetitif dibanding hub regional seperti Singapura. Momentum ini diperkuat oleh pengetatan kebijakan Singapura sendiri, yang mendorong limpahan investasi data center ke Batam."
+        },
+        {
+          "type": "paragraph",
+          "text": "Di layer energi, chip, dan talent frontier, posisi Indonesia jauh lebih kecil, negara ini praktis konsumen kebijakan yang dibuat di Washington dan Beijing, bukan pembuatnya. Tapi justru di layer aplikasi, ruang paling terbuka: pasar 200 juta pengguna internet dengan kebutuhan lokal yang sangat spesifik, bahasa, regulasi, perilaku konsumen adalah ceruk yang tidak akan pernah diprioritaskan penuh oleh raksasa teknologi global. Di situlah pembangun produk lokal, bukan hyperscaler, yang punya keunggulan."
+        },
+        {
+          "type": "heading",
+          "text": "Penutup"
+        },
+        {
+          "type": "paragraph",
+          "text": "Kalau ada satu hal yang perlu dibawa pulang dari bedah lima layer ini: narasi \"AI akan menggantikan pekerjaan\" jauh lebih rumit dari yang terlihat di permukaan. Ya, sebagian pekerjaan di layer aplikasi memang tergerus. Tapi empat layer di bawahnya, energi, infrastruktur, chip, dan talent justru sedang menciptakan salah satu gelombang permintaan tenaga kerja fisik dan teknis terbesar dalam sejarah modern, dari insinyur nuklir sampai tukang kabel gigawatt. Memahami AI hanya lewat lensa chatbot dan model bahasa berarti melewatkan 80% cerita sebenarnya, cerita tentang beton, tembaga, dan siapa yang mengendalikan listrik."
+        },
+        {
+          "type": "paragraph",
+          "text": "Sumber & Referensi"
+        },
+        {
+          "type": "list",
+          "ordered": false,
+          "items": [
+            "Nvidia Blog, \"Five-Layer AI Cake\" dan pidato Jensen Huang di Davos (blogs.nvidia.com)",
+            "Bulletin of the Atomic Scientists, laporan energi data center AI, Juli 2026",
+            "Goldman Sachs Research, proyeksi kapasitas nuklir untuk data center",
+            "Axis Intelligence Research, pelacak kesepakatan nuklir hyperscaler 2026",
+            "EnkiAI, analisis strategi energi Microsoft dan on-site power",
+            "ValueAdd VC, pelacak belanja modal AI hyperscaler ($725B tracker)",
+            "Tom's Hardware & Yahoo Finance, laporan capex kuartalan Big Tech 2026",
+            "Semiconductors Insight & Model Diplomat, analisis kebijakan ekspor chip AS-China 2026",
+            "HeroHunt.ai & Pin.com & Jobs by Culture, riset kompensasi dan talent AI 2026",
+            "SQ Magazine & GoGloby, statistik adopsi agentic AI enterprise 2026",
+            "Global Voices, Jakarta Globe, GlobeNewswire, laporan pasar data center Indonesia 2026"
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "Data dan angka dalam artikel ini akurat per Agustus 2026 dan dapat berubah seiring cepatnya pergerakan industri AI."
+        }
+      ],
+      "source": "x",
+      "xStatusId": "2088872725053944178",
+      "xArticleId": "2088862753587122176",
+      "xUrl": "https://x.com/Deadmouse_jpeg/status/2088872725053944178",
+      "articleUrl": "https://x.com/i/article/2088862753587122176",
+      "likes": 0,
+      "views": 56
+    },
     {
       "id": "x-2088312186188038294",
       "title": "Membangun Sirkuit Talenta",
@@ -407,7 +643,7 @@
       "xUrl": "https://x.com/Deadmouse_jpeg/status/2088312186188038294",
       "articleUrl": "https://x.com/i/article/2088277408113950720",
       "likes": 5,
-      "views": 360
+      "views": 369
     },
     {
       "id": "x-2086802112001028513",
