@@ -3803,20 +3803,20 @@ body.theme-wanderlust .brand-mark [fill="#C9974A"] {
 /* ===== Wanderlust hero stage ===== */
 body.theme-wanderlust .hero-slot {
     margin: 0 !important;
-    padding: 28px 20px 8px;
-    max-width: 1200px;
+    padding: 20px 16px 4px;
+    max-width: 1180px;
     margin-left: auto !important;
     margin-right: auto !important;
 }
+
+/* Pin-matched stage: absolute floating cards over open water */
 body.theme-wanderlust .wl-stage {
     position: relative;
-    min-height: min(78vh, 720px);
-    display: grid;
-    grid-template-columns: 1.05fr 0.95fr;
-    grid-template-rows: auto 1fr;
-    gap: 22px;
-    align-items: end;
-    padding: 12px 4px 28px;
+    height: min(84vh, 760px);
+    min-height: 580px;
+    width: 100%;
+    padding: 0;
+    overflow: visible;
 }
 body.theme-wanderlust .wl-glass {
     background: var(--wl-glass);
@@ -3829,26 +3829,27 @@ body.theme-wanderlust .wl-glass {
     border-radius: 28px;
 }
 
-/* Floating search */
+/* Floating search — top-center, ~340px like pin */
 body.theme-wanderlust .wl-float-search {
     position: absolute;
-    top: 8px;
+    top: 22px;
     left: 50%;
     transform: translateX(-50%);
-    z-index: 5;
+    z-index: 6;
     display: inline-flex;
     align-items: center;
     gap: 10px;
-    padding: 12px 18px;
-    min-width: min(420px, 86vw);
+    padding: 11px 18px;
+    width: min(340px, 72vw);
+    min-width: 0;
     border-radius: 999px;
-    border: 1px solid rgba(255, 255, 255, 0.55);
-    background: rgba(255, 255, 255, 0.62);
+    border: 1px solid rgba(255, 255, 255, 0.6);
+    background: rgba(255, 255, 255, 0.66);
     backdrop-filter: blur(16px);
     -webkit-backdrop-filter: blur(16px);
     color: var(--wl-muted);
     font-family: 'Inter', sans-serif;
-    font-size: 14px;
+    font-size: 13.5px;
     cursor: pointer;
     box-shadow: 0 14px 36px -18px rgba(4, 47, 46, 0.4);
     transition: transform 0.25s, box-shadow 0.25s;
@@ -3859,37 +3860,69 @@ body.theme-wanderlust .wl-float-search:hover {
     box-shadow: 0 18px 40px -16px rgba(4, 47, 46, 0.5);
 }
 
-/* Floating circular chips */
+/* Floating circular chips — left water area only (pin) */
 body.theme-wanderlust .wl-float-chip {
     position: absolute;
     z-index: 4;
-    width: 54px;
-    height: 54px;
+    width: 52px;
+    height: 52px;
     border-radius: 50%;
     display: flex;
     align-items: center;
     justify-content: center;
-    background: rgba(255, 255, 255, 0.7);
-    border: 1px solid rgba(255, 255, 255, 0.7);
+    background: rgba(255, 255, 255, 0.72);
+    border: 1px solid rgba(255, 255, 255, 0.75);
     color: var(--wl-teal-deep);
-    font-size: 18px;
+    font-size: 17px;
     box-shadow: 0 14px 30px -14px rgba(4, 47, 46, 0.45);
     backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
 }
-body.theme-wanderlust .wl-float-chip--a { top: 22%; left: 6%; }
-body.theme-wanderlust .wl-float-chip--b { top: 38%; right: 8%; }
-body.theme-wanderlust .wl-float-chip--c { bottom: 28%; left: 42%; width: 44px; height: 44px; font-size: 15px; }
+body.theme-wanderlust .wl-float-chip--a { top: 26%; left: 7%; }
+body.theme-wanderlust .wl-float-chip--b { top: 42%; left: 18%; width: 46px; height: 46px; font-size: 15px; }
+body.theme-wanderlust .wl-float-chip--c { top: 58%; left: 9%; width: 42px; height: 42px; font-size: 14px; }
+body.theme-wanderlust .wl-float-chip--d { top: 34%; left: 28%; width: 40px; height: 40px; font-size: 13px; }
+body.theme-wanderlust .wl-float-chip--e { top: 52%; left: 30%; width: 48px; height: 48px; font-size: 15px; }
 
-/* Large paradise card (featured article) */
+/* Right-edge pagination dots (pin) */
+body.theme-wanderlust .wl-dots {
+    position: absolute;
+    right: 10px;
+    top: 50%;
+    transform: translateY(-50%);
+    z-index: 5;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 9px;
+}
+body.theme-wanderlust .wl-dot {
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+    background: rgba(255, 255, 255, 0.45);
+    border: 1px solid rgba(255, 255, 255, 0.55);
+    box-shadow: 0 2px 8px rgba(4, 47, 46, 0.25);
+}
+body.theme-wanderlust .wl-dot.is-active {
+    background: #fff;
+    width: 9px;
+    height: 9px;
+    box-shadow: 0 0 0 3px rgba(255, 255, 255, 0.35);
+}
+
+/* Large paradise card — right ~46% width, nearly full stage height */
 body.theme-wanderlust .wl-paradise-card {
-    grid-column: 2;
-    grid-row: 1 / span 2;
-    position: relative;
+    position: absolute;
+    top: 78px;
+    right: 36px;
+    bottom: 28px;
+    width: min(46%, 470px);
+    z-index: 3;
     display: flex;
     flex-direction: column;
     justify-content: flex-end;
-    min-height: min(68vh, 620px);
-    border-radius: 32px;
+    border-radius: 36px;
     overflow: hidden;
     text-decoration: none;
     color: #fff;
@@ -3913,14 +3946,14 @@ body.theme-wanderlust .wl-paradise-scrim {
     position: absolute;
     inset: 0;
     background: linear-gradient(to top,
-        rgba(4, 47, 46, 0.88) 0%,
-        rgba(4, 47, 46, 0.35) 45%,
-        rgba(4, 47, 46, 0.08) 100%);
+        rgba(4, 47, 46, 0.9) 0%,
+        rgba(4, 47, 46, 0.38) 42%,
+        rgba(4, 47, 46, 0.06) 100%);
 }
 body.theme-wanderlust .wl-paradise-body {
     position: relative;
     z-index: 1;
-    padding: 28px 28px 32px;
+    padding: 26px 26px 30px;
 }
 body.theme-wanderlust .wl-chip {
     display: inline-flex;
@@ -3940,7 +3973,7 @@ body.theme-wanderlust .wl-chip {
 body.theme-wanderlust .wl-paradise-body h1 {
     font-family: 'Fraunces', Georgia, serif;
     font-weight: 600;
-    font-size: clamp(1.7rem, 3.2vw, 2.6rem);
+    font-size: clamp(1.55rem, 2.8vw, 2.35rem);
     line-height: 1.12;
     letter-spacing: -0.02em;
     margin: 0 0 10px;
@@ -3949,7 +3982,7 @@ body.theme-wanderlust .wl-paradise-body h1 {
 body.theme-wanderlust .wl-paradise-body p {
     font-family: 'Source Serif 4', Georgia, serif;
     font-style: italic;
-    font-size: 1rem;
+    font-size: 0.95rem;
     line-height: 1.5;
     opacity: 0.9;
     margin: 0 0 14px;
@@ -3967,48 +4000,52 @@ body.theme-wanderlust .wl-paradise-meta {
     opacity: 0.85;
 }
 
-/* CTA card (Let's Explore) */
+/* CTA card — compact bottom-left ~300px (pin "Let's Travel!") */
 body.theme-wanderlust .wl-cta-card {
-    grid-column: 1;
-    grid-row: 2;
-    padding: 28px 26px 26px;
-    max-width: 420px;
+    position: absolute;
+    left: 28px;
+    bottom: 44px;
+    z-index: 4;
+    width: min(300px, 32%);
+    max-width: 320px;
+    padding: 22px 22px 20px;
+    border-radius: 28px;
     color: var(--wl-ink);
 }
 body.theme-wanderlust .wl-cta-kicker {
     font-family: 'Inter', sans-serif;
-    font-size: 12px;
+    font-size: 11px;
     font-weight: 700;
     letter-spacing: 0.12em;
     text-transform: uppercase;
     color: var(--wl-teal-deep);
-    margin: 0 0 10px;
+    margin: 0 0 8px;
 }
 body.theme-wanderlust .wl-cta-card h2 {
     font-family: 'Fraunces', Georgia, serif;
-    font-size: clamp(1.8rem, 3vw, 2.4rem);
+    font-size: clamp(1.55rem, 2.4vw, 2rem);
     line-height: 1.1;
-    margin: 0 0 10px;
+    margin: 0 0 8px;
     color: var(--wl-ink);
 }
 body.theme-wanderlust .wl-cta-copy {
     font-family: 'Inter', sans-serif;
-    font-size: 14px;
-    line-height: 1.5;
+    font-size: 13px;
+    line-height: 1.45;
     color: var(--wl-muted);
-    margin: 0 0 18px;
+    margin: 0 0 14px;
 }
 body.theme-wanderlust .wl-cta-btn {
     display: inline-flex;
     align-items: center;
-    gap: 10px;
-    padding: 13px 22px;
+    gap: 8px;
+    padding: 11px 18px;
     border-radius: 999px;
     background: linear-gradient(135deg, #0d9488, #14b8a6);
     color: #042f2e;
     font-family: 'Inter', sans-serif;
     font-weight: 700;
-    font-size: 14px;
+    font-size: 13px;
     text-decoration: none;
     box-shadow: 0 12px 28px -10px rgba(13, 148, 136, 0.55);
     transition: transform 0.25s, box-shadow 0.25s;
@@ -4019,12 +4056,12 @@ body.theme-wanderlust .wl-cta-btn:hover {
 }
 body.theme-wanderlust .wl-cta-avatars {
     display: flex;
-    gap: 8px;
-    margin-top: 18px;
+    gap: 6px;
+    margin-top: 14px;
 }
 body.theme-wanderlust .wl-ava {
-    width: 36px;
-    height: 36px;
+    width: 32px;
+    height: 32px;
     border-radius: 50%;
     display: inline-flex;
     align-items: center;
@@ -4032,7 +4069,7 @@ body.theme-wanderlust .wl-ava {
     background: rgba(255, 255, 255, 0.7);
     border: 1px solid rgba(255, 255, 255, 0.8);
     color: var(--wl-teal-deep);
-    font-size: 14px;
+    font-size: 12px;
 }
 
 /* Journal stack = floating glass panels */
@@ -4173,28 +4210,35 @@ body.theme-wanderlust .reading-surface {
 }
 body.theme-wanderlust .article-hero-content { color: #fff; }
 
-/* Mobile Wanderlust */
+/* Mobile Wanderlust — stack instead of absolute pin layout */
 @media (max-width: 860px) {
     body.theme-wanderlust .hero-slot {
         padding: 16px 12px 4px !important;
     }
     body.theme-wanderlust .wl-stage {
-        grid-template-columns: 1fr !important;
-        grid-template-rows: auto auto !important;
+        height: auto !important;
         min-height: 0 !important;
+        display: flex !important;
+        flex-direction: column !important;
         gap: 14px !important;
         padding: 56px 0 16px !important;
     }
     body.theme-wanderlust .wl-paradise-card {
-        grid-column: 1 !important;
-        grid-row: auto !important;
+        position: relative !important;
+        top: auto !important;
+        right: auto !important;
+        bottom: auto !important;
+        left: auto !important;
+        width: 100% !important;
         min-height: min(52vh, 420px) !important;
         border-radius: 24px !important;
         order: 1;
     }
     body.theme-wanderlust .wl-cta-card {
-        grid-column: 1 !important;
-        grid-row: auto !important;
+        position: relative !important;
+        left: auto !important;
+        bottom: auto !important;
+        width: 100% !important;
         max-width: none !important;
         order: 2;
         padding: 22px 18px !important;
@@ -4203,10 +4247,11 @@ body.theme-wanderlust .article-hero-content { color: #fff; }
     body.theme-wanderlust .wl-float-search {
         top: 4px !important;
         min-width: 0 !important;
-        width: calc(100% - 8px);
+        width: calc(100% - 8px) !important;
         left: 50% !important;
     }
-    body.theme-wanderlust .wl-float-chip { display: none !important; }
+    body.theme-wanderlust .wl-float-chip,
+    body.theme-wanderlust .wl-dots { display: none !important; }
     body.theme-wanderlust .section-surface {
         border-radius: 22px !important;
     }
@@ -4220,4 +4265,18 @@ body.theme-wanderlust .article-hero-content { color: #fff; }
 
 @media (max-width: 480px) {
     body.theme-wanderlust .wl-cta-btn { width: 100%; justify-content: center; }
+}
+
+/* Mid-width: keep absolute but tighten paradise/CTA so they don't collide */
+@media (min-width: 861px) and (max-width: 1024px) {
+    body.theme-wanderlust .wl-paradise-card {
+        width: min(48%, 400px);
+        right: 24px;
+    }
+    body.theme-wanderlust .wl-cta-card {
+        width: min(280px, 36%);
+        left: 20px;
+    }
+    body.theme-wanderlust .wl-float-chip--d,
+    body.theme-wanderlust .wl-float-chip--e { display: none; }
 }

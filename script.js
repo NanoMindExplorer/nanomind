@@ -2223,12 +2223,21 @@ function renderHero(articles) {
         <div class="wl-stage">
             <button type="button" class="wl-float-search" id="wlSearchBtn" aria-label="Cari">
                 <i class="fas fa-search"></i>
-                <span>Cari dispatch, X, Medium…</span>
+                <span>Cari destinasi ide…</span>
             </button>
 
             <div class="wl-float-chip wl-float-chip--a" aria-hidden="true"><i class="fas fa-feather-pointed"></i></div>
             <div class="wl-float-chip wl-float-chip--b" aria-hidden="true"><i class="fab fa-x-twitter"></i></div>
             <div class="wl-float-chip wl-float-chip--c" aria-hidden="true"><i class="fab fa-medium"></i></div>
+            <div class="wl-float-chip wl-float-chip--d" aria-hidden="true"><i class="fas fa-camera"></i></div>
+            <div class="wl-float-chip wl-float-chip--e" aria-hidden="true"><i class="fab fa-instagram"></i></div>
+
+            <div class="wl-dots" aria-hidden="true">
+                <span class="wl-dot is-active"></span>
+                <span class="wl-dot"></span>
+                <span class="wl-dot"></span>
+                <span class="wl-dot"></span>
+            </div>
 
             <a href="article.html?id=${encodeURIComponent(featured.id)}" class="wl-paradise-card reveal">
                 <div class="wl-paradise-media">
