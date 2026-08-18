@@ -32,19 +32,19 @@
         });
     })();
     </script>
-    <title>Watch — Nanomind Explorer</title>
-    <meta name="description" content="Kumpulan video dan shorts dari Nanomind Explorer — cuplikan lapangan dari proses build.">
+    <title>Gear — Nanomind Explorer</title>
+    <meta name="description" content="Peralatan yang saya pakai — link afiliasi untuk gear, tools, dan setup.">
     <meta name="theme-color" content="#064e3b">
     <meta property="og:type" content="website">
-    <meta property="og:title" content="Watch — Nanomind Explorer">
-    <meta property="og:description" content="Kumpulan video dan shorts dari Nanomind Explorer — cuplikan lapangan dari proses build.">
+    <meta property="og:title" content="Gear — Nanomind Explorer">
+    <meta property="og:description" content="Peralatan yang saya pakai — link afiliasi untuk gear, tools, dan setup.">
     <meta property="og:image" content="https://raw.githubusercontent.com/NanoMindExplorer/nanomind/main/bg-ghibli-poster.jpg">
     <link rel="icon" type="image/svg+xml" href="favicon.svg">
     <link rel="icon" type="image/png" sizes="32x32" href="icons/icon-32.png">
     <link rel="apple-touch-icon" href="icons/apple-touch-icon.png">
     <link rel="manifest" href="manifest.json">
-    <link rel="preconnect" href="https://img.youtube.com">
-    <link rel="preconnect" href="https://www.youtube.com">
+    <link rel="preconnect" href="https://raw.githubusercontent.com">
+    <link rel="preconnect" href="https://api.github.com">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <link rel="preload" href="fonts/inter-400.woff2" as="font" type="font/woff2" crossorigin>
     <link rel="preload" href="fonts/fraunces-600.woff2" as="font" type="font/woff2" crossorigin>
@@ -76,27 +76,20 @@
             <section class="section-surface reveal">
                 <div class="section-surface-head flex-wrap gap-4">
                     <div>
-                        <span class="eyebrow">Field Footage</span>
-                        <h1 class="section-title section-title--lg">Watch</h1>
-                        <p class="section-sub">Cuplikan video dan shorts dari proses build — di lapangan, bukan cuma di layar.</p>
+                        <span class="eyebrow">Affiliate Kit</span>
+                        <h1 class="section-title section-title--lg">Gear</h1>
+                        <p class="section-sub">Peralatan yang saya pakai sehari-hari. Beberapa link berisi afiliasi — belanja lewat sini ikut mendukung eksplorasi.</p>
                     </div>
-                    <button class="btn-primary hidden admin-only" id="addVideoBtn"><i class="fas fa-video"></i> Add Video</button>
+                    <button class="btn-primary hidden admin-only" id="addGearBtn"><i class="fas fa-plus"></i> Add Gear</button>
                 </div>
-                <div class="flex flex-wrap gap-2 mb-2" id="videoFilterTabs">
-                    <button class="cat-pill active" data-vfilter="all">All</button>
-                    <button class="cat-pill" data-vfilter="landscape">Landscape</button>
-                    <button class="cat-pill" data-vfilter="shorts">Shorts</button>
+                <div class="flex flex-wrap gap-2 mb-2" id="gearFilterTabs">
+                    <button class="cat-pill active" data-gfilter="all">All</button>
                 </div>
             </section>
 
-            <section class="section-surface reveal hidden" id="shortsShelfWrap">
-                <h2 class="font-display font-semibold text-xl mb-4 flex items-center gap-2" style="color:var(--parchment-text)"><i class="fas fa-bolt" style="color:var(--brass)"></i> Shorts</h2>
-                <div class="shorts-shelf" id="shortsShelfGrid"></div>
-            </section>
-
-            <section class="section-surface">
-                <div class="video-grid" id="videoGrid"></div>
-                <p class="hidden text-center py-10 font-ui section-empty" id="videoEmpty">Belum ada video. Tambahkan lewat tombol admin di pojok kanan bawah.</p>
+            <section class="section-surface reveal">
+                <div class="gear-grid" id="gearGrid"></div>
+                <p class="hidden text-center py-10 font-ui section-empty" id="gearEmpty">Belum ada gear. Tambahkan lewat tombol admin (login dulu).</p>
             </section>
         </div>
     </main>

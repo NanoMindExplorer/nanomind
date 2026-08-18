@@ -713,5 +713,27 @@
     "enabled": true,
     "username": "Deadmouse_jpeg",
     "registryFile": "x-articles.json"
-  }
+  },
+  "gear": [
+    {
+      "id": "gear-sample-keyboard",
+      "title": "Mechanical Keyboard",
+      "description": "Contoh item — ganti dengan gear asli + link afiliasi Anda lewat mode editor.",
+      "url": "https://example.com",
+      "category": "Desk",
+      "store": "Example Store",
+      "image": "",
+      "icon": "fas fa-keyboard"
+    },
+    {
+      "id": "gear-sample-monitor",
+      "title": "Monitor Ultrawide",
+      "description": "Contoh kedua — hapus atau edit setelah login admin.",
+      "url": "https://example.com",
+      "category": "Desk",
+      "store": "Example Store",
+      "image": "",
+      "icon": "fas fa-desktop"
+    }
+  ]
 }

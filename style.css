@@ -4596,3 +4596,124 @@ body.theme-wanderlust .modal-overlay {
     backdrop-filter: none !important;
     -webkit-backdrop-filter: none !important;
 }
+
+/* ===== Gear / affiliate equipment ===== */
+.gear-grid {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 22px;
+}
+.gear-card {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    border-radius: 20px;
+    overflow: hidden;
+    background: rgba(255, 255, 255, 0.28);
+    border: 1px solid rgba(255, 255, 255, 0.42);
+    box-shadow: 0 16px 36px -24px rgba(4, 47, 46, 0.3);
+    min-height: 100%;
+}
+body.theme-wanderlust .gear-card {
+    background: rgba(255, 255, 255, 0.28) !important;
+    border-color: rgba(255, 255, 255, 0.42) !important;
+    backdrop-filter: none !important;
+}
+.gear-card-media {
+    aspect-ratio: 16 / 10;
+    background: rgba(4, 47, 46, 0.08);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    overflow: hidden;
+}
+.gear-card-media img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: block;
+}
+.gear-card-icon {
+    width: 72px;
+    height: 72px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: rgba(13, 148, 136, 0.12);
+    color: #0f766e;
+    font-size: 28px;
+}
+.gear-card-body {
+    padding: 18px 18px 20px;
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    flex: 1;
+}
+.gear-card-cat {
+    align-self: flex-start;
+    font-family: 'Inter', sans-serif;
+    font-size: 11px;
+    font-weight: 700;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: #0f766e;
+}
+.gear-card-body h3 {
+    font-family: 'Fraunces', Georgia, serif;
+    font-size: 1.25rem;
+    line-height: 1.2;
+    color: #042f2e;
+    margin: 0;
+}
+.gear-card-body p {
+    font-family: 'Inter', sans-serif;
+    font-size: 13.5px;
+    line-height: 1.5;
+    color: rgba(15, 23, 42, 0.62);
+    margin: 0;
+    display: -webkit-box;
+    -webkit-line-clamp: 3;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+}
+.gear-card-meta {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+    align-items: center;
+    font-family: 'Inter', sans-serif;
+    font-size: 12px;
+    color: rgba(15, 23, 42, 0.55);
+    margin-top: auto;
+}
+.gear-aff-note {
+    padding: 3px 8px;
+    border-radius: 999px;
+    background: rgba(13, 148, 136, 0.12);
+    color: #0f766e;
+    font-weight: 600;
+}
+.gear-card-cta {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    margin-top: 10px;
+    padding: 11px 16px;
+    border-radius: 999px;
+    background: #0d9488;
+    color: #fff !important;
+    font-family: 'Inter', sans-serif;
+    font-weight: 700;
+    font-size: 13px;
+    text-decoration: none;
+    transition: transform 0.2s, background 0.2s;
+}
+.gear-card-cta:hover {
+    background: #0f766e;
+    transform: translateY(-1px);
+}
+body.theme-wanderlust .gear-card-body h3 { color: #042f2e !important; }
+body.theme-wanderlust .gear-card-body p { color: rgba(15, 23, 42, 0.62) !important; }

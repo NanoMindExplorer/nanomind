@@ -167,11 +167,13 @@ function injectSharedChrome() {
                     <a href="telegram.html" class="nav-link" data-nav="telegram"><i class="fab fa-telegram" style="font-size:0.92em;margin-right:4px;"></i>Telegram</a>
                     <a href="instagram.html" class="nav-link" data-nav="instagram"><i class="fab fa-instagram" style="font-size:0.92em;margin-right:4px;"></i>Instagram</a>
                     <a href="watch.html" class="nav-link" data-nav="watch">Watch</a>
+                    <a href="gear.html" class="nav-link" data-nav="gear">Gear</a>
                     <a href="about.html" class="nav-link" data-nav="about">About</a>
                 </div>
                 <div class="nav-actions flex items-center gap-2">
                     <div class="wl-nav-circles" aria-label="Quick links">
                         <a href="watch.html" class="wl-nav-circle" data-nav="watch" title="Watch"><i class="fas fa-play"></i><span>Watch</span></a>
+                        <a href="gear.html" class="wl-nav-circle" data-nav="gear" title="Gear"><i class="fas fa-box-open"></i><span>Gear</span></a>
                         <a href="telegram.html" class="wl-nav-circle" data-nav="telegram" title="Telegram"><i class="fab fa-telegram"></i><span>Telegram</span></a>
                         <a href="instagram.html" class="wl-nav-circle" data-nav="instagram" title="Instagram"><i class="fab fa-instagram"></i><span>Instagram</span></a>
                         <a href="about.html" class="wl-nav-circle" data-nav="about" title="About"><i class="fas fa-user"></i><span>About</span></a>
@@ -190,6 +192,7 @@ function injectSharedChrome() {
             <a href="telegram.html" class="nav-link" data-nav="telegram"><i class="fab fa-telegram" style="font-size:0.92em;margin-right:4px;"></i>Telegram</a>
             <a href="instagram.html" class="nav-link" data-nav="instagram"><i class="fab fa-instagram" style="font-size:0.92em;margin-right:4px;"></i>Instagram</a>
             <a href="watch.html" class="nav-link" data-nav="watch">Watch</a>
+            <a href="gear.html" class="nav-link" data-nav="gear">Gear</a>
             <a href="about.html" class="nav-link" data-nav="about">About</a>`;
     }
     const footerPh = $('footerPlaceholder');
@@ -216,6 +219,7 @@ function injectSharedChrome() {
                         <li><a href="telegram.html">Telegram</a></li>
                         <li><a href="instagram.html">Instagram</a></li>
                         <li><a href="watch.html">Watch</a></li>
+                        <li><a href="gear.html">Gear</a></li>
                         <li><a href="about.html">About</a></li>
                     </ul>
                 </div>
@@ -291,6 +295,7 @@ function markActiveNav() {
     let current = '';
     if (path === 'about.html') current = 'about';
     else if (path === 'watch.html') current = 'watch';
+    else if (path === 'gear.html') current = 'gear';
     else if (path === 'telegram.html') current = 'telegram';
     else if (path === 'instagram.html') current = 'instagram';
     else if (path === '' || path === 'index.html' || path === 'article.html') {
@@ -353,6 +358,22 @@ function injectModals() {
                 <div><label class="block text-sm mb-2" style="color:var(--muted-on-ink)">Icon Class (Font Awesome)</label><input type="text" class="input-field" id="linkIcon" placeholder="fab fa-github"></div>
             </div>
             <div class="flex gap-3 mt-6"><button class="btn-ghost flex-1" id="cancelLinkBtn">Cancel</button><button class="btn-primary flex-1" id="saveLinkBtn">Save</button></div>
+        </div>
+    </div>
+
+    <div class="modal-overlay" id="gearModal">
+        <div class="modal-content">
+            <h3 class="font-display font-semibold text-xl mb-6" id="gearModalTitle" style="color:var(--parchment-text)">Add Gear</h3>
+            <div class="space-y-4">
+                <div><label class="block text-sm mb-2" style="color:var(--muted-on-ink)">Nama peralatan</label><input type="text" class="input-field" id="gearTitle" placeholder="Keyboard Keychron K2"></div>
+                <div><label class="block text-sm mb-2" style="color:var(--muted-on-ink)">Deskripsi singkat</label><textarea class="input-field" id="gearDesc" rows="3" placeholder="Kenapa dipakai / catatan singkat"></textarea></div>
+                <div><label class="block text-sm mb-2" style="color:var(--muted-on-ink)">Link afiliasi</label><input type="url" class="input-field" id="gearUrl" placeholder="https://..."></div>
+                <div><label class="block text-sm mb-2" style="color:var(--muted-on-ink)">Kategori</label><input type="text" class="input-field" id="gearCategory" placeholder="Desk / Camera / Software / Audio"></div>
+                <div><label class="block text-sm mb-2" style="color:var(--muted-on-ink)">Toko / brand (opsional)</label><input type="text" class="input-field" id="gearStore" placeholder="Tokopedia, Amazon, Shopee…"></div>
+                <div><label class="block text-sm mb-2" style="color:var(--muted-on-ink)">Gambar URL (opsional)</label><input type="text" class="input-field" id="gearImage" placeholder="media/… atau https://…"></div>
+                <div><label class="block text-sm mb-2" style="color:var(--muted-on-ink)">Icon Font Awesome (opsional)</label><input type="text" class="input-field" id="gearIcon" placeholder="fas fa-keyboard"></div>
+            </div>
+            <div class="flex gap-3 mt-6"><button class="btn-ghost flex-1" id="cancelGearBtn">Cancel</button><button class="btn-primary flex-1" id="saveGearBtn">Save</button></div>
         </div>
     </div>
 
@@ -574,6 +595,12 @@ function fuzzySearchAll(q) {
             results.push({ icon: 'fa-compass-drafting', label: p.title, meta: 'Project', href: `about.html#project-${p.id}` });
         }
     });
+    (state.data.gear || []).forEach(g => {
+        const hay = `${g.title || ''} ${g.description || ''} ${g.category || ''} ${g.store || ''}`.toLowerCase();
+        if (hay.includes(q)) {
+            results.push({ icon: 'fa-box-open', label: g.title, meta: g.category ? `Gear · ${g.category}` : 'Gear', href: 'gear.html' });
+        }
+    });
     (state.data.links || []).forEach(l => {
         if ((l.title || '').toLowerCase().includes(q)) {
             results.push({ icon: 'fa-link', label: l.title, meta: 'Link', href: l.url, external: true });
@@ -706,6 +733,7 @@ async function loadData() {
         state.data.projects = state.data.projects || [];
         state.data.links = state.data.links || [];
         state.data.videos = state.data.videos || [];
+        state.data.gear = state.data.gear || [];
         ensureXArticlesCategory();
         ensureMediumArticlesCategory();
 
@@ -760,7 +788,7 @@ async function loadData() {
         console.error('Load failed', err);
         state.xArticlesLoading = false;
         state.mediumArticlesLoading = false;
-        state.data = { profile: { name: 'Failed to Load', bio: 'Cek konfigurasi script.js' }, site: {}, categories: [], articles: [], projects: [], links: [], videos: [] };
+        state.data = { profile: { name: 'Failed to Load', bio: 'Cek konfigurasi script.js' }, site: {}, categories: [], articles: [], projects: [], links: [], videos: [], gear: [] };
         renderPageContent();
         showToast('Gagal memuat data. Cek koneksi internet.', 'error');
     } finally {
@@ -2064,7 +2092,7 @@ function setupTelegramCardClicks() {
 // ==========================================
 function renderPageContent() {
     if (!state.data) return;
-    const { profile, site, categories, articles, photoOfDay, projects, links } = state.data;
+    const { profile, site, categories, articles, photoOfDay, projects, links, gear } = state.data;
 
     const navBrandName = $('navBrandName'); if (navBrandName) navBrandName.textContent = site.title || profile.name || 'Nanomind Explorer';
     const navBrandTagline = $('navBrandTagline'); if (navBrandTagline) navBrandTagline.textContent = site.tagline || '';
@@ -2112,6 +2140,11 @@ function renderPageContent() {
     }
     if ($('igGrid')) {
         renderInstagramGalleryPage();
+    }
+    if ($('gearGrid')) {
+        document.title = `${site.title || profile.name || 'Nanomind Explorer'} — Gear`;
+        renderGearFilterTabs();
+        renderGearGrid();
     }
 
     setTimeout(() => {
@@ -3676,6 +3709,132 @@ async function deleteLink(id) {
 }
 
 // ==========================================
+// GEAR PAGE — affiliate equipment links
+// ==========================================
+function renderGearFilterTabs() {
+    const wrap = $('gearFilterTabs');
+    if (!wrap) return;
+    const items = state.data.gear || [];
+    const cats = Array.from(new Set(items.map(g => (g.category || '').trim()).filter(Boolean))).sort((a, b) => a.localeCompare(b));
+    state.gearFilter = state.gearFilter || 'all';
+    if (state.gearFilter !== 'all' && !cats.includes(state.gearFilter)) state.gearFilter = 'all';
+    wrap.innerHTML = `<button class="cat-pill${state.gearFilter === 'all' ? ' active' : ''}" data-gfilter="all">All</button>` +
+        cats.map(c => `<button class="cat-pill${state.gearFilter === c ? ' active' : ''}" data-gfilter="${escapeHtml(c)}">${escapeHtml(c)}</button>`).join('');
+    wrap.querySelectorAll('[data-gfilter]').forEach(btn => {
+        btn.addEventListener('click', () => {
+            state.gearFilter = btn.dataset.gfilter || 'all';
+            renderGearFilterTabs();
+            renderGearGrid();
+        });
+    });
+}
+
+function renderGearGrid() {
+    const wrap = $('gearGrid');
+    const empty = $('gearEmpty');
+    if (!wrap) return;
+    const filter = state.gearFilter || 'all';
+    let items = (state.data.gear || []).slice();
+    if (filter !== 'all') items = items.filter(g => (g.category || '').trim() === filter);
+    wrap.innerHTML = '';
+    if (!items.length) {
+        if (empty) empty.classList.remove('hidden');
+        return;
+    }
+    if (empty) empty.classList.add('hidden');
+    items.forEach(g => {
+        const img = mediaUrl(g.image) || g.image || '';
+        const icon = g.icon || 'fas fa-box-open';
+        const card = document.createElement('article');
+        card.className = 'gear-card reveal';
+        card.innerHTML = `
+            <div class="edit-btn admin-only hidden" data-edit="${escapeHtml(g.id)}"><i class="fas fa-pen text-xs"></i></div>
+            <div class="delete-btn admin-only hidden" data-del="${escapeHtml(g.id)}"><i class="fas fa-trash text-xs"></i></div>
+            <div class="gear-card-media">
+                ${img
+                    ? `<img src="${escapeHtml(img)}" alt="${escapeHtml(g.title)}" loading="lazy" decoding="async" referrerpolicy="no-referrer">`
+                    : `<div class="gear-card-icon" aria-hidden="true"><i class="${escapeHtml(icon)}"></i></div>`}
+            </div>
+            <div class="gear-card-body">
+                ${g.category ? `<span class="gear-card-cat">${escapeHtml(g.category)}</span>` : ''}
+                <h3>${escapeHtml(g.title)}</h3>
+                ${g.description ? `<p>${escapeHtml(g.description)}</p>` : ''}
+                <div class="gear-card-meta">
+                    ${g.store ? `<span><i class="fas fa-store"></i> ${escapeHtml(g.store)}</span>` : ''}
+                    <span class="gear-aff-note">Affiliate link</span>
+                </div>
+                <a class="gear-card-cta" href="${escapeHtml(g.url)}" target="_blank" rel="noopener noreferrer sponsored">
+                    Lihat produk <i class="fas fa-arrow-up-right-from-square"></i>
+                </a>
+            </div>`;
+        card.querySelector('[data-edit]')?.addEventListener('click', (e) => { e.preventDefault(); e.stopPropagation(); openGearModal(g.id); });
+        card.querySelector('[data-del]')?.addEventListener('click', (e) => { e.preventDefault(); e.stopPropagation(); deleteGear(g.id); });
+        wrap.appendChild(card);
+    });
+    if (state.isAdmin) {
+        wrap.querySelectorAll('.admin-only').forEach(el => el.classList.remove('hidden'));
+    }
+}
+
+function openGearModal(id = null) {
+    state.editingGearId = id;
+    if (id) {
+        const g = (state.data.gear || []).find(x => x.id === id);
+        if (!g) return;
+        $('gearModalTitle').textContent = 'Edit Gear';
+        $('gearTitle').value = g.title || '';
+        $('gearDesc').value = g.description || '';
+        $('gearUrl').value = g.url || '';
+        $('gearCategory').value = g.category || '';
+        $('gearStore').value = g.store || '';
+        $('gearImage').value = g.image || '';
+        $('gearIcon').value = g.icon || '';
+    } else {
+        $('gearModalTitle').textContent = 'Add Gear';
+        $('gearTitle').value = '';
+        $('gearDesc').value = '';
+        $('gearUrl').value = '';
+        $('gearCategory').value = '';
+        $('gearStore').value = '';
+        $('gearImage').value = '';
+        $('gearIcon').value = '';
+    }
+    openModal('gearModal');
+}
+
+async function saveGear() {
+    const title = $('gearTitle').value.trim();
+    const url = $('gearUrl').value.trim();
+    if (!title || !url) return showToast('Nama dan link afiliasi wajib diisi.', 'error');
+    const data = {
+        id: state.editingGearId || generateId(),
+        title,
+        description: $('gearDesc').value.trim(),
+        url,
+        category: $('gearCategory').value.trim(),
+        store: $('gearStore').value.trim(),
+        image: $('gearImage').value.trim(),
+        icon: $('gearIcon').value.trim() || 'fas fa-box-open'
+    };
+    state.data.gear = state.data.gear || [];
+    if (state.editingGearId) {
+        const i = state.data.gear.findIndex(x => x.id === state.editingGearId);
+        if (i >= 0) state.data.gear[i] = data;
+        else state.data.gear.push(data);
+    } else state.data.gear.push(data);
+    await saveToGitHub();
+    closeModal('gearModal');
+    renderPageContent();
+}
+
+async function deleteGear(id) {
+    if (!confirm('Hapus gear ini?')) return;
+    state.data.gear = (state.data.gear || []).filter(x => x.id !== id);
+    await saveToGitHub();
+    renderPageContent();
+}
+
+// ==========================================
 // GITHUB SAVE (admin write)
 // ==========================================
 function dataForGithubSave() {
@@ -3775,6 +3934,10 @@ function setupEventListeners() {
     bind('addLinkBtn', 'click', () => openLinkModal());
     bind('saveLinkBtn', 'click', saveLink);
     bind('cancelLinkBtn', 'click', () => closeModal('linkModal'));
+
+    bind('addGearBtn', 'click', () => openGearModal());
+    bind('saveGearBtn', 'click', saveGear);
+    bind('cancelGearBtn', 'click', () => closeModal('gearModal'));
 
     bind('addArticleBtn', 'click', () => openArticleModal());
     bind('saveArticleBtn', 'click', saveArticle);
