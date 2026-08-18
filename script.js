@@ -3132,8 +3132,11 @@ function renderRelated(article) {
         return;
     }
 
-    // Kartu seragam span-2 agar baris terisi rata (bukan mosaic yang terlihat “bolong”)
+    // Kartu seragam span-2; langsung .visible (jangan tinggal opacity:0 dari .reveal)
     wrap.innerHTML = combined.map((a, i) => relatedCardHtml(a, i)).join('');
+    wrap.querySelectorAll('.reveal').forEach(el => el.classList.add('visible'));
+    enhanceImages(wrap);
+    setupScrollObserver();
 }
 
 function relatedCardHtml(a, i) {
@@ -3146,10 +3149,14 @@ function relatedCardHtml(a, i) {
             : '';
     const sourceClass = a.source === 'x' ? ' from-x' : (a.source === 'medium' ? ' from-medium' : '');
     const dek = a.dek ? `<p class="card-dek">${escapeHtml(a.dek)}</p>` : '';
+    const cover = mediaUrl(a.coverImage) || a.coverImage || '';
+    const thumbInner = cover
+        ? imgTag(a.coverImage, a.title, 'loading="lazy" decoding="async"')
+        : `<div class="related-thumb-fallback" aria-hidden="true"><i class="${a.source === 'x' ? 'fab fa-x-twitter' : (a.source === 'medium' ? 'fab fa-medium' : 'fas fa-feather-pointed')}"></i></div>`;
     return `
-        <a href="article.html?id=${encodeURIComponent(a.id)}" class="dispatch-card size-md span-2 accent-${cat.accent || 'brass'} reveal related-card${sourceClass}">
+        <a href="article.html?id=${encodeURIComponent(a.id)}" class="dispatch-card size-md span-2 accent-${cat.accent || 'brass'} reveal visible related-card${sourceClass}">
             <div class="thumb">
-                ${imgTag(a.coverImage, a.title, 'loading="lazy" decoding="async"')}
+                ${thumbInner}
                 ${sourceBadge}
             </div>
             <div class="card-body">
