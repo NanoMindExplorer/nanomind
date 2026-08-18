@@ -3763,8 +3763,16 @@ body.theme-wanderlust .living-bg-glow {
 body.theme-wanderlust .living-bg-veil--tropical,
 body.theme-wanderlust .living-bg-veil,
 body.theme-wanderlust.has-living-bg .living-bg-veil {
-    /* Pin shows vivid water — keep veil very light */
-    background: rgba(4, 47, 46, 0.08) !important;
+    /* Lighter veil so tropical bg reads through transparent panels */
+    background: rgba(4, 47, 46, 0.04) !important;
+}
+/* Stabilize fixed bg during scroll (less GPU thrash) */
+body.theme-wanderlust .living-bg {
+    transform: translateZ(0);
+    backface-visibility: hidden;
+}
+body.theme-wanderlust .living-bg-poster {
+    transform: translateZ(0);
 }
 
 /* =========================================================
@@ -3784,13 +3792,13 @@ body.theme-wanderlust .site-nav {
     border-bottom: none !important;
     box-shadow: none !important;
 }
-/* Soft glass appear once scrolled past hero water */
+/* Soft tint once scrolled — no blur (scroll-safe) */
 body.theme-wanderlust .site-nav.is-scrolled {
-    background: rgba(255, 255, 255, 0.55) !important;
-    backdrop-filter: blur(16px) saturate(1.3) !important;
-    -webkit-backdrop-filter: blur(16px) saturate(1.3) !important;
-    border-bottom: 1px solid rgba(255, 255, 255, 0.4) !important;
-    box-shadow: 0 10px 36px -20px rgba(4, 47, 46, 0.35) !important;
+    background: rgba(255, 255, 255, 0.42) !important;
+    backdrop-filter: none !important;
+    -webkit-backdrop-filter: none !important;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.35) !important;
+    box-shadow: 0 10px 36px -20px rgba(4, 47, 46, 0.28) !important;
 }
 body.theme-wanderlust .site-nav.is-scrolled .brand-name {
     color: #0f172a !important;
@@ -3841,8 +3849,8 @@ body.theme-wanderlust .wl-burger {
     background: rgba(255, 255, 255, 0.55) !important;
     border: 1px solid rgba(255, 255, 255, 0.65) !important;
     color: #0f172a !important;
-    backdrop-filter: blur(12px);
-    -webkit-backdrop-filter: blur(12px);
+    backdrop-filter: none;
+    -webkit-backdrop-filter: none;
     box-shadow: 0 8px 22px -12px rgba(4, 47, 46, 0.4);
 }
 /* Hide text nav pill — pin uses circular icons instead */
@@ -3865,14 +3873,14 @@ body.theme-wanderlust .wl-nav-circle {
     display: inline-flex;
     align-items: center;
     justify-content: center;
-    background: rgba(255, 255, 255, 0.62);
-    border: 1px solid rgba(255, 255, 255, 0.7);
+    background: rgba(255, 255, 255, 0.55);
+    border: 1px solid rgba(255, 255, 255, 0.65);
     color: #0f172a;
     font-size: 15px;
     text-decoration: none;
-    backdrop-filter: blur(12px);
-    -webkit-backdrop-filter: blur(12px);
-    box-shadow: 0 10px 24px -14px rgba(4, 47, 46, 0.45);
+    backdrop-filter: none;
+    -webkit-backdrop-filter: none;
+    box-shadow: 0 10px 24px -14px rgba(4, 47, 46, 0.35);
     transition: transform 0.2s, background 0.2s;
 }
 body.theme-wanderlust .wl-nav-circle:hover {
@@ -3889,11 +3897,11 @@ body.theme-wanderlust .nav-icon-btn {
     width: 44px !important;
     height: 44px !important;
     border-radius: 50% !important;
-    background: rgba(255, 255, 255, 0.62) !important;
-    border: 1px solid rgba(255, 255, 255, 0.7) !important;
+    background: rgba(255, 255, 255, 0.55) !important;
+    border: 1px solid rgba(255, 255, 255, 0.65) !important;
     color: #0f172a !important;
-    backdrop-filter: blur(12px);
-    -webkit-backdrop-filter: blur(12px);
+    backdrop-filter: none !important;
+    -webkit-backdrop-filter: none !important;
 }
 body.theme-wanderlust .nav-icon-btn:hover {
     border-color: var(--wl-teal) !important;
@@ -3933,13 +3941,13 @@ body.theme-wanderlust .wl-stage {
     overflow: hidden;
 }
 body.theme-wanderlust .wl-glass {
-    background: rgba(255, 255, 255, 0.68);
-    backdrop-filter: blur(24px) saturate(1.4);
-    -webkit-backdrop-filter: blur(24px) saturate(1.4);
-    border: 1px solid rgba(255, 255, 255, 0.72);
+    background: rgba(255, 255, 255, 0.48);
+    backdrop-filter: none;
+    -webkit-backdrop-filter: none;
+    border: 1px solid rgba(255, 255, 255, 0.55);
     box-shadow:
-        0 28px 64px -28px rgba(4, 47, 46, 0.5),
-        inset 0 1px 0 rgba(255, 255, 255, 0.8);
+        0 22px 48px -28px rgba(4, 47, 46, 0.4),
+        inset 0 1px 0 rgba(255, 255, 255, 0.65);
     border-radius: 28px;
 }
 
@@ -3959,9 +3967,9 @@ body.theme-wanderlust .wl-float-search {
     border: none;
     border-radius: 999px;
     border: 1px solid rgba(255, 255, 255, 0.7);
-    background: rgba(255, 255, 255, 0.7);
-    backdrop-filter: blur(18px);
-    -webkit-backdrop-filter: blur(18px);
+    background: rgba(255, 255, 255, 0.55);
+    backdrop-filter: none;
+    -webkit-backdrop-filter: none;
     color: rgba(15, 23, 42, 0.55);
     font-family: 'Inter', sans-serif;
     font-size: 14px;
@@ -3989,13 +3997,13 @@ body.theme-wanderlust .wl-float-chip {
     display: flex;
     align-items: center;
     justify-content: center;
-    background: rgba(255, 255, 255, 0.78);
-    border: 1px solid rgba(255, 255, 255, 0.85);
+    background: rgba(255, 255, 255, 0.55);
+    border: 1px solid rgba(255, 255, 255, 0.65);
     color: #0f766e;
     font-size: 18px;
-    box-shadow: 0 16px 32px -14px rgba(4, 47, 46, 0.45);
-    backdrop-filter: blur(12px);
-    -webkit-backdrop-filter: blur(12px);
+    box-shadow: 0 16px 32px -14px rgba(4, 47, 46, 0.35);
+    backdrop-filter: none;
+    -webkit-backdrop-filter: none;
 }
 /* Positions measured vs pin left-water field */
 body.theme-wanderlust .wl-float-chip--a { top: 28%; left: 6%; }
@@ -4085,10 +4093,10 @@ body.theme-wanderlust .wl-chip {
     font-weight: 700;
     letter-spacing: 0.06em;
     text-transform: uppercase;
-    background: rgba(255, 255, 255, 0.22);
+    background: rgba(255, 255, 255, 0.28);
     border: 1px solid rgba(255, 255, 255, 0.4);
-    backdrop-filter: blur(10px);
-    -webkit-backdrop-filter: blur(10px);
+    backdrop-filter: none;
+    -webkit-backdrop-filter: none;
     margin-bottom: 14px;
 }
 body.theme-wanderlust .wl-paradise-body h1 {
@@ -4204,15 +4212,17 @@ body.theme-wanderlust .journal-stack {
     padding-top: 12px;
 }
 body.theme-wanderlust .section-surface {
-    background: rgba(255, 255, 255, 0.38) !important;
-    backdrop-filter: blur(22px) saturate(1.35) !important;
-    -webkit-backdrop-filter: blur(22px) saturate(1.35) !important;
-    border: 1px solid rgba(255, 255, 255, 0.48) !important;
+    /* No backdrop-filter — blur+fixed-bg = scroll glitch/tearing */
+    background: rgba(255, 255, 255, 0.28) !important;
+    backdrop-filter: none !important;
+    -webkit-backdrop-filter: none !important;
+    border: 1px solid rgba(255, 255, 255, 0.4) !important;
     border-radius: 28px !important;
     box-shadow:
-        0 24px 50px -28px rgba(4, 47, 46, 0.35),
-        inset 0 1px 0 rgba(255, 255, 255, 0.7) !important;
+        0 18px 40px -28px rgba(4, 47, 46, 0.28),
+        inset 0 1px 0 rgba(255, 255, 255, 0.55) !important;
     color: var(--wl-ink);
+    contain: none !important;
 }
 body.theme-wanderlust .section-surface::before {
     background: linear-gradient(90deg, transparent, rgba(20, 184, 166, 0.55), transparent) !important;
@@ -4239,11 +4249,37 @@ body.theme-wanderlust a.text-brass {
 }
 body.theme-wanderlust .x-card,
 body.theme-wanderlust .dispatch-card {
-    background: rgba(255, 255, 255, 0.48) !important;
-    border-color: rgba(255, 255, 255, 0.55) !important;
+    background: rgba(255, 255, 255, 0.32) !important;
+    border-color: rgba(255, 255, 255, 0.45) !important;
     color: var(--wl-ink) !important;
-    box-shadow: 0 16px 36px -22px rgba(4, 47, 46, 0.3) !important;
+    box-shadow: 0 12px 28px -22px rgba(4, 47, 46, 0.25) !important;
+    backdrop-filter: none !important;
+    -webkit-backdrop-filter: none !important;
 }
+/* Wider X / Medium rail cards */
+body.theme-wanderlust .x-card {
+    flex: 0 0 min(420px, 46vw) !important;
+    border-radius: 20px !important;
+}
+body.theme-wanderlust .x-card .x-thumb {
+    aspect-ratio: 16 / 10 !important;
+}
+body.theme-wanderlust .x-card .x-body h3 {
+    font-size: 18.5px !important;
+}
+body.theme-wanderlust .x-rail {
+    gap: 22px !important;
+}
+/* Wider Build Log / dispatch cards */
+body.theme-wanderlust .dispatch-grid {
+    gap: 32px !important;
+}
+body.theme-wanderlust .dispatch-card {
+    border-radius: 18px !important;
+}
+body.theme-wanderlust .dispatch-card.size-lg h3 { font-size: 28px !important; }
+body.theme-wanderlust .dispatch-card.size-md h3 { font-size: 21px !important; }
+body.theme-wanderlust .dispatch-card.size-sm h3 { font-size: 17.5px !important; }
 body.theme-wanderlust .x-card .x-body h3,
 body.theme-wanderlust .dispatch-card h3,
 body.theme-wanderlust .card-eyebrow {
@@ -4279,19 +4315,22 @@ body.theme-wanderlust .btn-ghost:hover {
     color: var(--wl-teal-deep) !important;
 }
 body.theme-wanderlust .sticky-filters {
-    background: linear-gradient(180deg, rgba(255,255,255,0.75) 60%, rgba(255,255,255,0.45)) !important;
+    background: linear-gradient(180deg, rgba(255,255,255,0.35) 60%, rgba(255,255,255,0.08)) !important;
+    backdrop-filter: none !important;
+    -webkit-backdrop-filter: none !important;
 }
 body.theme-wanderlust .potd {
-    background: rgba(255, 255, 255, 0.55) !important;
-    border-color: rgba(255, 255, 255, 0.6) !important;
+    background: rgba(255, 255, 255, 0.28) !important;
+    border-color: rgba(255, 255, 255, 0.4) !important;
 }
 body.theme-wanderlust .potd .potd-caption { color: var(--wl-ink) !important; }
 body.theme-wanderlust .potd .potd-label { color: var(--wl-teal-deep) !important; }
 body.theme-wanderlust .potd .potd-text { border-left-color: var(--wl-teal) !important; }
 body.theme-wanderlust .site-footer {
-    background: rgba(255, 255, 255, 0.45) !important;
-    border-top-color: rgba(255, 255, 255, 0.4) !important;
-    backdrop-filter: blur(16px);
+    background: rgba(255, 255, 255, 0.22) !important;
+    border-top-color: rgba(255, 255, 255, 0.3) !important;
+    backdrop-filter: none !important;
+    -webkit-backdrop-filter: none !important;
 }
 body.theme-wanderlust .footer-name,
 body.theme-wanderlust .footer-nav a,
@@ -4342,7 +4381,7 @@ body.theme-wanderlust .journal-main {
     max-width: none;
 }
 body.theme-wanderlust .journal-stack {
-    max-width: min(1320px, 94vw) !important;
+    max-width: min(1480px, 96vw) !important;
     width: 100%;
     margin-left: auto;
     margin-right: auto;
@@ -4351,29 +4390,29 @@ body.theme-wanderlust .journal-stack {
     padding-bottom: 80px;
 }
 body.theme-wanderlust .journal-stack--narrow {
-    max-width: min(1100px, 92vw) !important;
+    max-width: min(1280px, 94vw) !important;
 }
 
-/* Section / card glass — more transparent, blends with water */
+/* Transparent panels — no blur (avoids scroll glitch) */
 body.theme-wanderlust .section-surface {
-    background: rgba(255, 255, 255, 0.38) !important;
-    backdrop-filter: blur(22px) saturate(1.35) !important;
-    -webkit-backdrop-filter: blur(22px) saturate(1.35) !important;
-    border: 1px solid rgba(255, 255, 255, 0.48) !important;
+    background: rgba(255, 255, 255, 0.26) !important;
+    backdrop-filter: none !important;
+    -webkit-backdrop-filter: none !important;
+    border: 1px solid rgba(255, 255, 255, 0.38) !important;
 }
 body.theme-wanderlust .x-card,
 body.theme-wanderlust .dispatch-card {
-    background: rgba(255, 255, 255, 0.48) !important;
-    border-color: rgba(255, 255, 255, 0.55) !important;
+    background: rgba(255, 255, 255, 0.30) !important;
+    border-color: rgba(255, 255, 255, 0.42) !important;
 }
 body.theme-wanderlust .potd {
-    background: rgba(255, 255, 255, 0.36) !important;
+    background: rgba(255, 255, 255, 0.24) !important;
 }
 body.theme-wanderlust .sticky-filters {
-    background: linear-gradient(180deg, rgba(255,255,255,0.42) 55%, rgba(255,255,255,0.12)) !important;
+    background: linear-gradient(180deg, rgba(255,255,255,0.28) 55%, rgba(255,255,255,0.06)) !important;
 }
 body.theme-wanderlust .site-footer {
-    background: rgba(255, 255, 255, 0.32) !important;
+    background: rgba(255, 255, 255, 0.18) !important;
 }
 
 /* Article — wider reader, plain transparency (no blur) */
@@ -4522,4 +4561,17 @@ body.theme-wanderlust {
 html:has(body.theme-wanderlust),
 body.theme-wanderlust {
     max-width: none;
+}
+
+/* Global: no backdrop blur on wanderlust content chrome (scroll-safe) */
+body.theme-wanderlust .x-source-badge,
+body.theme-wanderlust .rail-nav-btn,
+body.theme-wanderlust .search-fab,
+body.theme-wanderlust .back-to-top,
+body.theme-wanderlust .admin-fab,
+body.theme-wanderlust .cat-pill,
+body.theme-wanderlust .live-pill,
+body.theme-wanderlust .modal-overlay {
+    backdrop-filter: none !important;
+    -webkit-backdrop-filter: none !important;
 }
