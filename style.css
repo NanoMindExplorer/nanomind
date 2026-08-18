@@ -4376,7 +4376,7 @@ body.theme-wanderlust .site-footer {
     background: rgba(255, 255, 255, 0.32) !important;
 }
 
-/* Article — immersive desktop reader, wide + transparent */
+/* Article — wider reader, plain transparency (no blur) */
 body.theme-wanderlust .article-hero {
     height: min(72vh, 720px) !important;
     min-height: 420px !important;
@@ -4384,29 +4384,28 @@ body.theme-wanderlust .article-hero {
     width: 100%;
 }
 body.theme-wanderlust .article-hero-content {
-    max-width: min(1100px, 90vw) !important;
+    max-width: min(1400px, 94vw) !important;
     width: 100%;
-    padding: 72px 40px 64px !important;
+    padding: 72px 48px 64px !important;
     color: #fff;
 }
 body.theme-wanderlust .article-hero h1 {
     font-size: clamp(2.2rem, 4.2vw, 3.8rem) !important;
 }
 body.theme-wanderlust .reading-surface {
-    max-width: min(1080px, 92vw) !important;
+    max-width: min(1400px, 96vw) !important;
     width: 100%;
     margin: -64px auto 48px !important;
-    padding: 56px clamp(36px, 5vw, 88px) 72px !important;
+    padding: 56px clamp(40px, 5vw, 96px) 72px !important;
     border-radius: 28px !important;
-    background: rgba(255, 255, 255, 0.42) !important;
-    backdrop-filter: blur(28px) saturate(1.4) !important;
-    -webkit-backdrop-filter: blur(28px) saturate(1.4) !important;
-    border: 1px solid rgba(255, 255, 255, 0.55) !important;
+    background: rgba(255, 255, 255, 0.45) !important;
+    backdrop-filter: none !important;
+    -webkit-backdrop-filter: none !important;
+    border: 1px solid rgba(255, 255, 255, 0.5) !important;
     color: #0f172a !important;
     box-shadow:
-        0 -18px 56px rgba(4, 47, 46, 0.22),
-        0 28px 60px -28px rgba(4, 47, 46, 0.35),
-        inset 0 1px 0 rgba(255, 255, 255, 0.75) !important;
+        0 -12px 40px rgba(4, 47, 46, 0.18),
+        0 20px 48px -28px rgba(4, 47, 46, 0.28) !important;
 }
 body.theme-wanderlust .reading-surface p,
 body.theme-wanderlust .reading-surface li {
