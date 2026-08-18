@@ -9,7 +9,7 @@
 // Auto-update: SW cek update setiap jam (lewat updateViaCache: 'none' +
 // manual check di 'controllerchange'). Saat SW baru terdeteksi,
 // skipWaiting() + message semua clients untuk reload.
-const CACHE_NAME = 'nanomind-journal-cache-v36';
+const CACHE_NAME = 'nanomind-journal-cache-v37';
 const SHELL_ASSETS = [
     './',
     './index.html',

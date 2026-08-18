@@ -95,6 +95,7 @@ document.addEventListener('DOMContentLoaded', () => {
     injectSharedChrome();
     setupEventListeners();
     setupMobileMenu();
+    setupWanderlustNavScroll();
     setupBackToTop();
     setupSearchPalette();
     setupOfflineBanner();
@@ -146,18 +147,21 @@ function injectSharedChrome() {
         navPh.innerHTML = `
         <nav class="site-nav">
             <div class="nav-inner">
-                <a href="index.html" class="brand">
-                    <svg class="brand-mark" viewBox="0 0 100 100" aria-hidden="true">
-                        <circle cx="50" cy="50" r="38" fill="none" stroke="#C9974A" stroke-width="4"/>
-                        <polygon points="50,13 59,50 41,50" fill="#C9974A"/>
-                        <polygon points="50,87 59,50 41,50" fill="#5C5A48"/>
-                        <circle cx="50" cy="50" r="7" fill="#14140F" stroke="#C9974A" stroke-width="3.5"/>
-                    </svg>
-                    <div>
-                        <span class="brand-name" id="navBrandName">Nanomind Explorer</span>
-                        <span class="brand-tagline font-ui" id="navBrandTagline"></span>
-                    </div>
-                </a>
+                <div class="brand-cluster">
+                    <a href="index.html" class="brand">
+                        <svg class="brand-mark" viewBox="0 0 100 100" aria-hidden="true">
+                            <circle cx="50" cy="50" r="38" fill="none" stroke="#C9974A" stroke-width="4"/>
+                            <polygon points="50,13 59,50 41,50" fill="#C9974A"/>
+                            <polygon points="50,87 59,50 41,50" fill="#5C5A48"/>
+                            <circle cx="50" cy="50" r="7" fill="#14140F" stroke="#C9974A" stroke-width="3.5"/>
+                        </svg>
+                        <div>
+                            <span class="brand-name" id="navBrandName">Nanomind Explorer</span>
+                            <span class="brand-tagline font-ui" id="navBrandTagline"></span>
+                        </div>
+                    </a>
+                    <button class="nav-icon-btn wl-burger" id="wlBurgerBtn" aria-label="Menu" type="button"><i class="fas fa-bars"></i></button>
+                </div>
                 <div class="nav-links">
                     <a href="index.html" class="nav-link" data-nav="home">Dispatches</a>
                     <a href="telegram.html" class="nav-link" data-nav="telegram"><i class="fab fa-telegram" style="font-size:0.92em;margin-right:4px;"></i>Telegram</a>
@@ -165,7 +169,13 @@ function injectSharedChrome() {
                     <a href="watch.html" class="nav-link" data-nav="watch">Watch</a>
                     <a href="about.html" class="nav-link" data-nav="about">About</a>
                 </div>
-                <div class="flex items-center gap-2">
+                <div class="nav-actions flex items-center gap-2">
+                    <div class="wl-nav-circles" aria-label="Quick links">
+                        <a href="index.html" class="wl-nav-circle" data-nav="home" title="Home"><i class="fas fa-home"></i></a>
+                        <a href="telegram.html" class="wl-nav-circle" data-nav="telegram" title="Telegram"><i class="fab fa-telegram"></i></a>
+                        <a href="instagram.html" class="wl-nav-circle" data-nav="instagram" title="Instagram"><i class="fab fa-instagram"></i></a>
+                        <a href="about.html" class="wl-nav-circle" data-nav="about" title="About"><i class="fas fa-user"></i></a>
+                    </div>
                     <span class="admin-status" id="adminStatus" title="Mode editor aktif"><i class="fas fa-pen-nib"></i> Editor</span>
                     <button class="nav-icon-btn" id="navSearchBtn" title="Search (Ctrl+K)" aria-label="Cari"><i class="fas fa-search"></i></button>
                     <button class="nav-icon-btn mobile-menu-btn" id="mobileMenuBtnNav" aria-label="Buka menu" aria-expanded="false"><i class="fas fa-bars"></i></button>
@@ -283,7 +293,7 @@ function markActiveNav() {
         : (path === 'watch.html' ? 'watch'
         : (path === 'telegram.html' ? 'telegram'
         : (path === 'instagram.html' ? 'instagram' : ''))));
-    document.querySelectorAll('.nav-link').forEach(a => a.classList.toggle('active', a.dataset.nav === current));
+    document.querySelectorAll('.nav-link, .wl-nav-circle').forEach(a => a.classList.toggle('active', a.dataset.nav === current));
 }
 
 function injectModals() {
@@ -482,12 +492,33 @@ function injectModals() {
 // ==========================================
 function setupMobileMenu() {
     const btn = $('mobileMenuBtnNav'), panel = $('mobileNavPanel'), backdrop = $('mobileNavBackdrop');
-    if (!btn || !panel || !backdrop) return;
-    const openPanel = () => { panel.classList.add('open'); backdrop.classList.add('open'); btn.setAttribute('aria-expanded', 'true'); };
-    const closePanel = () => { panel.classList.remove('open'); backdrop.classList.remove('open'); btn.setAttribute('aria-expanded', 'false'); };
-    btn.addEventListener('click', () => panel.classList.contains('open') ? closePanel() : openPanel());
+    const burger = $('wlBurgerBtn');
+    if (!panel || !backdrop) return;
+    const triggers = [btn, burger].filter(Boolean);
+    if (!triggers.length) return;
+    const setExpanded = (v) => triggers.forEach(t => t.setAttribute('aria-expanded', v));
+    const openPanel = () => { panel.classList.add('open'); backdrop.classList.add('open'); setExpanded('true'); };
+    const closePanel = () => { panel.classList.remove('open'); backdrop.classList.remove('open'); setExpanded('false'); };
+    triggers.forEach(t => t.addEventListener('click', () => panel.classList.contains('open') ? closePanel() : openPanel()));
     backdrop.addEventListener('click', closePanel);
     panel.querySelectorAll('a').forEach(a => a.addEventListener('click', closePanel));
+}
+
+/** Pin chrome: transparent over hero water, soft glass after scroll. */
+function setupWanderlustNavScroll() {
+    const nav = document.querySelector('.site-nav');
+    if (!nav || !document.body.classList.contains('theme-wanderlust')) return;
+    let ticking = false;
+    const update = () => {
+        nav.classList.toggle('is-scrolled', window.scrollY > 48);
+        ticking = false;
+    };
+    window.addEventListener('scroll', () => {
+        if (ticking) return;
+        ticking = true;
+        requestAnimationFrame(update);
+    }, { passive: true });
+    update();
 }
 function setupBackToTop() {
     const btn = $('backToTopBtn');
@@ -2223,12 +2254,12 @@ function renderHero(articles) {
         <div class="wl-stage">
             <button type="button" class="wl-float-search" id="wlSearchBtn" aria-label="Cari">
                 <i class="fas fa-search"></i>
-                <span>Cari destinasi ide…</span>
+                <span>Search destination</span>
             </button>
 
-            <div class="wl-float-chip wl-float-chip--a" aria-hidden="true"><i class="fas fa-feather-pointed"></i></div>
-            <div class="wl-float-chip wl-float-chip--b" aria-hidden="true"><i class="fab fa-x-twitter"></i></div>
-            <div class="wl-float-chip wl-float-chip--c" aria-hidden="true"><i class="fab fa-medium"></i></div>
+            <div class="wl-float-chip wl-float-chip--a" aria-hidden="true"><i class="fas fa-plane"></i></div>
+            <div class="wl-float-chip wl-float-chip--b" aria-hidden="true"><i class="fas fa-map-marker-alt"></i></div>
+            <div class="wl-float-chip wl-float-chip--c" aria-hidden="true"><i class="fab fa-x-twitter"></i></div>
             <div class="wl-float-chip wl-float-chip--d" aria-hidden="true"><i class="fas fa-camera"></i></div>
             <div class="wl-float-chip wl-float-chip--e" aria-hidden="true"><i class="fab fa-instagram"></i></div>
 
@@ -2245,28 +2276,28 @@ function renderHero(articles) {
                     <div class="wl-paradise-scrim"></div>
                 </div>
                 <div class="wl-paradise-body">
-                    <span class="wl-chip">${escapeHtml(cat.name)}</span>
+                    <span class="wl-chip"><i class="fas fa-location-dot"></i> ${escapeHtml(cat.name)}</span>
                     <h1>${escapeHtml(featured.title)}</h1>
                     ${dek ? `<p>${escapeHtml(dek)}</p>` : ''}
                     <div class="wl-paradise-meta">
                         ${dateMetaHtml(featured.date)}
                         <span aria-hidden="true">·</span>
-                        <span>${featured.readTime || 5} min</span>
+                        <span>${featured.readTime || 5} min read</span>
                     </div>
                 </div>
             </a>
 
             <div class="wl-cta-card wl-glass reveal">
-                <p class="wl-cta-kicker">Nanomind Explorer</p>
-                <h2>Let's Explore!</h2>
+                <h2>Let's Travel!</h2>
                 <p class="wl-cta-copy">Dispatches, X Articles &amp; Medium — catatan dari frontier kode dan ide.</p>
                 <a href="article.html?id=${encodeURIComponent(featured.id)}" class="wl-cta-btn">
-                    <i class="${ctaIcon}"></i> ${escapeHtml(ctaLabel)}
+                    ${escapeHtml(ctaLabel)} <i class="fas fa-arrow-right"></i>
                 </a>
                 <div class="wl-cta-avatars" aria-hidden="true">
                     <span class="wl-ava"><i class="fab fa-x-twitter"></i></span>
                     <span class="wl-ava"><i class="fab fa-medium"></i></span>
                     <span class="wl-ava"><i class="fab fa-instagram"></i></span>
+                    <span class="wl-ava wl-ava-more">+</span>
                 </div>
             </div>
         </div>`;
