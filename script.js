@@ -1553,6 +1553,16 @@ function mergeXArticlesIntoState(xArts) {
     const localIds = new Set(local.map(a => a.id));
     const mergedX = xArts.filter(a => !localIds.has(a.id));
     state.data.articles = [...local, ...mergedX];
+    // Refresh “Dispatch Lainnya” kalau user sedang di halaman artikel
+    refreshRelatedIfOnArticlePage();
+}
+
+function refreshRelatedIfOnArticlePage() {
+    if (!$('relatedGrid') || !$('articleContent')) return;
+    const id = new URLSearchParams(location.search).get('id');
+    if (!id) return;
+    const article = (state.data.articles || []).find(a => a.id === id);
+    if (article) renderRelated(article);
 }
 
 // ==========================================
@@ -1765,6 +1775,7 @@ function mergeMediumArticlesIntoState(medArts) {
     const restIds = new Set(rest.map(a => a.id));
     const mergedM = medArts.filter(a => !restIds.has(a.id));
     state.data.articles = [...rest, ...mergedM];
+    refreshRelatedIfOnArticlePage();
 }
 
 // ==========================================
@@ -3078,13 +3089,76 @@ function renderArticleIntoContent(article) {
 function renderRelated(article) {
     const wrap = $('relatedGrid');
     const section = $('relatedSection');
-    if (!wrap || !section) return;
-    const sameCategory = (state.data.articles || []).filter(a => a.id !== article.id && a.category === article.category);
-    const others = (state.data.articles || []).filter(a => a.id !== article.id && a.category !== article.category);
-    const combined = [...sameCategory, ...others].slice(0, 3);
-    if (!combined.length) { section.classList.add('hidden'); return; }
+    if (!wrap || !section || !article) return;
+
+    const currentId = article.id;
+    const pool = (state.data.articles || []).filter(a => a && a.id && a.id !== currentId);
+    const byDateDesc = (a, b) => new Date(b.date || 0) - new Date(a.date || 0);
+
+    // Prioritas: kategori sama → sumber sama → terbaru
+    const scored = pool.map(a => {
+        let score = 0;
+        if (article.category && a.category === article.category) score += 100;
+        if (article.source && a.source === article.source) score += 40;
+        if ((a.tags || []).some(t => (article.tags || []).includes(t))) score += 20;
+        const ts = new Date(a.date || 0).getTime() || 0;
+        return { a, score, ts };
+    }).sort((x, y) => (y.score - x.score) || (y.ts - x.ts));
+
+    let combined = scored.map(s => s.a);
+
+    // Pastikan selalu terisi: kalau ranking tipis, tambah artikel terbaru lain
+    if (combined.length < 6) {
+        const have = new Set(combined.map(a => a.id));
+        const fillers = pool.filter(a => !have.has(a.id)).sort(byDateDesc);
+        combined = combined.concat(fillers);
+    }
+
+    // Dedup + cap 6 supaya grid penuh (3×2 di desktop)
+    const seen = new Set();
+    combined = combined.filter(a => {
+        if (seen.has(a.id)) return false;
+        seen.add(a.id);
+        return true;
+    }).slice(0, 6);
+
     section.classList.remove('hidden');
-    wrap.innerHTML = combined.map((a, i) => dispatchCardHtml(a, i + 1)).join('');
+    if (!combined.length) {
+        wrap.innerHTML = `
+            <div class="related-empty">
+                <p>Belum ada dispatch lain di daftar. Jelajahi beranda untuk bacaan berikutnya.</p>
+                <a href="index.html" class="btn-primary"><i class="fas fa-compass"></i> Ke Dispatches</a>
+            </div>`;
+        return;
+    }
+
+    // Kartu seragam span-2 agar baris terisi rata (bukan mosaic yang terlihat “bolong”)
+    wrap.innerHTML = combined.map((a, i) => relatedCardHtml(a, i)).join('');
+}
+
+function relatedCardHtml(a, i) {
+    const cat = (state.data.categories || []).find(c => c.id === a.category)
+        || { name: a.source === 'x' ? 'X Article' : (a.source === 'medium' ? 'Medium' : 'Dispatch'), accent: 'brass' };
+    const sourceBadge = a.source === 'x'
+        ? `<span class="x-source-badge" title="X Articles"><i class="fab fa-x-twitter"></i> X</span>`
+        : a.source === 'medium'
+            ? `<span class="x-source-badge" title="Medium"><i class="fab fa-medium"></i> Medium</span>`
+            : '';
+    const sourceClass = a.source === 'x' ? ' from-x' : (a.source === 'medium' ? ' from-medium' : '');
+    const dek = a.dek ? `<p class="card-dek">${escapeHtml(a.dek)}</p>` : '';
+    return `
+        <a href="article.html?id=${encodeURIComponent(a.id)}" class="dispatch-card size-md span-2 accent-${cat.accent || 'brass'} reveal related-card${sourceClass}">
+            <div class="thumb">
+                ${imgTag(a.coverImage, a.title, 'loading="lazy" decoding="async"')}
+                ${sourceBadge}
+            </div>
+            <div class="card-body">
+                <span class="card-eyebrow">${escapeHtml(cat.name)}</span>
+                <h3>${escapeHtml(a.title || 'Untitled')}</h3>
+                ${dek}
+                <div class="card-meta">${dateMetaHtml(a.date)}<span>·</span><span>${a.readTime || 5} min</span></div>
+            </div>
+        </a>`;
 }
 
 // ==========================================

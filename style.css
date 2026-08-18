@@ -1080,6 +1080,31 @@ a:focus-visible, button:focus-visible, [tabindex]:focus-visible, input:focus-vis
 /* ===== Related rail ===== */
 .related-rail { margin: 0; padding: clamp(22px, 3.5vw, 36px); }
 .related-rail.section-surface { margin-top: 0; }
+.related-rail .dispatch-grid {
+    grid-template-columns: repeat(6, 1fr);
+    gap: 22px;
+}
+.related-rail .dispatch-card.span-2 {
+    grid-column: span 2;
+}
+.related-empty {
+    grid-column: 1 / -1;
+    text-align: center;
+    padding: 28px 16px 12px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 16px;
+}
+.related-empty p {
+    font-family: 'Inter', sans-serif;
+    color: var(--wl-muted, var(--muted-on-ink));
+    max-width: 36rem;
+    margin: 0;
+}
+body.theme-wanderlust .related-rail .dispatch-card {
+    background: rgba(255, 255, 255, 0.30) !important;
+}
 
 /* ===== About page (portfolio) ===== */
 .workshop-card { position: relative; border-radius: 8px; overflow: hidden; background: var(--ink-2); border: 1px solid var(--border-ink); transition: all 0.35s; padding: 28px; box-shadow: 0 12px 36px -22px rgba(0,0,0,0.6); }
