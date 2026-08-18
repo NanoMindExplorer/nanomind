@@ -118,21 +118,20 @@ function hideLoader() {
 }
 
 // ==========================================
-// GHIBLI-INSPIRED BACKGROUND — static 1080p art (no video = no shake)
+// TROPICAL GLASS THEME — aerial lagoon bg + floating cards (Wanderlust-inspired)
 // ==========================================
 function injectLivingBackground() {
     if (document.getElementById('livingBg')) return;
-    document.body.classList.add('has-living-bg');
+    document.body.classList.add('has-living-bg', 'theme-wanderlust');
 
     const root = document.createElement('div');
     root.id = 'livingBg';
-    root.className = 'living-bg';
+    root.className = 'living-bg living-bg--tropical';
     root.setAttribute('aria-hidden', 'true');
-    // Static image only — looping video caused visible shake/vibration
     root.innerHTML = `
-        <div class="living-bg-poster"></div>
-        <div class="living-bg-glow"></div>
-        <div class="living-bg-veil"></div>
+        <div class="living-bg-poster living-bg-poster--tropical"></div>
+        <div class="living-bg-glow living-bg-glow--tropical"></div>
+        <div class="living-bg-veil living-bg-veil--tropical"></div>
         <div class="living-bg-noise"></div>
     `;
     document.body.prepend(root);
@@ -2204,7 +2203,7 @@ function renderHero(articles) {
     // Auto: post terbaru (X / Medium / Dispatches) di posisi paling atas (hero)
     const featured = pickLeadArticle(list);
     if (!featured) {
-        wrap.innerHTML = `<div class="section-surface mx-6 text-center font-ui" style="color:var(--muted-on-ink)">Belum ada dispatch. Mulai tulis yang pertama lewat tombol admin di pojok kanan bawah.</div>`;
+        wrap.innerHTML = `<div class="wl-stage"><div class="wl-glass wl-cta-card"><h2>Belum ada dispatch</h2><p>Mulai tulis yang pertama lewat mode editor.</p></div></div>`;
         wrap.className = 'hero-slot';
         return;
     }
@@ -2215,41 +2214,64 @@ function renderHero(articles) {
     const ctaIcon = featured.source === 'x'
         ? 'fab fa-x-twitter'
         : (featured.source === 'medium' ? 'fab fa-medium' : 'fas fa-book-open');
-    const leads = heroLeadParagraphs(featured);
-    // Paragraf pertama = dek ringkas; sisanya = isi panel penuh
-    const leadHtml = leads.length
-        ? leads.map((p, i) =>
-            `<p class="hero-lead-p${i === 0 ? ' is-dek' : ''}">${escapeHtml(p)}</p>`
-          ).join('')
-        : '';
+    const dek = (featured.dek || '').trim();
+    const cover = mediaUrl(featured.coverImage) || featured.coverImage || '';
+
     wrap.className = 'hero-slot accent-' + (cat.accent || 'brass');
+    // Wanderlust-style floating stage: paradise card + CTA glass + floating chips
     wrap.innerHTML = `
-        <div class="hero-feature">
-            ${imgTag(featured.coverImage, featured.title, 'fetchpriority="high"')}
-            <svg class="route-line" viewBox="0 0 200 400" style="left:12px; top:4%; width:80px; height:50%;" aria-hidden="true"><path d="M20,10 C60,80 10,160 90,220 S140,340 100,380" /></svg>
-            <div class="hero-feature-content" style="left:0;top:0;bottom:0;right:auto;margin:0;height:100%;">
-                <div class="hero-content-glass">
-                    <div class="hero-glass-top">
-                        <span class="eyebrow">${escapeHtml(cat.name)}</span>
-                        <h1>${escapeHtml(featured.title)}</h1>
-                        <div class="hero-meta-row">
-                            ${dateMetaHtml(featured.date)}
-                            <span aria-hidden="true">·</span>
-                            <span>${featured.readTime || 5} min baca</span>
-                            ${featured.author ? `<span aria-hidden="true">·</span><span>${escapeHtml(featured.author)}</span>` : ''}
-                        </div>
+        <div class="wl-stage">
+            <button type="button" class="wl-float-search" id="wlSearchBtn" aria-label="Cari">
+                <i class="fas fa-search"></i>
+                <span>Cari dispatch, X, Medium…</span>
+            </button>
+
+            <div class="wl-float-chip wl-float-chip--a" aria-hidden="true"><i class="fas fa-feather-pointed"></i></div>
+            <div class="wl-float-chip wl-float-chip--b" aria-hidden="true"><i class="fab fa-x-twitter"></i></div>
+            <div class="wl-float-chip wl-float-chip--c" aria-hidden="true"><i class="fab fa-medium"></i></div>
+
+            <a href="article.html?id=${encodeURIComponent(featured.id)}" class="wl-paradise-card reveal">
+                <div class="wl-paradise-media">
+                    ${cover ? `<img src="${escapeHtml(cover)}" alt="${escapeHtml(featured.title)}" fetchpriority="high" referrerpolicy="no-referrer">` : ''}
+                    <div class="wl-paradise-scrim"></div>
+                </div>
+                <div class="wl-paradise-body">
+                    <span class="wl-chip">${escapeHtml(cat.name)}</span>
+                    <h1>${escapeHtml(featured.title)}</h1>
+                    ${dek ? `<p>${escapeHtml(dek)}</p>` : ''}
+                    <div class="wl-paradise-meta">
+                        ${dateMetaHtml(featured.date)}
+                        <span aria-hidden="true">·</span>
+                        <span>${featured.readTime || 5} min</span>
                     </div>
-                    <div class="hero-glass-fill">
-                        ${leadHtml}
-                    </div>
-                    <div class="hero-glass-foot">
-                        <div class="hero-cta-row">
-                            <a href="article.html?id=${encodeURIComponent(featured.id)}" class="btn-primary"><i class="${ctaIcon}"></i> ${ctaLabel}</a>
-                        </div>
-                    </div>
+                </div>
+            </a>
+
+            <div class="wl-cta-card wl-glass reveal">
+                <p class="wl-cta-kicker">Nanomind Explorer</p>
+                <h2>Let's Explore!</h2>
+                <p class="wl-cta-copy">Dispatches, X Articles &amp; Medium — catatan dari frontier kode dan ide.</p>
+                <a href="article.html?id=${encodeURIComponent(featured.id)}" class="wl-cta-btn">
+                    <i class="${ctaIcon}"></i> ${escapeHtml(ctaLabel)}
+                </a>
+                <div class="wl-cta-avatars" aria-hidden="true">
+                    <span class="wl-ava"><i class="fab fa-x-twitter"></i></span>
+                    <span class="wl-ava"><i class="fab fa-medium"></i></span>
+                    <span class="wl-ava"><i class="fab fa-instagram"></i></span>
                 </div>
             </div>
         </div>`;
+    const searchBtn = $('wlSearchBtn');
+    if (searchBtn) {
+        searchBtn.addEventListener('click', () => {
+            const navSearch = $('navSearchBtn');
+            if (navSearch) navSearch.click();
+            else {
+                const fab = $('searchFab');
+                if (fab) fab.click();
+            }
+        });
+    }
     enhanceImages(wrap);
 }
 

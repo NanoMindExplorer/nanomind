@@ -3709,3 +3709,515 @@ img, video, iframe, svg {
     }
 }
 
+
+/* ============================================================
+   THEME WANDERLUST — floating glass cards on tropical lagoon
+   Inspired by travel landing UI (Pinterest pin Wanderlust)
+   ============================================================ */
+
+body.theme-wanderlust {
+    --wl-teal: #0d9488;
+    --wl-teal-deep: #0f766e;
+    --wl-mint: #5eead4;
+    --wl-foam: rgba(255, 255, 255, 0.72);
+    --wl-glass: rgba(255, 255, 255, 0.55);
+    --wl-glass-strong: rgba(255, 255, 255, 0.78);
+    --wl-ink: #0f172a;
+    --wl-muted: rgba(15, 23, 42, 0.62);
+    --brass: #14b8a6;
+    --brass-soft: rgba(20, 184, 166, 0.18);
+    --parchment-text: #0f172a;
+    --muted-on-ink: rgba(15, 23, 42, 0.58);
+    --border-ink: rgba(15, 23, 42, 0.10);
+    --border-ink-strong: rgba(15, 23, 42, 0.16);
+    --ink: #042f2e;
+    --ink-2: rgba(255, 255, 255, 0.72);
+    --ink-3: rgba(255, 255, 255, 0.55);
+    color: var(--wl-ink);
+    background: #064e3b;
+}
+
+/* Tropical aerial background */
+body.theme-wanderlust .living-bg-poster--tropical,
+body.theme-wanderlust .living-bg-poster {
+    background-image: url('media/bg-tropical.jpg') !important;
+    background-size: cover !important;
+    background-position: center center !important;
+    filter: brightness(1.05) saturate(1.15) contrast(1.02) !important;
+}
+@supports (background-image: url('media/bg-tropical.webp')) {
+    body.theme-wanderlust .living-bg-poster--tropical,
+    body.theme-wanderlust .living-bg-poster {
+        background-image: url('media/bg-tropical.webp') !important;
+    }
+}
+body.theme-wanderlust .living-bg-glow--tropical,
+body.theme-wanderlust .living-bg-glow {
+    background:
+        radial-gradient(ellipse 70% 50% at 70% 30%, rgba(45, 212, 191, 0.25), transparent 60%),
+        radial-gradient(ellipse 50% 40% at 20% 80%, rgba(13, 148, 136, 0.2), transparent 65%) !important;
+}
+body.theme-wanderlust .living-bg-veil--tropical,
+body.theme-wanderlust .living-bg-veil,
+body.theme-wanderlust.has-living-bg .living-bg-veil {
+    background: rgba(4, 47, 46, 0.18) !important;
+}
+
+/* Floating glass nav */
+body.theme-wanderlust .site-nav {
+    background: rgba(255, 255, 255, 0.42) !important;
+    backdrop-filter: blur(18px) saturate(1.3) !important;
+    -webkit-backdrop-filter: blur(18px) saturate(1.3) !important;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.35) !important;
+    box-shadow: 0 10px 40px -24px rgba(4, 47, 46, 0.35) !important;
+}
+body.theme-wanderlust .brand-name,
+body.theme-wanderlust .nav-link { color: var(--wl-ink) !important; }
+body.theme-wanderlust .brand-tagline,
+body.theme-wanderlust .nav-link:not(.active) { color: var(--wl-muted) !important; }
+body.theme-wanderlust .nav-links {
+    background: rgba(255, 255, 255, 0.35) !important;
+    border-color: rgba(255, 255, 255, 0.45) !important;
+}
+body.theme-wanderlust .nav-link.active {
+    background: linear-gradient(135deg, #14b8a6, #2dd4bf) !important;
+    color: #042f2e !important;
+    box-shadow: 0 6px 18px -6px rgba(13, 148, 136, 0.55) !important;
+}
+body.theme-wanderlust .nav-icon-btn {
+    background: rgba(255, 255, 255, 0.5) !important;
+    border-color: rgba(255, 255, 255, 0.55) !important;
+    color: var(--wl-ink) !important;
+}
+body.theme-wanderlust .nav-icon-btn:hover {
+    border-color: var(--wl-teal) !important;
+    color: var(--wl-teal-deep) !important;
+    background: rgba(20, 184, 166, 0.15) !important;
+}
+body.theme-wanderlust .brand-mark [stroke="#C9974A"],
+body.theme-wanderlust .brand-mark [fill="#C9974A"] {
+    stroke: #0d9488;
+    fill: #0d9488;
+}
+
+/* ===== Wanderlust hero stage ===== */
+body.theme-wanderlust .hero-slot {
+    margin: 0 !important;
+    padding: 28px 20px 8px;
+    max-width: 1200px;
+    margin-left: auto !important;
+    margin-right: auto !important;
+}
+body.theme-wanderlust .wl-stage {
+    position: relative;
+    min-height: min(78vh, 720px);
+    display: grid;
+    grid-template-columns: 1.05fr 0.95fr;
+    grid-template-rows: auto 1fr;
+    gap: 22px;
+    align-items: end;
+    padding: 12px 4px 28px;
+}
+body.theme-wanderlust .wl-glass {
+    background: var(--wl-glass);
+    backdrop-filter: blur(22px) saturate(1.35);
+    -webkit-backdrop-filter: blur(22px) saturate(1.35);
+    border: 1px solid rgba(255, 255, 255, 0.55);
+    box-shadow:
+        0 24px 60px -28px rgba(4, 47, 46, 0.45),
+        inset 0 1px 0 rgba(255, 255, 255, 0.65);
+    border-radius: 28px;
+}
+
+/* Floating search */
+body.theme-wanderlust .wl-float-search {
+    position: absolute;
+    top: 8px;
+    left: 50%;
+    transform: translateX(-50%);
+    z-index: 5;
+    display: inline-flex;
+    align-items: center;
+    gap: 10px;
+    padding: 12px 18px;
+    min-width: min(420px, 86vw);
+    border-radius: 999px;
+    border: 1px solid rgba(255, 255, 255, 0.55);
+    background: rgba(255, 255, 255, 0.62);
+    backdrop-filter: blur(16px);
+    -webkit-backdrop-filter: blur(16px);
+    color: var(--wl-muted);
+    font-family: 'Inter', sans-serif;
+    font-size: 14px;
+    cursor: pointer;
+    box-shadow: 0 14px 36px -18px rgba(4, 47, 46, 0.4);
+    transition: transform 0.25s, box-shadow 0.25s;
+}
+body.theme-wanderlust .wl-float-search i { color: var(--wl-teal-deep); }
+body.theme-wanderlust .wl-float-search:hover {
+    transform: translateX(-50%) translateY(-2px);
+    box-shadow: 0 18px 40px -16px rgba(4, 47, 46, 0.5);
+}
+
+/* Floating circular chips */
+body.theme-wanderlust .wl-float-chip {
+    position: absolute;
+    z-index: 4;
+    width: 54px;
+    height: 54px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: rgba(255, 255, 255, 0.7);
+    border: 1px solid rgba(255, 255, 255, 0.7);
+    color: var(--wl-teal-deep);
+    font-size: 18px;
+    box-shadow: 0 14px 30px -14px rgba(4, 47, 46, 0.45);
+    backdrop-filter: blur(10px);
+}
+body.theme-wanderlust .wl-float-chip--a { top: 22%; left: 6%; }
+body.theme-wanderlust .wl-float-chip--b { top: 38%; right: 8%; }
+body.theme-wanderlust .wl-float-chip--c { bottom: 28%; left: 42%; width: 44px; height: 44px; font-size: 15px; }
+
+/* Large paradise card (featured article) */
+body.theme-wanderlust .wl-paradise-card {
+    grid-column: 2;
+    grid-row: 1 / span 2;
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-end;
+    min-height: min(68vh, 620px);
+    border-radius: 32px;
+    overflow: hidden;
+    text-decoration: none;
+    color: #fff;
+    box-shadow: 0 30px 70px -30px rgba(4, 47, 46, 0.55);
+    border: 1px solid rgba(255, 255, 255, 0.35);
+    transition: transform 0.35s cubic-bezier(0.16,1,0.3,1);
+}
+body.theme-wanderlust .wl-paradise-card:hover { transform: translateY(-4px); }
+body.theme-wanderlust .wl-paradise-media {
+    position: absolute;
+    inset: 0;
+    z-index: 0;
+}
+body.theme-wanderlust .wl-paradise-media img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: block;
+}
+body.theme-wanderlust .wl-paradise-scrim {
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(to top,
+        rgba(4, 47, 46, 0.88) 0%,
+        rgba(4, 47, 46, 0.35) 45%,
+        rgba(4, 47, 46, 0.08) 100%);
+}
+body.theme-wanderlust .wl-paradise-body {
+    position: relative;
+    z-index: 1;
+    padding: 28px 28px 32px;
+}
+body.theme-wanderlust .wl-chip {
+    display: inline-flex;
+    align-items: center;
+    padding: 6px 12px;
+    border-radius: 999px;
+    font-family: 'Inter', sans-serif;
+    font-size: 11px;
+    font-weight: 700;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    background: rgba(255, 255, 255, 0.22);
+    border: 1px solid rgba(255, 255, 255, 0.35);
+    backdrop-filter: blur(8px);
+    margin-bottom: 12px;
+}
+body.theme-wanderlust .wl-paradise-body h1 {
+    font-family: 'Fraunces', Georgia, serif;
+    font-weight: 600;
+    font-size: clamp(1.7rem, 3.2vw, 2.6rem);
+    line-height: 1.12;
+    letter-spacing: -0.02em;
+    margin: 0 0 10px;
+    text-wrap: balance;
+}
+body.theme-wanderlust .wl-paradise-body p {
+    font-family: 'Source Serif 4', Georgia, serif;
+    font-style: italic;
+    font-size: 1rem;
+    line-height: 1.5;
+    opacity: 0.9;
+    margin: 0 0 14px;
+    display: -webkit-box;
+    -webkit-line-clamp: 3;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+}
+body.theme-wanderlust .wl-paradise-meta {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+    font-family: 'Inter', sans-serif;
+    font-size: 12.5px;
+    opacity: 0.85;
+}
+
+/* CTA card (Let's Explore) */
+body.theme-wanderlust .wl-cta-card {
+    grid-column: 1;
+    grid-row: 2;
+    padding: 28px 26px 26px;
+    max-width: 420px;
+    color: var(--wl-ink);
+}
+body.theme-wanderlust .wl-cta-kicker {
+    font-family: 'Inter', sans-serif;
+    font-size: 12px;
+    font-weight: 700;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--wl-teal-deep);
+    margin: 0 0 10px;
+}
+body.theme-wanderlust .wl-cta-card h2 {
+    font-family: 'Fraunces', Georgia, serif;
+    font-size: clamp(1.8rem, 3vw, 2.4rem);
+    line-height: 1.1;
+    margin: 0 0 10px;
+    color: var(--wl-ink);
+}
+body.theme-wanderlust .wl-cta-copy {
+    font-family: 'Inter', sans-serif;
+    font-size: 14px;
+    line-height: 1.5;
+    color: var(--wl-muted);
+    margin: 0 0 18px;
+}
+body.theme-wanderlust .wl-cta-btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 10px;
+    padding: 13px 22px;
+    border-radius: 999px;
+    background: linear-gradient(135deg, #0d9488, #14b8a6);
+    color: #042f2e;
+    font-family: 'Inter', sans-serif;
+    font-weight: 700;
+    font-size: 14px;
+    text-decoration: none;
+    box-shadow: 0 12px 28px -10px rgba(13, 148, 136, 0.55);
+    transition: transform 0.25s, box-shadow 0.25s;
+}
+body.theme-wanderlust .wl-cta-btn:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 16px 32px -10px rgba(13, 148, 136, 0.65);
+}
+body.theme-wanderlust .wl-cta-avatars {
+    display: flex;
+    gap: 8px;
+    margin-top: 18px;
+}
+body.theme-wanderlust .wl-ava {
+    width: 36px;
+    height: 36px;
+    border-radius: 50%;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    background: rgba(255, 255, 255, 0.7);
+    border: 1px solid rgba(255, 255, 255, 0.8);
+    color: var(--wl-teal-deep);
+    font-size: 14px;
+}
+
+/* Journal stack = floating glass panels */
+body.theme-wanderlust .journal-stack {
+    padding-top: 8px;
+}
+body.theme-wanderlust .section-surface {
+    background: rgba(255, 255, 255, 0.58) !important;
+    backdrop-filter: blur(20px) saturate(1.3) !important;
+    -webkit-backdrop-filter: blur(20px) saturate(1.3) !important;
+    border: 1px solid rgba(255, 255, 255, 0.55) !important;
+    border-radius: 28px !important;
+    box-shadow:
+        0 24px 50px -28px rgba(4, 47, 46, 0.4),
+        inset 0 1px 0 rgba(255, 255, 255, 0.7) !important;
+    color: var(--wl-ink);
+}
+body.theme-wanderlust .section-surface::before {
+    background: linear-gradient(90deg, transparent, rgba(20, 184, 166, 0.55), transparent) !important;
+}
+body.theme-wanderlust .section-title,
+body.theme-wanderlust .eyebrow,
+body.theme-wanderlust .empty-title {
+    color: var(--wl-ink) !important;
+}
+body.theme-wanderlust .eyebrow { color: var(--wl-teal-deep) !important; }
+body.theme-wanderlust .eyebrow::before { background: var(--wl-teal) !important; }
+body.theme-wanderlust .section-sub,
+body.theme-wanderlust .empty-text,
+body.theme-wanderlust .x-dek,
+body.theme-wanderlust .card-dek,
+body.theme-wanderlust .card-meta,
+body.theme-wanderlust .x-meta {
+    color: var(--wl-muted) !important;
+}
+body.theme-wanderlust .section-sub a.text-brass,
+body.theme-wanderlust a.text-brass {
+    color: var(--wl-teal-deep) !important;
+    border-bottom-color: rgba(13, 148, 136, 0.35) !important;
+}
+body.theme-wanderlust .x-card,
+body.theme-wanderlust .dispatch-card {
+    background: rgba(255, 255, 255, 0.72) !important;
+    border-color: rgba(255, 255, 255, 0.65) !important;
+    color: var(--wl-ink) !important;
+    box-shadow: 0 16px 36px -22px rgba(4, 47, 46, 0.35) !important;
+}
+body.theme-wanderlust .x-card .x-body h3,
+body.theme-wanderlust .dispatch-card h3,
+body.theme-wanderlust .card-eyebrow {
+    color: var(--wl-ink) !important;
+}
+body.theme-wanderlust .card-eyebrow { color: var(--wl-teal-deep) !important; }
+body.theme-wanderlust .live-pill {
+    background: rgba(20, 184, 166, 0.12) !important;
+    border-color: rgba(20, 184, 166, 0.3) !important;
+    color: var(--wl-teal-deep) !important;
+}
+body.theme-wanderlust .cat-pill {
+    background: rgba(255, 255, 255, 0.55) !important;
+    border-color: rgba(15, 23, 42, 0.12) !important;
+    color: var(--wl-muted) !important;
+}
+body.theme-wanderlust .cat-pill.active {
+    background: linear-gradient(135deg, #0d9488, #2dd4bf) !important;
+    color: #042f2e !important;
+    border-color: transparent !important;
+}
+body.theme-wanderlust .btn-primary {
+    background: linear-gradient(135deg, #0d9488, #2dd4bf) !important;
+    color: #042f2e !important;
+}
+body.theme-wanderlust .btn-ghost {
+    border-color: rgba(15, 23, 42, 0.16) !important;
+    color: var(--wl-ink) !important;
+    background: rgba(255, 255, 255, 0.35) !important;
+}
+body.theme-wanderlust .btn-ghost:hover {
+    border-color: var(--wl-teal) !important;
+    color: var(--wl-teal-deep) !important;
+}
+body.theme-wanderlust .sticky-filters {
+    background: linear-gradient(180deg, rgba(255,255,255,0.75) 60%, rgba(255,255,255,0.45)) !important;
+}
+body.theme-wanderlust .potd {
+    background: rgba(255, 255, 255, 0.55) !important;
+    border-color: rgba(255, 255, 255, 0.6) !important;
+}
+body.theme-wanderlust .potd .potd-caption { color: var(--wl-ink) !important; }
+body.theme-wanderlust .potd .potd-label { color: var(--wl-teal-deep) !important; }
+body.theme-wanderlust .potd .potd-text { border-left-color: var(--wl-teal) !important; }
+body.theme-wanderlust .site-footer {
+    background: rgba(255, 255, 255, 0.45) !important;
+    border-top-color: rgba(255, 255, 255, 0.4) !important;
+    backdrop-filter: blur(16px);
+}
+body.theme-wanderlust .footer-name,
+body.theme-wanderlust .footer-nav a,
+body.theme-wanderlust .footer-social a { color: var(--wl-ink) !important; }
+body.theme-wanderlust .footer-tagline,
+body.theme-wanderlust .footer-bottom { color: var(--wl-muted) !important; }
+body.theme-wanderlust .footer-col-title { color: var(--wl-teal-deep) !important; }
+body.theme-wanderlust .search-fab,
+body.theme-wanderlust .back-to-top,
+body.theme-wanderlust .admin-fab {
+    background: rgba(255, 255, 255, 0.75) !important;
+    border-color: rgba(255, 255, 255, 0.7) !important;
+    color: var(--wl-teal-deep) !important;
+}
+body.theme-wanderlust .x-source-badge {
+    background: rgba(255, 255, 255, 0.85) !important;
+    color: var(--wl-ink) !important;
+    border-color: rgba(15, 23, 42, 0.1) !important;
+}
+body.theme-wanderlust .x-source-badge i { color: var(--wl-teal-deep) !important; }
+body.theme-wanderlust .mobile-nav-panel {
+    background: rgba(255, 255, 255, 0.92) !important;
+    border-left-color: rgba(20, 184, 166, 0.25) !important;
+}
+body.theme-wanderlust .mobile-nav-panel a { color: var(--wl-muted) !important; }
+body.theme-wanderlust .mobile-nav-panel a.active {
+    background: linear-gradient(135deg, #0d9488, #2dd4bf) !important;
+    color: #042f2e !important;
+}
+body.theme-wanderlust #pageLoader {
+    background: #064e3b !important;
+}
+body.theme-wanderlust .loader-mark [stroke="#C9974A"],
+body.theme-wanderlust .loader-mark [fill="#C9974A"] {
+    stroke: #2dd4bf;
+    fill: #2dd4bf;
+}
+
+/* Article reading still warm paper for readability */
+body.theme-wanderlust .reading-surface {
+    background: rgba(255, 255, 255, 0.92) !important;
+    color: #0f172a !important;
+}
+body.theme-wanderlust .article-hero-content { color: #fff; }
+
+/* Mobile Wanderlust */
+@media (max-width: 860px) {
+    body.theme-wanderlust .hero-slot {
+        padding: 16px 12px 4px !important;
+    }
+    body.theme-wanderlust .wl-stage {
+        grid-template-columns: 1fr !important;
+        grid-template-rows: auto auto !important;
+        min-height: 0 !important;
+        gap: 14px !important;
+        padding: 56px 0 16px !important;
+    }
+    body.theme-wanderlust .wl-paradise-card {
+        grid-column: 1 !important;
+        grid-row: auto !important;
+        min-height: min(52vh, 420px) !important;
+        border-radius: 24px !important;
+        order: 1;
+    }
+    body.theme-wanderlust .wl-cta-card {
+        grid-column: 1 !important;
+        grid-row: auto !important;
+        max-width: none !important;
+        order: 2;
+        padding: 22px 18px !important;
+        border-radius: 24px !important;
+    }
+    body.theme-wanderlust .wl-float-search {
+        top: 4px !important;
+        min-width: 0 !important;
+        width: calc(100% - 8px);
+        left: 50% !important;
+    }
+    body.theme-wanderlust .wl-float-chip { display: none !important; }
+    body.theme-wanderlust .section-surface {
+        border-radius: 22px !important;
+    }
+    body.theme-wanderlust .wl-paradise-body {
+        padding: 20px 18px 22px !important;
+    }
+    body.theme-wanderlust .wl-paradise-body h1 {
+        font-size: clamp(1.35rem, 6vw, 1.85rem) !important;
+    }
+}
+
+@media (max-width: 480px) {
+    body.theme-wanderlust .wl-cta-btn { width: 100%; justify-content: center; }
+}
