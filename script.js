@@ -171,7 +171,7 @@ function injectSharedChrome() {
                 </div>
                 <div class="nav-actions flex items-center gap-2">
                     <div class="wl-nav-circles" aria-label="Quick links">
-                        <a href="index.html#potdSectionWrap" class="wl-nav-circle" data-nav="potd" title="Photo of the Day"><i class="fas fa-camera-retro"></i><span>POTD</span></a>
+                        <a href="watch.html" class="wl-nav-circle" data-nav="watch" title="Watch"><i class="fas fa-play"></i><span>Watch</span></a>
                         <a href="telegram.html" class="wl-nav-circle" data-nav="telegram" title="Telegram"><i class="fab fa-telegram"></i><span>Telegram</span></a>
                         <a href="instagram.html" class="wl-nav-circle" data-nav="instagram" title="Instagram"><i class="fab fa-instagram"></i><span>Instagram</span></a>
                         <a href="about.html" class="wl-nav-circle" data-nav="about" title="About"><i class="fas fa-user"></i><span>About</span></a>
@@ -288,14 +288,13 @@ function setupReadingProgress() {
 
 function markActiveNav() {
     const path = location.pathname.split('/').pop() || 'index.html';
-    const hash = (location.hash || '').replace(/^#/, '');
     let current = '';
     if (path === 'about.html') current = 'about';
     else if (path === 'watch.html') current = 'watch';
     else if (path === 'telegram.html') current = 'telegram';
     else if (path === 'instagram.html') current = 'instagram';
     else if (path === '' || path === 'index.html' || path === 'article.html') {
-        current = (hash === 'potdSectionWrap') ? 'potd' : 'home';
+        current = 'home';
     }
     document.querySelectorAll('.nav-link, .wl-nav-circle').forEach(a => a.classList.toggle('active', a.dataset.nav === current));
 }
