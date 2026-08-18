@@ -2246,7 +2246,6 @@ function renderHero(articles) {
         ? 'fab fa-x-twitter'
         : (featured.source === 'medium' ? 'fab fa-medium' : 'fas fa-book-open');
     const dek = (featured.dek || '').trim();
-    const cover = mediaUrl(featured.coverImage) || featured.coverImage || '';
 
     wrap.className = 'hero-slot accent-' + (cat.accent || 'brass');
     // Wanderlust-style floating stage: paradise card + CTA glass + floating chips
@@ -2270,11 +2269,7 @@ function renderHero(articles) {
                 <span class="wl-dot"></span>
             </div>
 
-            <a href="article.html?id=${encodeURIComponent(featured.id)}" class="wl-paradise-card reveal">
-                <div class="wl-paradise-media">
-                    ${cover ? `<img src="${escapeHtml(cover)}" alt="${escapeHtml(featured.title)}" fetchpriority="high" referrerpolicy="no-referrer">` : ''}
-                    <div class="wl-paradise-scrim"></div>
-                </div>
+            <a href="article.html?id=${encodeURIComponent(featured.id)}" class="wl-paradise-card wl-paradise-card--text reveal">
                 <div class="wl-paradise-body">
                     <span class="wl-chip"><i class="fas fa-location-dot"></i> ${escapeHtml(cat.name)}</span>
                     <h1>${escapeHtml(featured.title)}</h1>
