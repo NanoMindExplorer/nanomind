@@ -3862,30 +3862,46 @@ body.theme-wanderlust .nav-actions {
     gap: 10px !important;
 }
 body.theme-wanderlust .wl-nav-circles {
-    display: flex;
+    display: flex !important;
     align-items: center;
-    gap: 10px;
+    gap: 8px;
+    flex-wrap: wrap;
+    justify-content: flex-end;
 }
 body.theme-wanderlust .wl-nav-circle {
-    width: 44px;
-    height: 44px;
-    border-radius: 50%;
+    width: auto;
+    height: auto;
+    min-height: 40px;
+    padding: 8px 14px;
+    border-radius: 999px;
     display: inline-flex;
     align-items: center;
     justify-content: center;
-    background: rgba(255, 255, 255, 0.55);
-    border: 1px solid rgba(255, 255, 255, 0.65);
+    gap: 8px;
+    background: rgba(255, 255, 255, 0.5);
+    border: 1px solid rgba(255, 255, 255, 0.62);
     color: #0f172a;
-    font-size: 15px;
+    font-size: 13px;
+    font-family: 'Inter', sans-serif;
+    font-weight: 600;
+    letter-spacing: 0.01em;
     text-decoration: none;
     backdrop-filter: none;
     -webkit-backdrop-filter: none;
-    box-shadow: 0 10px 24px -14px rgba(4, 47, 46, 0.35);
+    box-shadow: 0 10px 24px -14px rgba(4, 47, 46, 0.3);
     transition: transform 0.2s, background 0.2s;
+    white-space: nowrap;
+}
+body.theme-wanderlust .wl-nav-circle i {
+    font-size: 14px;
+    opacity: 0.9;
+}
+body.theme-wanderlust .wl-nav-circle span {
+    line-height: 1;
 }
 body.theme-wanderlust .wl-nav-circle:hover {
     transform: translateY(-2px);
-    background: rgba(255, 255, 255, 0.85);
+    background: rgba(255, 255, 255, 0.82);
 }
 body.theme-wanderlust .wl-nav-circle.active {
     background: linear-gradient(135deg, #0d9488, #2dd4bf);
