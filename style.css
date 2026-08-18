@@ -4039,7 +4039,7 @@ body.theme-wanderlust .wl-dot.is-active {
 }
 
 /* Paradise card — RIGHT ~44% width, tall from under-search to bottom */
-/* Hero dispatch card — text-only glass, big title, no cover image */
+/* Hero dispatch — fully transparent; only title + copy float on water */
 body.theme-wanderlust .wl-paradise-card {
     position: absolute;
     top: 150px;
@@ -4050,51 +4050,53 @@ body.theme-wanderlust .wl-paradise-card {
     display: flex;
     flex-direction: column;
     justify-content: flex-end;
-    border-radius: 32px;
-    overflow: hidden;
+    border-radius: 0;
+    overflow: visible;
     text-decoration: none;
-    color: #0f172a;
-    background: rgba(255, 255, 255, 0.42);
-    border: 1px solid rgba(255, 255, 255, 0.55);
-    box-shadow: 0 28px 64px -28px rgba(4, 47, 46, 0.4);
-    backdrop-filter: none;
-    -webkit-backdrop-filter: none;
-    transition: transform 0.35s cubic-bezier(0.16,1,0.3,1), background 0.25s;
+    color: #fff;
+    background: transparent !important;
+    border: none !important;
+    box-shadow: none !important;
+    backdrop-filter: none !important;
+    -webkit-backdrop-filter: none !important;
+    transition: transform 0.35s cubic-bezier(0.16,1,0.3,1);
 }
 body.theme-wanderlust .wl-paradise-card:hover {
-    transform: translateY(-4px);
-    background: rgba(255, 255, 255, 0.52);
+    transform: translateY(-3px);
+    background: transparent !important;
 }
 body.theme-wanderlust .wl-paradise-media { display: none !important; }
 body.theme-wanderlust .wl-paradise-scrim { display: none !important; }
 body.theme-wanderlust .wl-paradise-body {
     position: relative;
     z-index: 1;
-    padding: 36px 36px 40px;
+    padding: 24px 12px 28px 8px;
     display: flex;
     flex-direction: column;
     justify-content: flex-end;
     height: 100%;
     box-sizing: border-box;
+    background: transparent !important;
 }
 body.theme-wanderlust .wl-chip {
     display: inline-flex;
     align-items: center;
     gap: 6px;
     align-self: flex-start;
-    padding: 7px 14px;
-    border-radius: 999px;
+    padding: 0;
+    border-radius: 0;
     font-family: 'Inter', sans-serif;
-    font-size: 11px;
+    font-size: 12px;
     font-weight: 700;
-    letter-spacing: 0.06em;
+    letter-spacing: 0.1em;
     text-transform: uppercase;
-    background: rgba(13, 148, 136, 0.14);
-    border: 1px solid rgba(13, 148, 136, 0.28);
-    color: #0f766e;
+    background: transparent !important;
+    border: none !important;
+    color: rgba(255, 255, 255, 0.85);
+    text-shadow: 0 2px 12px rgba(4, 47, 46, 0.55);
     backdrop-filter: none;
     -webkit-backdrop-filter: none;
-    margin-bottom: 18px;
+    margin-bottom: 14px;
 }
 body.theme-wanderlust .wl-paradise-body h1 {
     font-family: 'Fraunces', Georgia, serif;
@@ -4104,14 +4106,18 @@ body.theme-wanderlust .wl-paradise-body h1 {
     letter-spacing: -0.03em;
     margin: 0 0 16px;
     text-wrap: balance;
-    color: #042f2e;
+    color: #fff;
+    text-shadow:
+        0 2px 24px rgba(4, 47, 46, 0.55),
+        0 1px 2px rgba(4, 47, 46, 0.4);
 }
 body.theme-wanderlust .wl-paradise-body p {
     font-family: 'Inter', sans-serif;
     font-style: normal;
     font-size: 1.05rem;
     line-height: 1.55;
-    color: rgba(15, 23, 42, 0.62);
+    color: rgba(255, 255, 255, 0.88);
+    text-shadow: 0 1px 14px rgba(4, 47, 46, 0.5);
     margin: 0 0 18px;
     display: -webkit-box;
     -webkit-line-clamp: 4;
@@ -4124,7 +4130,8 @@ body.theme-wanderlust .wl-paradise-meta {
     gap: 8px;
     font-family: 'Inter', sans-serif;
     font-size: 13px;
-    color: rgba(15, 23, 42, 0.55);
+    color: rgba(255, 255, 255, 0.78);
+    text-shadow: 0 1px 10px rgba(4, 47, 46, 0.45);
 }
 
 /* CTA "Let's Travel!" — bottom-LEFT glass, ~300–340px */
