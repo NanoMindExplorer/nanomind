@@ -5,8 +5,31 @@
   "previewUrl": "https://t.me/s/nanojournal",
   "categoryId": "telegram",
   "cacheMinutes": 5,
-  "lastSync": "2026-08-19T15:02:10Z",
+  "lastSync": "2026-08-19T15:46:34Z",
   "posts": [
+    {
+      "postId": "1202",
+      "channel": "nanojournal",
+      "url": "https://t.me/nanojournal/1202",
+      "textHtml": "Yaps season selesai. Sekarang Aura.@KaitoAI baru drop Kaito Pulse. Yaps lama lu langsung bisa di-convert jadi starting Aura.Gas claim dulu:https://s.kaito.ai/VYU572Login email → hubungin X → Aura → My Aura → Claim → pasang ekstensi Pulse.Berapa Aura yang muncul? Reply screenshotnya.",
+      "textPlain": "Yaps season selesai. Sekarang Aura.@KaitoAI baru drop Kaito Pulse. Yaps lama lu langsung bisa di-convert jadi starting Aura.Gas claim dulu:https://s.kaito.ai/VYU572Login email → hubungin X → Aura → My Aura → Claim → pasang ekstensi Pulse.Berapa Aura yang muncul? Reply screenshotnya.",
+      "links": [
+        {
+          "href": "https://t.me/KaitoAI",
+          "text": "@KaitoAI"
+        },
+        {
+          "href": "https://s.kaito.ai/VYU572",
+          "text": "https://s.kaito.ai/VYU572"
+        }
+      ],
+      "photos": [
+        "https://cdn5.telesco.pe/file/RAatgV2k10ZfB-2hFtfRTGEL9-Y6A47lelS_AaLOh6dtF7SwZBBPxsd3csc_cATn4OqOI_UYRAepvDxto9TvEdd5u01bvU284z7VCwMezGULPpPsiHkPua_EwayPYIIkFSWYZTE8vU4H4rH5Q9vQKHBq0U9EEga4JUGnYgWi-Ljm_RbbSn0hv5Ao9FuEXJDjede9i8DvxUMdGaZo5M0X5LvudvV9Csm5phK6SYwF8oVr-AJ-WbOhfRyX64pOP_hkBusLa_ErGqucaS7SU58-ngar02BKjY3sXMFHSf_KkEIQZoB4OcvnFsM0QVZyJK-IWkZEOEnCURRbHGkXOOCARA.jpg"
+      ],
+      "datetime": "2026-08-19T15:09:43Z",
+      "views": "1",
+      "replyTo": "684"
+    },
     {
       "postId": "1201",
       "channel": "nanojournal",
@@ -6414,7 +6437,7 @@
   "lastSyncStats": {
     "pagesFetched": 2,
     "newPosts": 1,
-    "total": 381
+    "total": 382
   },
   "notes": "Auto-updated by tools/sync-telegram-channel.py (GitHub Actions). Posts ditarik dari t.me/s/<channel> (web preview resmi, no auth). Run tiap 15 menit — post baru akan muncul di website dalam <=15 menit."
 }
