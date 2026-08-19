@@ -5,8 +5,27 @@
   "previewUrl": "https://t.me/s/nanojournal",
   "categoryId": "telegram",
   "cacheMinutes": 5,
-  "lastSync": "2026-08-19T14:18:13Z",
+  "lastSync": "2026-08-19T15:02:10Z",
   "posts": [
+    {
+      "postId": "1201",
+      "channel": "nanojournal",
+      "url": "https://t.me/nanojournal/1201",
+      "textHtml": "New airdrop: MPC Airdrop Link: https://app.globalmpc.tech/-Connect Wallet-Complete task and Submit email-Mint your SBT and do daily tasks-Done and wait for more updates-Join the early access waitlist and unlock potential future reward-MPC links Mining RWA verification, tokenization &amp; on chain infra-Still early join and earn points, and secure WL/SBT opportunitiesDone ✅",
+      "textPlain": "New airdrop: MPC Airdrop Link: https://app.globalmpc.tech/-Connect Wallet-Complete task and Submit email-Mint your SBT and do daily tasks-Done and wait for more updates-Join the early access waitlist and unlock potential future reward-MPC links Mining RWA verification, tokenization & on chain infra-Still early join and earn points, and secure WL/SBT opportunitiesDone ✅",
+      "links": [
+        {
+          "href": "https://app.globalmpc.tech/",
+          "text": "https://app.globalmpc.tech/"
+        }
+      ],
+      "photos": [
+        "https://cdn5.telesco.pe/file/HJu84rQZKb_MBA6K4zsPoGXhnPWkTbI4kfUo8llZTrMbtrnQhv3HE5PSRxx1EDbUDvESt4OnslDVyHEJtnZ5kzNv-DaZsrKl5BDfG5rg4NvuQN5svaDb7NcRq682oqZxtH9eC4Kei-SspIsudv2-mmvmhAtk3lBvaUJNV2fW5K7D1yiXqpjVPxvibMprFuF6ogakBA5RchwibUs2tpdYMeZ7e-kBI93Bj2U_443MQC_E5tN4ipLSjSufWEJQK50loNvzJRA6LGjFDbefkS71uxIMVYmiHpaRvHask9a0y045wUyCwM-U9SlhiFvcJY_gGeFN_ENiRsmeyzn-1CH8dw.jpg"
+      ],
+      "datetime": "2026-08-19T14:30:26Z",
+      "views": "1",
+      "replyTo": null
+    },
     {
       "postId": "1199",
       "channel": "nanojournal",
@@ -6393,9 +6412,9 @@
     }
   ],
   "lastSyncStats": {
-    "pagesFetched": 1,
-    "newPosts": 0,
-    "total": 380
+    "pagesFetched": 2,
+    "newPosts": 1,
+    "total": 381
   },
   "notes": "Auto-updated by tools/sync-telegram-channel.py (GitHub Actions). Posts ditarik dari t.me/s/<channel> (web preview resmi, no auth). Run tiap 15 menit — post baru akan muncul di website dalam <=15 menit."
 }
