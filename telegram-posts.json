@@ -5,8 +5,43 @@
   "previewUrl": "https://t.me/s/nanojournal",
   "categoryId": "telegram",
   "cacheMinutes": 5,
-  "lastSync": "2026-08-21T11:42:14Z",
+  "lastSync": "2026-08-21T12:03:39Z",
   "posts": [
+    {
+      "postId": "1206",
+      "channel": "nanojournal",
+      "url": "https://t.me/nanojournal/1206",
+      "textHtml": "Binance Announcement:  Binance Alpha Trading Competition: Trade ETHGas (GWEI) and Share $200K Worth of Rewards (2026-08-21)$GWEINotifer: @CexAlerts",
+      "textPlain": "Binance Announcement:  Binance Alpha Trading Competition: Trade ETHGas (GWEI) and Share $200K Worth of Rewards (2026-08-21)$GWEINotifer: @CexAlerts",
+      "links": [
+        {
+          "href": "https://www.binance.com/en/support/announcement/837daa8c78de445f946ff3502b57b6f5",
+          "text": "Binance Alpha Trading Competition: Trade ETHGas (GWEI) and Share $200K Worth of Rewards (2026-08-21)"
+        },
+        {
+          "href": "https://t.me/CexAlerts",
+          "text": "@CexAlerts"
+        }
+      ],
+      "photos": [],
+      "datetime": "2026-08-21T11:55:24Z",
+      "views": "1",
+      "replyTo": null
+    },
+    {
+      "postId": "1204",
+      "channel": "nanojournal",
+      "url": "https://t.me/nanojournal/1204",
+      "textHtml": "ETH gas list di upbitjadi udah berapa bean ?",
+      "textPlain": "ETH gas list di upbitjadi udah berapa bean ?",
+      "links": [],
+      "photos": [
+        "https://cdn5.telesco.pe/file/Gbj2yrrw2IKm9SsSGvnNiM-a1R9r-FCi7C4RAHBmpySud65nUKx0moMsW9OUsSbKlRFzHlh3sqmfqD5iFTbTq-PTtFkg0v57d670ku9Q71QzNhsZ5maEDE6YQKtySvmzjmYxc7NLtRAW4fUe1a2sGOPi5dB0jiOXkpiLHlZpzyw7vAlZGRBD7TrxeE5S-6uPfwkTf3WKyrMKO1R91WFTG4rJW37Vyf1fiIJT_JA72yb3ll53gGWagQbE-T002dURluKrg_hIruWh_YnLKsLfrBWhjAvm0OtGopvExXSLf-wYBuiGu3MhfstecSyBVn28WOxsDTanZAWxM43A2GolIg.jpg"
+      ],
+      "datetime": "2026-08-21T11:54:25Z",
+      "views": "2",
+      "replyTo": "920"
+    },
     {
       "postId": "1203",
       "channel": "nanojournal",
@@ -6452,9 +6487,9 @@
     }
   ],
   "lastSyncStats": {
-    "pagesFetched": 1,
-    "newPosts": 0,
-    "total": 383
+    "pagesFetched": 2,
+    "newPosts": 2,
+    "total": 385
   },
   "notes": "Auto-updated by tools/sync-telegram-channel.py (GitHub Actions). Posts ditarik dari t.me/s/<channel> (web preview resmi, no auth). Run tiap 15 menit — post baru akan muncul di website dalam <=15 menit."
 }
