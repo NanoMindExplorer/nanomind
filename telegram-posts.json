@@ -5,8 +5,27 @@
   "previewUrl": "https://t.me/s/nanojournal",
   "categoryId": "telegram",
   "cacheMinutes": 5,
-  "lastSync": "2026-08-22T15:46:28Z",
+  "lastSync": "2026-08-22T16:24:01Z",
   "posts": [
+    {
+      "postId": "1210",
+      "channel": "nanojournal",
+      "url": "https://t.me/nanojournal/1210",
+      "textHtml": "Divvyhttps://register.divvy.bet/?ref=deadmouse_jpeg",
+      "textPlain": "Divvyhttps://register.divvy.bet/?ref=deadmouse_jpeg",
+      "links": [
+        {
+          "href": "https://register.divvy.bet/?ref=deadmouse_jpeg",
+          "text": "https://register.divvy.bet/?ref=deadmouse_jpeg"
+        }
+      ],
+      "photos": [
+        "https://cdn5.telesco.pe/file/ffy2Dt59RZ0iQlV3GTZpKXdfrnwxIq3GIfT_E1UkiUI2iuSp7jmHAHAOB3CouKRxGaCvTpkBocZ2NK2G8Be8UxfwHJMifB7SWwyGpKX6nllFg59ePMTSm3BZ41gBHX7Od4LUNceYLkixc2Hz9tqDUuWNGwRGLt7P4XszfegSwxqArdPevhlJmurnyhUkwlj63d5WO5DtLgYpdk2QkXBHk55s5hvoVIS4z3cu51jQbxyqP5Gh1HcWwCTg7yPNPO4kSf9GJC5o2zN4JiMPhRSwSF7O84gHUJyhcYDMTCWVEHLVpFoG2lA1usB3koTtl83wJDJBlTE4T_CVKt2lMI5zeQ.jpg"
+      ],
+      "datetime": "2026-08-22T16:15:02Z",
+      "views": "1",
+      "replyTo": null
+    },
     {
       "postId": "1209",
       "channel": "nanojournal",
@@ -6541,9 +6560,9 @@
     }
   ],
   "lastSyncStats": {
-    "pagesFetched": 1,
-    "newPosts": 0,
-    "total": 387
+    "pagesFetched": 2,
+    "newPosts": 1,
+    "total": 388
   },
   "notes": "Auto-updated by tools/sync-telegram-channel.py (GitHub Actions). Posts ditarik dari t.me/s/<channel> (web preview resmi, no auth). Run tiap 15 menit — post baru akan muncul di website dalam <=15 menit."
 }
