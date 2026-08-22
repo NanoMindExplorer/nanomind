@@ -5,7 +5,7 @@
   "previewUrl": "https://t.me/s/nanojournal",
   "categoryId": "telegram",
   "cacheMinutes": 5,
-  "lastSync": "2026-08-22T13:18:59Z",
+  "lastSync": "2026-08-22T13:52:20Z",
   "posts": [
     {
       "postId": "1209",
@@ -6541,8 +6541,8 @@
     }
   ],
   "lastSyncStats": {
-    "pagesFetched": 2,
-    "newPosts": 2,
+    "pagesFetched": 1,
+    "newPosts": 0,
     "total": 387
   },
   "notes": "Auto-updated by tools/sync-telegram-channel.py (GitHub Actions). Posts ditarik dari t.me/s/<channel> (web preview resmi, no auth). Run tiap 15 menit — post baru akan muncul di website dalam <=15 menit."
