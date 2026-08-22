@@ -5,8 +5,62 @@
   "previewUrl": "https://t.me/s/nanojournal",
   "categoryId": "telegram",
   "cacheMinutes": 5,
-  "lastSync": "2026-08-22T12:38:45Z",
+  "lastSync": "2026-08-22T13:18:59Z",
   "posts": [
+    {
+      "postId": "1209",
+      "channel": "nanojournal",
+      "url": "https://t.me/nanojournal/1209",
+      "textHtml": "Rialo Tesnet https://playground.rialo.io/- konek google- ambil fecet - ikutin event race Dc : https://discord.gg/Uu84U4zWsdX : https://x.com/RialoHQ",
+      "textPlain": "Rialo Tesnet https://playground.rialo.io/- konek google- ambil fecet - ikutin event race Dc : https://discord.gg/Uu84U4zWsdX : https://x.com/RialoHQ",
+      "links": [
+        {
+          "href": "https://playground.rialo.io/",
+          "text": "https://playground.rialo.io/"
+        },
+        {
+          "href": "https://discord.gg/Uu84U4zWsd",
+          "text": "https://discord.gg/Uu84U4zWsd"
+        },
+        {
+          "href": "https://x.com/RialoHQ",
+          "text": "https://x.com/RialoHQ"
+        }
+      ],
+      "photos": [
+        "https://cdn5.telesco.pe/file/T4BK-4JQHale-SvgUKkj11qGQsE5jNTl61hYTsWVmRK_UoY-Ldp8caYN6_zuVKl6DNW37cSrdKLmNI3veeuuxMlgElQGp3DHgSXsSIjuZ5mWZIJNEPeNdPZN0F90bUIByhxA1jGaKG618jMzsrT_GsEsJ-zKERnBu-kC3-1v_H3pzmLA-LULTetXa9f9ZhGQHPw0ep__8atis2DzickoOK6Mkn-KJrf3gYvFmDH6cro4QXTgmjiXmsSvGzRUmfPKByaG6XfaOxOKZPEv8Il7zzR5Dssw_owwZs3nVPMWpycgn1M5O2lDXdyuHXiAxfdnwZl7Js_VmyhxQDRPlp2V6Q.jpg"
+      ],
+      "datetime": "2026-08-22T13:08:01Z",
+      "views": "1",
+      "replyTo": null
+    },
+    {
+      "postId": "1207",
+      "channel": "nanojournal",
+      "url": "https://t.me/nanojournal/1207",
+      "textHtml": "Orbinum Tesnethttps://app.orbinum.network/community?ref=ORB-2YRYKR-konek wallet-konek sosmed-do all task in websiteDc: https://discord.gg/3d9BBJrBJUX: https://x.com/orbinumnetwork",
+      "textPlain": "Orbinum Tesnethttps://app.orbinum.network/community?ref=ORB-2YRYKR-konek wallet-konek sosmed-do all task in websiteDc: https://discord.gg/3d9BBJrBJUX: https://x.com/orbinumnetwork",
+      "links": [
+        {
+          "href": "https://app.orbinum.network/community?ref=ORB-2YRYKR",
+          "text": "https://app.orbinum.network/community?ref=ORB-2YRYKR"
+        },
+        {
+          "href": "https://discord.gg/3d9BBJrBJU",
+          "text": "https://discord.gg/3d9BBJrBJU"
+        },
+        {
+          "href": "https://x.com/orbinumnetwork",
+          "text": "https://x.com/orbinumnetwork"
+        }
+      ],
+      "photos": [
+        "https://cdn5.telesco.pe/file/qTwUZphVQ0z6Gs2-EwE8VYFGl7OvdIlUho-h432ZZfY9CSIHUV27FNIjLijxkZB_xc4PlxLxz4eiqyciu2uc5DbM52OmNtON35UEnCoYrKbijiWrkOrLR9HjT2OGXinA9rqaGJCNxBOTMg8bOzfX1-cZmVz0kNCMw-VHMLpvXZSu2RuLLM1OFMqZLHB-ZGInwIdOM7ca6z-90jf9GIxSyFAKCHJwiyWYiQ4rz9ZPQBb-N_IumrdyD7unqj93ahY-xV7fSzrd7sSoJQeBdlvZVT6Z7hK1zSCQAF2cNIJqJzv2os9_rfEz8tPqq9KKCZgUa_22D0YbBuTnIIxIth6J_g.jpg"
+      ],
+      "datetime": "2026-08-22T12:53:42Z",
+      "views": "2",
+      "replyTo": null
+    },
     {
       "postId": "1206",
       "channel": "nanojournal",
@@ -6487,9 +6541,9 @@
     }
   ],
   "lastSyncStats": {
-    "pagesFetched": 1,
-    "newPosts": 0,
-    "total": 385
+    "pagesFetched": 2,
+    "newPosts": 2,
+    "total": 387
   },
   "notes": "Auto-updated by tools/sync-telegram-channel.py (GitHub Actions). Posts ditarik dari t.me/s/<channel> (web preview resmi, no auth). Run tiap 15 menit — post baru akan muncul di website dalam <=15 menit."
 }
