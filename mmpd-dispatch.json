@@ -1,0 +1,25 @@
+{
+  "article": {
+    "id": "art-mmpd",
+    "title": "MMPD: CLI Musik Offline, Lirik Bilingual, dari HP Android",
+    "dek": "Satu perintah di Termux, lima mode, dan lirik Jepang-Mandarin-Thai yang langsung jadi Romaji plus terjemahan Indonesia — catatan membangun music-mix-playlist-downloader.",
+    "category": "build-log",
+    "coverImage": "https://pbs.twimg.com/media/HQ9LKzMaMAADXum.png",
+    "author": "Iman Firmansyah",
+    "date": "2026-08-30",
+    "readTime": 8,
+    "featured": true,
+    "tags": ["cli", "python", "android", "termux", "music", "lyrics", "youtube", "spotify"]
+  },
+  "project": {
+    "id": "art-mmpd-project",
+    "title": "MMPD — Music Mix Playlist Downloader",
+    "description": "CLI interaktif untuk unduh musik dari YouTube, Spotify, dan SoundCloud plus lirik bilingual, transliterasi, dan retrofit koleksi lama. Jalan di Termux, Linux, dan Windows.",
+    "image": "https://pbs.twimg.com/media/HQ9LKzMaMAADXum.png",
+    "url": "https://github.com/NanoMindExplorer/music-mix-playlist-downloader",
+    "tags": ["CLI", "Python", "Android", "Music"],
+    "size": "bento-item",
+    "articleId": "art-mmpd"
+  },
+  "note": "Full article body is in this conversation output. Restore db.json from commit 4cf818a28551739156945f5dcbaa75d58904b8ef then merge this article. Thread: https://x.com/Deadmouse_jpeg/status/2093986773298987289 Demo: https://x.com/Deadmouse_jpeg/status/2094191049417924660 Repo: https://github.com/NanoMindExplorer/music-mix-playlist-downloader"
+}
