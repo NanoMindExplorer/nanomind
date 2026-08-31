@@ -1,1 +1,976 @@
-{"restored": true}
+{
+  "site": {
+    "title": "Nanomind Explorer",
+    "tagline": "Dispatches dari batas eksplorasi kode, ide, dan rasa penasaran.",
+    "logoText": "N"
+  },
+  "profile": {
+    "name": "Iman Firmansyah",
+    "bio": "learn,  craft , and build.",
+    "avatar": "media/avatar.webp",
+    "logoText": "N"
+  },
+  "categories": [
+    {
+      "id": "build-log",
+      "name": "Build Log",
+      "accent": "brass",
+      "description": "Catatan proses dari meja kerja — apa yang sedang dibangun, dan bagaimana."
+    },
+    {
+      "id": "deep-dive",
+      "name": "Deep Dive",
+      "accent": "rust",
+      "description": "Eksplorasi teknis yang lebih dalam, satu topik pada satu waktu."
+    },
+    {
+      "id": "field-notes",
+      "name": "Field Notes",
+      "accent": "moss",
+      "description": "Observasi, ide, dan hal-hal yang dipelajari di sepanjang jalan."
+    },
+    {
+      "id": "signals",
+      "name": "Signals",
+      "accent": "slate",
+      "description": "Kabar singkat dan pembaruan cepat."
+    },
+    {
+      "id": "x-articles",
+      "name": "X Articles",
+      "accent": "slate",
+      "description": "Artikel long-form yang diterbitkan di X (@Deadmouse_jpeg), ditarik otomatis ke situs ini."
+    }
+  ],
+  "photoOfDay": {
+    "image": "media/potd-instagram.jpg",
+    "video": "",
+    "isVideo": false,
+    "caption": "last time. . .",
+    "credit": "@extensions.ig · Instagram",
+    "date": "2026-03-22",
+    "permalink": "https://www.instagram.com/p/DWNFsHAEqlD/",
+    "source": "instagram",
+    "shortcode": "DWNFsHAEqlD"
+  },
+  "videos": [
+    {
+      "id": "mrhpy6akxyq0oo5nsei",
+      "type": "youtube",
+      "url": "https://youtu.be/AFm_JbUW_t4?si=-EV5eOcqeawiWBo-",
+      "title": "GameMapperMind Demo",
+      "caption": "",
+      "tags": [
+        "Android",
+        "Apps",
+        "Apk",
+        "Game",
+        "Tools"
+      ],
+      "articleId": null,
+      "date": "2026-07-12"
+    },
+    {
+      "id": "mrhq0he0laofjt8eaw",
+      "type": "youtube",
+      "url": "https://youtu.be/1Md0f37eTd8?si=FP0kI2SS_LuLSJYg",
+      "title": "NanomindOS AI Features Demo",
+      "caption": "",
+      "tags": [
+        "Tools"
+      ],
+      "articleId": null,
+      "date": "2026-07-12"
+    },
+    {
+      "id": "mrhq3j4067aidg836g",
+      "type": "youtube",
+      "url": "https://youtu.be/5_zUlEm5xpo?si=7fiODOitvUnruvEf",
+      "title": "NanomindOS",
+      "caption": "",
+      "tags": [
+        "Tools"
+      ],
+      "articleId": null,
+      "date": "2026-07-12"
+    },
+    {
+      "id": "mrhq5hldl25tg75gnvq",
+      "type": "youtube",
+      "url": "https://youtu.be/jGGgpR0N284?si=ixfweEcIc7I15pWs",
+      "title": "Tunnel Terminal Progress Demo",
+      "caption": "",
+      "tags": [
+        "Apps",
+        "Terminal",
+        "Tools",
+        "Apk"
+      ],
+      "articleId": null,
+      "date": "2026-07-12"
+    },
+    {
+      "id": "mrhq74b971esrwj7jfb",
+      "type": "youtube-short",
+      "url": "https://youtube.com/shorts/0k0nKzn0igc?si=2L3oBg-9jMURl73-",
+      "title": "Tunnel Terminal Quick Demo",
+      "caption": "",
+      "tags": [],
+      "articleId": "art-tunnel-terminal",
+      "date": "2026-07-12"
+    },
+    {
+      "id": "mrm0d35yyr31z8eors",
+      "type": "youtube",
+      "url": "https://youtu.be/q74qxrgdVLo?si=d2EmOG9B4niJPnTI",
+      "title": "11 Hours Background Music",
+      "caption": "",
+      "tags": [],
+      "articleId": null,
+      "date": "2026-07-15"
+    },
+    {
+      "id": "mrt6ygjdtopaqvpdvss",
+      "type": "youtube",
+      "url": "https://youtu.be/ZG2Y2saxG8c?si=kCv1-wVJRELiYLKe",
+      "title": "Nao Tutorial & Demo",
+      "caption": "",
+      "tags": [],
+      "articleId": null,
+      "date": "2026-07-20"
+    }
+  ],
+  "articles": [
+    {
+      "id": "art-mmpd",
+      "title": "MMPD: CLI Musik Offline, Lirik Bilingual, dari HP Android",
+      "dek": "Satu perintah di Termux, lima mode, dan lirik Jepang-Mandarin-Thai yang langsung jadi Romaji plus terjemahan Indonesia — catatan membangun music-mix-playlist-downloader.",
+      "category": "build-log",
+      "coverImage": "https://pbs.twimg.com/media/HQ9LKzMaMAADXum.png",
+      "author": "Iman Firmansyah",
+      "date": "2026-08-30",
+      "readTime": 8,
+      "featured": true,
+      "tags": [
+        "cli",
+        "python",
+        "android",
+        "termux",
+        "music",
+        "lyrics",
+        "youtube",
+        "spotify"
+      ],
+      "body": [
+        {
+          "type": "paragraph",
+          "text": "Thread aslinya naik 30 Agustus 2026 dari {{link:mqyzxfv8f1mdi9vt11b}}: CLI yang bisa mengunduh musik plus lirik bilingual langsung dari HP Android. Namanya mmpd — music-mix-playlist-downloader — dan semuanya hidup di terminal."
+        },
+        {
+          "type": "paragraph",
+          "text": "Ketik `mmpd`, menu interaktif muncul. YouTube, Retrofit, Organizer, Spotify, SoundCloud. Pilih pakai panah, Enter, selesai. Di Android keyboard Termux sudah punya tombol panah di bar, jadi TUI-nya tidak canggung."
+        },
+        {
+          "type": "image",
+          "url": "https://pbs.twimg.com/media/HQ9LKzMaMAADXum.png",
+          "caption": "Menu utama MMPD — lima mode dalam satu CLI interaktif.",
+          "credit": "@Deadmouse_jpeg / thread 1/12"
+        },
+        {
+          "type": "quote",
+          "text": "Saya bikin CLI yang bisa download musik + lirik bilingual cuma dari HP Android.",
+          "attribution": "Thread MMPD, 1/12 — 30 Agustus 2026"
+        },
+        {
+          "type": "heading",
+          "text": "Sumber terbuka, satu baris install"
+        },
+        {
+          "type": "paragraph",
+          "text": "Kodenya ada di GitHub: [NanoMindExplorer/music-mix-playlist-downloader](https://github.com/NanoMindExplorer/music-mix-playlist-downloader). Lisensi MIT. Python 3.9–3.14. Dependensi inti: yt-dlp, ffmpeg, rich, syncedlyrics, spotipy, plus mesin romanisasi (pykakasi, pypinyin, korean_romanizer) dan fuzzy matcher rapidfuzz."
+        },
+        {
+          "type": "paragraph",
+          "text": "Install di Termux satu baris: `termux-setup-storage`, Python, ffmpeg, git, clone repo, `pip install -U -e .`. Linux dan Windows punya varian yang sama. Setelah itu: `mmpd`. Pakai `mmpd self-update` untuk pembaruan, jangan ulang one-liner clone."
+        },
+        {
+          "type": "image",
+          "url": "https://pbs.twimg.com/media/HQ9LZwtbwAA99ru.png",
+          "caption": "Satu perintah untuk Termux, Linux, dan Windows PowerShell.",
+          "credit": "Thread MMPD, 2/12"
+        },
+        {
+          "type": "heading",
+          "text": "Mode 1 — YouTube, Mix, atau ketik judul"
+        },
+        {
+          "type": "paragraph",
+          "text": "Tempel URL video, playlist, atau YouTube Mix — atau ketik judul. Format: MP3 320kbps, FLAC, WAV, atau audio original. Ada deteksi duplikat. Unduhan paralel. Nama file disanitasi lintas platform. Default: `Downloads/YT_Downloader/[NamaPlaylist]/`."
+        },
+        {
+          "type": "image",
+          "url": "https://pbs.twimg.com/media/HQ9RWwcbgAA-5x6.png",
+          "caption": "Mode YouTube: tempel URL atau ketik judul, pilih format, unduh.",
+          "credit": "Thread MMPD, 3/12"
+        },
+        {
+          "type": "heading",
+          "text": "Fitur yang paling saya pakai: transliterasi"
+        },
+        {
+          "type": "paragraph",
+          "text": "Jepang jadi Romaji. Mandarin jadi Pinyin. Kanton jadi Jyutping. Korea pakai Revised Romanization. Deteksi otomatis untuk playlist campur bahasa. Terjemahan Indonesia baris demi baris dengan timestamp karaoke."
+        },
+        {
+          "type": "image",
+          "url": "https://pbs.twimg.com/media/HQ9R0zebIAAQQXd.png",
+          "caption": "Transliterasi: Jepang → Romaji, Mandarin → Pinyin, plus terjemahan Indonesia.",
+          "credit": "Thread MMPD, 4/12"
+        },
+        {
+          "type": "paragraph",
+          "text": "Mesin lirik berlapis: LRCLIB, syncedlyrics/Musixmatch, subtitle YouTube. Hasil ditanam ke tag USLT/SYLT dan file `.lrc`. Muncul di Poweramp, Musicolet, MusicBee, foobar2000."
+        },
+        {
+          "type": "image",
+          "url": "https://pbs.twimg.com/media/HQ9SObeagAAfxZM.png",
+          "caption": "Ringkasan sebelum eksekusi: target, format, lirik, folder simpan.",
+          "credit": "Thread MMPD, 5/12"
+        },
+        {
+          "type": "quote",
+          "text": "Bagian translate Mandarin, Jepang, sama bikin tulisan bahasa mereka jadi Latin. Lyric asli yang dinyanyikan penyanyinya bisa barengan sama terjemahannya.",
+          "attribution": "Catatan lanjutan di thread, 30 Agustus 2026"
+        },
+        {
+          "type": "heading",
+          "text": "Mode 2 — Retrofit koleksi lama"
+        },
+        {
+          "type": "paragraph",
+          "text": "Tunjuk folder MP3 lama. MMPD mencari lirik, menyuntik transliterasi plus terjemahan, menanam cover. Backup `.bak` otomatis. File audio tidak diunduh ulang."
+        },
+        {
+          "type": "image",
+          "url": "https://pbs.twimg.com/media/HQ9So45bcAAuoyt.png",
+          "caption": "Mode Retrofit: scan folder, suntik lirik dan cover ke file yang sudah ada.",
+          "credit": "Thread MMPD, 6/12"
+        },
+        {
+          "type": "paragraph",
+          "text": "Demo thread: YOASOBI (Jepang), JJ Lin (Mandarin), Flukie (Thai) dalam satu putaran. Cuplikan Yoru ni Kakeru: `shizumuyounitoketeyukuyouni / Seolah tenggelam dan meleleh`."
+        },
+        {
+          "type": "image",
+          "url": "https://pbs.twimg.com/media/HQ9S93vaIAAOWsZ.png",
+          "caption": "Tiga lagu, tiga bahasa, satu putaran Retrofit.",
+          "credit": "Thread MMPD, 7/12"
+        },
+        {
+          "type": "image",
+          "url": "https://pbs.twimg.com/media/HQ9TPSCboAABRBx.png",
+          "caption": "Lirik bilingual bertimestamp untuk Yoru ni Kakeru — siap karaoke.",
+          "credit": "Thread MMPD, 8/12"
+        },
+        {
+          "type": "heading",
+          "text": "Mode 3 — Organizer"
+        },
+        {
+          "type": "paragraph",
+          "text": "Fuzzy-match `.lrc` ke MP3/FLAC, rename, pindahkan musik ke `Music/` dan lirik ke `Music/Musiclrc/`. Konfirmasi: `y`."
+        },
+        {
+          "type": "image",
+          "url": "https://pbs.twimg.com/media/HQ9UQXubYAA6WGh.png",
+          "caption": "Organizer: fuzzy-match, rename, pindah folder.",
+          "credit": "Thread MMPD, 9/12"
+        },
+        {
+          "type": "heading",
+          "text": "Mode 4 dan 5 — Spotify dan SoundCloud"
+        },
+        {
+          "type": "paragraph",
+          "text": "URL Spotify track/album/playlist dicari padanannya di YouTube. API key gratis mengaktifkan ISRC matching ~99%. SoundCloud memakai pipeline format dan lirik yang sama. Lima sumber, satu alat."
+        },
+        {
+          "type": "image",
+          "url": "https://pbs.twimg.com/media/HQ9UdtMaEAAa9yj.png",
+          "caption": "Mode Spotify: URL → cari di YouTube → unduh.",
+          "credit": "Thread MMPD, 10/12"
+        },
+        {
+          "type": "image",
+          "url": "https://pbs.twimg.com/media/HQ9U0DBbQAE4CTU.png",
+          "caption": "Mode SoundCloud memakai pipeline yang sama.",
+          "credit": "Thread MMPD, 11/12"
+        },
+        {
+          "type": "heading",
+          "text": "Tanpa menu"
+        },
+        {
+          "type": "paragraph",
+          "text": "`mmpd doctor`, `mmpd cache`, `mmpd self-update`, plus mode non-interaktif v4.1: download, retrofit, lyrics, organize --dry-run. Cache SQLite 30 hari. Tulisan file atomik."
+        },
+        {
+          "type": "image",
+          "url": "https://pbs.twimg.com/media/HQ9VJGJaQAAVkNJ.png",
+          "caption": "Perintah bonus: doctor, cache, self-update. MIT, Python 3.9–3.14.",
+          "credit": "Thread MMPD, 12/12"
+        },
+        {
+          "type": "paragraph",
+          "text": "Demo Retrofit ~5 menit ada di post susulan thread."
+        },
+        {
+          "type": "link",
+          "linkRef": "mqyzxfv8f1mdi9vt11b",
+          "text": "Demo Retrofit di X",
+          "url": "https://x.com/Deadmouse_jpeg/status/2094191049417924660",
+          "icon": "fab fa-x"
+        },
+        {
+          "type": "heading",
+          "text": "Catatan pemakaian"
+        },
+        {
+          "type": "paragraph",
+          "text": "MMPD adalah alat teknis. Mengunduh materi yang dilindungi hak cipta tanpa izin, atau menyalahi syarat layanan YouTube / Spotify / SoundCloud, tetap tanggung jawab pemakai. Pakai untuk arsip yang memang boleh disimpan, rekaman sendiri, atau konten berlisensi."
+        },
+        {
+          "type": "heading",
+          "text": "Pasang, lalu ketik mmpd"
+        },
+        {
+          "type": "link",
+          "linkRef": "link1",
+          "text": "GitHub: music-mix-playlist-downloader",
+          "url": "https://github.com/NanoMindExplorer/music-mix-playlist-downloader",
+          "icon": "fab fa-github"
+        },
+        {
+          "type": "link",
+          "linkRef": "mqyzxfv8f1mdi9vt11b",
+          "text": "Thread lengkap 1/12",
+          "url": "https://x.com/Deadmouse_jpeg/status/2093986773298987289",
+          "icon": "fab fa-x"
+        },
+        {
+          "type": "paragraph",
+          "text": "Kalau masih butuh lagu offline di 2026, silakan dicoba."
+        }
+      ]
+    },
+    {
+      "id": "art-tunnel-terminal",
+      "title": "Tunnel Terminal: Menaruh Ruang Kerja Developer di Dalam Saku",
+      "dek": "Bagaimana rasanya membangun terminal AI-native untuk Android — dan kenapa layar sentuh ternyata bukan penghalang, melainkan kanvas baru.",
+      "category": "build-log",
+      "coverImage": "media/tunnelterminal.webp",
+      "author": "Iman Firmansyah",
+      "date": "2026-07-08",
+      "readTime": 6,
+      "featured": false,
+      "tags": [
+        "android",
+        "terminal",
+        "ai",
+        "mobile-dev"
+      ],
+      "body": [
+        {
+          "type": "paragraph",
+          "text": "Kereta itu penuh, dan satu-satunya ruang yang saya punya untuk bekerja adalah layar berukuran enam inci di tangan. Bertahun-tahun, itu artinya menyerah — menutup laptop mental, menunda pekerjaan sampai ada meja yang layak. Lalu satu pertanyaan sederhana mulai mengganggu: kenapa terminal, alat paling mendasar bagi seorang developer, masih terasa seperti tamu asing di ponsel?"
+        },
+        {
+          "type": "paragraph",
+          "text": "Tunnel Terminal lahir dari kejengkelan itu. Bukan sekadar emulator terminal lain untuk Android, tapi upaya menulis ulang asumsi dasarnya: bahwa keyboard fisik adalah satu-satunya cara serius untuk memberi perintah pada mesin."
+        },
+        {
+          "type": "heading",
+          "text": "Mendesain Ulang Sentuhan"
+        },
+        {
+          "type": "paragraph",
+          "text": "Masalah pertama yang harus dipecahkan bukan soal AI atau otomatisasi — tapi jauh lebih membumi: bagaimana mengetik perintah panjang dengan jempol tanpa ingin melempar ponsel ke dinding. Jawabannya datang dari mengamati bagaimana orang benar-benar menggunakan ponsel mereka, bukan bagaimana developer desktop berharap mereka menggunakannya."
+        },
+        {
+          "type": "image",
+          "url": "https://raw.githubusercontent.com/NanoMindExplorer/nanomind/main/tunnelterminal.jpg",
+          "caption": "Antarmuka Tunnel Terminal — command palette gestur menggantikan sebagian besar ketikan.",
+          "credit": "Iman Firmansyah"
+        },
+        {
+          "type": "quote",
+          "text": "Layar sentuh bukan pengganti keyboard yang buruk. Ia hanya perangkat input yang belum pernah benar-benar kita rancang untuk baris perintah.",
+          "attribution": "Catatan pengembangan, awal proyek"
+        },
+        {
+          "type": "paragraph",
+          "text": "Lapisan AI ditambahkan belakangan, dan sengaja dibuat tidak mencolok: ia menyarankan perintah, menjelaskan galat, dan mengingat konteks sesi sebelumnya — tapi tidak pernah mengambil alih kendali dari pengguna. Filosofinya sederhana: AI seharusnya membuat terminal terasa lebih cepat dipahami, bukan lebih sedikit dipahami."
+        },
+        {
+          "type": "heading",
+          "text": "Yang Dipelajari"
+        },
+        {
+          "type": "paragraph",
+          "text": "Versi 7.2.3 sekarang berjalan stabil. Untuk unduhan rilis terbaru, kunjungi [h[halaman release Tunnel Terminal](https://github.com/NanoMindExplorer/tunnel-terminal/releases/tag/v8.4.0) di GitHub, atau lihat link otomatis di bawah yang ditarik dari halaman About."
+        },
+        {
+          "type": "video",
+          "url": "https://youtu.be/jGGgpR0N284?si=jCKgvC0dD-ZTyI1-"
+        },
+        {
+          "type": "link",
+          "linkRef": "link1",
+          "text": "Download Here",
+          "url": "https://nanomindexplorer.github.io/nanomind/about.html",
+          "icon": "fab fa-github"
+        },
+        {
+          "type": "paragraph",
+          "text": "Punya pertanyaan atau ingin menyapa? Hubungi saya via {{link:link2}} atau ikuti update di {{link:mqyzt0rhe5sfs7y812k}}. Semua tautan ini ditarik otomatis dari halaman About — jika saya memperbarui link di sana, artikel ini ikut diperbarui."
+        }
+      ]
+    },
+    {
+      "id": "art-code-forge",
+      "title": "Code Forge: Saat Terminal Belajar Berpikir",
+      "dek": "Menulis AI companion berbasis Go yang hidup langsung di command line — tanpa browser, tanpa tab, hanya kursor yang berkedip dan satu masalah yang harus diselesaikan.",
+      "category": "deep-dive",
+      "coverImage": "media/codeforge.webp",
+      "author": "Iman Firmansyah",
+      "date": "2026-06-22",
+      "readTime": 5,
+      "featured": false,
+      "tags": [
+        "go",
+        "cli",
+        "ai",
+        "developer-tools"
+      ],
+      "body": [
+        {
+          "type": "paragraph",
+          "text": "Ada begitu banyak asisten coding berbasis AI sekarang, hampir semuanya hidup di dalam browser atau IDE yang berat. Code Forge dimulai dari pertanyaan yang berlawanan arah: bagaimana jika asisten itu tidak pernah meninggalkan terminal sama sekali?"
+        },
+        {
+          "type": "heading",
+          "text": "Kenapa Go"
+        },
+        {
+          "type": "paragraph",
+          "text": "Go dipilih bukan karena tren, tapi karena kebutuhan yang sangat spesifik: binary tunggal, waktu startup nyaris nol, dan footprint memori yang bisa diprediksi. Sebuah TUI (text user interface) yang lambat untuk dibuka akan gagal di tujuan utamanya — menjadi alat yang dipakai puluhan kali sehari tanpa gesekan."
+        },
+        {
+          "type": "image",
+          "url": "https://raw.githubusercontent.com/NanoMindExplorer/nanomind/main/progress.png",
+          "caption": "Progres awal antarmuka TUI Code Forge, masih dalam tahap eksperimen tata letak.",
+          "credit": "Iman Firmansyah"
+        },
+        {
+          "type": "quote",
+          "text": "Alat terbaik adalah yang paling cepat kita lupakan sedang kita gunakan.",
+          "attribution": "Prinsip desain Code Forge"
+        },
+        {
+          "type": "heading",
+          "text": "Tantangan Konteks"
+        },
+        {
+          "type": "paragraph",
+          "text": "Bagian tersulit bukan memanggil model bahasa — itu solved problem. Yang jauh lebih rumit adalah menjaga konteks percakapan tetap relevan di lingkungan yang secara alami stateless seperti shell. Setiap sesi terminal baru berarti ingatan baru, kecuali dirancang untuk tidak begitu."
+        },
+        {
+          "type": "paragraph",
+          "text": "Solusinya: sebuah lapisan memori ringan yang menyimpan jejak konteks per-direktori kerja, sehingga membuka Code Forge di dalam folder proyek yang sama akan langsung 'mengingat' apa yang sedang dikerjakan — tanpa perlu mengetik ulang konteks setiap kali.\n\nKalau tertarik dengan proyek lain atau ingin hubungi saya, kunjungi [halaman About](https://nanomindexplorer.github.io/nanomind/about.html)."
+        }
+      ]
+    },
+    {
+      "id": "art-game-mapper-mind",
+      "title": "Memetakan Gamepad: Ketika Kontroler Bertemu Layar Sentuh",
+      "dek": "Sebuah masalah kecil yang mengganggu jutaan gamer mobile — kenapa game touchscreen terasa canggung dengan kontroler asli, dan bagaimana overlay pintar mengubahnya.",
+      "category": "build-log",
+      "coverImage": "https://raw.githubusercontent.com/NanoMindExplorer/GameMapperMind/refs/heads/main/public/icon.svg",
+      "author": "Iman Firmansyah",
+      "date": "2026-06-05",
+      "readTime": 5,
+      "featured": false,
+      "tags": [
+        "android",
+        "gaming",
+        "input-mapping",
+        "tools"
+      ],
+      "body": [
+        {
+          "type": "paragraph",
+          "text": "Colokkan kontroler Xbox ke ponsel, buka game mobile favorit, dan separuh tombol tidak merespons apa pun — karena game itu dirancang untuk jempol, bukan joystick. Ini adalah momen yang dialami hampir setiap gamer mobile yang pernah mencoba naik kelas dari touchscreen."
+        },
+        {
+          "type": "heading",
+          "text": "Anatomi Overlay"
+        },
+        {
+          "type": "paragraph",
+          "text": "Game Mapper Mind bekerja dengan menempatkan lapisan overlay tak terlihat di atas game, menerjemahkan setiap input kontroler menjadi ketukan virtual di titik layar yang tepat. Kedengarannya sederhana; kenyataannya, setiap game punya 'peta' kontrol sentuh yang berbeda, dan overlay harus cukup pintar untuk tidak mengacaukan gestur multi-sentuh asli."
+        },
+        {
+          "type": "image",
+          "url": "https://raw.githubusercontent.com/NanoMindExplorer/nanomind/main/mappereditor.jpg",
+          "caption": "Editor pemetaan tombol — menyeret ikon kontrol ke posisi yang sesuai di atas tangkapan layar game.",
+          "credit": "Iman Firmansyah"
+        },
+        {
+          "type": "quote",
+          "text": "Kontroler terbaik bukan yang paling canggih, tapi yang membuat pemain lupa sedang menggunakan alat bantu sama sekali.",
+          "attribution": "Catatan komunitas pengguna"
+        },
+        {
+          "type": "heading",
+          "text": "Uji Coba di Dunia Nyata"
+        },
+        {
+          "type": "paragraph",
+          "text": "Dukungan lintas kontroler — Xbox, Switch Pro, dan DualSense — masing-masing punya kuirk protokol Bluetooth sendiri, jadi sebagian besar waktu pengembangan justru habis untuk menormalkan input, bukan membangun fitur baru. Fitur anti-ban dan makro ditambahkan setelah mendengar langsung dari komunitas pemain yang khawatir akun mereka ditandai oleh sistem deteksi game.\n\nUntuk mengunduh aplikasi, kunjungi [h[halaman proyek GameMapperMind di GitHub](https://github.com/NanoMindExplorer/GameMapperMind/releases/tag/v2.1.0) atau cek {{link:link1}} untuk repo lainnya. Tautan dari halaman About akan otomatis tersinkron di sini."
+        },
+        {
+          "type": "video",
+          "url": "https://youtu.be/OtdO_hg2ZdI?si=ww5mCG2dbUYcAXIC"
+        }
+      ]
+    },
+    {
+      "id": "art-nanomindos",
+      "title": "NanomindOS: Ruang Privat di Tengah Ledakan Otomatisasi AI",
+      "dek": "Sebuah terminal pribadi yang menggabungkan Web3 dan AI automation — dibangun bukan untuk dirilis publik, tapi untuk menjadi laboratorium sendiri.",
+      "category": "field-notes",
+      "coverImage": "media/Screenshot_20260630_224816.webp",
+      "author": "Iman Firmansyah",
+      "date": "2026-06-30",
+      "readTime": 4,
+      "featured": false,
+      "tags": [
+        "ai",
+        "automation",
+        "web3",
+        "private-tools"
+      ],
+      "body": [
+        {
+          "type": "paragraph",
+          "text": "Tidak semua yang dibangun harus dirilis. Beberapa proyek justru bekerja lebih baik sebagai ruang privat — laboratorium kecil tempat mencoba ide tanpa tekanan pengguna, rating bintang, atau tenggat rilis."
+        },
+        {
+          "type": "heading",
+          "text": "Kenapa Tidak Dirilis"
+        },
+        {
+          "type": "paragraph",
+          "text": "NanomindOS dimulai sebagai eksperimen pribadi menggabungkan automasi berbasis AI dengan interaksi Web3 — semacam pusat kendali untuk tugas-tugas berulang yang sebelumnya dikerjakan manual. Karena dirancang di sekitar alur kerja dan preferensi satu orang, membukanya untuk publik justru akan mengorbankan hal yang membuatnya berguna: keleluasaan untuk berubah bentuk kapan saja."
+        },
+        {
+          "type": "image",
+          "url": "https://raw.githubusercontent.com/NanoMindExplorer/nanomind/main/Screenshot_20260630_224816.jpg",
+          "caption": "Panel kendali NanomindOS, menampilkan modul automasi yang sedang aktif.",
+          "credit": "Iman Firmansyah"
+        },
+        {
+          "type": "quote",
+          "text": "Alat yang paling jujur adalah yang dibangun tanpa audiens.",
+          "attribution": "Jurnal proyek, Juni 2026"
+        },
+        {
+          "type": "heading",
+          "text": "Apa yang Berjalan di Dalamnya"
+        },
+        {
+          "type": "paragraph",
+          "text": "Di balik layar: modul-modul kecil yang saling terhubung, masing-masing menangani satu tugas — memantau, menjalankan skrip, merespons pemicu. Bukan produk yang rapi, tapi laboratorium yang hidup dan terus berubah setiap minggu."
+        },
+        {
+          "type": "video",
+          "url": "https://youtu.be/5_zUlEm5xpo?si=7fiODOitvUnruvEf"
+        }
+      ]
+    },
+    {
+      "id": "mrt59rwu1crz89u5tju",
+      "title": "NanoMind Account Optimizer: Beres-Beres Akun X Kamu, Tanpa Drama",
+      "dek": "Sebuah ekstensi Chrome untuk beres-beres following list X: scan akun mati, unfollow aman dengan jeda konservatif, dan cek indikasi shadowban — dibangun untuk diri sendiri, lalu dibagikan gratis.",
+      "category": "build-log",
+      "coverImage": "media/nao.webp",
+      "author": "Iman Firmansyah",
+      "date": "2026-07-20",
+      "readTime": 5,
+      "featured": false,
+      "tags": [
+        "Tools",
+        "Sosialmedia",
+        "Optimizer"
+      ],
+      "body": [
+        {
+          "type": "heading",
+          "text": "Penting — Disclaimer Wajib Dibaca Sebelum Pakai"
+        },
+        {
+          "type": "paragraph",
+          "text": "NanoMind Account Optimizer (NAO) adalah proyek pribadi, dibagikan gratis, dibangun dan dirawat sendiri oleh saya {{link:mqyzxfv8f1mdi9vt11b}}."
+        },
+        {
+          "type": "paragraph",
+          "text": "Sebelum kamu install dan pakai, baca ini baik-baik:"
+        },
+        {
+          "type": "paragraph",
+          "text": "Tool ini melakukan automasi terbatas — unfollow, navigasi halaman, pembacaan data — di atas sesi login X/Twitter kamu sendiri. Automasi terhadap follow/unfollow berada di area abu-abu Terms of Service X, dan X berhak membatasi, memberi warning, rate-limit, sampai men-suspend akun yang polanya dianggap mencurigakan, terlepas dari alat apa yang dipakai."
+        },
+        {
+          "type": "paragraph",
+          "text": "Saya sudah mendesain default yang konservatif (jeda antar-aksi, batas harian) untuk memperkecil risiko itu — tapi tidak ada jaminan nol risiko. Saya bukan X/Twitter, saya tidak bisa dan tidak akan menjamin akun kamu aman 100% dari tindakan pihak X."
+        },
+        {
+          "type": "paragraph",
+          "text": "Dengan menginstall dan/atau memakai NanoMind Account Optimizer, kamu menyatakan setuju bahwa segala risiko — termasuk namun tidak terbatas pada suspend, banned, rate-limit, kehilangan follower, atau kerugian lain apa pun pada akun X kamu — sepenuhnya menjadi tanggung jawab kamu sendiri."
+        },
+        {
+          "type": "paragraph",
+          "text": "Risiko akun kena banned/suspend itu NYATA dan TETAP ADA, sekecil apa pun default yang sudah saya buat konservatif. Tidak ada automasi follow/unfollow dari tool manapun, buatan siapapun, yang bisa menjamin nol risiko selama X masih punya sistem deteksi automasi mereka sendiri."
+        },
+        {
+          "type": "paragraph",
+          "text": "Kalau akun kamu kena banned, suspend, atau masalah apa pun akibat pakai tool ini, itu BUKAN tanggung jawab saya (Nano / {{link:mqyzxfv8f1mdi9vt11b}}) selaku pembuat. Saya cuma menyediakan alatnya secara gratis dan terbuka — keputusan pakai atau tidak, dan cara pakainya, sepenuhnya di tangan kamu. Dengan memakai tool ini, kamu dianggap sudah membaca, mengerti, dan menyetujui poin ini tanpa syarat."
+        },
+        {
+          "type": "paragraph",
+          "text": "Tool ini dibagikan apa adanya (\"as-is\"), tanpa jaminan (warranty) tersirat maupun tertulis atas kesesuaian fungsi, keandalan, atau keamanan untuk tujuan tertentu."
+        },
+        {
+          "type": "paragraph",
+          "text": "Kalau kamu tidak setuju dengan ketentuan ini, jangan install atau gunakan tool ini."
+        },
+        {
+          "type": "paragraph",
+          "text": "Sudah jelas? Oke, lanjut ke cerita di baliknya."
+        },
+        {
+          "type": "image",
+          "url": "https://raw.githubusercontent.com/NanoMindExplorer/nanomind/main/nao1.jpg",
+          "caption": "Antarmuka popup NanoMind Account Optimizer",
+          "credit": "nanomind"
+        },
+        {
+          "type": "heading",
+          "text": "Kenapa Saya Bikin Ini"
+        },
+        {
+          "type": "paragraph",
+          "text": "Saya orang yang cukup aktif di X — nge-tweet, riset, follow proyek-proyek baru, ikutan komunitas developer sama crypto. Masalahnya, following list saya lama-lama jadi kuburan: puluhan sampai ratusan akun yang saya follow tahun lalu udah nggak nge-tweet lagi, entah pindah platform atau emang udah nggak aktif. Belum lagi akun-akun yang saya follow duluan tapi nggak pernah follow-back, numpuk tanpa saya sadari."
+        },
+        {
+          "type": "paragraph",
+          "text": "Cek satu-satu manual itu kerjaan yang paling gampang ditunda selamanya. Jadi saya bikin tool buat diri saya sendiri dulu. Lalu saya pikir, kenapa nggak dibagikan aja sekalian, siapa tahu berguna buat yang lain."
+        },
+        {
+          "type": "heading",
+          "text": "Apa yang Bisa Dilakukan NAO"
+        },
+        {
+          "type": "paragraph",
+          "text": "NanoMind Account Optimizer adalah ekstensi Chrome dengan empat modul inti. Berikut cara kerja masing-masing:"
+        },
+        {
+          "type": "paragraph",
+          "text": "🔎 Inactivity Scanner — memindai seluruh following list kamu, membaca kapan terakhir kali tiap akun nge-tweet, lalu memberi tanda mana yang sudah \"mati\" berdasarkan ambang hari yang kamu tentukan sendiri (default 90 hari)."
+        },
+        {
+          "type": "paragraph",
+          "text": "⤫ Auto-Unfollow Queue — begitu tahu akun mana yang mau di-unfollow (dari hasil scan, atau pilih manual), tool ini menjalankan unfollow-nya satu-satu dengan jeda acak antar-aksi. Bukan sekali klik langsung ratusan unfollow dalam sedetik — itu justru pola yang paling gampang dicurigai sistem automasi X."
+        },
+        {
+          "type": "paragraph",
+          "text": "↔ Non-Followback Detector — membandingkan following list vs followers list kamu, langsung ketahuan siapa saja yang kamu follow tapi nggak follow balik."
+        },
+        {
+          "type": "paragraph",
+          "text": "◎ Shadowban Inspector — alat bantu cek indikasi shadowban: apakah tweet kamu masih muncul di hasil pencarian, apakah handle kamu masih muncul di saran pencarian, dan panduan buat cek manual apakah reply kamu disembunyikan di thread orang lain."
+        },
+        {
+          "type": "heading",
+          "text": "Filosofi Desain: Aman Dulu, Baru Nyaman"
+        },
+        {
+          "type": "paragraph",
+          "text": "Satu hal yang saya pegang teguh selama bangun ini: kecepatan bukan prioritas utama. Semua nilai default — jeda 60 sampai 150 detik antar unfollow, batas 150 unfollow per hari — sengaja dipilih longgar. Bukan karena teknis nggak bisa lebih cepat, tapi karena pola automasi yang terlalu rapat itu justru yang paling gampang bikin akun kena flag."
+        },
+        {
+          "type": "paragraph",
+          "text": "Tool ini juga nggak kerja diam-diam di belakang layar tanpa jejak. Setiap aksi — scan, unfollow, gagal atau berhasil — dicatat real-time di log aktivitas yang bisa kamu lihat langsung di popup. Kamu selalu tahu persis apa yang sedang dikerjakan tool ini terhadap akun kamu, kapan pun."
+        },
+        {
+          "type": "heading",
+          "text": "Cara Kerja Singkat"
+        },
+        {
+          "type": "paragraph",
+          "text": "NAO nggak pakai API resmi X (yang sekarang berbayar dan dibatasi ketat). Dia baca halaman X persis seperti kamu browsing manual — buka following list, scroll, kumpulin data, buka satu-satu profil buat cek aktivitas, klik tombol follow/unfollow kalau memang kamu suruh. Semuanya lewat sesi login kamu sendiri di browser kamu sendiri; nggak ada data yang dikirim ke server manapun. Following list, hasil scan, semuanya tersimpan lokal di browser kamu."
+        },
+        {
+          "type": "paragraph",
+          "text": "Konsekuensinya: kalau X ubah tampilan/struktur halaman mereka (yang emang sering terjadi), sebagian fitur bisa berhenti berfungsi sampai saya update. Ada tombol \"Cek Kompatibilitas Selector\" di dalam tool buat diagnosis cepat kalau itu terjadi."
+        },
+        {
+          "type": "heading",
+          "text": "Pakai dengan Bijak"
+        },
+        {
+          "type": "paragraph",
+          "text": "Tool ini alat bantu, bukan alat \"set and forget\" yang boleh dijalankan sembarangan tanpa dipantau. Sebijak apa pun defaultnya sudah saya atur, keputusan dan risiko akhir tetap ada di tangan kamu sebagai pengguna. Jangan buru-buru, jangan serakah (misal langsung unfollow ratusan akun sekaligus di hari pertama pakai), dan selalu pantau apa yang terjadi lewat log aktivitas."
+        },
+        {
+          "type": "heading",
+          "text": "Tips Biar Lebih Aman"
+        },
+        {
+          "type": "paragraph",
+          "text": "1. Mulai pelan-pelan. Hari pertama, coba unfollow sedikit dulu (10–20 akun) sambil pantau apakah akun kamu baik-baik saja, sebelum lanjut ke jumlah yang lebih besar."
+        },
+        {
+          "type": "paragraph",
+          "text": "2. Jangan ubah delay jadi terlalu cepat. Default 60–150 detik itu sudah dipertimbangkan; makin kamu percepat, makin gampang polanya kelihatan \"robotic\" di mata sistem X."
+        },
+        {
+          "type": "paragraph",
+          "text": "3. Perhatikan batas harian. Jangan maksain naikin limit unfollow per hari kalau akun kamu masih baru atau belum banyak riwayat aktivitas organik."
+        },
+        {
+          "type": "paragraph",
+          "text": "4. Selingi dengan aktivitas manusiawi. Akun yang cuma dipakai buat automasi (nggak pernah nge-tweet/like/reply manual) lebih gampang dicurigai dibanding akun yang aktivitasnya campuran."
+        },
+        {
+          "type": "paragraph",
+          "text": "5. Berhenti kalau ada tanda-tanda aneh: captcha muncul terus, notifikasi pembatasan dari X, atau tindakan follow/unfollow tiba-tiba gagal semua. Itu sinyal buat pause, bukan dipaksa lanjut."
+        },
+        {
+          "type": "paragraph",
+          "text": "6. Jangan pakai di akun utama kalau ragu. Kalau akun kamu penting banget (akun kerja, akun dengan follower besar), pertimbangkan coba dulu di akun sekunder sebelum yakin ke akun utama."
+        },
+        {
+          "type": "paragraph",
+          "text": "7. Baca log-nya, jangan cuma klik dan tinggal. Log aktivitas ada bukan hiasan — dari situ kamu bisa tahu lebih awal kalau ada yang nggak beres."
+        },
+        {
+          "type": "paragraph",
+          "text": "Intinya: tool ini dirancang buat bantu kamu kerja lebih efisien, bukan buat dipakai serampangan. Pakai akal sehat."
+        },
+        {
+          "type": "heading",
+          "text": "Satu Syarat: Follow"
+        },
+        {
+          "type": "paragraph",
+          "text": "Tool ini gratis, open, dan bakal terus saya rawat — tapi bukan berarti nggak ada harga sama sekali. Satu-satunya \"bayaran\" yang saya minta: follow {{link:mqyzxfv8f1mdi9vt11b}} di X. Tanpa itu, tool-nya terkunci nggak bisa dipakai sama sekali."
+        },
+        {
+          "type": "paragraph",
+          "text": "Saya jelasin ini terbuka, bukan disembunyikan: begitu kamu buka popup-nya, langsung ketahuan syaratnya apa."
+        },
+        {
+          "type": "heading",
+          "text": "Instalasi & Tutorial"
+        },
+        {
+          "type": "paragraph",
+          "text": "Belum ada di Chrome Web Store — install manual lewat Developer Mode (desktop paling reliable; sudah teruji juga jalan di Mises Browser, Kiwi Browser, dan Lemur Browser untuk Android)."
+        },
+        {
+          "type": "paragraph",
+          "text": "Panduan lengkap langkah-per-langkah, termasuk troubleshooting kalau ada yang nggak muncul, ada di halaman tutorial bawaan tool ini — otomatis kebuka begitu kamu selesai install."
+        },
+        {
+          "type": "paragraph",
+          "text": "Kalau kamu udah baca disclaimer di atas dan tetap mau coba: follow dulu {{link:mqyzxfv8f1mdi9vt11b}}, install, dan mulai beres-beres following list kamu."
+        },
+        {
+          "type": "link",
+          "linkRef": "mr0yf2v4m75s5n73w1",
+          "text": "Download",
+          "url": "https://github.com/NanoMindExplorer/NAO/releases/tag/v.1",
+          "icon": "-"
+        },
+        {
+          "type": "paragraph",
+          "text": "Klik tombol download di atas dan kamu akan diarahkan ke halaman rilis project github tempat tool ini diunggah dan bisa di dwonload disana. Terima kasih."
+        },
+        {
+          "type": "video",
+          "url": "https://youtu.be/ZG2Y2saxG8c?si=XQqRVigd5l_AueGi"
+        }
+      ]
+    }
+  ],
+  "projects": [
+    {
+      "id": "art-mmpd-project",
+      "title": "MMPD — Music Mix Playlist Downloader",
+      "description": "CLI interaktif untuk unduh musik dari YouTube, Spotify, dan SoundCloud plus lirik bilingual, transliterasi, dan retrofit koleksi lama. Jalan di Termux, Linux, dan Windows.",
+      "image": "https://pbs.twimg.com/media/HQ9LKzMaMAADXum.png",
+      "url": "https://github.com/NanoMindExplorer/music-mix-playlist-downloader",
+      "tags": [
+        "CLI",
+        "Python",
+        "Android",
+        "Music"
+      ],
+      "size": "bento-item",
+      "articleId": "art-mmpd"
+    },
+    {
+      "id": "mqyzjvp1gs13smvxz6b",
+      "title": "Game Mapper Mind",
+      "description": "Android gamepad-to-touchscreen mapper with overlay, anti-ban, and macro support. Supports Xbox, Switch, Playstation controllers.",
+      "image": "https://raw.githubusercontent.com/NanoMindExplorer/GameMapperMind/refs/heads/main/public/icon.svg",
+      "url": "https://github.com/NanoMindExplorer/GameMapperMind/releases/tag/v2.1.0",
+      "tags": [
+        "Tools",
+        "Android",
+        "App"
+      ],
+      "size": "bento-item",
+      "articleId": "art-game-mapper-mind"
+    },
+    {
+      "id": "mr0u4b08hluuuu0t3ah",
+      "title": "NanomindOS",
+      "description": "Web3 Suit & AI Automation Terminal",
+      "image": "media/Screenshot_20260630_224816.webp",
+      "url": "Private Only",
+      "tags": [
+        "Solidity",
+        "JavaScript",
+        "Python"
+      ],
+      "size": "bento-item",
+      "articleId": "art-nanomindos"
+    },
+    {
+      "id": "mr113t145fmea6bvgpa",
+      "title": "Code Forge",
+      "description": "Terminal Ai Coding Companion",
+      "image": "media/progress.webp",
+      "url": "https://github.com/NanoMindExplorer/codeforge-tui",
+      "tags": [
+        "Go"
+      ],
+      "size": "bento-item",
+      "articleId": "art-code-forge"
+    },
+    {
+      "id": "mr28yzusmcwnss8qda",
+      "title": "Tunnel Terminal",
+      "description": "Tunnel Terminal adalah terminal Android AI-native untuk developer bekerja di perangkat mobile.",
+      "image": "media/tunnelterminal.webp",
+      "url": "https://github.com/NanoMindExplorer/tunnel-terminal/releases/tag/v7.2.3",
+      "tags": [
+        "app",
+        "android",
+        "apk",
+        "linux",
+        "ubuntu",
+        "terminal"
+      ],
+      "size": "bento-item",
+      "articleId": "art-tunnel-terminal"
+    },
+    {
+      "id": "mrt6seplxosejcld6go",
+      "title": "NanoMind Account Optimizer (NAO)",
+      "description": "Beres-Beres Akun X Kamu, Tanpa Drama",
+      "image": "media/nao.webp",
+      "url": "https://github.com/NanoMindExplorer/NAO/releases/tag/v.1",
+      "tags": [
+        "Tools",
+        "Sosialmedia",
+        "Extensi."
+      ],
+      "size": "bento-item",
+      "articleId": "mrt59rwu1crz89u5tju"
+    }
+  ],
+  "links": [
+    {
+      "id": "link1",
+      "title": "GitHub",
+      "url": "https://github.com/nanomindexplorer",
+      "icon": "fab fa-github"
+    },
+    {
+      "id": "link2",
+      "title": "Email",
+      "url": "mailto:swastac@gmail.com",
+      "icon": "fas fa-envelope"
+    },
+    {
+      "id": "mqyzt0rhe5sfs7y812k",
+      "title": "Youtube",
+      "url": "https://www.youtube.com/@Bakayaro_0/videos",
+      "icon": "fab fa-youtube"
+    },
+    {
+      "id": "mqyzxfv8f1mdi9vt11b",
+      "title": "X",
+      "url": "https://x.com/Deadmouse_jpeg",
+      "icon": "fab fa-x"
+    },
+    {
+      "id": "mqyzythiqmyh8s1yu2r",
+      "title": "Instagram",
+      "url": "https://www.instagram.com/extensions.ig/",
+      "icon": "fab fa-instagram"
+    },
+    {
+      "id": "mqz17gq17w7i5tvbzyi",
+      "title": "Medium",
+      "url": "https://medium.com/@0wlsky",
+      "icon": "fab fa-medium"
+    },
+    {
+      "id": "mr0yf2v4m75s5n73w1",
+      "title": "Chat & Hangout",
+      "url": "https://t.me/oxnlyfams",
+      "icon": "fab fa-telegram"
+    }
+  ],
+  "xArticles": {
+    "enabled": true,
+    "username": "Deadmouse_jpeg",
+    "registryFile": "x-articles.json"
+  },
+  "gear": [
+    {
+      "id": "gear-sample-keyboard",
+      "title": "Mechanical Keyboard",
+      "description": "Contoh item — ganti dengan gear asli + link afiliasi Anda lewat mode editor.",
+      "url": "https://example.com",
+      "category": "Desk",
+      "store": "Example Store",
+      "image": "",
+      "icon": "fas fa-keyboard"
+    },
+    {
+      "id": "gear-sample-monitor",
+      "title": "Monitor Ultrawide",
+      "description": "Contoh kedua — hapus atau edit setelah login admin.",
+      "url": "https://example.com",
+      "category": "Desk",
+      "store": "Example Store",
+      "image": "",
+      "icon": "fas fa-desktop"
+    }
+  ]
+}
