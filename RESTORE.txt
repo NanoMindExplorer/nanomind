@@ -1,4 +1,0 @@
-Restore source commit for db.json: 4cf818a28551739156945f5dcbaa75d58904b8ef
-Blob SHA: cc0bc1322f71b990508fe54d2bc6ae98023a1466
-Patched local copy is ready with article art-mmpd.
-Live dispatch URL after restore: article.html?id=art-mmpd
